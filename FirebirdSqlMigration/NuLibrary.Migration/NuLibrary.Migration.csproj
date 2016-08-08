@@ -50,6 +50,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,11 +61,146 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DatabaseUtilities\DatabaseAccessADO.cs" />
+    <Compile Include="FBDatabase\FBDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLDatabase\EF\BasalProgramTimeSlot.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\BolusDelivery.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\BolusDeliveryData.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\BolusProgramTimeSlot.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\CGMReminder.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\CGMSession.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\ClientTemplateModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClientTemplateModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\ClientTemplateModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\ClientTemplateModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClientTemplateModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\DailyTimeSlot.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\DatabaseInfo.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\DeviceData.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\DiabetesControlType.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\DiabetesManagementData.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\InsuranceAddress.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\InsuranceContact.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\InsurancePlan.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\InsuranceProvider.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\MeterReading.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\MeterReadingError.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\MeterReadingEvent.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\MeterReadingHeader.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\Patient.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientAddress.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientDevice.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientEmail.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientPhoneNumber.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientPhoto.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\Pump.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PumpBGTarget.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PumpCorrectionFactor.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PumpInsulinCorrection.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PumpProgram.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PumpSetting.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\TotalDailyDelivery.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="SQLDatabase\EF\ClientTemplateModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ClientTemplateModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="SQLDatabase\EF\ClientTemplateModel.edmx.diagram">
+      <DependentUpon>ClientTemplateModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SQLDatabase\EF\ClientTemplateModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClientTemplateModel.edmx</DependentUpon>
+      <LastGenOutput>ClientTemplateModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="SQLDatabase\EF\ClientTemplateModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClientTemplateModel.edmx</DependentUpon>
+      <LastGenOutput>ClientTemplateModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

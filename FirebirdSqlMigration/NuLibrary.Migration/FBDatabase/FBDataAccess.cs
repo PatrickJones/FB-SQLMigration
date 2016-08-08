@@ -1,5 +1,6 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using NuLibrary.Migration.DatabaseUtilities;
+using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,15 +15,32 @@ namespace NuLibrary.Migration.FBDatabase
 {
     public class FBDataAccess : DatabaseAccessADO
     {
+        public int SiteId { get; set; }
+
+        public FBDataAccess(int siteId)
+        {
+            SiteId = siteId;
+        }
+
         public override DbProviderFactory GetDbProvider()
         {
             return DbProviderFactories.GetFactory("FirebirdSql.Data.FirebirdClient");
         }
-
         public override IDbConnection GetConnnection()
         {
-            // Should come from database or config file. Not Hardcoded.
-            string connStr = @"User=SYSDBA;Password=masterkey;Database=C:\Users\Patrick\Documents\FirebirdDatabases\Lion.gdb;DataSource=localhost;Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
+            FirebirdConnection connEntity;
+            string connStr = String.Empty;
+            using (var ctx = new AspnetDbEntities())
+            {
+                connEntity = ctx.FirebirdConnections.Where(s => s.SiteId == SiteId).FirstOrDefault();
+            }
+
+            if (connEntity != null)
+            {
+                var split = connEntity.DatabaseLocation.Split(':');
+                var dbFile = String.Format("{0}:{1}", split[1], split[2]);
+                connStr = String.Format("User={0};Password={1};Database={2};DataSource={3};Port={4};Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;", connEntity.User, connEntity.Password, dbFile, connEntity.DatasourceServer, connEntity.Port);
+            }
 
             var dbConn = GetDbProvider();
             DbConnection conn = dbConn.CreateConnection();
@@ -30,6 +48,7 @@ namespace NuLibrary.Migration.FBDatabase
 
             return conn;
         }
+
 
         public override IDbDataAdapter GetDataAdapter()
         {
@@ -58,14 +77,14 @@ namespace NuLibrary.Migration.FBDatabase
                 DbCommand cmd = dp.CreateCommand();
                 Console.WriteLine("Creating Command object");
                 cmd.Connection = cn;
-                cmd.CommandText = "Select * from Lions";
+                cmd.CommandText = "Select * from Patients";
 
                 using (DbDataReader dr = cmd.ExecuteReader())
                 {
                     Console.WriteLine("Creating data reader object");
                     while (dr.Read())
                     {
-                        Console.WriteLine("Name: {0}", dr["Name"]);
+                        Console.WriteLine("Name: {0}", dr["FIRSTNAME"]);
                     }
                 }
             }
@@ -79,14 +98,14 @@ namespace NuLibrary.Migration.FBDatabase
             {
                 Console.WriteLine("Connection object: {0}", cn.GetType().Name);
 
-                var adt = new FbDataAdapter("Select * from Lions", cn);
+                var adt = new FbDataAdapter("Select * from Patients", cn);
 
-                DataSet lions = new DataSet();
-                adt.Fill(lions, "Lions");
+                DataSet patients = new DataSet();
+                adt.Fill(patients, "Patients");
 
-                Console.WriteLine(lions.Tables["Lions"].Rows.Count);
+                Console.WriteLine(patients.Tables["Patients"].Rows.Count);
                 Console.ReadLine();
-                return lions.Tables["Lions"];
+                return patients.Tables["Patients"];
             }
         }
 

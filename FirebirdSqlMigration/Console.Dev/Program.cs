@@ -11,7 +11,6 @@ namespace Console.Dev
     {
         static void Main(string[] args)
         {
-            // test remote repo
             var cls = new FBDataAccess(21002);
             //cls.GetTableSchema();
             //cls.GetData();

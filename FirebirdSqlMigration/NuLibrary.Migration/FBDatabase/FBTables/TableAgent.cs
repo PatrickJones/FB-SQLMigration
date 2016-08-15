@@ -14,21 +14,49 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
 {
     public class TableAgent : FBDataAccess, ITableData
     {
+        /// <summary>
+        /// Gets or sets the name of the table.
+        /// </summary>
+        /// <value>
+        /// The name of the Firebird table.
+        /// </value>
         public string TableName { get; set; }
+        /// <summary>
+        /// Gets or sets the DataSet.
+        /// </summary>
+        /// <value>
+        /// The DataSet.
+        /// </value>
         public DataSet DataSet { get; set; }
+        /// <summary>
+        /// Gets or sets the row count.
+        /// </summary>
+        /// <value>
+        /// The Firebird table row count
+        /// </value>
         public Int32 RowCount { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TableAgent"/> class.
+        /// </summary>
+        /// <param name="siteId">The site id of the client.</param>
         public TableAgent(int siteId) : base(siteId)
         {
             TableName = this.GetType().Name.ToUpper();
             Init();
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TableAgent"/> class.
+        /// </summary>
+        /// <param name="siteId">The site id of the client.</param>
+        /// <param name="tableName">Name of the table.</param>
         public TableAgent(int siteId, string tableName) : base(siteId)
         {
             TableName = tableName;
             Init();
         }
-
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
         public void Init()
         {
             Console.WriteLine($"Creating TableAgent for: {TableName}");
@@ -60,12 +88,18 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
                 adt.Fill(DataSet, TableName);
             }
         }
-
+        /// <summary>
+        /// Gets the DataTable.
+        /// </summary>
+        /// <returns></returns>
         public virtual DataTable GetDataTable()
         {
             return DataSet.Tables[TableName];
         }
-
+        /// <summary>
+        /// Gets the table schema in xml.
+        /// </summary>
+        /// <returns></returns>
         public virtual XDocument GetTableSchema()
         {
             var table = this.GetDataTable();

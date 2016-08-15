@@ -20,12 +20,13 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
         {
             var fbAccess = new FBDataAccess(SiteId);
 
-            var mr = fbAccess.GetTableNames().Where(n => n == "METERREADING").FirstOrDefault();
-            this.AddOrUpdate(mr, new TableAgent(SiteId, mr), (k, v) => this[k] = v);
+            //var mr = fbAccess.GetTableNames().Where(n => n == "METERREADING").FirstOrDefault();
+            //this.AddOrUpdate(mr, new TableAgent(SiteId, mr), (k, v) => this[k] = v);
 
-            //Parallel.ForEach(fbAccess.GetTableNames().ToArray(), t => {
-            //    this.AddOrUpdate(t, new TableAgent(SiteId, t), (k,v) => this[k] = v);
-            //});
+            Parallel.ForEach(fbAccess.GetTableNames().ToArray(), t =>
+            {
+                this.AddOrUpdate(t, new TableAgent(SiteId, t), (k, v) => this[k] = v);
+            });
         }
     }
 }

@@ -15,17 +15,33 @@ namespace NuLibrary.Migration.FBDatabase
 {
     public class FBDataAccess : DatabaseAccessADO
     {
+        /// <summary>
+        /// Gets or sets the site identifier.
+        /// </summary>
+        /// <value>
+        /// The site identifier.
+        /// </value>
         public int SiteId { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FBDataAccess"/> class.
+        /// </summary>
+        /// <param name="siteId">The site identifier.</param>
         public FBDataAccess(int siteId)
         {
             SiteId = siteId;
         }
-
+        /// <summary>
+        /// Gets the database provider.
+        /// </summary>
+        /// <returns></returns>
         public override DbProviderFactory GetDbProvider()
         {
             return DbProviderFactories.GetFactory("FirebirdSql.Data.FirebirdClient");
         }
+        /// <summary>
+        /// Gets the database connnection.
+        /// </summary>
+        /// <returns></returns>
         public override IDbConnection GetConnnection()
         {
             FirebirdConnection connEntity;
@@ -49,22 +65,33 @@ namespace NuLibrary.Migration.FBDatabase
             return conn;
         }
 
-
+        /// <summary>
+        /// Gets the data adapter for the database.
+        /// </summary>
+        /// <returns></returns>
         public override IDbDataAdapter GetDataAdapter()
         {
             return new FbDataAdapter();
         }
-
+        /// <summary>
+        /// Gets the database command.
+        /// </summary>
+        /// <returns></returns>
         public override IDbCommand GetCommand()
         {
             return new FbCommand();
         }
-
+        /// <summary>
+        /// Gets the database parameter.
+        /// </summary>
+        /// <returns></returns>
         public override IDbDataParameter GetDbParameter()
         {
             return new FbParameter();
         }
-
+        /// <summary>
+        /// Gets the data.
+        /// </summary>
         public void GetData()
         {
             using (FbConnection cn = (FbConnection)GetConnnection())

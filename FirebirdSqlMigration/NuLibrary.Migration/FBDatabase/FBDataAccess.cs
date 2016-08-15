@@ -44,7 +44,7 @@ namespace NuLibrary.Migration.FBDatabase
 
             var dbConn = GetDbProvider();
             DbConnection conn = dbConn.CreateConnection();
-            conn.ConnectionString = connStr;
+             conn.ConnectionString = connStr;
 
             return conn;
         }
@@ -69,7 +69,7 @@ namespace NuLibrary.Migration.FBDatabase
         {
             using (FbConnection cn = (FbConnection)GetConnnection())
             {
-                Console.WriteLine("Connection object: {0}", cn.GetType().Name);
+                //Console.WriteLine("Connection object: {0}", cn.GetType().Name);
                 cn.Open();
 
                 var dp = GetDbProvider();
@@ -81,52 +81,44 @@ namespace NuLibrary.Migration.FBDatabase
 
                 using (DbDataReader dr = cmd.ExecuteReader())
                 {
-                    Console.WriteLine("Creating data reader object");
+                    //Console.WriteLine("Creating data reader object");
                     while (dr.Read())
                     {
-                        Console.WriteLine("Name: {0}", dr["FIRSTNAME"]);
+                        //Console.WriteLine("Name: {0}", dr["FIRSTNAME"]);
                     }
                 }
             }
 
             Console.ReadLine();
         }
-
-        public DataTable GetDataTable()
+        /// <summary>
+        /// Gets the name of the tables within this database, excluding system tables ($).
+        /// </summary>
+        /// <returns>ICollection<string> - Collection of table names</returns>
+        public ICollection<string> GetTableNames()
         {
+            ICollection<string> results = new List<string>();
             using (FbConnection cn = (FbConnection)GetConnnection())
             {
-                Console.WriteLine("Connection object: {0}", cn.GetType().Name);
+                if (cn.State != ConnectionState.Open)
+                {
+                    cn.Open();
+                    var tableNames = cn.GetSchema("Tables");
 
-                var adt = new FbDataAdapter("Select * from Patients", cn);
+                    foreach (System.Data.DataRow row in tableNames.Rows)
+                    {
+                        //Console.WriteLine("Table Name = {0}", row["TABLE_NAME"]);
 
-                DataSet patients = new DataSet();
-                adt.Fill(patients, "Patients");
-
-                Console.WriteLine(patients.Tables["Patients"].Rows.Count);
-                Console.ReadLine();
-                return patients.Tables["Patients"];
+                        if (!row["TABLE_NAME"].ToString().Contains("$"))
+                        {
+                            results.Add((string)row["TABLE_NAME"]);
+                        }
+                    }
+                    cn.Close();
+                }
             }
-        }
-
-        public XDocument GetTableSchema()
-        {
-            var table = this.GetDataTable();
-            var schema = String.Empty;
-
-            using (var ms = new MemoryStream())
-            {
-                table.WriteXmlSchema(ms);
-                ms.Position = 0;
-
-                var sr = new StreamReader(ms);
-                schema = sr.ReadToEnd();
-
-                Console.WriteLine(schema);
-                Console.ReadLine();
-            }
-
-            return XDocument.Parse(schema);
+            //Console.ReadLine();
+            return results;
         }
     }
 }

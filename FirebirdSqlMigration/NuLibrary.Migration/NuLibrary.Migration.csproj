@@ -63,6 +63,9 @@
     <Compile Include="Class1.cs" />
     <Compile Include="DatabaseUtilities\DatabaseAccessADO.cs" />
     <Compile Include="FBDatabase\FBDataAccess.cs" />
+    <Compile Include="FBDatabase\FBTables\TableAgent.cs" />
+    <Compile Include="FBDatabase\FBTables\TableAgentCollection.cs" />
+    <Compile Include="Interfaces\ITableData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLDatabase\EF\AspnetDbModel.Context.cs">
       <AutoGen>True</AutoGen>

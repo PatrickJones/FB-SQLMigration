@@ -19,7 +19,7 @@ namespace NuLibrary.Migration.DatabaseUtilities
 
         public virtual IDbConnection GetConnnection()
         {
-            // Should come from database or config file. Not Hardcoded.
+            // TODO: Should come from database or config file. Not Hardcoded.
             string connStr = @"Data Source=PRIMARYPC\PRIMARY2; Initial Catalog=LionDatabase; Integrated Security=True";
 
             var dbConn = GetDbProvider();

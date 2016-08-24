@@ -17,6 +17,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Patient()
         {
+            this.CareSettings = new HashSet<CareSetting>();
             this.PatientAddresses = new HashSet<PatientAddress>();
             this.PatientDevices = new HashSet<PatientDevice>();
             this.PatientEmails = new HashSet<PatientEmail>();
@@ -37,6 +38,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Race { get; set; }
         public int PlanId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CareSetting> CareSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientAddress> PatientAddresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

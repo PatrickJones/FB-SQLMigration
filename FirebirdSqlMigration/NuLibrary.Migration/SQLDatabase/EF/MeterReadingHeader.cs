@@ -28,6 +28,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int Readings { get; set; }
         public string SiteSource { get; set; }
         public System.DateTime ReviewedOn { get; set; }
+        public bool IsCGMData { get; set; }
+        public string PatientId { get; set; }
     
         public virtual PatientDevice PatientDevice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -11,7 +11,7 @@
     <AssemblyName>NuLibrary.Migration</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AssemblyVersion>1.0.229.0</AssemblyVersion>
+    <AssemblyVersion>1.0.237.2</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,6 +95,9 @@
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BolusProgramTimeSlot.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\CareSetting.cs">
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\CGMReminder.cs">
@@ -212,10 +215,6 @@
       <DependentUpon>App.config</DependentUpon>
     </None>
     <None Include="packages.config" />
-    <EntityDeploy Include="SQLDatabase\EF\ClientTemplateModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ClientTemplateModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <EntityDeploy Include="SQLDatabase\EF\AspnetDbModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AspnetDbModel.Designer.cs</LastGenOutput>
@@ -223,6 +222,10 @@
     <None Include="SQLDatabase\EF\AspnetDbModel.edmx.diagram">
       <DependentUpon>AspnetDbModel.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="SQLDatabase\EF\ClientTemplateModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ClientTemplateModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="SQLDatabase\EF\ClientTemplateModel.edmx.diagram">
       <DependentUpon>ClientTemplateModel.edmx</DependentUpon>
     </None>

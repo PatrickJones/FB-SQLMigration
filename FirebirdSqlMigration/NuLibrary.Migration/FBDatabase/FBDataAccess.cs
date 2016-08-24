@@ -134,7 +134,7 @@ namespace NuLibrary.Migration.FBDatabase
 
                     foreach (System.Data.DataRow row in tableNames.Rows)
                     {
-                        //Console.WriteLine("Table Name = {0}", row["TABLE_NAME"]);
+                        Console.WriteLine("Table Name = {0}", row["TABLE_NAME"]);
 
                         if (!row["TABLE_NAME"].ToString().Contains("$"))
                         {

@@ -13,6 +13,7 @@ namespace Console.Dev
         static void Main(string[] args)
         {
             //var cls = new FBDataAccess(21002);
+            //cls.GetTableNames();
             //var cls = new TableAgent(999); //localhost
 
 
@@ -26,7 +27,8 @@ namespace Console.Dev
             //    System.Console.WriteLine(String.Format("Column Name: {0} - Column Type: {1}", col.ColumnName, col.DataType.Name));
             //}
 
-            var tac = new TableAgentCollection(999);
+            //var tac = new TableAgentCollection(999); Local
+            var tac = new TableAgentCollection(21002);
 
             System.Console.ReadLine();
         }

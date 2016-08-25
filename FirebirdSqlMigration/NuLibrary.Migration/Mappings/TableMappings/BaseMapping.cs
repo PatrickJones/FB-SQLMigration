@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NuLibrary.Migration.FBDatabase.FBTables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,18 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 {
     public class BaseMapping
     {
-        public int SiteId { get; set; }
-        public BaseMapping(int siteId)
+        public TableAgent TableAgent { get; set; }
+        public string FbTableName { get; set; }
+
+        public BaseMapping(string tableName)
         {
-            SiteId = siteId;
+            FbTableName = tableName;
         }
+
+        public void GetTableAgent()
+        {
+            TableAgentCollection.TableAgents.ContainsKey(FbTableName);
+        }
+
     }
 }

@@ -32,7 +32,7 @@ namespace Console.Dev
             //}
 
             //var tac = new TableAgentCollection(999); Local
-            var tac = new TableAgentCollection();
+            var t = TableAgentCollection.TableAgents;
 
             System.Console.ReadLine();
 

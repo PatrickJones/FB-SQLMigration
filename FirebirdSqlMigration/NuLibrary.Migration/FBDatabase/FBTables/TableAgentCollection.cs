@@ -8,23 +8,40 @@ using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.FBDatabase.FBTables
 {
-    public class TableAgentCollection : ConcurrentDictionary<string, TableAgent>
+    /// <summary>
+    /// Collection of TableAgents
+    /// </summary>
+    public static class TableAgentCollection
     {
-        public TableAgentCollection()
+        /// <summary>
+        /// Collection of TableAgents
+        /// </summary>
+        public static ConcurrentDictionary<string, TableAgent> TableAgents = new ConcurrentDictionary<string, TableAgent>();
+
+        /// <summary>
+        /// Populates a collection of TableAgents based on all Firebird Table names
+        /// </summary>
+        private static void Populate()
         {
-            Populate();
-        }
-
-        private void Populate()
-        {
-            var fbAccess = new FBDataAccess();
-
-            //var mr = fbAccess.GetTableNames().Where(n => n == "METERREADING").FirstOrDefault();
-            //this.AddOrUpdate(mr, new TableAgent(SiteId, mr), (k, v) => this[k] = v);
-
-            Parallel.ForEach(fbAccess.GetTableNames().ToArray(), t =>
+            Parallel.ForEach(MigrationVariables.FirebirdTableNames.ToArray(), t =>
             {
-                this.AddOrUpdate(t, new TableAgent(t), (k, v) => this[k] = v);
+                TableAgents.AddOrUpdate(t, new TableAgent(t), (k, v) => TableAgents[k] = v);
+            });
+        }
+        /// <summary>
+        /// Populates a collection of TableAgents based on select Firebird Table names
+        /// </summary>
+        /// <param name="tableNames"></param>
+        private static void Populate(ICollection<string> tableNames)
+        {
+            var temp = from tn in tableNames
+                       from ft in MigrationVariables.FirebirdTableNames
+                       where tn == ft
+                       select ft;
+
+            Parallel.ForEach(temp.ToArray(), t =>
+            {
+                TableAgents.AddOrUpdate(t, new TableAgent(t), (k, v) => TableAgents[k] = v);
             });
         }
     }

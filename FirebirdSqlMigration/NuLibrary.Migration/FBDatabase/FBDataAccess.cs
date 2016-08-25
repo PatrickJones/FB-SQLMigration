@@ -144,7 +144,7 @@ namespace NuLibrary.Migration.FBDatabase
                     cn.Close();
                 }
             }
-            //Console.ReadLine();
+            Console.ReadLine();
             return results;
         }
     }

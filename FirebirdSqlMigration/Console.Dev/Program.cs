@@ -1,5 +1,6 @@
 ﻿using NuLibrary.Migration.FBDatabase;
 using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
@@ -14,6 +15,7 @@ namespace Console.Dev
     {
         static void Main(string[] args)
         {
+            MigrationVariables.SiteId = 21002;
             //var cls = new FBDataAccess(21002);
             //cls.GetTableNames();
             //var cls = new TableAgent(999); //localhost
@@ -30,7 +32,7 @@ namespace Console.Dev
             //}
 
             //var tac = new TableAgentCollection(999); Local
-            var tac = new TableAgentCollection(21002);
+            var tac = new TableAgentCollection();
 
             System.Console.ReadLine();
 

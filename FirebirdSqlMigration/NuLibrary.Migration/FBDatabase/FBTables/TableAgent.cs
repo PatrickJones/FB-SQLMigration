@@ -39,7 +39,7 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
         /// Initializes a new instance of the <see cref="TableAgent"/> class.
         /// </summary>
         /// <param name="siteId">The site id of the client.</param>
-        public TableAgent(int siteId) : base(siteId)
+        public TableAgent()
         {
             TableName = this.GetType().Name.ToUpper();
             Init();
@@ -49,7 +49,7 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
         /// </summary>
         /// <param name="siteId">The site id of the client.</param>
         /// <param name="tableName">Name of the table.</param>
-        public TableAgent(int siteId, string tableName) : base(siteId)
+        public TableAgent(string tableName)
         {
             TableName = tableName;
             Init();

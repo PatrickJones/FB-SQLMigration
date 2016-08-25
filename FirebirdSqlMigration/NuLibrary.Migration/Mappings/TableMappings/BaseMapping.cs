@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.Mappings.TableMappings
 {
-    public class PatientsMapping : BaseMapping
+    public class BaseMapping
     {
-        public PatientsMapping(int siteId) : base(siteId)
+        public int SiteId { get; set; }
+        public BaseMapping(int siteId)
         {
-
+            SiteId = siteId;
         }
     }
 }

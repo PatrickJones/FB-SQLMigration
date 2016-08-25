@@ -68,7 +68,9 @@
     <Compile Include="FBDatabase\FBDataAccess.cs" />
     <Compile Include="FBDatabase\FBTables\TableAgent.cs" />
     <Compile Include="FBDatabase\FBTables\TableAgentCollection.cs" />
+    <Compile Include="GlobalVar\MigrationVariables.cs" />
     <Compile Include="Interfaces\ITableData.cs" />
+    <Compile Include="Mappings\TableMappings\BaseMapping.cs" />
     <Compile Include="Mappings\TableMappings\PatientsMapping.cs" />
     <Compile Include="Mappings\TransactionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

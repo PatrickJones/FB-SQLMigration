@@ -1,5 +1,6 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using NuLibrary.Migration.DatabaseUtilities;
+using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,9 @@ namespace NuLibrary.Migration.FBDatabase
         /// Initializes a new instance of the <see cref="FBDataAccess"/> class.
         /// </summary>
         /// <param name="siteId">The site identifier.</param>
-        public FBDataAccess(int siteId)
+        public FBDataAccess()
         {
-            SiteId = siteId;
+            SiteId = MigrationVariables.SiteId;
         }
         /// <summary>
         /// Gets the database provider.

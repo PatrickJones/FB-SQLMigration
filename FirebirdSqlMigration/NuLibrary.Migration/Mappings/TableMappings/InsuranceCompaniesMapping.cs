@@ -12,17 +12,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     /// <summary>
     /// Note: Has relationship with - 
     /// </summary>
-    public class PatientsMapping : BaseMapping
+    public class InsuranceCompaniesMapping : BaseMapping
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
         /// </summary>
-        public PatientsMapping() : base("Patients")
+        public InsuranceCompaniesMapping() : base("INSURANCECOMPANIES")
         {
 
         }
 
-        public PatientsMapping(string tableName) :base(tableName)
+        public InsuranceCompaniesMapping(string tableName) :base(tableName)
         {
 
         }
@@ -31,19 +31,16 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var pat = new Patient
+                var ips = new InsuranceProvider
                 {
-                    PatientId = (String)row["KEYID"],
-                    MRID = (String)row["MEDICALRECORDIDENTIFIER"],
-                    Firstname = (String)row["FIRSTNAME"],
-                    Lastname = (String)row["LASTNAME"],
-                    Middlename = (String)row["MIDDLENAME"],
-                    Suffix = (String)row["SUFFIX"],
-                    Gender = (Int32)row["GENDER"],
-                    DateofBirth = (DateTime)row["DOB"]
+                    CompanyId = (Int32)row["KEYID"],
+                    Name = (String)row["NAME"],
+                    IsActive = (Boolean)row["ISACTIVE"],
+                    InActiveDate = (DateTime)row["INACTIVEDATE"]
                 };
 
-                var adr = new PatientAddress {
+                var adr = new InsuranceAddress
+                {
                     Street1 = (String)row["STREET1"],
                     Street2 = (String)row["STREET2"],
                     Street3 = (String)row["STREET3"],
@@ -54,15 +51,16 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     Country = (String)row["COUNTRY"]
                 };
 
-                var email = new PatientEmail {
-                    Email = (String)row["EMAIL"],
-                    LoweredEmail = row["EMAIL"].ToString().ToLower()
+                var cont = new InsuranceContact
+                {
+                    FullName = (String)row["CONTACTNAME"],
+                    Email = (String)row["EMAIL"]
                 };
 
-                pat.PatientAddresses.Add(adr);
-                pat.PatientEmails.Add(email);
+                ips.InsuranceAddresses.Add(adr);
+                ips.InsuranceContacts.Add(cont);
 
-                TransactionManager.DatabaseContext.Patients.Add(pat);
+                TransactionManager.DatabaseContext.InsuranceProviders.Add(ips);
             }
         }
     }

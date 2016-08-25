@@ -18,6 +18,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public PatientDevice()
         {
             this.MeterReadingHeaders = new HashSet<MeterReadingHeader>();
+            //this.DiabetesManagementData = new HashSet<DiabetesManagementData>();
         }
     
         public int DeviceId { get; set; }

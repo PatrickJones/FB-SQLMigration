@@ -70,7 +70,17 @@
     <Compile Include="GlobalVar\MigrationVariables.cs" />
     <Compile Include="Interfaces\ITableData.cs" />
     <Compile Include="Mappings\TableMappings\BaseMapping.cs" />
+    <Compile Include="Mappings\TableMappings\DMDataMapping.cs" />
+    <Compile Include="Mappings\TableMappings\InsuranceCompaniesMapping.cs" />
+    <Compile Include="Mappings\TableMappings\InsurancePlansMapping.cs" />
+    <Compile Include="Mappings\TableMappings\MeterReadingHeaderMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PatientPhoneNumbersMapping.cs" />
     <Compile Include="Mappings\TableMappings\PatientsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpProgramsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpSettingMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpTimeSlotsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\TimeSlotsMapping.cs" />
     <Compile Include="Mappings\TransactionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLDatabase\EF\AspnetDbModel.Context.cs">

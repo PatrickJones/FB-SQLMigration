@@ -15,11 +15,15 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public BaseMapping(string tableName)
         {
             FbTableName = tableName;
+            SetTableAgent();
         }
 
-        public void GetTableAgent()
+        private void SetTableAgent()
         {
-            TableAgentCollection.TableAgents.ContainsKey(FbTableName);
+            if (TableAgentCollection.TableAgents.ContainsKey(FbTableName))
+            {
+                TableAgent = TableAgentCollection.TableAgents[FbTableName];
+            }
         }
 
     }

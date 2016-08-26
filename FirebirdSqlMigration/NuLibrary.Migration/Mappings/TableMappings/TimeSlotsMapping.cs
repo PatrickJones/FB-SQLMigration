@@ -31,7 +31,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                for (int i = 1; i < 8; i++)
+                for (int i = 1; i < 16; i++)
                 {
                     DailyTimeSlot d = new DailyTimeSlot();
 

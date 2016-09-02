@@ -69,6 +69,8 @@
     <Compile Include="FBDatabase\FBTables\TableAgentCollection.cs" />
     <Compile Include="GlobalVar\MigrationVariables.cs" />
     <Compile Include="Interfaces\ITableData.cs" />
+    <Compile Include="Mappings\ClientDatabaseBase.cs" />
+    <Compile Include="Mappings\MappingUtilities.cs" />
     <Compile Include="Mappings\TableMappings\BaseMapping.cs" />
     <Compile Include="Mappings\TableMappings\DMDataMapping.cs" />
     <Compile Include="Mappings\TableMappings\InsuranceCompaniesMapping.cs" />
@@ -268,7 +270,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SQLDatabase\SQLHelpers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

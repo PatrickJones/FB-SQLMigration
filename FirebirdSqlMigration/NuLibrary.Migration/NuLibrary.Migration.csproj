@@ -75,7 +75,7 @@
     <Compile Include="Mappings\TableMappings\DMDataMapping.cs" />
     <Compile Include="Mappings\TableMappings\InsuranceCompaniesMapping.cs" />
     <Compile Include="Mappings\TableMappings\InsurancePlansMapping.cs" />
-    <Compile Include="Mappings\TableMappings\MeterReadingHeaderMapping.cs" />
+    <Compile Include="Mappings\TableMappings\DeviceMeterReadingHeaderMapping.cs" />
     <Compile Include="Mappings\TableMappings\PatientPhoneNumbersMapping.cs" />
     <Compile Include="Mappings\TableMappings\PatientsMapping.cs" />
     <Compile Include="Mappings\TableMappings\PumpProgramsMapping.cs" />

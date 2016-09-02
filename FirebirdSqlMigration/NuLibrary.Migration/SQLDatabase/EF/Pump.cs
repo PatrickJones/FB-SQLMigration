@@ -34,6 +34,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public double Cannula { get; set; }
         public System.DateTime ReplacementDate { get; set; }
         public string Notes { get; set; }
+        public string PatientId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CGMReminder> CGMReminders { get; set; }

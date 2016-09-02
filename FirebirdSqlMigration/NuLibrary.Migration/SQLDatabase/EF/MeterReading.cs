@@ -32,6 +32,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Value { get; set; }
         public string ReadingNote { get; set; }
         public int DownloadKedyId { get; set; }
+        public string PatientId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BolusDelivery> BolusDeliveries { get; set; }

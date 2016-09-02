@@ -14,27 +14,15 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
     public partial class DiabetesManagementData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DiabetesManagementData()
-        {
-            this.DiabetesControlTypes = new HashSet<DiabetesControlType>();
-        }
-    
         public int DMDataId { get; set; }
         public int LowBGLevel { get; set; }
         public int HighBGLevel { get; set; }
-        public int HyperglycemicLevel { get; set; }
-        public int HypoglycemicLevel { get; set; }
-        public int InsulinMethod { get; set; }
-        public int DiabetesManagementType { get; set; }
-        public int InsulinBrand { get; set; }
         public int PremealTarget { get; set; }
         public int PostmealTarget { get; set; }
         public System.DateTime ModifiedDate { get; set; }
         public System.Guid ModifiedUserId { get; set; }
+        public string PatientId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiabetesControlType> DiabetesControlTypes { get; set; }
         public virtual PatientDevice PatientDevice { get; set; }
     }
 }

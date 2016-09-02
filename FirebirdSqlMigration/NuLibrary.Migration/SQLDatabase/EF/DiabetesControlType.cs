@@ -18,7 +18,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string ControlName { get; set; }
         public bool IsEnabled { get; set; }
         public int DMDataId { get; set; }
+        public int CareSettingsId { get; set; }
     
-        public virtual DiabetesManagementData DiabetesManagementData { get; set; }
+        public virtual CareSetting CareSetting { get; set; }
     }
 }

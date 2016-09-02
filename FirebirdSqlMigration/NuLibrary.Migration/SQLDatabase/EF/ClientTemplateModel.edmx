@@ -50,6 +50,19 @@
           <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
           <Property Name="PumpProgramId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CareSettings">
+          <Key>
+            <PropertyRef Name="CareSettingsId" />
+          </Key>
+          <Property Name="CareSettingsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HyperglycemicLevel" Type="int" Nullable="false" />
+          <Property Name="HypoglycemicLevel" Type="int" Nullable="false" />
+          <Property Name="InsulinMethod" Type="int" Nullable="false" />
+          <Property Name="DiabetesManagementType" Type="int" Nullable="false" />
+          <Property Name="InsulinBrand" Type="int" Nullable="false" />
+          <Property Name="DateModified" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="CGMReminders">
           <Key>
             <PropertyRef Name="ReminderId" />
@@ -76,6 +89,7 @@
           <Property Name="TimeSlotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TimeSlotDescription" Type="nvarchar" MaxLength="50" />
           <Property Name="TImeSlotBoundary" Type="time" Precision="2" Nullable="false" />
+          <Property Name="CareSettingsId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DatabaseInfo">
           <Key>
@@ -99,6 +113,7 @@
           <Property Name="ControlName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="IsEnabled" Type="bit" Nullable="false" />
           <Property Name="DMDataId" Type="int" Nullable="false" />
+          <Property Name="CareSettingsId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DiabetesManagementData">
           <Key>
@@ -107,15 +122,11 @@
           <Property Name="DMDataId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LowBGLevel" Type="int" Nullable="false" />
           <Property Name="HighBGLevel" Type="int" Nullable="false" />
-          <Property Name="HyperglycemicLevel" Type="int" Nullable="false" />
-          <Property Name="HypoglycemicLevel" Type="int" Nullable="false" />
-          <Property Name="InsulinMethod" Type="int" Nullable="false" />
-          <Property Name="DiabetesManagementType" Type="int" Nullable="false" />
-          <Property Name="InsulinBrand" Type="int" Nullable="false" />
           <Property Name="PremealTarget" Type="int" Nullable="false" />
           <Property Name="PostmealTarget" Type="int" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedUserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="InsuranceAddresses">
           <Key>
@@ -192,7 +203,7 @@
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="ResumeTime" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="MeterReadingHeader">
+        <EntityType Name="MeterReadingHeaders">
           <Key>
             <PropertyRef Name="DownloadKeyId" />
           </Key>
@@ -204,6 +215,8 @@
           <Property Name="Readings" Type="int" Nullable="false" />
           <Property Name="SiteSource" Type="nvarchar" MaxLength="50" />
           <Property Name="ReviewedOn" Type="datetime" Nullable="false" />
+          <Property Name="IsCGMData" Type="bit" Nullable="false" />
+          <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="MeterReadings">
           <Key>
@@ -218,6 +231,7 @@
           <Property Name="Value" Type="nvarchar" MaxLength="50" />
           <Property Name="ReadingNote" Type="nvarchar(max)" />
           <Property Name="DownloadKedyId" Type="int" Nullable="false" />
+          <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientAddresses">
           <Key>
@@ -359,6 +373,7 @@
           <Property Name="Cannula" Type="float" Nullable="false" />
           <Property Name="ReplacementDate" Type="datetime" Nullable="false" />
           <Property Name="Notes" Type="nvarchar" MaxLength="200" />
+          <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="PumpSettings">
           <Key>
@@ -425,6 +440,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CareSettings_Patients1">
+          <End Role="Patients" Type="Self.Patients" Multiplicity="1" />
+          <End Role="CareSettings" Type="Self.CareSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patients">
+              <PropertyRef Name="PatientId" />
+            </Principal>
+            <Dependent Role="CareSettings">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CGMReminders_Pumps">
           <End Role="Pumps" Type="Self.Pumps" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -451,6 +478,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DailyTimeSlots_CareSettings">
+          <End Role="CareSettings" Type="Self.CareSettings" Multiplicity="1" />
+          <End Role="DailyTimeSlots" Type="Self.DailyTimeSlots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CareSettings">
+              <PropertyRef Name="CareSettingsId" />
+            </Principal>
+            <Dependent Role="DailyTimeSlots">
+              <PropertyRef Name="CareSettingsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DeviceData_MeterReadings">
           <End Role="MeterReadings" Type="Self.MeterReadings" Multiplicity="1" />
           <End Role="DeviceData" Type="Self.DeviceData" Multiplicity="0..1" />
@@ -463,17 +502,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DiabetesControlTypes_DiabetesManagementData">
-          <End Role="DiabetesManagementData" Type="Self.DiabetesManagementData" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="FK_DiabetesControlTypes_CareSettings">
+          <End Role="CareSettings" Type="Self.CareSettings" Multiplicity="1" />
           <End Role="DiabetesControlTypes" Type="Self.DiabetesControlTypes" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="DiabetesManagementData">
-              <PropertyRef Name="DMDataId" />
+            <Principal Role="CareSettings">
+              <PropertyRef Name="CareSettingsId" />
             </Principal>
             <Dependent Role="DiabetesControlTypes">
-              <PropertyRef Name="DMDataId" />
+              <PropertyRef Name="CareSettingsId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -563,23 +600,23 @@
           <End Role="PatientDevices" Type="Self.PatientDevices" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MeterReadingHeader" Type="Self.MeterReadingHeader" Multiplicity="*" />
+          <End Role="MeterReadingHeaders" Type="Self.MeterReadingHeaders" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PatientDevices">
               <PropertyRef Name="DeviceId" />
             </Principal>
-            <Dependent Role="MeterReadingHeader">
+            <Dependent Role="MeterReadingHeaders">
               <PropertyRef Name="DeviceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MeterReadings_MeterReadingHeader">
-          <End Role="MeterReadingHeader" Type="Self.MeterReadingHeader" Multiplicity="1">
+          <End Role="MeterReadingHeaders" Type="Self.MeterReadingHeaders" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="MeterReadings" Type="Self.MeterReadings" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MeterReadingHeader">
+            <Principal Role="MeterReadingHeaders">
               <PropertyRef Name="DownloadKeyId" />
             </Principal>
             <Dependent Role="MeterReadings">
@@ -756,10 +793,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Pumps_MeterReadingHeader">
-          <End Role="MeterReadingHeader" Type="Self.MeterReadingHeader" Multiplicity="1" />
+          <End Role="MeterReadingHeaders" Type="Self.MeterReadingHeaders" Multiplicity="1" />
           <End Role="Pumps" Type="Self.Pumps" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="MeterReadingHeader">
+            <Principal Role="MeterReadingHeaders">
               <PropertyRef Name="DownloadKeyId" />
             </Principal>
             <Dependent Role="Pumps">
@@ -800,6 +837,7 @@
           <EntitySet Name="BolusDelivery" EntityType="Self.BolusDelivery" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BolusDeliveryData" EntityType="Self.BolusDeliveryData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BolusProgramTimeSlots" EntityType="Self.BolusProgramTimeSlots" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CareSettings" EntityType="Self.CareSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CGMReminders" EntityType="Self.CGMReminders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CGMSession" EntityType="Self.CGMSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyTimeSlots" EntityType="Self.DailyTimeSlots" Schema="dbo" store:Type="Tables" />
@@ -813,7 +851,7 @@
           <EntitySet Name="InsuranceProviders" EntityType="Self.InsuranceProviders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MeterReadingErrors" EntityType="Self.MeterReadingErrors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MeterReadingEvents" EntityType="Self.MeterReadingEvents" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MeterReadingHeader" EntityType="Self.MeterReadingHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MeterReadingHeaders" EntityType="Self.MeterReadingHeaders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MeterReadings" EntityType="Self.MeterReadings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientAddresses" EntityType="Self.PatientAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientDevices" EntityType="Self.PatientDevices" Schema="dbo" store:Type="Tables" />
@@ -841,6 +879,10 @@
             <End Role="PumpPrograms" EntitySet="PumpPrograms" />
             <End Role="BolusProgramTimeSlots" EntitySet="BolusProgramTimeSlots" />
           </AssociationSet>
+          <AssociationSet Name="FK_CareSettings_Patients1" Association="Self.FK_CareSettings_Patients1">
+            <End Role="Patients" EntitySet="Patients" />
+            <End Role="CareSettings" EntitySet="CareSettings" />
+          </AssociationSet>
           <AssociationSet Name="FK_CGMReminders_Pumps" Association="Self.FK_CGMReminders_Pumps">
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="CGMReminders" EntitySet="CGMReminders" />
@@ -849,12 +891,16 @@
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="CGMSession" EntitySet="CGMSession" />
           </AssociationSet>
+          <AssociationSet Name="FK_DailyTimeSlots_CareSettings" Association="Self.FK_DailyTimeSlots_CareSettings">
+            <End Role="CareSettings" EntitySet="CareSettings" />
+            <End Role="DailyTimeSlots" EntitySet="DailyTimeSlots" />
+          </AssociationSet>
           <AssociationSet Name="FK_DeviceData_MeterReadings" Association="Self.FK_DeviceData_MeterReadings">
             <End Role="MeterReadings" EntitySet="MeterReadings" />
             <End Role="DeviceData" EntitySet="DeviceData" />
           </AssociationSet>
-          <AssociationSet Name="FK_DiabetesControlTypes_DiabetesManagementData" Association="Self.FK_DiabetesControlTypes_DiabetesManagementData">
-            <End Role="DiabetesManagementData" EntitySet="DiabetesManagementData" />
+          <AssociationSet Name="FK_DiabetesControlTypes_CareSettings" Association="Self.FK_DiabetesControlTypes_CareSettings">
+            <End Role="CareSettings" EntitySet="CareSettings" />
             <End Role="DiabetesControlTypes" EntitySet="DiabetesControlTypes" />
           </AssociationSet>
           <AssociationSet Name="FK_DiabetesManagementData_PatientDevices" Association="Self.FK_DiabetesManagementData_PatientDevices">
@@ -883,10 +929,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_MeterReadingHeader_PatientDevices" Association="Self.FK_MeterReadingHeader_PatientDevices">
             <End Role="PatientDevices" EntitySet="PatientDevices" />
-            <End Role="MeterReadingHeader" EntitySet="MeterReadingHeader" />
+            <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
           </AssociationSet>
           <AssociationSet Name="FK_MeterReadings_MeterReadingHeader" Association="Self.FK_MeterReadings_MeterReadingHeader">
-            <End Role="MeterReadingHeader" EntitySet="MeterReadingHeader" />
+            <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
             <End Role="MeterReadings" EntitySet="MeterReadings" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientAddresses_Patients" Association="Self.FK_PatientAddresses_Patients">
@@ -938,7 +984,7 @@
             <End Role="BasalProgramTimeSlots" EntitySet="BasalProgramTimeSlots" />
           </AssociationSet>
           <AssociationSet Name="FK_Pumps_MeterReadingHeader" Association="Self.FK_Pumps_MeterReadingHeader">
-            <End Role="MeterReadingHeader" EntitySet="MeterReadingHeader" />
+            <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
             <End Role="Pumps" EntitySet="Pumps" />
           </AssociationSet>
           <AssociationSet Name="FK_PumpSettings_Pumps" Association="Self.FK_PumpSettings_Pumps">
@@ -1005,6 +1051,22 @@
           <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PumpProgram" Relationship="Self.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="BolusProgramTimeSlots" ToRole="PumpPrograms" />
         </EntityType>
+        <EntityType Name="CareSetting">
+          <Key>
+            <PropertyRef Name="CareSettingsId" />
+          </Key>
+          <Property Name="CareSettingsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HyperglycemicLevel" Type="Int32" Nullable="false" />
+          <Property Name="HypoglycemicLevel" Type="Int32" Nullable="false" />
+          <Property Name="InsulinMethod" Type="Int32" Nullable="false" />
+          <Property Name="DiabetesManagementType" Type="Int32" Nullable="false" />
+          <Property Name="InsulinBrand" Type="Int32" Nullable="false" />
+          <Property Name="DateModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_CareSettings_Patients1" FromRole="CareSettings" ToRole="Patients" />
+          <NavigationProperty Name="DailyTimeSlots" Relationship="Self.FK_DailyTimeSlots_CareSettings" FromRole="CareSettings" ToRole="DailyTimeSlots" />
+          <NavigationProperty Name="DiabetesControlTypes" Relationship="Self.FK_DiabetesControlTypes_CareSettings" FromRole="CareSettings" ToRole="DiabetesControlTypes" />
+        </EntityType>
         <EntityType Name="CGMReminder">
           <Key>
             <PropertyRef Name="ReminderId" />
@@ -1033,6 +1095,8 @@
           <Property Name="TimeSlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TimeSlotDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TImeSlotBoundary" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="CareSettingsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CareSetting" Relationship="Self.FK_DailyTimeSlots_CareSettings" FromRole="DailyTimeSlots" ToRole="CareSettings" />
         </EntityType>
         <EntityType Name="DatabaseInfo">
           <Key>
@@ -1057,7 +1121,8 @@
           <Property Name="ControlName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
           <Property Name="DMDataId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="DiabetesManagementData" Relationship="Self.FK_DiabetesControlTypes_DiabetesManagementData" FromRole="DiabetesControlTypes" ToRole="DiabetesManagementData" />
+          <Property Name="CareSettingsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CareSetting" Relationship="Self.FK_DiabetesControlTypes_CareSettings" FromRole="DiabetesControlTypes" ToRole="CareSettings" />
         </EntityType>
         <EntityType Name="DiabetesManagementData">
           <Key>
@@ -1066,16 +1131,11 @@
           <Property Name="DMDataId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LowBGLevel" Type="Int32" Nullable="false" />
           <Property Name="HighBGLevel" Type="Int32" Nullable="false" />
-          <Property Name="HyperglycemicLevel" Type="Int32" Nullable="false" />
-          <Property Name="HypoglycemicLevel" Type="Int32" Nullable="false" />
-          <Property Name="InsulinMethod" Type="Int32" Nullable="false" />
-          <Property Name="DiabetesManagementType" Type="Int32" Nullable="false" />
-          <Property Name="InsulinBrand" Type="Int32" Nullable="false" />
           <Property Name="PremealTarget" Type="Int32" Nullable="false" />
           <Property Name="PostmealTarget" Type="Int32" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedUserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="DiabetesControlTypes" Relationship="Self.FK_DiabetesControlTypes_DiabetesManagementData" FromRole="DiabetesManagementData" ToRole="DiabetesControlTypes" />
+          <Property Name="PatientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="PatientDevice" Relationship="Self.FK_DiabetesManagementData_PatientDevices" FromRole="DiabetesManagementData" ToRole="PatientDevices" />
         </EntityType>
         <EntityType Name="InsuranceAddress">
@@ -1174,9 +1234,11 @@
           <Property Name="Readings" Type="Int32" Nullable="false" />
           <Property Name="SiteSource" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ReviewedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="PatientDevice" Relationship="Self.FK_MeterReadingHeader_PatientDevices" FromRole="MeterReadingHeader" ToRole="PatientDevices" />
-          <NavigationProperty Name="MeterReadings" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="MeterReadingHeader" ToRole="MeterReadings" />
-          <NavigationProperty Name="Pump" Relationship="Self.FK_Pumps_MeterReadingHeader" FromRole="MeterReadingHeader" ToRole="Pumps" />
+          <Property Name="IsCGMData" Type="Boolean" Nullable="false" />
+          <Property Name="PatientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PatientDevice" Relationship="Self.FK_MeterReadingHeader_PatientDevices" FromRole="MeterReadingHeaders" ToRole="PatientDevices" />
+          <NavigationProperty Name="MeterReadings" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="MeterReadingHeaders" ToRole="MeterReadings" />
+          <NavigationProperty Name="Pump" Relationship="Self.FK_Pumps_MeterReadingHeader" FromRole="MeterReadingHeaders" ToRole="Pumps" />
         </EntityType>
         <EntityType Name="MeterReading">
           <Key>
@@ -1191,11 +1253,12 @@
           <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ReadingNote" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DownloadKedyId" Type="Int32" Nullable="false" />
+          <Property Name="PatientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="BolusDeliveries" Relationship="Self.FK_BolusDelivery_MeterReadings" FromRole="MeterReadings" ToRole="BolusDelivery" />
           <NavigationProperty Name="DeviceData" Relationship="Self.FK_DeviceData_MeterReadings" FromRole="MeterReadings" ToRole="DeviceData" />
           <NavigationProperty Name="MeterReadingErrors" Relationship="Self.FK_MeterReadingErrors_MeterReadings" FromRole="MeterReadings" ToRole="MeterReadingErrors" />
           <NavigationProperty Name="MeterReadingEvents" Relationship="Self.FK_MeterReadingEvents_MeterReadings" FromRole="MeterReadings" ToRole="MeterReadingEvents" />
-          <NavigationProperty Name="MeterReadingHeader" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="MeterReadings" ToRole="MeterReadingHeader" />
+          <NavigationProperty Name="MeterReadingHeader" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="MeterReadings" ToRole="MeterReadingHeaders" />
           <NavigationProperty Name="TotalDailyDeliveries" Relationship="Self.FK_TotalDailyDelivery_MeterReadings" FromRole="MeterReadings" ToRole="TotalDailyDelivery" />
         </EntityType>
         <EntityType Name="PatientAddress">
@@ -1228,7 +1291,7 @@
           <Property Name="SoftwareVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="HardwareVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="DiabetesManagementData" Relationship="Self.FK_DiabetesManagementData_PatientDevices" FromRole="PatientDevices" ToRole="DiabetesManagementData" />
-          <NavigationProperty Name="MeterReadingHeaders" Relationship="Self.FK_MeterReadingHeader_PatientDevices" FromRole="PatientDevices" ToRole="MeterReadingHeader" />
+          <NavigationProperty Name="MeterReadingHeaders" Relationship="Self.FK_MeterReadingHeader_PatientDevices" FromRole="PatientDevices" ToRole="MeterReadingHeaders" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientDevices_Patients" FromRole="PatientDevices" ToRole="Patients" />
         </EntityType>
         <EntityType Name="PatientEmail">
@@ -1279,6 +1342,7 @@
           <Property Name="DateofBirth" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Race" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PlanId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CareSettings" Relationship="Self.FK_CareSettings_Patients1" FromRole="Patients" ToRole="CareSettings" />
           <NavigationProperty Name="PatientAddresses" Relationship="Self.FK_PatientAddresses_Patients" FromRole="Patients" ToRole="PatientAddresses" />
           <NavigationProperty Name="PatientDevices" Relationship="Self.FK_PatientDevices_Patients" FromRole="Patients" ToRole="PatientDevices" />
           <NavigationProperty Name="PatientEmails" Relationship="Self.FK_PatientEmails_Patients" FromRole="Patients" ToRole="PatientEmails" />
@@ -1349,9 +1413,10 @@
           <Property Name="Cannula" Type="Double" Nullable="false" />
           <Property Name="ReplacementDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Notes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PatientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="CGMReminders" Relationship="Self.FK_CGMReminders_Pumps" FromRole="Pumps" ToRole="CGMReminders" />
           <NavigationProperty Name="CGMSession" Relationship="Self.FK_CGMSession_Pumps" FromRole="Pumps" ToRole="CGMSession" />
-          <NavigationProperty Name="MeterReadingHeader" Relationship="Self.FK_Pumps_MeterReadingHeader" FromRole="Pumps" ToRole="MeterReadingHeader" />
+          <NavigationProperty Name="MeterReadingHeader" Relationship="Self.FK_Pumps_MeterReadingHeader" FromRole="Pumps" ToRole="MeterReadingHeaders" />
           <NavigationProperty Name="PumpBGTargets" Relationship="Self.FK_PumpBGTargets_Pumps" FromRole="Pumps" ToRole="PumpBGTargets" />
           <NavigationProperty Name="PumpCorrectionFactors" Relationship="Self.FK_PumpCorrectionFactors_Pumps" FromRole="Pumps" ToRole="PumpCorrectionFactors" />
           <NavigationProperty Name="PumpInsulinCorrections" Relationship="Self.FK_PumpInsulinCorrections_Pumps" FromRole="Pumps" ToRole="PumpInsulinCorrections" />
@@ -1439,6 +1504,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CareSettings_Patients1">
+          <End Role="Patients" Type="Self.Patient" Multiplicity="1" />
+          <End Role="CareSettings" Type="Self.CareSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patients">
+              <PropertyRef Name="PatientId" />
+            </Principal>
+            <Dependent Role="CareSettings">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyTimeSlots_CareSettings">
+          <End Role="CareSettings" Type="Self.CareSetting" Multiplicity="1" />
+          <End Role="DailyTimeSlots" Type="Self.DailyTimeSlot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CareSettings">
+              <PropertyRef Name="CareSettingsId" />
+            </Principal>
+            <Dependent Role="DailyTimeSlots">
+              <PropertyRef Name="CareSettingsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiabetesControlTypes_CareSettings">
+          <End Role="CareSettings" Type="Self.CareSetting" Multiplicity="1" />
+          <End Role="DiabetesControlTypes" Type="Self.DiabetesControlType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CareSettings">
+              <PropertyRef Name="CareSettingsId" />
+            </Principal>
+            <Dependent Role="DiabetesControlTypes">
+              <PropertyRef Name="CareSettingsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CGMReminders_Pumps">
           <End Role="Pumps" Type="Self.Pump" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1474,20 +1575,6 @@
             </Principal>
             <Dependent Role="DeviceData">
               <PropertyRef Name="DataSetId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DiabetesControlTypes_DiabetesManagementData">
-          <End Role="DiabetesManagementData" Type="Self.DiabetesManagementData" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="DiabetesControlTypes" Type="Self.DiabetesControlType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DiabetesManagementData">
-              <PropertyRef Name="DMDataId" />
-            </Principal>
-            <Dependent Role="DiabetesControlTypes">
-              <PropertyRef Name="DMDataId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1577,23 +1664,23 @@
           <End Role="PatientDevices" Type="Self.PatientDevice" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MeterReadingHeader" Type="Self.MeterReadingHeader" Multiplicity="*" />
+          <End Role="MeterReadingHeaders" Type="Self.MeterReadingHeader" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PatientDevices">
               <PropertyRef Name="DeviceId" />
             </Principal>
-            <Dependent Role="MeterReadingHeader">
+            <Dependent Role="MeterReadingHeaders">
               <PropertyRef Name="DeviceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MeterReadings_MeterReadingHeader">
-          <End Role="MeterReadingHeader" Type="Self.MeterReadingHeader" Multiplicity="1">
+          <End Role="MeterReadingHeaders" Type="Self.MeterReadingHeader" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="MeterReadings" Type="Self.MeterReading" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MeterReadingHeader">
+            <Principal Role="MeterReadingHeaders">
               <PropertyRef Name="DownloadKeyId" />
             </Principal>
             <Dependent Role="MeterReadings">
@@ -1602,10 +1689,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Pumps_MeterReadingHeader">
-          <End Role="MeterReadingHeader" Type="Self.MeterReadingHeader" Multiplicity="1" />
+          <End Role="MeterReadingHeaders" Type="Self.MeterReadingHeader" Multiplicity="1" />
           <End Role="Pumps" Type="Self.Pump" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="MeterReadingHeader">
+            <Principal Role="MeterReadingHeaders">
               <PropertyRef Name="DownloadKeyId" />
             </Principal>
             <Dependent Role="Pumps">
@@ -1776,6 +1863,7 @@
           <EntitySet Name="BolusDeliveries" EntityType="Self.BolusDelivery" />
           <EntitySet Name="BolusDeliveryDatas" EntityType="Self.BolusDeliveryData" />
           <EntitySet Name="BolusProgramTimeSlots" EntityType="Self.BolusProgramTimeSlot" />
+          <EntitySet Name="CareSettings" EntityType="Self.CareSetting" />
           <EntitySet Name="CGMReminders" EntityType="Self.CGMReminder" />
           <EntitySet Name="CGMSessions" EntityType="Self.CGMSession" />
           <EntitySet Name="DailyTimeSlots" EntityType="Self.DailyTimeSlot" />
@@ -1820,6 +1908,18 @@
             <End Role="PumpPrograms" EntitySet="PumpPrograms" />
             <End Role="BolusProgramTimeSlots" EntitySet="BolusProgramTimeSlots" />
           </AssociationSet>
+          <AssociationSet Name="FK_CareSettings_Patients1" Association="Self.FK_CareSettings_Patients1">
+            <End Role="Patients" EntitySet="Patients" />
+            <End Role="CareSettings" EntitySet="CareSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyTimeSlots_CareSettings" Association="Self.FK_DailyTimeSlots_CareSettings">
+            <End Role="CareSettings" EntitySet="CareSettings" />
+            <End Role="DailyTimeSlots" EntitySet="DailyTimeSlots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiabetesControlTypes_CareSettings" Association="Self.FK_DiabetesControlTypes_CareSettings">
+            <End Role="CareSettings" EntitySet="CareSettings" />
+            <End Role="DiabetesControlTypes" EntitySet="DiabetesControlTypes" />
+          </AssociationSet>
           <AssociationSet Name="FK_CGMReminders_Pumps" Association="Self.FK_CGMReminders_Pumps">
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="CGMReminders" EntitySet="CGMReminders" />
@@ -1831,10 +1931,6 @@
           <AssociationSet Name="FK_DeviceData_MeterReadings" Association="Self.FK_DeviceData_MeterReadings">
             <End Role="MeterReadings" EntitySet="MeterReadings" />
             <End Role="DeviceData" EntitySet="DeviceDatas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DiabetesControlTypes_DiabetesManagementData" Association="Self.FK_DiabetesControlTypes_DiabetesManagementData">
-            <End Role="DiabetesManagementData" EntitySet="DiabetesManagementDatas" />
-            <End Role="DiabetesControlTypes" EntitySet="DiabetesControlTypes" />
           </AssociationSet>
           <AssociationSet Name="FK_DiabetesManagementData_PatientDevices" Association="Self.FK_DiabetesManagementData_PatientDevices">
             <End Role="PatientDevices" EntitySet="PatientDevices" />
@@ -1862,14 +1958,14 @@
           </AssociationSet>
           <AssociationSet Name="FK_MeterReadingHeader_PatientDevices" Association="Self.FK_MeterReadingHeader_PatientDevices">
             <End Role="PatientDevices" EntitySet="PatientDevices" />
-            <End Role="MeterReadingHeader" EntitySet="MeterReadingHeaders" />
+            <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
           </AssociationSet>
           <AssociationSet Name="FK_MeterReadings_MeterReadingHeader" Association="Self.FK_MeterReadings_MeterReadingHeader">
-            <End Role="MeterReadingHeader" EntitySet="MeterReadingHeaders" />
+            <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
             <End Role="MeterReadings" EntitySet="MeterReadings" />
           </AssociationSet>
           <AssociationSet Name="FK_Pumps_MeterReadingHeader" Association="Self.FK_Pumps_MeterReadingHeader">
-            <End Role="MeterReadingHeader" EntitySet="MeterReadingHeaders" />
+            <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
             <End Role="Pumps" EntitySet="Pumps" />
           </AssociationSet>
           <AssociationSet Name="FK_TotalDailyDelivery_MeterReadings" Association="Self.FK_TotalDailyDelivery_MeterReadings">
@@ -1976,6 +2072,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CareSettings">
+            <EntityTypeMapping TypeName="ClientDatabaseTemplateModel.CareSetting">
+              <MappingFragment StoreEntitySet="CareSettings">
+                <ScalarProperty Name="CareSettingsId" ColumnName="CareSettingsId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="HyperglycemicLevel" ColumnName="HyperglycemicLevel" />
+                <ScalarProperty Name="HypoglycemicLevel" ColumnName="HypoglycemicLevel" />
+                <ScalarProperty Name="InsulinMethod" ColumnName="InsulinMethod" />
+                <ScalarProperty Name="DiabetesManagementType" ColumnName="DiabetesManagementType" />
+                <ScalarProperty Name="InsulinBrand" ColumnName="InsulinBrand" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CGMReminders">
             <EntityTypeMapping TypeName="ClientDatabaseTemplateModel.CGMReminder">
               <MappingFragment StoreEntitySet="CGMReminders">
@@ -2003,6 +2113,7 @@
                 <ScalarProperty Name="TimeSlotId" ColumnName="TimeSlotId" />
                 <ScalarProperty Name="TimeSlotDescription" ColumnName="TimeSlotDescription" />
                 <ScalarProperty Name="TImeSlotBoundary" ColumnName="TImeSlotBoundary" />
+                <ScalarProperty Name="CareSettingsId" ColumnName="CareSettingsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2029,6 +2140,7 @@
                 <ScalarProperty Name="ControlName" ColumnName="ControlName" />
                 <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
                 <ScalarProperty Name="DMDataId" ColumnName="DMDataId" />
+                <ScalarProperty Name="CareSettingsId" ColumnName="CareSettingsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2038,15 +2150,11 @@
                 <ScalarProperty Name="DMDataId" ColumnName="DMDataId" />
                 <ScalarProperty Name="LowBGLevel" ColumnName="LowBGLevel" />
                 <ScalarProperty Name="HighBGLevel" ColumnName="HighBGLevel" />
-                <ScalarProperty Name="HyperglycemicLevel" ColumnName="HyperglycemicLevel" />
-                <ScalarProperty Name="HypoglycemicLevel" ColumnName="HypoglycemicLevel" />
-                <ScalarProperty Name="InsulinMethod" ColumnName="InsulinMethod" />
-                <ScalarProperty Name="DiabetesManagementType" ColumnName="DiabetesManagementType" />
-                <ScalarProperty Name="InsulinBrand" ColumnName="InsulinBrand" />
                 <ScalarProperty Name="PremealTarget" ColumnName="PremealTarget" />
                 <ScalarProperty Name="PostmealTarget" ColumnName="PostmealTarget" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2133,7 +2241,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="MeterReadingHeaders">
             <EntityTypeMapping TypeName="ClientDatabaseTemplateModel.MeterReadingHeader">
-              <MappingFragment StoreEntitySet="MeterReadingHeader">
+              <MappingFragment StoreEntitySet="MeterReadingHeaders">
                 <ScalarProperty Name="ReadingHeaderId" ColumnName="ReadingHeaderId" />
                 <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
                 <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
@@ -2142,6 +2250,8 @@
                 <ScalarProperty Name="Readings" ColumnName="Readings" />
                 <ScalarProperty Name="SiteSource" ColumnName="SiteSource" />
                 <ScalarProperty Name="ReviewedOn" ColumnName="ReviewedOn" />
+                <ScalarProperty Name="IsCGMData" ColumnName="IsCGMData" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2157,6 +2267,7 @@
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="ReadingNote" ColumnName="ReadingNote" />
                 <ScalarProperty Name="DownloadKedyId" ColumnName="DownloadKedyId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2301,6 +2412,7 @@
                 <ScalarProperty Name="Cannula" ColumnName="Cannula" />
                 <ScalarProperty Name="ReplacementDate" ColumnName="ReplacementDate" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,5 +1,7 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using NuLibrary.Migration.DatabaseUtilities;
+using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,43 +16,88 @@ namespace NuLibrary.Migration.FBDatabase
 {
     public class FBDataAccess : DatabaseAccessADO
     {
+        /// <summary>
+        /// Gets or sets the site identifier.
+        /// </summary>
+        /// <value>
+        /// The site identifier.
+        /// </value>
+        public int SiteId { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FBDataAccess"/> class.
+        /// </summary>
+        /// <param name="siteId">The site identifier.</param>
+        public FBDataAccess()
+        {
+            SiteId = MigrationVariables.SiteId;
+        }
+        /// <summary>
+        /// Gets the database provider.
+        /// </summary>
+        /// <returns></returns>
         public override DbProviderFactory GetDbProvider()
         {
             return DbProviderFactories.GetFactory("FirebirdSql.Data.FirebirdClient");
         }
-
+        /// <summary>
+        /// Gets the database connnection.
+        /// </summary>
+        /// <returns></returns>
         public override IDbConnection GetConnnection()
         {
-            // Should come from database or config file. Not Hardcoded.
-            string connStr = @"User=SYSDBA;Password=masterkey;Database=C:\Users\Patrick\Documents\FirebirdDatabases\Lion.gdb;DataSource=localhost;Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
+            FirebirdConnection connEntity;
+            string connStr = String.Empty;
+            using (var ctx = new AspnetDbEntities())
+            {
+                connEntity = ctx.FirebirdConnections.Where(s => s.SiteId == SiteId).FirstOrDefault();
+            }
+
+            if (connEntity != null)
+            {
+                var split = connEntity.DatabaseLocation.Split(':');
+                var dbFile = String.Format("{0}:{1}", split[1], split[2]);
+                connStr = String.Format("User={0};Password={1};Database={2};DataSource={3};Port={4};Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;", connEntity.User, connEntity.Password, dbFile, connEntity.DatasourceServer, connEntity.Port);
+            }
 
             var dbConn = GetDbProvider();
             DbConnection conn = dbConn.CreateConnection();
-            conn.ConnectionString = connStr;
+             conn.ConnectionString = connStr;
 
             return conn;
         }
 
+        /// <summary>
+        /// Gets the data adapter for the database.
+        /// </summary>
+        /// <returns></returns>
         public override IDbDataAdapter GetDataAdapter()
         {
             return new FbDataAdapter();
         }
-
+        /// <summary>
+        /// Gets the database command.
+        /// </summary>
+        /// <returns></returns>
         public override IDbCommand GetCommand()
         {
             return new FbCommand();
         }
-
+        /// <summary>
+        /// Gets the database parameter.
+        /// </summary>
+        /// <returns></returns>
         public override IDbDataParameter GetDbParameter()
         {
             return new FbParameter();
         }
-
+        /// <summary>
+        /// Gets the data.
+        /// </summary>
         public void GetData()
         {
             using (FbConnection cn = (FbConnection)GetConnnection())
             {
-                Console.WriteLine("Connection object: {0}", cn.GetType().Name);
+                //Console.WriteLine("Connection object: {0}", cn.GetType().Name);
                 cn.Open();
 
                 var dp = GetDbProvider();
@@ -58,56 +105,48 @@ namespace NuLibrary.Migration.FBDatabase
                 DbCommand cmd = dp.CreateCommand();
                 Console.WriteLine("Creating Command object");
                 cmd.Connection = cn;
-                cmd.CommandText = "Select * from Lions";
+                cmd.CommandText = "Select * from Patients";
 
                 using (DbDataReader dr = cmd.ExecuteReader())
                 {
-                    Console.WriteLine("Creating data reader object");
+                    //Console.WriteLine("Creating data reader object");
                     while (dr.Read())
                     {
-                        Console.WriteLine("Name: {0}", dr["Name"]);
+                        //Console.WriteLine("Name: {0}", dr["FIRSTNAME"]);
                     }
                 }
             }
 
             Console.ReadLine();
         }
-
-        public DataTable GetDataTable()
+        /// <summary>
+        /// Gets the name of the tables within this database, excluding system tables ($).
+        /// </summary>
+        /// <returns>ICollection<string> - Collection of table names</returns>
+        public ICollection<string> GetTableNames()
         {
+            ICollection<string> results = new List<string>();
             using (FbConnection cn = (FbConnection)GetConnnection())
             {
-                Console.WriteLine("Connection object: {0}", cn.GetType().Name);
+                if (cn.State != ConnectionState.Open)
+                {
+                    cn.Open();
+                    var tableNames = cn.GetSchema("Tables");
 
-                var adt = new FbDataAdapter("Select * from Lions", cn);
+                    foreach (System.Data.DataRow row in tableNames.Rows)
+                    {
+                        Console.WriteLine("Table Name = {0}", row["TABLE_NAME"]);
 
-                DataSet lions = new DataSet();
-                adt.Fill(lions, "Lions");
-
-                Console.WriteLine(lions.Tables["Lions"].Rows.Count);
-                Console.ReadLine();
-                return lions.Tables["Lions"];
+                        if (!row["TABLE_NAME"].ToString().Contains("$"))
+                        {
+                            results.Add((string)row["TABLE_NAME"]);
+                        }
+                    }
+                    cn.Close();
+                }
             }
-        }
-
-        public XDocument GetTableSchema()
-        {
-            var table = this.GetDataTable();
-            var schema = String.Empty;
-
-            using (var ms = new MemoryStream())
-            {
-                table.WriteXmlSchema(ms);
-                ms.Position = 0;
-
-                var sr = new StreamReader(ms);
-                schema = sr.ReadToEnd();
-
-                Console.WriteLine(schema);
-                Console.ReadLine();
-            }
-
-            return XDocument.Parse(schema);
+            Console.ReadLine();
+            return results;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
         public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
         public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
+        public virtual DbSet<CareSetting> CareSettings { get; set; }
         public virtual DbSet<CGMReminder> CGMReminders { get; set; }
         public virtual DbSet<CGMSession> CGMSessions { get; set; }
         public virtual DbSet<DailyTimeSlot> DailyTimeSlots { get; set; }

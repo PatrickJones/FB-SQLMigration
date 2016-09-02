@@ -11,7 +11,7 @@
     <AssemblyName>NuLibrary.Migration</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AssemblyVersion>1.0.221.0</AssemblyVersion>
+    <AssemblyVersion>1.0.238.2</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +29,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Localhost|AnyCPU'">
+    <OutputPath>bin\Localhost\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -60,10 +63,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DatabaseUtilities\DatabaseAccessADO.cs" />
     <Compile Include="FBDatabase\FBDataAccess.cs" />
+    <Compile Include="FBDatabase\FBTables\TableAgent.cs" />
+    <Compile Include="FBDatabase\FBTables\TableAgentCollection.cs" />
+    <Compile Include="GlobalVar\MigrationVariables.cs" />
+    <Compile Include="Interfaces\ITableData.cs" />
+    <Compile Include="Mappings\ClientDatabaseBase.cs" />
+    <Compile Include="Mappings\MappingUtilities.cs" />
+    <Compile Include="Mappings\TableMappings\BaseMapping.cs" />
+    <Compile Include="Mappings\TableMappings\DMDataMapping.cs" />
+    <Compile Include="Mappings\TableMappings\InsuranceCompaniesMapping.cs" />
+    <Compile Include="Mappings\TableMappings\InsurancePlansMapping.cs" />
+    <Compile Include="Mappings\TableMappings\DeviceMeterReadingHeaderMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PatientPhoneNumbersMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PatientsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpProgramsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpSettingMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\PumpTimeSlotsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\TimeSlotsMapping.cs" />
+    <Compile Include="Mappings\TransactionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLDatabase\EF\AspnetDbModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AspnetDbModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\AspnetDbModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\AspnetDbModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AspnetDbModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\BasalProgramTimeSlot.cs">
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
     </Compile>
@@ -74,6 +110,9 @@
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BolusProgramTimeSlot.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\CareSetting.cs">
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\CGMReminder.cs">
@@ -111,6 +150,9 @@
     </Compile>
     <Compile Include="SQLDatabase\EF\DiabetesManagementData.cs">
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\FirebirdConnection.cs">
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsuranceAddress.cs">
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
@@ -178,7 +220,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.Localhost.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
     <None Include="packages.config" />
+    <EntityDeploy Include="SQLDatabase\EF\AspnetDbModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AspnetDbModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="SQLDatabase\EF\AspnetDbModel.edmx.diagram">
+      <DependentUpon>AspnetDbModel.edmx</DependentUpon>
+    </None>
     <EntityDeploy Include="SQLDatabase\EF\ClientTemplateModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ClientTemplateModel.Designer.cs</LastGenOutput>
@@ -188,6 +246,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQLDatabase\EF\AspnetDbModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AspnetDbModel.edmx</DependentUpon>
+      <LastGenOutput>AspnetDbModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="SQLDatabase\EF\AspnetDbModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AspnetDbModel.edmx</DependentUpon>
+      <LastGenOutput>AspnetDbModel.cs</LastGenOutput>
+    </Content>
     <Content Include="SQLDatabase\EF\ClientTemplateModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ClientTemplateModel.edmx</DependentUpon>
@@ -202,6 +270,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SQLDatabase\SQLHelpers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -210,4 +281,24 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="AfterCompile" Condition="Exists('App.$(Configuration).config')">
+    <!--Generate transformed app config in the intermediate directory-->
+    <TransformXml Source="App.config" Destination="$(IntermediateOutputPath)$(TargetFileName).config" Transform="App.$(Configuration).config" />
+    <!--Force build process to use the transformed configuration file from now on.-->
+    <ItemGroup>
+      <AppConfigWithTargetPath Remove="App.config" />
+      <AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
+        <TargetPath>$(TargetFileName).config</TargetPath>
+      </AppConfigWithTargetPath>
+    </ItemGroup>
+  </Target>
+  <!--Override After Publish to support ClickOnce AfterPublish. Target replaces the untransformed config file copied to the deployment directory with the transformed one.-->
+  <Target Name="AfterPublish">
+    <PropertyGroup>
+      <DeployedConfig>$(_DeploymentApplicationDir)$(TargetName)$(TargetExt).config$(_DeploymentFileMappingExtension)</DeployedConfig>
+    </PropertyGroup>
+    <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
+    <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
+  </Target>
 </Project>

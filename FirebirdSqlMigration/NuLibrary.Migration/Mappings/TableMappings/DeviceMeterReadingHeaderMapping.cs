@@ -9,22 +9,22 @@ using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.Mappings.TableMappings
 {
-    public class PatientDevicesMapping : BaseMapping
+    public class DeviceMeterReadingHeaderMapping : BaseMapping
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
         /// </summary>
-        public PatientDevicesMapping() : base("METERREADERHEADER")
+        public DeviceMeterReadingHeaderMapping() : base("METERREADERHEADER")
         {
 
         }
 
-        public PatientDevicesMapping(string tableName) : base(tableName)
+        public DeviceMeterReadingHeaderMapping(string tableName) : base(tableName)
         {
 
         }
 
-        public void CreatePatientDevicesMapping()
+        public void CreateDeviceMeterReadingHeaderMapping()
         {
             MappingUtilities mu = new MappingUtilities();
 

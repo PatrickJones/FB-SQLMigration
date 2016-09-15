@@ -22,6 +22,12 @@ namespace NuLibrary.Migration.Mappings
             return db.InsuranceProviders.Where(x => x.CompanyId == insCoId).FirstOrDefault();
         }
 
+        public CareSetting FindPatientCareSetting(String patientId)
+        {
+            return db.CareSettings.Where(x => x.PatientId == patientId).FirstOrDefault();
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

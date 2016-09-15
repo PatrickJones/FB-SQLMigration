@@ -154,6 +154,12 @@
     <Compile Include="SQLDatabase\EF\FirebirdConnection.cs">
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\InsulinBrand.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\InsulinMethod.cs">
+      <DependentUpon>ClientTemplateModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\InsuranceAddress.cs">
       <DependentUpon>ClientTemplateModel.tt</DependentUpon>
     </Compile>

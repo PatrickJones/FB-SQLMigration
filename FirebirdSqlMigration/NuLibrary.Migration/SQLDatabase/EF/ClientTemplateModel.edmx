@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ClientDatabaseTemplateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ClientDatabaseTemplateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BasalProgramTimeSlots">
           <Key>
             <PropertyRef Name="BasalSlotId" />
@@ -127,6 +127,22 @@
           <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedUserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InsulinBrands">
+          <Key>
+            <PropertyRef Name="InsulinBrandId" />
+          </Key>
+          <Property Name="InsulinBrandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="Manufacturer" Type="nvarchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="InsulinMethods">
+          <Key>
+            <PropertyRef Name="InsulinMethodId" />
+          </Key>
+          <Property Name="InsulinMethodId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Method" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="InsuranceAddresses">
           <Key>
@@ -845,6 +861,8 @@
           <EntitySet Name="DeviceData" EntityType="Self.DeviceData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiabetesControlTypes" EntityType="Self.DiabetesControlTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiabetesManagementData" EntityType="Self.DiabetesManagementData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InsulinBrands" EntityType="Self.InsulinBrands" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InsulinMethods" EntityType="Self.InsulinMethods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceAddresses" EntityType="Self.InsuranceAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceContacts" EntityType="Self.InsuranceContacts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsurancePlans" EntityType="Self.InsurancePlans" Schema="dbo" store:Type="Tables" />
@@ -996,8 +1014,7 @@
             <End Role="TotalDailyDelivery" EntitySet="TotalDailyDelivery" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ClientDatabaseTemplateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2016,7 +2033,25 @@
             <End Role="InsurancePlans" EntitySet="InsurancePlans" />
             <End Role="Patients" EntitySet="Patients" />
           </AssociationSet>
+          <EntitySet Name="InsulinBrands" EntityType="ClientDatabaseTemplateModel.InsulinBrand" />
+          <EntitySet Name="InsulinMethods" EntityType="ClientDatabaseTemplateModel.InsulinMethod" />
         </EntityContainer>
+        <EntityType Name="InsulinBrand">
+          <Key>
+            <PropertyRef Name="InsulinBrandId" />
+          </Key>
+          <Property Name="InsulinBrandId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Manufacturer" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="InsulinMethod">
+          <Key>
+            <PropertyRef Name="InsulinMethodId" />
+          </Key>
+          <Property Name="InsulinMethodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Method" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2449,6 +2484,24 @@
               <ScalarProperty Name="PatientId" ColumnName="PatientId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="InsulinBrands">
+            <EntityTypeMapping TypeName="ClientDatabaseTemplateModel.InsulinBrand">
+              <MappingFragment StoreEntitySet="InsulinBrands">
+                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="InsulinBrandId" ColumnName="InsulinBrandId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsulinMethods">
+            <EntityTypeMapping TypeName="ClientDatabaseTemplateModel.InsulinMethod">
+              <MappingFragment StoreEntitySet="InsulinMethods">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Method" ColumnName="Method" />
+                <ScalarProperty Name="InsulinMethodId" ColumnName="InsulinMethodId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

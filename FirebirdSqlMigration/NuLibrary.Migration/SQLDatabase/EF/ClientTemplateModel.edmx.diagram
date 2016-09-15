@@ -69,6 +69,8 @@
         <AssociationConnector Association="ClientDatabaseTemplateModel.FK_PumpPrograms_Pumps" ManuallyRouted="false" />
         <AssociationConnector Association="ClientDatabaseTemplateModel.FK_PumpSettings_Pumps" ManuallyRouted="false" />
         <AssociationConnector Association="ClientDatabaseTemplateModel.Patients_InsurancePlans" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ClientDatabaseTemplateModel.InsulinBrand" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ClientDatabaseTemplateModel.InsulinMethod" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

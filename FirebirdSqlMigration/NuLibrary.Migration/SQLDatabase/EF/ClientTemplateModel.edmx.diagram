@@ -71,6 +71,7 @@
         <AssociationConnector Association="ClientDatabaseTemplateModel.Patients_InsurancePlans" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ClientDatabaseTemplateModel.InsulinBrand" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="ClientDatabaseTemplateModel.InsulinMethod" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="ClientDatabaseTemplateModel.FK_MeterReadingHeaders_DeviceData" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

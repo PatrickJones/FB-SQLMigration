@@ -248,6 +248,7 @@
           <Property Name="ReadingNote" Type="nvarchar(max)" />
           <Property Name="DownloadKedyId" Type="int" Nullable="false" />
           <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientAddresses">
           <Key>
@@ -506,18 +507,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DeviceData_MeterReadings">
-          <End Role="MeterReadings" Type="Self.MeterReadings" Multiplicity="1" />
-          <End Role="DeviceData" Type="Self.DeviceData" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="MeterReadings">
-              <PropertyRef Name="ReadingId" />
-            </Principal>
-            <Dependent Role="DeviceData">
-              <PropertyRef Name="DataSetId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DiabetesControlTypes_CareSettings">
           <End Role="CareSettings" Type="Self.CareSettings" Multiplicity="1" />
           <End Role="DiabetesControlTypes" Type="Self.DiabetesControlTypes" Multiplicity="*" />
@@ -623,6 +612,18 @@
             </Principal>
             <Dependent Role="MeterReadingHeaders">
               <PropertyRef Name="DeviceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MeterReadingHeaders_DeviceData">
+          <End Role="DeviceData" Type="Self.DeviceData" Multiplicity="1" />
+          <End Role="MeterReadingHeaders" Type="Self.MeterReadingHeaders" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DeviceData">
+              <PropertyRef Name="DataSetId" />
+            </Principal>
+            <Dependent Role="MeterReadingHeaders">
+              <PropertyRef Name="DownloadKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -913,10 +914,6 @@
             <End Role="CareSettings" EntitySet="CareSettings" />
             <End Role="DailyTimeSlots" EntitySet="DailyTimeSlots" />
           </AssociationSet>
-          <AssociationSet Name="FK_DeviceData_MeterReadings" Association="Self.FK_DeviceData_MeterReadings">
-            <End Role="MeterReadings" EntitySet="MeterReadings" />
-            <End Role="DeviceData" EntitySet="DeviceData" />
-          </AssociationSet>
           <AssociationSet Name="FK_DiabetesControlTypes_CareSettings" Association="Self.FK_DiabetesControlTypes_CareSettings">
             <End Role="CareSettings" EntitySet="CareSettings" />
             <End Role="DiabetesControlTypes" EntitySet="DiabetesControlTypes" />
@@ -947,6 +944,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_MeterReadingHeader_PatientDevices" Association="Self.FK_MeterReadingHeader_PatientDevices">
             <End Role="PatientDevices" EntitySet="PatientDevices" />
+            <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MeterReadingHeaders_DeviceData" Association="Self.FK_MeterReadingHeaders_DeviceData">
+            <End Role="DeviceData" EntitySet="DeviceData" />
             <End Role="MeterReadingHeaders" EntitySet="MeterReadingHeaders" />
           </AssociationSet>
           <AssociationSet Name="FK_MeterReadings_MeterReadingHeader" Association="Self.FK_MeterReadings_MeterReadingHeader">
@@ -1129,6 +1130,7 @@
           <Property Name="DataSetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DataSet" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MeterReading" Relationship="Self.FK_DeviceData_MeterReadings" FromRole="DeviceData" ToRole="MeterReadings" />
+          <NavigationProperty Name="MeterReadingHeader" Relationship="ClientDatabaseTemplateModel.FK_MeterReadingHeaders_DeviceData" FromRole="DeviceData" ToRole="MeterReadingHeader" />
         </EntityType>
         <EntityType Name="DiabetesControlType">
           <Key>
@@ -1256,6 +1258,7 @@
           <NavigationProperty Name="PatientDevice" Relationship="Self.FK_MeterReadingHeader_PatientDevices" FromRole="MeterReadingHeaders" ToRole="PatientDevices" />
           <NavigationProperty Name="MeterReadings" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="MeterReadingHeaders" ToRole="MeterReadings" />
           <NavigationProperty Name="Pump" Relationship="Self.FK_Pumps_MeterReadingHeader" FromRole="MeterReadingHeaders" ToRole="Pumps" />
+          <NavigationProperty Name="DeviceData" Relationship="ClientDatabaseTemplateModel.FK_MeterReadingHeaders_DeviceData" FromRole="MeterReadingHeader" ToRole="DeviceData" />
         </EntityType>
         <EntityType Name="MeterReading">
           <Key>
@@ -1277,6 +1280,7 @@
           <NavigationProperty Name="MeterReadingEvents" Relationship="Self.FK_MeterReadingEvents_MeterReadings" FromRole="MeterReadings" ToRole="MeterReadingEvents" />
           <NavigationProperty Name="MeterReadingHeader" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="MeterReadings" ToRole="MeterReadingHeaders" />
           <NavigationProperty Name="TotalDailyDeliveries" Relationship="Self.FK_TotalDailyDelivery_MeterReadings" FromRole="MeterReadings" ToRole="TotalDailyDelivery" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientAddress">
           <Key>
@@ -2035,6 +2039,10 @@
           </AssociationSet>
           <EntitySet Name="InsulinBrands" EntityType="ClientDatabaseTemplateModel.InsulinBrand" />
           <EntitySet Name="InsulinMethods" EntityType="ClientDatabaseTemplateModel.InsulinMethod" />
+          <AssociationSet Name="FK_MeterReadingHeaders_DeviceData" Association="ClientDatabaseTemplateModel.FK_MeterReadingHeaders_DeviceData">
+            <End Role="DeviceData" EntitySet="DeviceDatas" />
+            <End Role="MeterReadingHeader" EntitySet="MeterReadingHeaders" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="InsulinBrand">
           <Key>
@@ -2052,6 +2060,18 @@
           <Property Name="Method" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
+        <Association Name="FK_MeterReadingHeaders_DeviceData">
+          <End Type="ClientDatabaseTemplateModel.DeviceData" Role="DeviceData" Multiplicity="1" />
+          <End Type="ClientDatabaseTemplateModel.MeterReadingHeader" Role="MeterReadingHeader" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DeviceData">
+              <PropertyRef Name="DataSetId" />
+            </Principal>
+            <Dependent Role="MeterReadingHeader">
+              <PropertyRef Name="DownloadKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2293,6 +2313,7 @@
           <EntitySetMapping Name="MeterReadings">
             <EntityTypeMapping TypeName="ClientDatabaseTemplateModel.MeterReading">
               <MappingFragment StoreEntitySet="MeterReadings">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
                 <ScalarProperty Name="Sequence" ColumnName="Sequence" />
                 <ScalarProperty Name="ReadingType" ColumnName="ReadingType" />

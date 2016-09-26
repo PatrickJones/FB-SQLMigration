@@ -35,5 +35,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MeterReading> MeterReadings { get; set; }
         public virtual Pump Pump { get; set; }
+        public virtual DeviceData DeviceData { get; set; }
     }
 }

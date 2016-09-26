@@ -18,5 +18,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string DataSet { get; set; }
     
         public virtual MeterReading MeterReading { get; set; }
+        public virtual MeterReadingHeader MeterReadingHeader { get; set; }
     }
 }

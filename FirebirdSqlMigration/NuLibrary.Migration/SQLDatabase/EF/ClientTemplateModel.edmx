@@ -128,6 +128,13 @@
           <Property Name="ModifiedUserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="DiabetesManagementTypes">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
         <EntityType Name="InsulinBrands">
           <Key>
             <PropertyRef Name="InsulinBrandId" />
@@ -862,6 +869,7 @@
           <EntitySet Name="DeviceData" EntityType="Self.DeviceData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiabetesControlTypes" EntityType="Self.DiabetesControlTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiabetesManagementData" EntityType="Self.DiabetesManagementData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DiabetesManagementTypes" EntityType="Self.DiabetesManagementTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsulinBrands" EntityType="Self.InsulinBrands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsulinMethods" EntityType="Self.InsulinMethods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceAddresses" EntityType="Self.InsuranceAddresses" Schema="dbo" store:Type="Tables" />
@@ -2043,6 +2051,7 @@
             <End Role="DeviceData" EntitySet="DeviceDatas" />
             <End Role="MeterReadingHeader" EntitySet="MeterReadingHeaders" />
           </AssociationSet>
+          <EntitySet Name="DiabetesManagementTypes" EntityType="ClientDatabaseTemplateModel.DiabetesManagementType" />
         </EntityContainer>
         <EntityType Name="InsulinBrand">
           <Key>
@@ -2072,6 +2081,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DiabetesManagementType">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2520,6 +2536,14 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Method" ColumnName="Method" />
                 <ScalarProperty Name="InsulinMethodId" ColumnName="InsulinMethodId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DiabetesManagementTypes">
+            <EntityTypeMapping TypeName="ClientDatabaseTemplateModel.DiabetesManagementType">
+              <MappingFragment StoreEntitySet="DiabetesManagementTypes">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

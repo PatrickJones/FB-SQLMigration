@@ -23,7 +23,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
-        public DMDataMapping(string tableName) :base(tableName)
+        public DMDataMapping(string tableName) : base(tableName)
         {
 
         }
@@ -48,34 +48,52 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var dm = new DiabetesManagementData
                 {
                     PatientId = (String)row["PATIENTID"],
-                    LowBGLevel = (Int32)row["LOWBGLEVEL"],                                                                                
+                    LowBGLevel = (Int32)row["LOWBGLEVEL"],
                     HighBGLevel = (Int32)row["HighBGLevel"],
-                    //HyperglycemicLevel = (String)row["HyperglycemicLevel"],
-                    //HypoglycemicLevel = (String)row["HypoglycemicLevel"],
-                    //InsulinMethod = (String)row["InsulinMethod"],
                     PremealTarget = (Int32)row["PremealTarget"],
                     PostmealTarget = (Int32)row["PostmealTarget"],
                     ModifiedDate = (DateTime)row["ModifiedDate"],
                     ModifiedUserId = (Guid)row["ModifiedUserId"]
                 };
 
-                var pat = mu.FindPatient(pd1.PatientId);
-                pat.PatientDevices.Add(pd1);
-                pat.PatientDevices.Add(pd2);
 
-                //pd.DiabetesManagementData.Add(dm);  //ERROR: DOES NOT CONTAIN A DEFINITION FOR ADD
-                var careset = mu.FindPatientCareSetting(pd1.PatientId);
+                var ibId = mu.FindInsulinBrandId((String)row["INSULINBRAND"]);
+                var imId = mu.FindInsulinMethodId((String)row["INSULINMETHOD"]);
+                var typeId = mu.FindDMTypeId((String)row["DMTYPE"]);
+
+                CareSetting careset = new CareSetting();
                 careset.PatientId = (String)row["PATIENTID"];
                 careset.HyperglycemicLevel = (Int32)row["HyperglycemicLevel"];
                 careset.HypoglycemicLevel = (Int32)row["HypoglycemicLevel"];
-                //careset.InsulinMethod = (String)row["INSULINMETHOD"];
-                //careset.InsulinBrand = (String)row["INSULINBRAND"];
-                //careset.DiabetesManagementType = (String)row["DMTYPE"];
+                careset.InsulinMethod = imId;
+                careset.InsulinBrand = ibId;
+                careset.DiabetesManagementType = typeId;
                 careset.DateModified = (DateTime)row["LASTMODIFIEDDATE"];
+                //pat.CareSettings.Add(careset);
 
-                
+                var ct = mu.ParseDMControlTypes((int)row["DMCONTROLTYPE"]);
+                DiabetesControlType dct = new DiabetesControlType();
+
+                foreach (var item in ct)
+                {
+                    dct.ControlName = item.Key;
+                    dct.CareSettingsId = careset.CareSettingsId;
+                    dct.DMDataId = dm.DMDataId;
+                    if (item.Value)
+                    {
+                        dct.IsEnabled = true;
+                    }
+                    else
+                    {
+                        dct.IsEnabled = false;
+                    }
+                    TransactionManager.DatabaseContext.DiabetesControlTypes.Add(dct);
+                }
 
                 TransactionManager.DatabaseContext.DiabetesManagementDatas.Add(dm);
+                TransactionManager.DatabaseContext.PatientDevices.Add(pd1);
+                TransactionManager.DatabaseContext.PatientDevices.Add(pd2);
+                TransactionManager.DatabaseContext.CareSettings.Add(careset);
             }
         }
     }

@@ -60,5 +60,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<TotalDailyDelivery> TotalDailyDeliveries { get; set; }
         public virtual DbSet<InsulinBrand> InsulinBrands { get; set; }
         public virtual DbSet<InsulinMethod> InsulinMethods { get; set; }
+        public virtual DbSet<DiabetesManagementType> DiabetesManagementTypes { get; set; }
     }
 }

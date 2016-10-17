@@ -30,6 +30,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 var pum = new Pump
                 {
+                    PatientId = (String)row["PATIENTID"],
+                    PumpName = (String)row["PUMPBRAND"],
                     PumpStartDate = (DateTime)row["PUMPSTARTDATE"],
                     PumpInfusionSet = (String)row["PUMPINFUSIONSET"],
                     Cannula = (Double)row["CANNULA"],

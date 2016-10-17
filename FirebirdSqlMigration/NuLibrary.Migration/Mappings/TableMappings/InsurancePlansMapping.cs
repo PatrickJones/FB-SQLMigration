@@ -29,7 +29,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void CreateInsurancePlansMapping()
         {
-            MappingUtilities mu = new MappingUtilities();
+            //MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
                 var insp = new InsurancePlan
@@ -48,15 +48,15 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     CompanyId = (int)row["INSCOID"] //is a double precision in firebird, may need to convert
                 };
 
-                var pat = mu.FindPatient(insp.PatientId);
-                pat.InsurancePlans.Add(insp);
+                //var pat = mu.FindPatient(insp.PatientId);
+                //pat.InsurancePlans.Add(insp);
 
-                var ico = mu.FindInsuranceCo(insp.CompanyId);
-                ico.InsurancePlans.Add(insp);
+                //var ico = mu.FindInsuranceCo(insp.CompanyId);
+                //ico.InsurancePlans.Add(insp);
 
                 TransactionManager.DatabaseContext.InsurancePlans.Add(insp);
-                TransactionManager.DatabaseContext.Patients.Add(pat);
-                TransactionManager.DatabaseContext.InsuranceProviders.Add(ico);
+                //TransactionManager.DatabaseContext.Patients.Add(pat);
+                //TransactionManager.DatabaseContext.InsuranceProviders.Add(ico);
             }
         }
     }

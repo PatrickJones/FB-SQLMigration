@@ -27,11 +27,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
-        public void CreatePumpsMapping()
+        public void CreatePumpProgramssMapping()
         {
+            MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                
+                var pId = (String)row["PATIENTID"];
+                var patientPump = mu.FindPatientPump(pId);
+                var patientPumpId = patientPump.PumpId;
 
                 var CreationDate = (DateTime)row["CREATEDATE"];
                 var Source = (String)row["SOURCE"];
@@ -45,6 +48,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     p.CreationDate = CreationDate;
                     p.Source = Source;
                     p.Valid = Valid;
+                    p.PumpId = patientPumpId;
 
                     p.ProgramKey = (Int32)row[$"PROG{i}KEYID"];
 

@@ -29,21 +29,40 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void CreatePumpTimeSlotsMapping()
         {
+            MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var pp = new PumpProgram
-                {
-                    //PatientId = (String)row["KEYID"],
-                    //MRID = (String)row["MEDICALRECORDIDENTIFIER"],
-                    //Firstname = (String)row["FIRSTNAME"],
-                    //Lastname = (String)row["LASTNAME"],
-                    //Middlename = (String)row["MIDDLENAME"],
-                    //Suffix = (String)row["SUFFIX"],
-                    //Gender = (Int32)row["GENDER"],
-                    //DateofBirth = (DateTime)row["DOB"]
-                };
+                var PatientId = (String)row["PATIENTID"];
+                var programKey = (int)row["PROGRAMNUMBER"];
+                var programName = (string)row["PROGRAMNAME"];
+                var pp = mu.FindPumpProgram(programName, programKey);
+                var ppId = pp.PumpProgramId;
 
-                TransactionManager.DatabaseContext.PumpPrograms.Add(pp);
+                for (int i = 1; i < 24; i++)
+                {
+                    DateTime bastart = (DateTime)row[$"BASAL{i}STARTTIME"];
+                    DateTime bastop = (DateTime)row[$"BASAL{i}STOPTIME"];
+                    BasalProgramTimeSlot bats = new BasalProgramTimeSlot
+                    {
+                        PumpProgramId = ppId,
+                        BasalValue = (int)row[$"BASAL{i}VAL"],
+                        StartTime = new TimeSpan(bastart.Ticks),
+                        StopTime = new TimeSpan(bastop.Ticks)
+                    };
+                    TransactionManager.DatabaseContext.BasalProgramTimeSlots.Add(bats);
+
+                    if (i < 13)
+                    {
+                        DateTime botime = (DateTime)row[$"BOLUS{i}TIME"];
+                        BolusProgramTimeSlot bots = new BolusProgramTimeSlot
+                        {
+                            PumpProgramId = ppId,
+                            BolusValue = (int)row[$"BOLUS{i}VAL"],
+                            StartTime = new TimeSpan(botime.Ticks)
+                        };
+                        TransactionManager.DatabaseContext.BolusProgramTimeSlots.Add(bots);
+                    }
+                }
             }
         }
     }

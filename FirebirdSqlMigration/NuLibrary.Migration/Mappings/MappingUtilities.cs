@@ -63,6 +63,17 @@ namespace NuLibrary.Migration.Mappings
 
             return dict;
         }
+
+        public Pump FindPatientPump(string pId)
+        {
+            var pump = db.Pumps.Where(x => x.PatientId == pId).FirstOrDefault();
+            return pump;
+        }
+        public PumpProgram FindPumpProgram(string name, int pkey)
+        {
+            var ppId = db.PumpPrograms.Where(x => x.ProgramName == name && x.ProgramKey == pkey).FirstOrDefault();
+            return ppId;
+        }
         //public List<MeterReadingHeader> FindPatientMeterReadingHeader(String patientId)
         //{
         //    return db.MeterReadingHeaders.Where(x => x.PatientId == patientId).ToList();

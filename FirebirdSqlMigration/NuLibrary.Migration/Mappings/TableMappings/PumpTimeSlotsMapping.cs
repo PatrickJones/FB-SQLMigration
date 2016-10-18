@@ -38,7 +38,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var pp = mu.FindPumpProgram(programName, programKey);
                 var ppId = pp.PumpProgramId;
 
-                for (int i = 1; i < 24; i++)
+                for (int i = 1; i < 25; i++)
                 {
                     DateTime bastart = (DateTime)row[$"BASAL{i}STARTTIME"];
                     DateTime bastop = (DateTime)row[$"BASAL{i}STOPTIME"];

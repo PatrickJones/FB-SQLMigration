@@ -1,6 +1,8 @@
-﻿using NuLibrary.Migration.SQLDatabase.EF;
+﻿using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,11 +76,33 @@ namespace NuLibrary.Migration.Mappings
             var ppId = db.PumpPrograms.Where(x => x.ProgramName == name && x.ProgramKey == pkey).FirstOrDefault();
             return ppId;
         }
-        //public List<MeterReadingHeader> FindPatientMeterReadingHeader(String patientId)
-        //{
-        //    return db.MeterReadingHeaders.Where(x => x.PatientId == patientId).ToList();
-        //}
 
+        public ICollection<PumpSetting> CreatePumpSetting(DataRow record, int id)
+        {
+            ICollection<PumpSetting> ips = new List<PumpSetting>();
+            ips.Add(new PumpSetting { SettingValue = (String)record["BOLUSCALCS"], SettingName = "BOLUSCALCS", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["MINBGFORCALCS"], SettingName = "MINBGFORCALCS", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["REVERSECORRECTION"], SettingName = "REVERSECORRECTION", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["INSULINACTION"], SettingName = "INSULINACTION", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["LOWERTHRESHOLDFORBG"], SettingName = "LOWERTHRESHOLDFORBG", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["UPPERTHRESHOLDFORBG"], SettingName = "UPPERTHRESHOLDFORBG", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["INSULINLEFTALERT"], SettingName = "INSULINLEFTALERT", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["BGREMINDERS"], SettingName = "BGREMINDERS", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["PODEXPIRATIONALERT"], SettingName = "PODEXPIRATIONALERT", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["AUTOOFFALARMTIME"], SettingName = "AUTOOFFALARMTIME", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["ENABLEDBOLUSREMINDER"], SettingName = "ENABLEDBOLUSREMINDER", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["ENABLEDREMINDERALERT"], SettingName = "ENABLEDREMINDERALERT", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["ENABLEDCONFIDENCEALERT"], SettingName = "ENABLEDCONFIDENCEALERT", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["DISPLAYBG"], SettingName = "DISPLAYBG", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["MAXBASALRATE"], SettingName = "MAXBASALRATE", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["MAXBOLUSVOLUME"], SettingName = "MAXBOLUSVOLUME", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["EXTENDEDBOLUS"], SettingName = "EXTENDEDBOLUS", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["SOUNDBG"], SettingName = "SOUNDBG", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["INCREMENTBOLUS"], SettingName = "INCREMENTBOLUS", PumpId = id });
+            ips.Add(new PumpSetting { SettingValue = (String)record["TEMPBASALDELIVERY"], SettingName = "TEMPBASALDELIVERY", PumpId = id });
+
+            return ips;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

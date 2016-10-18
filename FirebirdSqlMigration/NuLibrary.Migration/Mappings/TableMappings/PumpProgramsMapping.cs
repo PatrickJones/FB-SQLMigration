@@ -41,7 +41,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var Valid = (Boolean)row["ACTIVEPROGRAM"];
 
 
-                for (int i = 1; i < 7; i++)
+                for (int i = 1; i < 8; i++)
                 {
                     PumpProgram p = new PumpProgram();
 

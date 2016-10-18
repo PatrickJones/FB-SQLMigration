@@ -17,7 +17,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
         /// </summary>
-        public TimeSlotsMapping() : base("TIMESLOTS")
+        public TimeSlotsMapping() : base("TIMESLOT")
         {
 
         }
@@ -29,15 +29,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void CreateTimeSlotsMapping()
         {
+            MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                for (int i = 1; i < 16; i++)
+                var pId = (String)row["PATIENTID"];
+                var careset = mu.FindPatientCareSetting(pId);
+                var caresetId = careset.CareSettingsId;
+                for (int i = 1; i < 9; i++)
                 {
                     DailyTimeSlot d = new DailyTimeSlot();
 
-                    d.TimeSlotDescription = (String)row[$"SLOT{i}DESC"]; 
-                    d.TImeSlotBoundary = (TimeSpan)row[$"SLOT{i}END"];
-
+                    d.TimeSlotDescription = (String)row[$"SLOT{i}DESC"];
+                    if (i < 8)
+                    {
+                        d.TImeSlotBoundary = (TimeSpan)row[$"SLOT{i}END"];
+                    } 
+                    d.CareSettingsId = caresetId;
 
                     TransactionManager.DatabaseContext.DailyTimeSlots.Add(d);
                 }

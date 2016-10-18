@@ -17,7 +17,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
         /// </summary>
-        public PumpTimeSlotsMapping() : base("PUMP TIMESLOTS")
+        public PumpTimeSlotsMapping() : base("PUMPTIMESLOTS")
         {
 
         }

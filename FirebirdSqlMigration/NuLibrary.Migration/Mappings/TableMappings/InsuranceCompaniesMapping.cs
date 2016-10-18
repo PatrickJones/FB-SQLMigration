@@ -17,7 +17,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
         /// </summary>
-        public InsuranceCompaniesMapping() : base("INSURANCECOMPANIES")
+        public InsuranceCompaniesMapping() : base("INSURANCECOS")
         {
 
         }

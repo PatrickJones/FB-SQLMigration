@@ -14,7 +14,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
         /// </summary>
-        public DeviceMeterReadingHeaderMapping() : base("METERREADERHEADER")
+        public DeviceMeterReadingHeaderMapping() : base("METERREADINGHEADER")
         {
 
         }

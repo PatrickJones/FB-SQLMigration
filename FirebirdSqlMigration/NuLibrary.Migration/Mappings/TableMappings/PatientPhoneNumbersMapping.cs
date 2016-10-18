@@ -34,6 +34,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var patNum = new PatientPhoneNumber
                 {
                     PhoneId = (Int32)row["KEYID"],
+                    PatientId = (String)row["PARENTID"],
                     Number = (String)row["NUMBER"],
                     Extension = (String)row["EXTENSION"],
                     Type = (Int32)row["ATYPE"],

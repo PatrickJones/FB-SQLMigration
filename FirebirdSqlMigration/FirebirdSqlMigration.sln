@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console.Dev", "Console.Dev\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuLibrary.Migration", "NuLibrary.Migration\NuLibrary.Migration.csproj", "{4DE7186F-881D-45EC-B206-8B5A4F2051B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuLibrary.Migration.Test", "NuLibrary.Migration.Test\NuLibrary.Migration.Test.csproj", "{1382BED4-738B-49EC-9AFF-C135F20FCD51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4DE7186F-881D-45EC-B206-8B5A4F2051B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE7186F-881D-45EC-B206-8B5A4F2051B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE7186F-881D-45EC-B206-8B5A4F2051B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1382BED4-738B-49EC-9AFF-C135F20FCD51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1382BED4-738B-49EC-9AFF-C135F20FCD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1382BED4-738B-49EC-9AFF-C135F20FCD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1382BED4-738B-49EC-9AFF-C135F20FCD51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

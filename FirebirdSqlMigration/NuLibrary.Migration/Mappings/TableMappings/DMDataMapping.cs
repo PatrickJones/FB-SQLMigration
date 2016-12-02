@@ -28,72 +28,68 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        MappingUtilities mu = new MappingUtilities();
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+
         public void CreateDMDataMapping()
         {
-            MappingUtilities mu = new MappingUtilities();
+            
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var pd1 = new PatientDevice
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
+
+                if (userId != Guid.Empty)
                 {
-                    PatientId = (String)row["PATIENTID"],
-                    DeviceModel = (String)row["METERMODEL1"]
-                };
-                var pd2 = new PatientDevice
-                {
-                    PatientId = (String)row["PATIENTID"],
-                    DeviceModel = (String)row["METERMODEL2"]
-                };
-
-
-                var dm = new DiabetesManagementData
-                {
-                    PatientId = (String)row["PATIENTID"],
-                    LowBGLevel = (Int32)row["LOWBGLEVEL"],
-                    HighBGLevel = (Int32)row["HighBGLevel"],
-                    PremealTarget = (Int32)row["PremealTarget"],
-                    PostmealTarget = (Int32)row["PostmealTarget"],
-                    ModifiedDate = (DateTime)row["ModifiedDate"],
-                    ModifiedUserId = (Guid)row["ModifiedUserId"]
-                };
-
-
-                var ibId = mu.FindInsulinBrandId((String)row["INSULINBRAND"]);
-                var imId = mu.FindInsulinMethodId((String)row["INSULINMETHOD"]);
-                var typeId = mu.FindDMTypeId((String)row["DMTYPE"]);
-
-                CareSetting careset = new CareSetting();
-                careset.PatientId = (String)row["PATIENTID"];
-                careset.HyperglycemicLevel = (Int32)row["HyperglycemicLevel"];
-                careset.HypoglycemicLevel = (Int32)row["HypoglycemicLevel"];
-                careset.InsulinMethod = imId;
-                careset.InsulinBrand = ibId;
-                careset.DiabetesManagementType = typeId;
-                careset.DateModified = (DateTime)row["LASTMODIFIEDDATE"];
-                //pat.CareSettings.Add(careset);
-
-                var ct = mu.ParseDMControlTypes((int)row["DMCONTROLTYPE"]);
-                DiabetesControlType dct = new DiabetesControlType();
-
-                foreach (var item in ct)
-                {
-                    dct.ControlName = item.Key;
-                    dct.CareSettingsId = careset.CareSettingsId;
-                    dct.DMDataId = dm.DMDataId;
-                    if (item.Value)
+                    var dm = new DiabetesManagementData
                     {
-                        dct.IsEnabled = true;
-                    }
-                    else
+                        UserId = userId,
+                        LowBGLevel = (Int32)row["LOWBGLEVEL"],
+                        HighBGLevel = (Int32)row["HighBGLevel"],
+                        PremealTarget = (Int32)row["PremealTarget"],
+                        PostmealTarget = (Int32)row["PostmealTarget"],
+                        ModifiedDate = (DateTime)row["ModifiedDate"],
+                        ModifiedUserId = (Guid)row["ModifiedUserId"]
+                    };
+
+
+                    var ibId = mu.FindInsulinBrandId((String)row["INSULINBRAND"]);
+                    var imId = mu.FindInsulinMethodId((String)row["INSULINMETHOD"]);
+                    var typeId = mu.FindDMTypeId((String)row["DMTYPE"]);
+
+                    CareSetting careset = new CareSetting();
+                    careset.UserId = userId;
+                    careset.HyperglycemicLevel = (Int32)row["HyperglycemicLevel"];
+                    careset.HypoglycemicLevel = (Int32)row["HypoglycemicLevel"];
+                    careset.InsulinMethod = imId;
+                    careset.InsulinBrand = ibId;
+                    careset.DiabetesManagementType = typeId;
+                    careset.DateModified = (DateTime)row["LASTMODIFIEDDATE"];
+                    //pat.CareSettings.Add(careset);
+
+                    var ct = mu.ParseDMControlTypes((int)row["DMCONTROLTYPE"]);
+                    DiabetesControlType dct = new DiabetesControlType();
+
+                    foreach (var item in ct)
                     {
-                        dct.IsEnabled = false;
+                        dct.ControlName = item.Key;
+                        dct.CareSettingsId = careset.CareSettingsId;
+                        dct.DMDataId = dm.DMDataId;
+                        if (item.Value)
+                        {
+                            dct.IsEnabled = true;
+                        }
+                        else
+                        {
+                            dct.IsEnabled = false;
+                        }
+                        TransactionManager.DatabaseContext.DiabetesControlTypes.Add(dct);
                     }
-                    TransactionManager.DatabaseContext.DiabetesControlTypes.Add(dct);
+
+                    TransactionManager.DatabaseContext.DiabetesManagementDatas.Add(dm);
+                    TransactionManager.DatabaseContext.CareSettings.Add(careset);
                 }
-
-                TransactionManager.DatabaseContext.DiabetesManagementDatas.Add(dm);
-                TransactionManager.DatabaseContext.PatientDevices.Add(pd1);
-                TransactionManager.DatabaseContext.PatientDevices.Add(pd2);
-                TransactionManager.DatabaseContext.CareSettings.Add(careset);
             }
         }
     }

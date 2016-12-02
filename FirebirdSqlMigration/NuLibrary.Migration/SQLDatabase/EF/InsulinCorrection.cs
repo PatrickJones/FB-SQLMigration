@@ -12,14 +12,13 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PumpCorrectionFactor
+    public partial class InsulinCorrection
     {
-        public int FactorId { get; set; }
-        public int CorrectionFactorValue { get; set; }
-        public System.TimeSpan CorrectionFactorStart { get; set; }
-        public System.TimeSpan CorrectionFactorStop { get; set; }
-        public int PumpId { get; set; }
+        public int CorrectionId { get; set; }
+        public int InsulinCorrectionValue { get; set; }
+        public System.TimeSpan InsulinCorrectionStart { get; set; }
+        public System.TimeSpan InsulinCorrectionStop { get; set; }
     
-        public virtual Pump Pump { get; set; }
+        public virtual BolusDelivery BolusDelivery { get; set; }
     }
 }

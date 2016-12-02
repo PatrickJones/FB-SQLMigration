@@ -27,22 +27,33 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MappingUtilities map = new MappingUtilities();
+
         public void CreatePatientPhoneNumbersMapping()
         {
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var patNum = new PatientPhoneNumber
-                {
-                    PhoneId = (Int32)row["KEYID"],
-                    PatientId = (String)row["PARENTID"],
-                    Number = (String)row["NUMBER"],
-                    Extension = (String)row["EXTENSION"],
-                    Type = (Int32)row["ATYPE"],
-                    IsPrimary = (Boolean)row["ISPRIMARY"],
-                    RecieveText = (Boolean)row["RECEIVETEXT"]
-                };
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
 
-                TransactionManager.DatabaseContext.PatientPhoneNumbers.Add(patNum);
+                if (userId != Guid.Empty)
+                {
+                    var patNum = new PatientPhoneNumber
+                    {
+                        PhoneId = (Int32)row["KEYID"],
+                        UserId = userId,
+                        Number = (String)row["NUMBER"],
+                        Extension = (String)row["EXTENSION"],
+                        Type = (Int32)row["ATYPE"],
+                        IsPrimary = (Boolean)row["ISPRIMARY"],
+                        RecieveText = (Boolean)row["RECEIVETEXT"]
+                    };
+
+                    TransactionManager.DatabaseContext.PatientPhoneNumbers.Add(patNum);
+                }
+                
             }
         }
 

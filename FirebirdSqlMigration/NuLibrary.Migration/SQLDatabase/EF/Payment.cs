@@ -12,15 +12,14 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PumpBGTarget
+    public partial class Payment
     {
-        public int TargetId { get; set; }
-        public int TargetBG { get; set; }
-        public int TargetBGCorrect { get; set; }
-        public System.TimeSpan TargetBGStart { get; set; }
-        public System.TimeSpan TargetBGStop { get; set; }
-        public int PumpId { get; set; }
+        public int PaymentId { get; set; }
+        public int PaymentMethod { get; set; }
+        public bool PaymentApproved { get; set; }
     
-        public virtual Pump Pump { get; set; }
+        public virtual Check Check { get; set; }
+        public virtual Subscription Subscription { get; set; }
+        public virtual PayPal PayPal { get; set; }
     }
 }

@@ -18,14 +18,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public Pump()
         {
             this.CGMReminders = new HashSet<CGMReminder>();
-            this.PumpBGTargets = new HashSet<PumpBGTarget>();
-            this.PumpCorrectionFactors = new HashSet<PumpCorrectionFactor>();
-            this.PumpInsulinCorrections = new HashSet<PumpInsulinCorrection>();
             this.PumpPrograms = new HashSet<PumpProgram>();
             this.PumpSettings = new HashSet<PumpSetting>();
         }
     
-        public int PumpId { get; set; }
+        public long PumpId { get; set; }
         public string PumpType { get; set; }
         public string PumpName { get; set; }
         public System.DateTime PumpStartDate { get; set; }
@@ -34,20 +31,14 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public double Cannula { get; set; }
         public System.DateTime ReplacementDate { get; set; }
         public string Notes { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CGMReminder> CGMReminders { get; set; }
         public virtual CGMSession CGMSession { get; set; }
-        public virtual MeterReadingHeader MeterReadingHeader { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PumpBGTarget> PumpBGTargets { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PumpCorrectionFactor> PumpCorrectionFactors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PumpInsulinCorrection> PumpInsulinCorrections { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PumpProgram> PumpPrograms { get; set; }
+        public virtual ReadingHeader ReadingHeader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PumpSetting> PumpSettings { get; set; }
     }

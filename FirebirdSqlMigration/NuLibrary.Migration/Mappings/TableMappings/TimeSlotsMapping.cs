@@ -27,26 +27,34 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        MappingUtilities mu = new MappingUtilities();
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+
         public void CreateTimeSlotsMapping()
         {
-            MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var pId = (String)row["PATIENTID"];
-                var careset = mu.FindPatientCareSetting(pId);
-                var caresetId = careset.CareSettingsId;
-                for (int i = 1; i < 9; i++)
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
+
+                if (userId != Guid.Empty)
                 {
-                    DailyTimeSlot d = new DailyTimeSlot();
-
-                    d.TimeSlotDescription = (String)row[$"SLOT{i}DESC"];
-                    if (i < 8)
+                    var careset = mu.FindPatientCareSetting(userId);
+                    var caresetId = careset.CareSettingsId;
+                    for (int i = 1; i < 9; i++)
                     {
-                        d.TImeSlotBoundary = (TimeSpan)row[$"SLOT{i}END"];
-                    } 
-                    d.CareSettingsId = caresetId;
+                        DailyTimeSlot d = new DailyTimeSlot();
 
-                    TransactionManager.DatabaseContext.DailyTimeSlots.Add(d);
+                        d.TimeSlotDescription = (String)row[$"SLOT{i}DESC"];
+                        if (i < 8)
+                        {
+                            d.TImeSlotBoundary = (TimeSpan)row[$"SLOT{i}END"];
+                        }
+                        d.CareSettingsId = caresetId;
+
+                        TransactionManager.DatabaseContext.DailyTimeSlots.Add(d);
+                    }
                 }
             }
         }

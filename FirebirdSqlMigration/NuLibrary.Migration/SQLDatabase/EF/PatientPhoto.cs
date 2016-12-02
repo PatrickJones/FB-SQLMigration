@@ -17,7 +17,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int PhotoId { get; set; }
         public string Name { get; set; }
         public byte[] Photo { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual Patient Patient { get; set; }
     }

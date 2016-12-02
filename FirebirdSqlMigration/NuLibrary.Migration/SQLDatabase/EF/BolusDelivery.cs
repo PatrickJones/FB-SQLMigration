@@ -23,16 +23,19 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int BolusDeliveryId { get; set; }
         public System.DateTime StartDateTime { get; set; }
         public int AmountDelivered { get; set; }
-        public int AmountRequired { get; set; }
+        public int AmountSuggested { get; set; }
         public int Duration { get; set; }
         public string BolusTrigger { get; set; }
         public string Status { get; set; }
         public string Type { get; set; }
-        public int SyncCounter { get; set; }
-        public int ReadingId { get; set; }
+        public long DownloadKeyId { get; set; }
     
-        public virtual MeterReading MeterReading { get; set; }
+        public virtual BGTarget BGTarget { get; set; }
+        public virtual ReadingHeader ReadingHeader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BolusDeliveryData> BolusDeliveryDatas { get; set; }
+        public virtual CorrectionFactor CorrectionFactor { get; set; }
+        public virtual InsulinCarbRatio InsulinCarbRatio { get; set; }
+        public virtual InsulinCorrection InsulinCorrection { get; set; }
     }
 }

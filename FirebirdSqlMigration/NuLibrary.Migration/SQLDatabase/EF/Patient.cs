@@ -20,23 +20,24 @@ namespace NuLibrary.Migration.SQLDatabase.EF
             this.CareSettings = new HashSet<CareSetting>();
             this.PatientAddresses = new HashSet<PatientAddress>();
             this.PatientDevices = new HashSet<PatientDevice>();
-            this.PatientEmails = new HashSet<PatientEmail>();
             this.PatientPhoneNumbers = new HashSet<PatientPhoneNumber>();
             this.PatientPhotos = new HashSet<PatientPhoto>();
+            this.Subscriptions = new HashSet<Subscription>();
+            this.Institutions = new HashSet<Institution>();
             this.InsurancePlans = new HashSet<InsurancePlan>();
         }
     
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
         public string MRID { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Middlename { get; set; }
-        public string Suffix { get; set; }
-        public string Alias { get; set; }
         public int Gender { get; set; }
         public System.DateTime DateofBirth { get; set; }
         public string Race { get; set; }
         public int PlanId { get; set; }
+        public string Email { get; set; }
+        public System.Guid InstitutionId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CareSetting> CareSettings { get; set; }
@@ -45,11 +46,14 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientDevice> PatientDevices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientEmail> PatientEmails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientPhoneNumber> PatientPhoneNumbers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientPhoto> PatientPhotos { get; set; }
+        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Subscription> Subscriptions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Institution> Institutions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InsurancePlan> InsurancePlans { get; set; }
     }

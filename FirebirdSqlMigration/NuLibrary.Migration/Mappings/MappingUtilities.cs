@@ -11,11 +11,11 @@ namespace NuLibrary.Migration.Mappings
 {
     public class MappingUtilities : ClientDatabaseBase
     {
-        private ClientDatabaseTemplateEntities db = new ClientDatabaseTemplateEntities();
+        private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
         
-        public Patient FindPatient(String patientId)
+        public Patient FindPatient(Guid userId)
         {
-            return db.Patients.Where(x => x.PatientId == patientId).FirstOrDefault();
+            return db.Patients.Where(x => x.UserId == userId).FirstOrDefault();
             
         }
 
@@ -24,9 +24,9 @@ namespace NuLibrary.Migration.Mappings
             return db.InsuranceProviders.Where(x => x.CompanyId == insCoId).FirstOrDefault();
         }
 
-        public CareSetting FindPatientCareSetting(String patientId)
+        public CareSetting FindPatientCareSetting(Guid userId)
         {
-            return db.CareSettings.Where(x => x.PatientId == patientId).FirstOrDefault();
+            return db.CareSettings.Where(x => x.UserId == userId).FirstOrDefault();
         }
 
         public int FindInsulinBrandId(String insbrand)
@@ -66,9 +66,9 @@ namespace NuLibrary.Migration.Mappings
             return dict;
         }
 
-        public Pump FindPatientPump(string pId)
+        public Pump FindPatientPump(Guid userId)
         {
-            var pump = db.Pumps.Where(x => x.PatientId == pId).FirstOrDefault();
+            var pump = db.Pumps.Where(x => x.UserId == userId).FirstOrDefault();
             return pump;
         }
         public PumpProgram FindPumpProgram(string name, int pkey)
@@ -77,7 +77,7 @@ namespace NuLibrary.Migration.Mappings
             return ppId;
         }
 
-        public ICollection<PumpSetting> CreatePumpSetting(DataRow record, int id)
+        public ICollection<PumpSetting> CreatePumpSetting(DataRow record, long id)
         {
             ICollection<PumpSetting> ips = new List<PumpSetting>();
             ips.Add(new PumpSetting { SettingValue = (String)record["BOLUSCALCS"], SettingName = "BOLUSCALCS", PumpId = id });

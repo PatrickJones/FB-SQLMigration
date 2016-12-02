@@ -12,14 +12,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PumpInsulinCorrection
+    public partial class ReadingEventType
     {
-        public int CorrectionId { get; set; }
-        public int InsulinCorrectionValue { get; set; }
-        public System.TimeSpan InsulinCorrectionStart { get; set; }
-        public System.TimeSpan InsulinCorrectionStop { get; set; }
-        public int PumpId { get; set; }
-    
-        public virtual Pump Pump { get; set; }
+        public int EventId { get; set; }
+        public string EventName { get; set; }
     }
 }

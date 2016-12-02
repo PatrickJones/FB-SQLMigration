@@ -17,11 +17,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PatientDevice()
         {
-            this.MeterReadingHeaders = new HashSet<MeterReadingHeader>();
+            this.ReadingHeaders = new HashSet<ReadingHeader>();
         }
     
         public int DeviceId { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
         public int MeterIndex { get; set; }
         public string Manufacturer { get; set; }
         public string DeviceModel { get; set; }
@@ -30,9 +30,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string SoftwareVersion { get; set; }
         public string HardwareVersion { get; set; }
     
+        public virtual DeviceData DeviceData { get; set; }
         public virtual DiabetesManagementData DiabetesManagementData { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MeterReadingHeader> MeterReadingHeaders { get; set; }
+        public virtual ICollection<ReadingHeader> ReadingHeaders { get; set; }
         public virtual Patient Patient { get; set; }
     }
 }

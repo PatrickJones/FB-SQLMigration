@@ -12,16 +12,19 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TotalDailyDelivery
+    public partial class TensReading
     {
-        public int DeliveryId { get; set; }
-        public int Delivered { get; set; }
-        public int BasalDelivered { get; set; }
-        public bool Suspended { get; set; }
-        public bool TempActivated { get; set; }
-        public bool Valid { get; set; }
         public int ReadingId { get; set; }
+        public System.DateTime ReadingDate { get; set; }
+        public string StartTime { get; set; }
+        public int TherapyType { get; set; }
+        public int DurationScheduled { get; set; }
+        public int DurationCompleted { get; set; }
+        public int Aplitude { get; set; }
+        public int PulseWidth { get; set; }
+        public int Frequency { get; set; }
+        public long DownloadKeyId { get; set; }
     
-        public virtual MeterReading MeterReading { get; set; }
+        public virtual ReadingHeader ReadingHeader { get; set; }
     }
 }

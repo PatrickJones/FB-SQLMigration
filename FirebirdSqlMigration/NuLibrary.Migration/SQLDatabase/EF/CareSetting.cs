@@ -22,7 +22,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         }
     
         public int CareSettingsId { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
         public int HyperglycemicLevel { get; set; }
         public int HypoglycemicLevel { get; set; }
         public int InsulinMethod { get; set; }

@@ -27,20 +27,39 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+
         public void CreatePatientMapping()
         {
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
+                // get userid from old aspnetdb matching on patientid #####.#####
+                // if no userid then create new one for this patient
+                var patId = (String)row["KEYID"];
+                var uid = aHelper.GetUserIdFromPatientId(patId);
+                var userId = (uid != Guid.Empty) ? uid : new Guid();
+                // must create clinipro user to store new userid
+                if (uid == Guid.Empty)
+                {
+                    aHelper.CreateCliniProUser(userId, patId);
+                }
+
+                var user = new User {
+                    UserId = userId,
+                    UserType = 1,
+                    CreationDate = DateTime.Now
+                };
+
                 var pat = new Patient
                 {
-                    PatientId = (String)row["KEYID"],
+                    UserId = userId,
                     MRID = (String)row["MEDICALRECORDIDENTIFIER"],
                     Firstname = (String)row["FIRSTNAME"],
                     Lastname = (String)row["LASTNAME"],
                     Middlename = (String)row["MIDDLENAME"],
-                    Suffix = (String)row["SUFFIX"],
                     Gender = (Int32)row["GENDER"],
-                    DateofBirth = (DateTime)row["DOB"]
+                    DateofBirth = (DateTime)row["DOB"],
+                    Email = (String)row["EMAIL"]
                 };
 
                 var adr = new PatientAddress {
@@ -54,15 +73,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     Country = (String)row["COUNTRY"]
                 };
 
-                var email = new PatientEmail {
-                    Email = (String)row["EMAIL"],
-                    LoweredEmail = row["EMAIL"].ToString().ToLower()
-                };
 
                 pat.PatientAddresses.Add(adr);
-                pat.PatientEmails.Add(email);
+                user.Patient = pat;
 
-                TransactionManager.DatabaseContext.Patients.Add(pat);
+                TransactionManager.DatabaseContext.Users.Add(user);
             }
         }
     }

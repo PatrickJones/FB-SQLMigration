@@ -14,7 +14,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
     public partial class CGMSession
     {
-        public int CGMSessionId { get; set; }
+        public long CGMSessionId { get; set; }
         public System.DateTime SessionDateTime { get; set; }
         public int TimeInSeconds { get; set; }
         public bool IsActive { get; set; }

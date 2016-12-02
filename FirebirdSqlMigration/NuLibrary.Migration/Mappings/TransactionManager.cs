@@ -9,11 +9,11 @@ namespace NuLibrary.Migration.Mappings
 {
     public static class TransactionManager
     {
-        public static ClientDatabaseTemplateEntities DatabaseContext;
+        public static NuMedicsGlobalEntities DatabaseContext;
 
         static TransactionManager()
         {
-            DatabaseContext = new ClientDatabaseTemplateEntities();
+            DatabaseContext = new NuMedicsGlobalEntities();
         }
         public static bool ExecuteTransaction()
         {

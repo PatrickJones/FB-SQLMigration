@@ -24,22 +24,31 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+
         public void CreatePumpsMapping()
         {
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var pum = new Pump
-                {
-                    PatientId = (String)row["PATIENTID"],
-                    PumpName = (String)row["PUMPBRAND"],
-                    PumpStartDate = (DateTime)row["PUMPSTARTDATE"],
-                    PumpInfusionSet = (String)row["PUMPINFUSIONSET"],
-                    Cannula = (Double)row["CANNULA"],
-                    ReplacementDate = (DateTime)row["DATEREPLACED"],
-                    Notes = (String)row["NOTES"]
-                };
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
 
-                TransactionManager.DatabaseContext.Pumps.Add(pum);
+                if (userId != Guid.Empty)
+                {
+                    var pum = new Pump
+                    {
+                        UserId = userId,
+                        PumpName = (String)row["PUMPBRAND"],
+                        PumpStartDate = (DateTime)row["PUMPSTARTDATE"],
+                        PumpInfusionSet = (String)row["PUMPINFUSIONSET"],
+                        Cannula = (Double)row["CANNULA"],
+                        ReplacementDate = (DateTime)row["DATEREPLACED"],
+                        Notes = (String)row["NOTES"]
+                    };
+
+                    TransactionManager.DatabaseContext.Pumps.Add(pum); 
+                }
             }
         }
     }

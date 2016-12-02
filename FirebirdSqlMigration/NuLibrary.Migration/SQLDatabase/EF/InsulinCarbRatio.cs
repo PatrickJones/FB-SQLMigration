@@ -12,13 +12,13 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientEmail
+    public partial class InsulinCarbRatio
     {
-        public int EmailId { get; set; }
-        public string Email { get; set; }
-        public string LoweredEmail { get; set; }
-        public string PatientId { get; set; }
+        public int RatioId { get; set; }
+        public int ICRatio { get; set; }
+        public System.TimeSpan StartTime { get; set; }
+        public System.TimeSpan StopTime { get; set; }
     
-        public virtual Patient Patient { get; set; }
+        public virtual BolusDelivery BolusDelivery { get; set; }
     }
 }

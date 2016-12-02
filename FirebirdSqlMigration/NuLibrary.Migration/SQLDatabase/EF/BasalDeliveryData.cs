@@ -12,14 +12,13 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class MeterReadingError
+    public partial class BasalDeliveryData
     {
-        public int ErrorId { get; set; }
-        public string ErrorName { get; set; }
-        public bool IsActive { get; set; }
-        public int ReadingId { get; set; }
-        public string ErrorText { get; set; }
+        public int DataId { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+        public int BasalDeliveryId { get; set; }
     
-        public virtual MeterReading MeterReading { get; set; }
+        public virtual BasalDelivery BasalDelivery { get; set; }
     }
 }

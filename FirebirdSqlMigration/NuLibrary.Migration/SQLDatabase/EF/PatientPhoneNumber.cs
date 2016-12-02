@@ -20,7 +20,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int Type { get; set; }
         public bool IsPrimary { get; set; }
         public bool RecieveText { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual Patient Patient { get; set; }
     }

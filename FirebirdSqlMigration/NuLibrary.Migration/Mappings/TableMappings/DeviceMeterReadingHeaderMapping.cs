@@ -24,44 +24,53 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MappingUtilities mu = new MappingUtilities();
+
         public void CreateDeviceMeterReadingHeaderMapping()
         {
-            MappingUtilities mu = new MappingUtilities();
-
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var dev = new PatientDevice
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
+
+                if (userId != Guid.Empty)
                 {
-                    PatientId = (String)row["PATIENTID"],
-                    MeterIndex = (int)row["NUMEDICSMETERINDEX"],
-                    Manufacturer = (String)row["MANUFACTURER"],
-                    DeviceModel = (String)row["METERMODEL"],
-                    DeviceName = (String)row["METERNAME"],
-                    SerialNumber = (String)row["SERIALNUMBER"],
-                    SoftwareVersion = (String)row["SOFTWAREVERSION"],
-                    HardwareVersion = (String)row["HARDWAREVERSION"]
-                };
+                    var dev = new PatientDevice
+                    {
+                        UserId = userId,
+                        MeterIndex = (int)row["NUMEDICSMETERINDEX"],
+                        Manufacturer = (String)row["MANUFACTURER"],
+                        DeviceModel = (String)row["METERMODEL"],
+                        DeviceName = (String)row["METERNAME"],
+                        SerialNumber = (String)row["SERIALNUMBER"],
+                        SoftwareVersion = (String)row["SOFTWAREVERSION"],
+                        HardwareVersion = (String)row["HARDWAREVERSION"]
+                    };
 
-                var mrh = new MeterReadingHeader
-                {
-                    PatientId = (String)row["PATIENTID"],
-                    DownloadKeyId = (int)row["DOWNLOADKEYID"],
-                    DeviceId = (int)row[dev.DeviceId],
-                    ServerDateTime = (DateTime)row["SERVERDATETIME"],
-                    MeterDateTime = (DateTime)row["METERDATETIME"],
-                    Readings = (int)row["READINGS"],
-                    SiteSource = (String)row["SOURCE"],
-                    ReviewedOn = (DateTime)row["REVIEWEDON"]
-                };
+                    var mrh = new ReadingHeader
+                    {
+                        UserId = userId,
+                        DownloadKeyId = (int)row["DOWNLOADKEYID"],
+                        DeviceId = (int)row[dev.DeviceId],
+                        ServerDateTime = (DateTime)row["SERVERDATETIME"],
+                        MeterDateTime = (DateTime)row["METERDATETIME"],
+                        Readings = (int)row["READINGS"],
+                        SiteSource = (String)row["SOURCE"],
+                        ReviewedOn = (DateTime)row["REVIEWEDON"]
+                    };
 
 
 
-                var pat = mu.FindPatient(dev.PatientId);
-                pat.PatientDevices.Add(dev);
+                    var pat = mu.FindPatient(userId);
+                    pat.PatientDevices.Add(dev);
 
-                TransactionManager.DatabaseContext.PatientDevices.Add(dev);
-                TransactionManager.DatabaseContext.MeterReadingHeaders.Add(mrh);
-                TransactionManager.DatabaseContext.Patients.Add(pat);
+                    TransactionManager.DatabaseContext.PatientDevices.Add(dev);
+                    TransactionManager.DatabaseContext.ReadingHeaders.Add(mrh);
+                    TransactionManager.DatabaseContext.Patients.Add(pat);
+
+                }
             }
         }
     }

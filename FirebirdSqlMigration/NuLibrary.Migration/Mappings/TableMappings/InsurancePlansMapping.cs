@@ -27,36 +27,38 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+
+
         public void CreateInsurancePlansMapping()
         {
             //MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var insp = new InsurancePlan
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
+
+                if (userId != Guid.Empty)
                 {
-                    PatientId = (String)row["PATIENTID"],
-                    PlanType = (String)row["INSTYPEID"], // is an int in firebird, may need to convert
-                    PlanIdentifier = (String)row["PLANIDENTIFIER"],
-                    PolicyNumber = (String)row["POLICYNUMBER"],
-                    GroupName = (String)row["GROUPNAME"],
-                    GroupIdentifier = (String)row["GROUPNUMBER"],
-                    CoPay = (Decimal)row["COPAY"], // is a double precision in firebird, may need to convert
-                    Purchaser = (String)row["PURCHASER"],
-                    IsActive = (bool)row["ISACTIVE"], // is a char(1) in firebird, may need to convert
-                    InActiveDate = (DateTime)row["INACTIVEDATE"],
-                    EffectiveDate = (DateTime)row["EFFECTIVEDATE"],
-                    CompanyId = (int)row["INSCOID"] //is a double precision in firebird, may need to convert
-                };
+                    var insp = new InsurancePlan
+                    {
+                        UserId = userId,
+                        PlanType = (String)row["INSTYPEID"], // is an int in firebird, may need to convert
+                        PlanIdentifier = (String)row["PLANIDENTIFIER"],
+                        PolicyNumber = (String)row["POLICYNUMBER"],
+                        GroupName = (String)row["GROUPNAME"],
+                        GroupIdentifier = (String)row["GROUPNUMBER"],
+                        CoPay = (Decimal)row["COPAY"], // is a double precision in firebird, may need to convert
+                        Purchaser = (String)row["PURCHASER"],
+                        IsActive = (bool)row["ISACTIVE"], // is a char(1) in firebird, may need to convert
+                        InActiveDate = (DateTime)row["INACTIVEDATE"],
+                        EffectiveDate = (DateTime)row["EFFECTIVEDATE"],
+                        CompanyId = (int)row["INSCOID"] //is a double precision in firebird, may need to convert
+                    };
 
-                //var pat = mu.FindPatient(insp.PatientId);
-                //pat.InsurancePlans.Add(insp);
-
-                //var ico = mu.FindInsuranceCo(insp.CompanyId);
-                //ico.InsurancePlans.Add(insp);
-
-                TransactionManager.DatabaseContext.InsurancePlans.Add(insp);
-                //TransactionManager.DatabaseContext.Patients.Add(pat);
-                //TransactionManager.DatabaseContext.InsuranceProviders.Add(ico);
+                    TransactionManager.DatabaseContext.InsurancePlans.Add(insp);
+                }
             }
         }
     }

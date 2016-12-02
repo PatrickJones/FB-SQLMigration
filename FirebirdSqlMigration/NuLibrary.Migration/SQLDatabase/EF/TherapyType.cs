@@ -12,15 +12,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class MeterReadingEvent
+    public partial class TherapyType
     {
-        public int Eventid { get; set; }
-        public string EventType { get; set; }
-        public string EventValue { get; set; }
-        public int ReadingId { get; set; }
-        public System.DateTime StartTime { get; set; }
-        public System.DateTime ResumeTime { get; set; }
-    
-        public virtual MeterReading MeterReading { get; set; }
+        public int TypeId { get; set; }
+        public string TypeName { get; set; }
     }
 }

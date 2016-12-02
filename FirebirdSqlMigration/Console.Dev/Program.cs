@@ -43,7 +43,6 @@ namespace Console.Dev
         {
             var pat = new Patient
             {
-                PatientId = "12345.12345",
                 MRID = "12345",
                 Firstname = "Mighty",
                 Lastname = "Lion",

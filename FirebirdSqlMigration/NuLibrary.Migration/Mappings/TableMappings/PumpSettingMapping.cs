@@ -22,61 +22,75 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
-        public PumpSettingMapping(string tableName) :base(tableName)
+        public PumpSettingMapping(string tableName) : base(tableName)
         {
 
         }
 
+        MappingUtilities mu = new MappingUtilities();
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+
         public void CreatePumpSettingMapping()
         {
-            MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var PatientId = (String)row["PATIENTID"];
-                var patientPump = mu.FindPatientPump(PatientId);
-                var ppId = patientPump.PumpId;
-                var ips = mu.CreatePumpSetting(row, ppId).ToList();
-                foreach (var item in ips)
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
+
+
+                if (userId != Guid.Empty)
                 {
-                    TransactionManager.DatabaseContext.PumpSettings.Add(item);
-                }
-
-                for (int i = 1; i < 9; i++)
-                {
-                    DateTime ptstart = (DateTime)row[$"TARGETBGSTART_{i}"];
-                    DateTime ptstop = (DateTime)row[$"TARGETBGSTOP_{i}"];
-                    var pt = new PumpBGTarget
+                    //var PatientId = (String)row["PATIENTID"];
+                    var patientPump = mu.FindPatientPump(userId);
+                    var ppId = patientPump.PumpId;
+                    var ips = mu.CreatePumpSetting(row, ppId).ToList();
+                    foreach (var item in ips)
                     {
-                        PumpId = ppId,
-                        TargetBG = (int)row[$"TARGETBG_{i}"],
-                        TargetBGCorrect = (int)row[$"TARGETBGCORRECT_{i}"],
-                        TargetBGStart = new TimeSpan(ptstart.Ticks),
-                        TargetBGStop = new TimeSpan(ptstop.Ticks)
-                    };
-                    
-                    DateTime icstart = (DateTime)row[$"ICSTART_{i}"];
-                    DateTime icstop = (DateTime)row[$"ICSTOP_{i}"];
-                    var pic = new PumpInsulinCorrection
-                    {
-                        PumpId = ppId,
-                        InsulinCorrectionStart = new TimeSpan(icstart.Ticks),
-                        InsulinCorrectionStop = new TimeSpan(icstop.Ticks),
-                        InsulinCorrectionValue = (int)row[$"ICVALUE_{i}"]
-                    };
+                        TransactionManager.DatabaseContext.PumpSettings.Add(item);
+                    }
 
-                    DateTime cfstart = (DateTime)row[$"CFSTART_{i}"];
-                    DateTime cfstop = (DateTime)row[$"CFSTOP_{i}"];
-                    var pcf = new PumpCorrectionFactor
-                    {
-                        PumpId = ppId,
-                        CorrectionFactorStart = new TimeSpan(cfstart.Ticks),
-                        CorrectionFactorStop = new TimeSpan(cfstop.Ticks),
-                        CorrectionFactorValue = (int)row[$"CFVALUE_{i}"]
-                    };
+                    //***************************************Notees********************************//
+                    // commented out this section because data will be taken directly from bolus reading in MeterReadingTable
+                    //***************************************End Notees********************************//
+                    //for (int i = 1; i < 9; i++)
+                    //{
+                    //    DateTime ptstart = (DateTime)row[$"TARGETBGSTART_{i}"];
+                    //    DateTime ptstop = (DateTime)row[$"TARGETBGSTOP_{i}"];
+                    //    var pt = new BGTarget
+                    //    {
+                    //        PumpId = ppId,
+                    //        TargetBG = (int)row[$"TARGETBG_{i}"],
+                    //        TargetBGCorrect = (int)row[$"TARGETBGCORRECT_{i}"],
+                    //        TargetBGStart = new TimeSpan(ptstart.Ticks),
+                    //        TargetBGStop = new TimeSpan(ptstop.Ticks)
+                    //    };
 
-                    TransactionManager.DatabaseContext.PumpBGTargets.Add(pt);
-                    TransactionManager.DatabaseContext.PumpInsulinCorrections.Add(pic);
-                    TransactionManager.DatabaseContext.PumpCorrectionFactors.Add(pcf);
+                    //    DateTime icstart = (DateTime)row[$"ICSTART_{i}"];
+                    //    DateTime icstop = (DateTime)row[$"ICSTOP_{i}"];
+                    //    var pic = new InsulinCorrection
+                    //    {
+                    //        PumpId = ppId,
+                    //        InsulinCorrectionStart = new TimeSpan(icstart.Ticks),
+                    //        InsulinCorrectionStop = new TimeSpan(icstop.Ticks),
+                    //        InsulinCorrectionValue = (int)row[$"ICVALUE_{i}"]
+                    //    };
+
+                    //    DateTime cfstart = (DateTime)row[$"CFSTART_{i}"];
+                    //    DateTime cfstop = (DateTime)row[$"CFSTOP_{i}"];
+                    //    var pcf = new CorrectionFactor
+                    //    {
+                    //        PumpId = ppId,
+                    //        CorrectionFactorStart = new TimeSpan(cfstart.Ticks),
+                    //        CorrectionFactorStop = new TimeSpan(cfstop.Ticks),
+                    //        CorrectionFactorValue = (int)row[$"CFVALUE_{i}"]
+                    //    };
+
+                    //    TransactionManager.DatabaseContext.BGTargets.Add(pt);
+                    //    TransactionManager.DatabaseContext.InsulinCorrections.Add(pic);
+                    //    TransactionManager.DatabaseContext.CorrectionFactors.Add(pcf);
+
+                    //}
                 }
             }
         }

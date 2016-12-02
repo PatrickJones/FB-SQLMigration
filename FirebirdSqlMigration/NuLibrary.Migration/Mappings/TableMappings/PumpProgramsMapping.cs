@@ -27,41 +27,49 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MappingUtilities mu = new MappingUtilities();
+
         public void CreatePumpProgramssMapping()
         {
-            MappingUtilities mu = new MappingUtilities();
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var pId = (String)row["PATIENTID"];
-                var patientPump = mu.FindPatientPump(pId);
-                var patientPumpId = patientPump.PumpId;
+                // get userid from old aspnetdb matching on patientid #####.#####
+                var patId = (String)row["PATIENTID"];
+                var userId = aHelper.GetUserIdFromPatientId(patId);
 
-                var CreationDate = (DateTime)row["CREATEDATE"];
-                var Source = (String)row["SOURCE"];
-                var Valid = (Boolean)row["ACTIVEPROGRAM"];
-
-
-                for (int i = 1; i < 8; i++)
+                if (userId != Guid.Empty)
                 {
-                    PumpProgram p = new PumpProgram();
+                    //var pId = (String)row["PATIENTID"];
+                    var patientPump = mu.FindPatientPump(userId);
+                    var patientPumpId = patientPump.PumpId;
 
-                    p.CreationDate = CreationDate;
-                    p.Source = Source;
-                    p.Valid = Valid;
-                    p.PumpId = patientPumpId;
+                    var CreationDate = (DateTime)row["CREATEDATE"];
+                    var Source = (String)row["SOURCE"];
+                    var Valid = (Boolean)row["ACTIVEPROGRAM"];
 
-                    p.ProgramKey = (Int32)row[$"PROG{i}KEYID"];
 
-                    TransactionManager.DatabaseContext.PumpPrograms.Add(p);
+                    for (int i = 1; i < 8; i++)
+                    {
+                        PumpProgram p = new PumpProgram();
+
+                        p.CreationDate = CreationDate;
+                        p.Source = Source;
+                        p.Valid = Valid;
+                        p.PumpId = patientPumpId;
+
+                        p.ProgramKey = (Int32)row[$"PROG{i}KEYID"];
+
+                        TransactionManager.DatabaseContext.PumpPrograms.Add(p);
+                    }
+
+                    //Example Output:
+                    //ProgramKey = (Int32)row["PROG3KEYID"]
+                    //ProgramKey = (Int32)row["PROG4KEYID"]
+                    //ProgramKey = (Int32)row["PROG5KEYID"]
+                    //ProgramKey = (Int32)row["PROG6KEYID"]
+                    //ProgramKey = (Int32)row["PROG7KEYID"]
                 }
-                   
-                //Example Output:
-                //ProgramKey = (Int32)row["PROG3KEYID"]
-                //ProgramKey = (Int32)row["PROG4KEYID"]
-                //ProgramKey = (Int32)row["PROG5KEYID"]
-                //ProgramKey = (Int32)row["PROG6KEYID"]
-                //ProgramKey = (Int32)row["PROG7KEYID"]
-                
             }
         }
     }

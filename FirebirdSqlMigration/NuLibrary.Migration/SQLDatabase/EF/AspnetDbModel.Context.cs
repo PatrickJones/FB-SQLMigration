@@ -26,5 +26,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         }
     
         public virtual DbSet<FirebirdConnection> FirebirdConnections { get; set; }
+        public virtual DbSet<aspnet_Membership> aspnet_Membership { get; set; }
+        public virtual DbSet<aspnet_Users> aspnet_Users { get; set; }
+        public virtual DbSet<clinipro_Users> clinipro_Users { get; set; }
     }
 }

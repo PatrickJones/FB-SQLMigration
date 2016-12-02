@@ -21,7 +21,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int PostmealTarget { get; set; }
         public System.DateTime ModifiedDate { get; set; }
         public System.Guid ModifiedUserId { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual PatientDevice PatientDevice { get; set; }
     }

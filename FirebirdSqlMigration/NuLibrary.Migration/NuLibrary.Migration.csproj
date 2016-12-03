@@ -11,7 +11,7 @@
     <AssemblyName>NuLibrary.Migration</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AssemblyVersion>1.0.337.2</AssemblyVersion>
+    <AssemblyVersion>1.0.338.2</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +69,7 @@
     <Compile Include="FBDatabase\FBTables\TableAgentCollection.cs" />
     <Compile Include="GlobalVar\MigrationVariables.cs" />
     <Compile Include="Interfaces\ITableData.cs" />
+    <Compile Include="Interfaces\ITableValidate.cs" />
     <Compile Include="Mappings\AspnetDbHelpers.cs" />
     <Compile Include="Mappings\ClientDatabaseBase.cs" />
     <Compile Include="Mappings\MappingUtilities.cs" />
@@ -308,6 +309,10 @@
     <Compile Include="SQLDatabase\EF\UserType.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SqlValidations\ApplicationValidation.cs" />
+    <Compile Include="SqlValidations\ReadingEventTypeValidation.cs" />
+    <Compile Include="SqlValidations\TherapyTypeValidation.cs" />
+    <Compile Include="SqlValidations\UserTypeValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -363,7 +368,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SQLDatabase\SQLHelpers\" />
-    <Folder Include="SqlSync\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -15,6 +15,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     public partial class UserType
     {
         public int TypeId { get; set; }
-        public int TypeName { get; set; }
+        public string TypeName { get; set; }
     }
 }

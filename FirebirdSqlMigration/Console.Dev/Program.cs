@@ -3,6 +3,7 @@ using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
+using NuLibrary.Migration.SqlValidations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,28 +16,42 @@ namespace Console.Dev
     {
         static void Main(string[] args)
         {
-            MigrationVariables.SiteId = 21002;
             //var cls = new FBDataAccess(21002);
             //cls.GetTableNames();
             //var cls = new TableAgent(999); //localhost
-
-
             //cls.GetTableSchema();
             //cls.GetData();
             //var table = cls.GetDataTable();
-
             //for (int i = 0; i < table.Columns.Count; i++)
             //{
             //    var col = table.Columns[i];
             //    System.Console.WriteLine(String.Format("Column Name: {0} - Column Type: {1}", col.ColumnName, col.DataType.Name));
             //}
-
             //var tac = new TableAgentCollection(999); Local
-            var t = TableAgentCollection.TableAgents;
 
-            System.Console.ReadLine();
+
+
+            //MigrationVariables.SiteId = 21002;
+            //var t = TableAgentCollection.TableAgents;
+            //System.Console.ReadLine();
+
 
             //TestTransaction();
+            TestValidation();
+        }
+
+        private static void TestValidation()
+        {
+            var val = new UserTypeValidation();
+            var valid = val.ValidateTable();
+
+            if (!valid)
+            {
+                val.SyncTable();
+            }
+
+            System.Console.WriteLine(valid);
+            System.Console.ReadLine();
         }
 
         static void TestTransaction()

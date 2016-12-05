@@ -42,7 +42,7 @@ namespace Console.Dev
 
         private static void TestValidation()
         {
-            var val = new UserTypeValidation();
+            var val = new CheckStatusValidation();
             var valid = val.ValidateTable();
 
             if (!valid)

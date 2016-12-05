@@ -315,6 +315,7 @@
     <Compile Include="SqlValidations\ReadingEventTypeValidation.cs" />
     <Compile Include="SqlValidations\TherapyTypeValidation.cs" />
     <Compile Include="SqlValidations\UserTypeValidation.cs" />
+    <Compile Include="SqlValidations\ValiateTables.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -201,6 +201,9 @@
     <Compile Include="SQLDatabase\EF\InsulinMethod.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\InsulinType.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\InsuranceAddress.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -311,6 +314,7 @@
     </Compile>
     <Compile Include="SqlValidations\ApplicationValidation.cs" />
     <Compile Include="SqlValidations\CheckStatusValidation.cs" />
+    <Compile Include="SqlValidations\InsulinTypeValidation.cs" />
     <Compile Include="SqlValidations\PaymentMethodValidation.cs" />
     <Compile Include="SqlValidations\ReadingEventTypeValidation.cs" />
     <Compile Include="SqlValidations\TherapyTypeValidation.cs" />

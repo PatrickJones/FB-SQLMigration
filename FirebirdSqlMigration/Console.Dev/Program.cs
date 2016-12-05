@@ -42,14 +42,20 @@ namespace Console.Dev
 
         private static void TestValidation()
         {
-            var val = new CheckStatusValidation();
+            var val = new InsulinTypeValidation();
             var valid = val.ValidateTable();
-
+            
             if (!valid)
             {
                 val.SyncTable();
             }
 
+
+            //var valid = val.ValidateAll();
+
+            //bool failed = valid.Any(a => a.Value == false);
+
+            //System.Console.WriteLine($"Has any failed: {failed}");
             System.Console.WriteLine(valid);
             System.Console.ReadLine();
         }

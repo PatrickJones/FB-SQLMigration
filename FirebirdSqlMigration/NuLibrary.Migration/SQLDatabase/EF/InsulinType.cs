@@ -12,11 +12,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class InsulinBrand
+    public partial class InsulinType
     {
-        public int InsulinBrandId { get; set; }
-        public string BrandName { get; set; }
-        public string Manufacturer { get; set; }
-        public int InsulinType { get; set; }
+        public int InsulinTypeId { get; set; }
+        public string Type { get; set; }
     }
 }

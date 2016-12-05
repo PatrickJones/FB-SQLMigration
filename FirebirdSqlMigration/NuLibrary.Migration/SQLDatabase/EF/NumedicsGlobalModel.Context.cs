@@ -85,5 +85,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
+        public virtual DbSet<InsulinType> InsulinTypes { get; set; }
     }
 }

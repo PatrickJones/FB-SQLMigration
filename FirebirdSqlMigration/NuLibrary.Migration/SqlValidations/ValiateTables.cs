@@ -25,6 +25,7 @@ namespace NuLibrary.Migration.SqlValidations
             valTables.Add(new ReadingEventTypeValidation());
             valTables.Add(new TherapyTypeValidation());
             valTables.Add(new UserTypeValidation());
+            valTables.Add(new InsulinTypeValidation());
         }
 
         public Dictionary<string, bool> ValidateAll()

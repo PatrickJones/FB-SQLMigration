@@ -11,7 +11,7 @@
     <AssemblyName>NuLibrary.Migration</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AssemblyVersion>1.0.340.2</AssemblyVersion>
+    <AssemblyVersion>1.0.342.2</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,7 +70,6 @@
     <Compile Include="GlobalVar\MigrationVariables.cs" />
     <Compile Include="Interfaces\ITableData.cs" />
     <Compile Include="Interfaces\ITableValidate.cs" />
-    <Compile Include="Mappings\AspnetDbHelpers.cs" />
     <Compile Include="Mappings\ClientDatabaseBase.cs" />
     <Compile Include="Mappings\MappingUtilities.cs" />
     <Compile Include="Mappings\TableMappings\BaseMapping.cs" />
@@ -312,6 +311,9 @@
     <Compile Include="SQLDatabase\EF\UserType.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\SQLHelpers\AspnetDbHelpers.cs" />
+    <Compile Include="SQLDatabase\SQLHelpers\DatabaseContextDisposal.cs" />
+    <Compile Include="SQLDatabase\SQLHelpers\NumedicsGlobalHelpers.cs" />
     <Compile Include="SqlValidations\ApplicationValidation.cs" />
     <Compile Include="SqlValidations\CheckStatusValidation.cs" />
     <Compile Include="SqlValidations\InsulinTypeValidation.cs" />
@@ -373,9 +375,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SQLDatabase\SQLHelpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

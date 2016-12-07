@@ -1,13 +1,14 @@
-﻿using NuLibrary.Migration.SQLDatabase.EF;
+﻿using NuLibrary.Migration.Mappings;
+using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NuLibrary.Migration.Mappings
+namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 {
-    public class AspnetDbHelpers : ClientDatabaseBase
+    public class AspnetDbHelpers : DatabaseContextDisposal
     {
         AspnetDbEntities db = new AspnetDbEntities();
 
@@ -30,6 +31,5 @@ namespace NuLibrary.Migration.Mappings
             }
             base.Dispose(disposing);
         }
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.SQLDatabase.EF;
+using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -46,7 +47,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 var user = new User {
                     UserId = userId,
-                    UserType = 1,
+                    UserType = 2,
                     CreationDate = DateTime.Now
                 };
 

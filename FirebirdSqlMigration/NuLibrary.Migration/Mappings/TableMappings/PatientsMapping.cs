@@ -29,27 +29,61 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         }
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
 
         public void CreatePatientMapping()
         {
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
+                aspnet_Membership member;
+                aspnet_Users aspUser;
+                UserAuthentication uAuth = null;
+
                 // get userid from old aspnetdb matching on patientid #####.#####
                 // if no userid then create new one for this patient
                 var patId = (String)row["KEYID"];
                 var uid = aHelper.GetUserIdFromPatientId(patId);
                 var userId = (uid != Guid.Empty) ? uid : new Guid();
-                // must create clinipro user to store new userid
+                // must create clinipro user to store new userid for future usage
                 if (uid == Guid.Empty)
                 {
                     aHelper.CreateCliniProUser(userId, patId);
                 }
+                else
+                {
+                    var appId = nHelper.GetApplicationId("Diabetes Partner");
+                    member = aHelper.GetMembershipInfo(uid);
+                    aspUser = aHelper.GetAspUserInfo(uid);
+                    if (member != null)
+                    {
+                        uAuth = new UserAuthentication {
+                            ApplicationId = appId,
+                            UserId = uid,
+                            Username = aspUser.UserName,
+                            Password = member.Password,
+                            PasswordQuestion = member.PasswordQuestion,
+                            PasswordAnswer = member.PasswordAnswer,
+                            PasswordAnswerFailureCount = member.FailedPasswordAnswerAttemptCount,
+                            PasswordFailureCount = member.FailedPasswordAttemptCount,
+                            LastActivityDate = aspUser.LastActivityDate,
+                            LastLockOutDate = member.LastLockoutDate,
+                            IsApproved = member.IsApproved,
+                            IsLockedOut = member.IsLockedOut,
+                            IsTempPassword = member.IsTemp,
+                            IsloggedIn = false
+                        };
+
+                    }
+                }
+
+
 
                 var user = new User {
                     UserId = userId,
                     UserType = (int)UserType.Patient,
                     CreationDate = DateTime.Now
                 };
+
 
                 var pat = new Patient
                 {
@@ -74,6 +108,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     Country = (String)row["COUNTRY"]
                 };
 
+
+                if (uAuth != null)
+                {
+                    user.UserAuthentications.Add(uAuth);
+                }
 
                 pat.PatientAddresses.Add(adr);
                 user.Patient = pat;

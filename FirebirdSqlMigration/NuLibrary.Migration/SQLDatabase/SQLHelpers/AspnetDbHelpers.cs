@@ -22,6 +22,15 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             var cpUser = new clinipro_Users { UserId = userId, CliniProID = patientId };
             db.clinipro_Users.Add(cpUser);
         }
+        public aspnet_Membership GetMembershipInfo(Guid userid)
+        {
+            return db.aspnet_Membership.Where(w => w.UserId == userid).FirstOrDefault();
+        }
+
+        public aspnet_Users GetAspUserInfo(Guid userId)
+        {
+            return db.aspnet_Users.Where(w => w.UserId == userId).FirstOrDefault();
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -31,5 +40,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             base.Dispose(disposing);
         }
+
+        
     }
 }

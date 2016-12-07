@@ -41,7 +41,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.InsulinTypes.ToList();
         }
 
-
+        public Guid GetApplicationId(string applicationName)
+        {
+            var app = db.Applications.Where(w => w.ApplicationName.ToLower() == applicationName.ToLower()).FirstOrDefault();
+            return (app == null) ? Guid.Empty : app.ApplicationId;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

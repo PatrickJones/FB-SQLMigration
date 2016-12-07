@@ -13,8 +13,8 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<PaymentMethod> defPaymentMethods = new List<PaymentMethod>();
-        public List<PaymentMethod> Failures = new List<PaymentMethod>();
+        List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod> defPaymentMethods = new List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod>();
 
         public PaymentMethodValidation()
         {
@@ -32,7 +32,7 @@ namespace NuLibrary.Migration.SqlValidations
 
             Array.ForEach(typeArr, a => {
                 defPaymentMethods.Add(
-                new PaymentMethod
+                new NuLibrary.Migration.SQLDatabase.EF.PaymentMethod
                 {
                     MethodName = a
                 });

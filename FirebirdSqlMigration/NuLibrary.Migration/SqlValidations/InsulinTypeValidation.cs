@@ -13,8 +13,8 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<InsulinType> defInsulinTypes = new List<InsulinType>();
-        public List<InsulinType> Failures = new List<InsulinType>();
+        List<NuLibrary.Migration.SQLDatabase.EF.InsulinType> defInsulinTypes = new List<NuLibrary.Migration.SQLDatabase.EF.InsulinType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.InsulinType> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.InsulinType>();
 
         public InsulinTypeValidation()
         {
@@ -33,7 +33,7 @@ namespace NuLibrary.Migration.SqlValidations
 
             Array.ForEach(typeArr, a => {
                 defInsulinTypes.Add(
-                new InsulinType
+                new NuLibrary.Migration.SQLDatabase.EF.InsulinType
                 {
                     Type = a
                 });

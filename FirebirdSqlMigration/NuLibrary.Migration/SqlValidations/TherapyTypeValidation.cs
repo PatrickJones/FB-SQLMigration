@@ -13,8 +13,8 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<TherapyType> defTherapyTypes = new List<TherapyType>();
-        public List<TherapyType> Failures = new List<TherapyType>();
+        List<NuLibrary.Migration.SQLDatabase.EF.TherapyType> defTherapyTypes = new List<NuLibrary.Migration.SQLDatabase.EF.TherapyType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.TherapyType> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.TherapyType>();
 
         public TherapyTypeValidation()
         {
@@ -30,7 +30,7 @@ namespace NuLibrary.Migration.SqlValidations
 
             Array.ForEach(typeArr, a => {
                 defTherapyTypes.Add(
-                new TherapyType
+                new NuLibrary.Migration.SQLDatabase.EF.TherapyType
                 {
                     TypeName = a
                 });

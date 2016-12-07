@@ -13,8 +13,8 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<ReadingEventType> defReadingEventTypes = new List<ReadingEventType>();
-        public List<ReadingEventType> Failures = new List<ReadingEventType>();
+        List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType> defReadingEventTypes = new List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType>();
 
         public ReadingEventTypeValidation()
         {
@@ -36,7 +36,7 @@ namespace NuLibrary.Migration.SqlValidations
 
             Array.ForEach(typeArr, a => {
                 defReadingEventTypes.Add(
-                new ReadingEventType
+                new NuLibrary.Migration.SQLDatabase.EF.ReadingEventType
                 {
                     EventName = a
                 });

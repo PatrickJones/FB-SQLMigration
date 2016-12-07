@@ -1,4 +1,5 @@
-﻿using NuLibrary.Migration.FBDatabase;
+﻿using NuLibrary.Migration.AppEnums;
+using NuLibrary.Migration.FBDatabase;
 using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
@@ -37,7 +38,13 @@ namespace Console.Dev
 
 
             //TestTransaction();
-            TestValidation();
+            //TestValidation();
+            CreateEnums();
+        }
+
+        private static void CreateEnums()
+        {
+            DynamicEnums de = new DynamicEnums();
         }
 
         private static void TestValidation()

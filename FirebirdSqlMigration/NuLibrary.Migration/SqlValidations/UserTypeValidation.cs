@@ -13,8 +13,8 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<UserType> defUserTypes = new List<UserType>();
-        public List<UserType> Failures = new List<UserType>();
+        List<NuLibrary.Migration.SQLDatabase.EF.UserType> defUserTypes = new List<NuLibrary.Migration.SQLDatabase.EF.UserType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.UserType> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.UserType>();
 
         public UserTypeValidation()
         {
@@ -31,7 +31,7 @@ namespace NuLibrary.Migration.SqlValidations
 
             Array.ForEach(typeArr, a => {
                 defUserTypes.Add(
-                new UserType
+                new NuLibrary.Migration.SQLDatabase.EF.UserType
                 {
                     TypeName = a
                 });

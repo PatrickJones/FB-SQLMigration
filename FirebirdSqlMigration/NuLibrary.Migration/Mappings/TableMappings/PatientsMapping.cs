@@ -47,7 +47,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 var user = new User {
                     UserId = userId,
-                    UserType = 2,
+                    UserType = (int)UserType.Patient,
                     CreationDate = DateTime.Now
                 };
 

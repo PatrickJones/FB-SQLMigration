@@ -17,5 +17,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int InsulinBrandId { get; set; }
         public string BrandName { get; set; }
         public string Manufacturer { get; set; }
+        public int InsulinType { get; set; }
     }
 }

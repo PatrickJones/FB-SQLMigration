@@ -25,6 +25,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 TableAgent = TableAgentCollection.TableAgents[FbTableName];
             }
         }
-
     }
 }

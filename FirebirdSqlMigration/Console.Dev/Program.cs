@@ -1,8 +1,11 @@
-﻿using NuLibrary.Migration.FBDatabase;
+﻿using NuLibrary.Migration.AppEnums;
+using NuLibrary.Migration.FBDatabase;
 using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
+using NuLibrary.Migration.Mappings.TableMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
+using NuLibrary.Migration.SqlValidations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,28 +18,55 @@ namespace Console.Dev
     {
         static void Main(string[] args)
         {
-            MigrationVariables.SiteId = 21002;
             //var cls = new FBDataAccess(21002);
             //cls.GetTableNames();
             //var cls = new TableAgent(999); //localhost
-
-
             //cls.GetTableSchema();
             //cls.GetData();
             //var table = cls.GetDataTable();
-
             //for (int i = 0; i < table.Columns.Count; i++)
             //{
             //    var col = table.Columns[i];
             //    System.Console.WriteLine(String.Format("Column Name: {0} - Column Type: {1}", col.ColumnName, col.DataType.Name));
             //}
-
             //var tac = new TableAgentCollection(999); Local
-            var t = TableAgentCollection.TableAgents;
 
-            System.Console.ReadLine();
+
+
+            MigrationVariables.CurrentSiteId = 20001;
+            //var t = TableAgentCollection.TableAgents;
+            //System.Console.ReadLine();
+
 
             //TestTransaction();
+            //TestValidation();
+            //CreateEnums();
+            TestPatientTransaction();
+        }
+
+        private static void CreateEnums()
+        {
+            DynamicEnums de = new DynamicEnums();
+        }
+
+        private static void TestValidation()
+        {
+            var val = new InsulinTypeValidation();
+            var valid = val.ValidateTable();
+            
+            if (!valid)
+            {
+                val.SyncTable();
+            }
+
+
+            //var valid = val.ValidateAll();
+
+            //bool failed = valid.Any(a => a.Value == false);
+
+            //System.Console.WriteLine($"Has any failed: {failed}");
+            System.Console.WriteLine(valid);
+            System.Console.ReadLine();
         }
 
         static void TestTransaction()
@@ -61,5 +91,20 @@ namespace Console.Dev
 
             //System.Console.ReadLine();
         }
+
+        static void TestPatientTransaction()
+        {
+            var pMap = new PatientsMapping();
+
+            pMap.CreatePatientMapping();
+            TransactionManager.ExecuteTransaction();
+            //var pCount = TransactionManager.DatabaseContext.Patients.Count();
+            //var dCount = TransactionManager.DatabaseContext.DatabaseInfoes.Count();
+            //System.Console.WriteLine(pCount);
+            //System.Console.WriteLine(dCount);
+
+            //System.Console.ReadLine();
+        }
+
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NuMedicsGlobalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NuMedicsGlobalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Applications">
           <Key>
             <PropertyRef Name="ApplicationId" />
@@ -13,7 +13,7 @@
           <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="256" />
           <Property Name="BannerEnable" Type="bit" Nullable="false" />
-          <Property Name="BannerMessage" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BannerMessage" Type="nvarchar(max)" />
           <Property Name="LicneseAgreement" Type="text" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -274,6 +274,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="InsulinBrandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BrandName" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="Manufacturer" Type="nvarchar" MaxLength="80" />
+          <Property Name="InsulinType" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="InsulinCarbRatio">
           <Key>
@@ -300,6 +301,13 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="InsulinMethodId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Method" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="InsulinTypes">
+          <Key>
+            <PropertyRef Name="InsulinTypeId" />
+          </Key>
+          <Property Name="InsulinTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="InsuranceAddresses">
           <Key>
@@ -697,7 +705,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <PropertyRef Name="TypeId" />
           </Key>
           <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TypeName" Type="int" Nullable="false" />
+          <Property Name="TypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_AppLoginHistories_Applications">
           <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
@@ -1385,6 +1393,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="InsulinCarbRatio" EntityType="Self.InsulinCarbRatio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsulinCorrections" EntityType="Self.InsulinCorrections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsulinMethods" EntityType="Self.InsulinMethods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InsulinTypes" EntityType="Self.InsulinTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceAddresses" EntityType="Self.InsuranceAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceContacts" EntityType="Self.InsuranceContacts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsurancePlans" EntityType="Self.InsurancePlans" Schema="dbo" store:Type="Tables" />
@@ -1655,8 +1664,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NuMedicsGlobalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1668,7 +1676,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="ApplicationId" Type="Guid" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="BannerEnable" Type="Boolean" Nullable="false" />
-          <Property Name="BannerMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BannerMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LicneseAgreement" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AppLoginHistories" Relationship="Self.FK_AppLoginHistories_Applications" FromRole="Applications" ToRole="AppLoginHistories" />
           <NavigationProperty Name="EndUserLicenseAgreements" Relationship="Self.FK_EndUserLicenseAgreements_Applications" FromRole="Applications" ToRole="EndUserLicenseAgreements" />
@@ -1938,6 +1946,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="InsulinBrandId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BrandName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Manufacturer" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="InsulinType" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="InsulinCarbRatio">
           <Key>
@@ -2380,7 +2389,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <PropertyRef Name="TypeId" />
           </Key>
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TypeName" Type="Int32" Nullable="false" />
+          <Property Name="TypeName" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="AppLoginHistory">
           <Key>
@@ -3305,7 +3314,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="InsurancePlans" EntitySet="InsurancePlans" />
             <End Role="Patients" EntitySet="Patients" />
           </AssociationSet>
+          <EntitySet Name="InsulinTypes" EntityType="NuMedicsGlobalModel.InsulinType" />
         </EntityContainer>
+        <EntityType Name="InsulinType">
+          <Key>
+            <PropertyRef Name="InsulinTypeId" />
+          </Key>
+          <Property Name="InsulinTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3576,6 +3593,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySetMapping Name="InsulinBrands">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsulinBrand">
               <MappingFragment StoreEntitySet="InsulinBrands">
+                <ScalarProperty Name="InsulinType" ColumnName="InsulinType" />
                 <ScalarProperty Name="InsulinBrandId" ColumnName="InsulinBrandId" />
                 <ScalarProperty Name="BrandName" ColumnName="BrandName" />
                 <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
@@ -4048,6 +4066,14 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               <ScalarProperty Name="UserId" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="InsulinTypes">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsulinType">
+              <MappingFragment StoreEntitySet="InsulinTypes">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="InsulinTypeId" ColumnName="InsulinTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

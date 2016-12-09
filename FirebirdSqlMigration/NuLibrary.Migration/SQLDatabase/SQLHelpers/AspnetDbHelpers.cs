@@ -1,13 +1,14 @@
-﻿using NuLibrary.Migration.SQLDatabase.EF;
+﻿using NuLibrary.Migration.Mappings;
+using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NuLibrary.Migration.Mappings
+namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 {
-    public class AspnetDbHelpers : ClientDatabaseBase
+    public class AspnetDbHelpers : DatabaseContextDisposal
     {
         AspnetDbEntities db = new AspnetDbEntities();
 
@@ -21,6 +22,20 @@ namespace NuLibrary.Migration.Mappings
             var cpUser = new clinipro_Users { UserId = userId, CliniProID = patientId };
             db.clinipro_Users.Add(cpUser);
         }
+        public aspnet_Membership GetMembershipInfo(Guid userid)
+        {
+            return db.aspnet_Membership.Where(w => w.UserId == userid).FirstOrDefault();
+        }
+
+        public aspnet_Users GetAspUserInfo(Guid userId)
+        {
+            return db.aspnet_Users.Where(w => w.UserId == userId).FirstOrDefault();
+        }
+
+        public ICollection<FirebirdConnection> GetAllFirebirdConnections()
+        {
+            return db.FirebirdConnections.ToList();
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -31,5 +46,6 @@ namespace NuLibrary.Migration.Mappings
             base.Dispose(disposing);
         }
 
+        
     }
 }

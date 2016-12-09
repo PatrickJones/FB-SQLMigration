@@ -24,11 +24,13 @@ namespace NuLibrary.Migration.Mappings
                 {
                     DatabaseContext.SaveChanges();
                     trans.Commit();
-                    DatabaseContext.Dispose();
                 }
                 catch (Exception)
                 {
                     trans.Rollback();
+                }
+                finally
+                {
                     DatabaseContext.Dispose();
                 }
             }

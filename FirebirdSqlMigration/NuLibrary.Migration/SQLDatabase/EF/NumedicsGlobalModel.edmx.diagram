@@ -115,6 +115,7 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Users" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_Institutions" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_InsurancePlans" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinType" Width="1.5" PointX="9.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -30,6 +30,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
+        MappingUtilities mu = new MappingUtilities();
 
         public void CreatePatientMapping()
         {
@@ -41,9 +42,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 // get userid from old aspnetdb matching on patientid #####.#####
                 // if no userid then create new one for this patient
-                var patId = (String)row["KEYID"];
+                var patId = row["KEYID"].ToString();
                 var uid = aHelper.GetUserIdFromPatientId(patId);
-                var userId = (uid != Guid.Empty) ? uid : new Guid();
+                var userId = (uid != Guid.Empty) ? uid : Guid.NewGuid();
                 // must create clinipro user to store new userid for future usage
                 if (uid == Guid.Empty)
                 {
@@ -88,24 +89,24 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var pat = new Patient
                 {
                     UserId = userId,
-                    MRID = (String)row["MEDICALRECORDIDENTIFIER"],
-                    Firstname = (String)row["FIRSTNAME"],
-                    Lastname = (String)row["LASTNAME"],
-                    Middlename = (String)row["MIDDLENAME"],
-                    Gender = (Int32)row["GENDER"],
-                    DateofBirth = (DateTime)row["DOB"],
-                    Email = (String)row["EMAIL"]
+                    MRID = (row["MEDICALRECORDIDENTIFIER"] is DBNull) ? String.Empty : row["MEDICALRECORDIDENTIFIER"].ToString(),
+                    Firstname = (row["FIRSTNAME"] is DBNull) ? String.Empty : row["FIRSTNAME"].ToString(),
+                    Lastname = (row["LASTNAME"] is DBNull) ? String.Empty : row["LASTNAME"].ToString(),
+                    Middlename = (row["MIDDLENAME"] is DBNull) ? String.Empty : row["MIDDLENAME"].ToString(),
+                    Gender = (row["GENDER"] is DBNull) ? 1 : (row["GENDER"].ToString().ToLower().StartsWith("m", StringComparison.CurrentCulture)) ? 2 : 3, //From the GlobalStandards database, 'Gender' table
+                    DateofBirth = (row["DOB"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["DOB"].ToString()),
+                    Email = (row["EMAIL"] is DBNull) ? String.Empty : row["EMAIL"].ToString()
                 };
 
                 var adr = new PatientAddress {
-                    Street1 = (String)row["STREET1"],
-                    Street2 = (String)row["STREET2"],
-                    Street3 = (String)row["STREET3"],
-                    City = (String)row["CITY"],
-                    County = (String)row["COUNTY"],
-                    State = (String)row["STATE"],
-                    Zip = (String)row["ZIP"],
-                    Country = (String)row["COUNTRY"]
+                    Street1 = (row["STREET1"] is DBNull) ? String.Empty : row["STREET1"].ToString(),
+                    Street2 = (row["STREET2"] is DBNull) ? String.Empty : row["STREET2"].ToString(),
+                    Street3 = (row["STREET3"] is DBNull) ? String.Empty : row["STREET3"].ToString(),
+                    City = (row["CITY"] is DBNull) ? String.Empty : row["CITY"].ToString(),
+                    County = (row["COUNTY"] is DBNull) ? String.Empty : row["COUNTY"].ToString(),
+                    State = (row["STATE"] is DBNull) ? String.Empty : row["STATE"].ToString(),
+                    Zip = (row["ZIP"] is DBNull) ? String.Empty : row["ZIP"].ToString(),
+                    Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString()
                 };
 
 

@@ -21,18 +21,19 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
         /// <summary>
         /// Populates a collection of TableAgents based on all Firebird Table names
         /// </summary>
-        private static void Populate()
+        public static void Populate()
         {
             Parallel.ForEach(MigrationVariables.FirebirdTableNames.ToArray(), t =>
             {
                 TableAgents.AddOrUpdate(t, new TableAgent(t), (k, v) => TableAgents[k] = v);
             });
         }
+
         /// <summary>
         /// Populates a collection of TableAgents based on select Firebird Table names
         /// </summary>
         /// <param name="tableNames"></param>
-        private static void Populate(ICollection<string> tableNames)
+        public static void Populate(ICollection<string> tableNames)
         {
             var temp = from tn in tableNames
                        from ft in MigrationVariables.FirebirdTableNames

@@ -66,6 +66,8 @@ namespace NuLibrary.Migration.Mappings
             return dict;
         }
 
+
+
         public Pump FindPatientPump(Guid userId)
         {
             var pump = db.Pumps.Where(x => x.UserId == userId).FirstOrDefault();
@@ -103,6 +105,20 @@ namespace NuLibrary.Migration.Mappings
 
             return ips;
         }
+
+        public DateTime ParseFirebirdDateTime(string datetime)
+        {
+            DateTime dt = new DateTime(1800, 1, 1);
+            var parse = DateTime.TryParse(datetime, out dt);
+
+            if (dt < new DateTime(1800,1,1) || dt > DateTime.Now)
+            {
+                dt = new DateTime(1800, 1, 1);
+            }
+
+            return dt;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

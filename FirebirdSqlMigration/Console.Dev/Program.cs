@@ -3,6 +3,7 @@ using NuLibrary.Migration.FBDatabase;
 using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
+using NuLibrary.Migration.Mappings.TableMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SqlValidations;
 using System;
@@ -32,14 +33,15 @@ namespace Console.Dev
 
 
 
-            //MigrationVariables.SiteId = 21002;
+            MigrationVariables.CurrentSiteId = 20001;
             //var t = TableAgentCollection.TableAgents;
             //System.Console.ReadLine();
 
 
             //TestTransaction();
             //TestValidation();
-            CreateEnums();
+            //CreateEnums();
+            TestPatientTransaction();
         }
 
         private static void CreateEnums()
@@ -89,5 +91,20 @@ namespace Console.Dev
 
             //System.Console.ReadLine();
         }
+
+        static void TestPatientTransaction()
+        {
+            var pMap = new PatientsMapping();
+
+            pMap.CreatePatientMapping();
+            TransactionManager.ExecuteTransaction();
+            //var pCount = TransactionManager.DatabaseContext.Patients.Count();
+            //var dCount = TransactionManager.DatabaseContext.DatabaseInfoes.Count();
+            //System.Console.WriteLine(pCount);
+            //System.Console.WriteLine(dCount);
+
+            //System.Console.ReadLine();
+        }
+
     }
 }

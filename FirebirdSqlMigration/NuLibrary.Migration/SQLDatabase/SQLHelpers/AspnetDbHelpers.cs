@@ -32,6 +32,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.aspnet_Users.Where(w => w.UserId == userId).FirstOrDefault();
         }
 
+        public ICollection<FirebirdConnection> GetAllFirebirdConnections()
+        {
+            return db.FirebirdConnections.ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

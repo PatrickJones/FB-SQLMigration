@@ -29,7 +29,7 @@ namespace NuLibrary.Migration.FBDatabase
         /// <param name="siteId">The site identifier.</param>
         public FBDataAccess()
         {
-            SiteId = MigrationVariables.SiteId;
+            SiteId = MigrationVariables.CurrentSiteId;
         }
         /// <summary>
         /// Gets the database provider.

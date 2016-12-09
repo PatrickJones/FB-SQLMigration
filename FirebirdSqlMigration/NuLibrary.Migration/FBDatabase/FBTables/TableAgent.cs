@@ -81,11 +81,13 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
                     }
                 }
 
+                if (TableName != "METERREADINGHEADER" && TableName != "METERREADING")
+                {
+                    string queryStr = $"Select * from {TableName}";
+                    var adt = new FbDataAdapter(queryStr, cn);
 
-                //string queryStr = $"Select * from {TableName}";
-                //var adt = new FbDataAdapter(queryStr, cn);
-
-                //adt.Fill(DataSet, TableName);
+                    adt.Fill(DataSet, TableName);
+                }
             }
             Console.WriteLine(RowCount);
         }

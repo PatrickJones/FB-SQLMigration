@@ -52,6 +52,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 }
                 else
                 {
+                    //only create authentication record if user has current login
                     var appId = nHelper.GetApplicationId("Diabetes Partner");
                     member = aHelper.GetMembershipInfo(uid);
                     aspUser = aHelper.GetAspUserInfo(uid);
@@ -73,18 +74,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             IsTempPassword = member.IsTemp,
                             IsloggedIn = false
                         };
-
                     }
                 }
-
-
 
                 var user = new User {
                     UserId = userId,
                     UserType = (int)UserType.Patient,
                     CreationDate = DateTime.Now
                 };
-
 
                 var pat = new Patient
                 {
@@ -108,7 +105,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     Zip = (row["ZIP"] is DBNull) ? String.Empty : row["ZIP"].ToString(),
                     Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString()
                 };
-
 
                 if (uAuth != null)
                 {

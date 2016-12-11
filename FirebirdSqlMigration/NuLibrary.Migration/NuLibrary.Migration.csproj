@@ -79,6 +79,7 @@
     <Compile Include="Mappings\TableMappings\BaseMapping.cs" />
     <Compile Include="Mappings\TableMappings\ClinicianMapping.cs" />
     <Compile Include="Mappings\TableMappings\DMDataMapping.cs" />
+    <Compile Include="Mappings\TableMappings\InstitutionMapping.cs" />
     <Compile Include="Mappings\TableMappings\InsuranceCompaniesMapping.cs" />
     <Compile Include="Mappings\TableMappings\InsurancePlansMapping.cs" />
     <Compile Include="Mappings\TableMappings\DeviceMeterReadingHeaderMapping.cs" />

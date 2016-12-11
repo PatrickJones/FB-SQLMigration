@@ -12,7 +12,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     {
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
-        MappingUtilities mu = new MappingUtilities();
 
         public void CreateClinicianMapping()
         {

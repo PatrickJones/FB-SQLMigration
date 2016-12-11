@@ -17,13 +17,18 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             var user = db.clinipro_Users.Where(c => c.CliniProID == patientId).FirstOrDefault();
             return (user != null) ? user.UserId : Guid.Empty;
         }
-        internal void CreateCliniProUser(Guid userId, string patientId)
+        public void CreateCliniProUser(Guid userId, string patientId)
         {
             var cpUser = new clinipro_Users { UserId = userId, CliniProID = patientId };
             db.clinipro_Users.Add(cpUser);
         }
 
-        internal string GetCorporationName(int? cPSiteId)
+        public string GetCorporationName(int? cPSiteId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid GetInstitutionId(int? cPSiteId)
         {
             throw new NotImplementedException();
         }
@@ -55,11 +60,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        internal Guid GetInstitutionId(int? cPSiteId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

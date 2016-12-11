@@ -22,6 +22,12 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             var cpUser = new clinipro_Users { UserId = userId, CliniProID = patientId };
             db.clinipro_Users.Add(cpUser);
         }
+
+        internal string GetCorporationName(int? cPSiteId)
+        {
+            throw new NotImplementedException();
+        }
+
         public aspnet_Membership GetMembershipInfo(Guid userid)
         {
             return db.aspnet_Membership.Where(w => w.UserId == userid).FirstOrDefault();
@@ -37,6 +43,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.FirebirdConnections.ToList();
         }
 
+        public ICollection<clinipro_Users> GetAllAdmins()
+        {
+            return db.clinipro_Users.Where(w => w.CliniProID.ToLower() == "admin").ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -46,6 +57,9 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             base.Dispose(disposing);
         }
 
-        
+        internal Guid GetInstitutionId(int? cPSiteId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -41,7 +41,21 @@ namespace Console.Dev
             //TestTransaction();
             //TestValidation();
             //CreateEnums();
-            TestPatientTransaction();
+            //TestPatientTransaction();
+            //TestInstitutionMapping();
+            TestClinicianMapping();
+        }
+
+        private static void TestClinicianMapping()
+        {
+            var cMap = new ClinicianMapping();
+            cMap.CreateClinicianMapping();
+        }
+
+        private static void TestInstitutionMapping()
+        {
+            var iMap = new InstitutionMapping();
+            iMap.CreateInstitutionMapping();
         }
 
         private static void CreateEnums()

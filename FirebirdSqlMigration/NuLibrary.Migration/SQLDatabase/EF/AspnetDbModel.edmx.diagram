@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="aspnetdbModel.aspnet_Users" Width="1.5" PointX="3.375" PointY="1.125" />
         <EntityTypeShape EntityType="aspnetdbModel.clinipro_Users" Width="1.5" PointX="5.625" PointY="1" />
         <AssociationConnector Association="aspnetdbModel.FK_clinipro_Users_aspnet_Users" />
+        <EntityTypeShape EntityType="aspnetdbModel.CorporationsView" Width="1.5" PointX="5.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

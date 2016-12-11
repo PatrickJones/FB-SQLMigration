@@ -72,7 +72,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     Firstname = String.Empty,
                     Lastname = String.Empty,
                     StateLicenseNumber = String.Empty,
-                    InstitutionId = aHelper.GetInstitutionId(adUser.CPSiteId)
+                    InstitutionId = nHelper.GetInstitutionId(adUser.CPSiteId)
                 };
 
                 user.UserAuthentications.Add(uAuth);

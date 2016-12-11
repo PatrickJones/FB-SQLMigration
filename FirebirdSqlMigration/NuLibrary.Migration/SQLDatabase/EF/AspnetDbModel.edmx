@@ -85,6 +85,27 @@
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
           <Property Name="ConnectionLifeTime" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CorporationsView">
+          <Key>
+            <PropertyRef Name="Corp_Name" />
+            <PropertyRef Name="Site_Name" />
+            <PropertyRef Name="Location_Name" />
+            <PropertyRef Name="DatabaseLocation" />
+            <PropertyRef Name="DatasourceServer" />
+            <PropertyRef Name="Port" />
+          </Key>
+          <Property Name="Corp_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Site_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Location_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DatabaseLocation" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="DatasourceServer" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Port" Type="int" Nullable="false" />
+          <Property Name="SiteId" Type="int" />
+          <Property Name="SiteName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Location" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <Association Name="FK_clinipro_Users_aspnet_Users">
           <End Role="aspnet_Users" Type="Self.aspnet_Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -104,6 +125,19 @@
           <EntitySet Name="aspnet_Users" EntityType="Self.aspnet_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="clinipro_Users" EntityType="Self.clinipro_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FirebirdConnections" EntityType="Self.FirebirdConnections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorporationsView" EntityType="Self.CorporationsView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CorporationsView].[Corp_Name] AS [Corp_Name], 
+    [CorporationsView].[Site_Name] AS [Site_Name], 
+    [CorporationsView].[Location_Name] AS [Location_Name], 
+    [CorporationsView].[DatabaseLocation] AS [DatabaseLocation], 
+    [CorporationsView].[DatasourceServer] AS [DatasourceServer], 
+    [CorporationsView].[Port] AS [Port], 
+    [CorporationsView].[SiteId] AS [SiteId], 
+    [CorporationsView].[SiteName] AS [SiteName], 
+    [CorporationsView].[Location] AS [Location]
+    FROM [dbo].[CorporationsView] AS [CorporationsView]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_clinipro_Users_aspnet_Users" Association="Self.FK_clinipro_Users_aspnet_Users">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="clinipro_Users" EntitySet="clinipro_Users" />
@@ -146,6 +180,7 @@
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="clinipro_Users" EntitySet="clinipro_Users" />
           </AssociationSet>
+          <EntitySet Name="CorporationsViews" EntityType="aspnetdbModel.CorporationsView" />
         </EntityContainer>
         <EntityType Name="aspnet_Membership">
           <Key>
@@ -219,6 +254,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CorporationsView">
+          <Key>
+            <PropertyRef Name="Corp_Name" />
+            <PropertyRef Name="Site_Name" />
+            <PropertyRef Name="Location_Name" />
+            <PropertyRef Name="DatabaseLocation" />
+            <PropertyRef Name="DatasourceServer" />
+            <PropertyRef Name="Port" />
+          </Key>
+          <Property Name="Corp_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Site_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DatabaseLocation" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DatasourceServer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Port" Type="Int32" Nullable="false" />
+          <Property Name="SiteId" Type="Int32" />
+          <Property Name="SiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -306,6 +360,21 @@
                 <ScalarProperty Name="CPSiteId" ColumnName="CPSiteId" />
                 <ScalarProperty Name="CliniProID" ColumnName="CliniProID" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorporationsViews">
+            <EntityTypeMapping TypeName="aspnetdbModel.CorporationsView">
+              <MappingFragment StoreEntitySet="CorporationsView">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="DatasourceServer" ColumnName="DatasourceServer" />
+                <ScalarProperty Name="DatabaseLocation" ColumnName="DatabaseLocation" />
+                <ScalarProperty Name="Location_Name" ColumnName="Location_Name" />
+                <ScalarProperty Name="Site_Name" ColumnName="Site_Name" />
+                <ScalarProperty Name="Corp_Name" ColumnName="Corp_Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

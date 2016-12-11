@@ -17,6 +17,12 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             var user = db.clinipro_Users.Where(c => c.CliniProID == patientId).FirstOrDefault();
             return (user != null) ? user.UserId : Guid.Empty;
         }
+
+        public ICollection<CorporationsView> GetAllCorporationInfo()
+        {
+            return db.CorporationsViews.ToList();
+        }
+
         public void CreateCliniProUser(Guid userId, string patientId)
         {
             var cpUser = new clinipro_Users { UserId = userId, CliniProID = patientId };
@@ -25,12 +31,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         public string GetCorporationName(int? cPSiteId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Guid GetInstitutionId(int? cPSiteId)
-        {
-            throw new NotImplementedException();
+            return (cPSiteId.HasValue) ? db.CorporationsViews.Where(w => w.SiteId == cPSiteId.Value).Select(s => s.Corp_Name).FirstOrDefault() : String.Empty;
         }
 
         public aspnet_Membership GetMembershipInfo(Guid userid)

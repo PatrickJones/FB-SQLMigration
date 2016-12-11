@@ -46,6 +46,12 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             var app = db.Applications.Where(w => w.ApplicationName.ToLower() == applicationName.ToLower()).FirstOrDefault();
             return (app == null) ? Guid.Empty : app.ApplicationId;
         }
+
+        public Guid GetInstitutionId(int? cPSiteId)
+        {
+            return (cPSiteId.HasValue) ? db.Institutions.Where(w => w.LegacySiteId == cPSiteId.Value).Select(s => s.InstitutionId).FirstOrDefault() : Guid.Empty;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -55,5 +61,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             base.Dispose(disposing);
         }
 
+        
     }
 }

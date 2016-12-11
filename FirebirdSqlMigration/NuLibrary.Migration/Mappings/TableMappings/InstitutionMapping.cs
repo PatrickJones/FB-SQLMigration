@@ -22,7 +22,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 {
                     InstitutionId = Guid.NewGuid(),
                     Name = ins.Site_Name,
-                    LegacySiteId = ins.SiteId
+                    LegacySiteId = (ins.SiteId.HasValue) ? ins.SiteId.Value : 0
                 };
 
                 TransactionManager.DatabaseContext.Institutions.Add(inst);

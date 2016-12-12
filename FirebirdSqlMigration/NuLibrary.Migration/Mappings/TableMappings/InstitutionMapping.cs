@@ -27,6 +27,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.Institutions.Add(inst);
             }
-        }
+        } 
     }
 }

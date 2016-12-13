@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\ITableData.cs" />
     <Compile Include="Interfaces\ITableValidate.cs" />
     <Compile Include="Mappings\ClientDatabaseBase.cs" />
+    <Compile Include="Mappings\InMemoryMappings\MemoryInsuranceCompanys.cs" />
     <Compile Include="Mappings\MappingExecutionManager.cs" />
     <Compile Include="Mappings\MappingUtilities.cs" />
     <Compile Include="Mappings\TableMappings\BaseMapping.cs" />

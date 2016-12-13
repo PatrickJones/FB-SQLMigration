@@ -1,4 +1,5 @@
 ﻿using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,43 @@ namespace NuLibrary.Migration.Mappings
             return dmType.TypeId;
         }
 
+        public string GetInsurancePlanType(string plan)
+        {
+            switch (plan)
+            {
+                case "1":
+                    return "Assignment";
+                case "2":
+                    return "Cash";
+                case "3":
+                    return "FFS";
+                case "4":
+                    return "HMO";
+                case "5":
+                    return "Indemnity";
+                case "6":
+                    return "Medicaid";
+                case "7":
+                    return "Medicaid HMO";
+                case "8":
+                    return "PPO";
+                case "9":
+                    return "Unstated";
+                case "12":
+                    return "Medicare";
+                case "13":
+                    return "Medicare Supplement";
+                case "14":
+                    return "Private Insurance";
+                case "15":
+                    return "MediCal Fee for Service";
+                case "16":
+                    return "MediCal HMO";
+                default:
+                    return String.Empty;
+            }
+        }
+
         public Dictionary<string, bool> ParseDMControlTypes(int typeValue)
         {
             var dict = new Dictionary<string, bool>();
@@ -67,6 +105,18 @@ namespace NuLibrary.Migration.Mappings
         }
 
 
+        public decimal ParseMoney(string money)
+        {
+            if (String.IsNullOrEmpty(money))
+            {
+                return 0;
+            }
+
+            decimal result = 0M;
+            bool parse = Decimal.TryParse(money, out result);
+
+            return result;
+        }
 
         public Pump FindPatientPump(Guid userId)
         {

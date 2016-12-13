@@ -29,7 +29,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         }
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
-
+        MappingUtilities map = new MappingUtilities();
+        NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
 
         public void CreateInsurancePlansMapping()
         {
@@ -45,17 +46,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var insp = new InsurancePlan
                     {
                         UserId = userId,
-                        PlanType = (String)row["INSTYPEID"], // is an int in firebird, may need to convert
-                        PlanIdentifier = (String)row["PLANIDENTIFIER"],
-                        PolicyNumber = (String)row["POLICYNUMBER"],
-                        GroupName = (String)row["GROUPNAME"],
-                        GroupIdentifier = (String)row["GROUPNUMBER"],
-                        CoPay = (Decimal)row["COPAY"], // is a double precision in firebird, may need to convert
-                        Purchaser = (String)row["PURCHASER"],
-                        IsActive = (bool)row["ISACTIVE"], // is a char(1) in firebird, may need to convert
-                        InActiveDate = (DateTime)row["INACTIVEDATE"],
-                        EffectiveDate = (DateTime)row["EFFECTIVEDATE"],
-                        CompanyId = (int)row["INSCOID"] //is a double precision in firebird, may need to convert
+                        PlanType = (row["INSTYPEID"] is DBNull) ? String.Empty : map.GetInsurancePlanType(row["INSTYPEID"].ToString()),
+                        PlanIdentifier = (row["PLANIDENTIFIER"] is DBNull) ? String.Empty : row["PLANIDENTIFIER"].ToString(),
+                        PolicyNumber = (row["POLICYNUMBER"] is DBNull) ? String.Empty : row["POLICYNUMBER"].ToString(),
+                        GroupName = (row["GROUPNAME"] is DBNull) ? String.Empty : row["GROUPNAME"].ToString(),
+                        GroupIdentifier = (row["GROUPNUMBER"] is DBNull) ? String.Empty : row["GROUPNUMBER"].ToString(),
+                        CoPay = (row["COPAY"] is DBNull) ? 0 : map.ParseMoney(row["COPAY"].ToString()),
+                        Purchaser = (row["PURCHASER"] is DBNull) ? String.Empty : row["PURCHASER"].ToString(),
+                        IsActive = (row["ISACTIVE"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISACTIVE"].ToString()),
+                        InActiveDate = (row["INACTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString()),
+                        EffectiveDate = (row["EFFECTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["EFFECTIVEDATE"].ToString()),
+                        CompanyId = nHelper.GetInsuranceCompanyId(row["INSCOID"].ToString()) //(int)row["INSCOID"] //is a double precision in firebird, may need to convert
                     };
 
                     TransactionManager.DatabaseContext.InsurancePlans.Add(insp);

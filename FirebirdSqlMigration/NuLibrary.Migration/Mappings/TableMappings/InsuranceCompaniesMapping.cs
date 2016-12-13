@@ -1,4 +1,5 @@
 ﻿using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
@@ -27,40 +28,53 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         }
 
+        MappingUtilities map = new MappingUtilities();
+
+
         public void CreatePatientMapping()
         {
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
-                var ips = new InsuranceProvider
+                if (!String.IsNullOrEmpty(row["NAME"].ToString()))
                 {
-                    CompanyId = (Int32)row["KEYID"],
-                    Name = (String)row["NAME"],
-                    IsActive = (Boolean)row["ISACTIVE"],
-                    InActiveDate = (DateTime)row["INACTIVEDATE"]
-                };
+                    var name = row["NAME"].ToString();
+                    var kId = row["KEYID"].ToString();
 
-                var adr = new InsuranceAddress
-                {
-                    Street1 = (String)row["STREET1"],
-                    Street2 = (String)row["STREET2"],
-                    Street3 = (String)row["STREET3"],
-                    City = (String)row["CITY"],
-                    County = (String)row["COUNTY"],
-                    State = (String)row["STATE"],
-                    Zip = (String)row["ZIP"],
-                    Country = (String)row["COUNTRY"]
-                };
+                    if (!MemoryInsuranceCompanys.Companies.ContainsKey(kId))
+                    {
+                        MemoryInsuranceCompanys.Companies.Add(kId, name);
+                    }
 
-                var cont = new InsuranceContact
-                {
-                    FullName = (String)row["CONTACTNAME"],
-                    Email = (String)row["EMAIL"]
-                };
+                    var ips = new InsuranceProvider
+                    {
+                        Name = name,
+                        IsActive = map.ParseFirebirdBoolean(row["ISACTIVE"].ToString()),
+                        InActiveDate = map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString())
+                    };
 
-                ips.InsuranceAddresses.Add(adr);
-                ips.InsuranceContacts.Add(cont);
+                    var adr = new InsuranceAddress
+                    {
+                        Street1 = (row["STREET1"] is DBNull) ? String.Empty : row["STREET1"].ToString(),
+                        Street2 = (row["STREET2"] is DBNull) ? String.Empty : row["STREET2"].ToString(),
+                        Street3 = (row["STREET3"] is DBNull) ? String.Empty : row["STREET3"].ToString(),
+                        City = (row["CITY"] is DBNull) ? String.Empty : row["CITY"].ToString(),
+                        County = (row["COUNTY"] is DBNull) ? String.Empty : row["COUNTY"].ToString(),
+                        State = (row["STATE"] is DBNull) ? String.Empty : row["STATE"].ToString(),
+                        Zip = (row["ZIP"] is DBNull) ? String.Empty : row["ZIP"].ToString(),
+                        Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString()
+                    };
 
-                TransactionManager.DatabaseContext.InsuranceProviders.Add(ips);
+                    var cont = new InsuranceContact
+                    {
+                        FullName = (row["CONTACTNAME"] is DBNull) ? String.Empty : row["CONTACTNAME"].ToString(),
+                        Email = (row["EMAIL"] is DBNull) ? String.Empty : row["EMAIL"].ToString()
+                    };
+
+                    ips.InsuranceAddresses.Add(adr);
+                    ips.InsuranceContacts.Add(cont);
+
+                    TransactionManager.DatabaseContext.InsuranceProviders.Add(ips);
+                }
             }
         }
     }

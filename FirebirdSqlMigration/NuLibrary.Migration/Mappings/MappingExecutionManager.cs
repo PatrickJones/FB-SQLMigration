@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NuLibrary.Migration.SqlValidations;
+using NuLibrary.Migration.Mappings.TableMappings;
 
 namespace NuLibrary.Migration.Mappings
 {
@@ -24,42 +25,48 @@ namespace NuLibrary.Migration.Mappings
 
         private void ExecuteInstitutionMapping()
         {
-            throw new NotImplementedException();
+            InstitutionMapping map = new InstitutionMapping();
+            map.CreateInstitutionMapping();
 
             ExecuteClinicianMapping();
         }
 
         private void ExecuteClinicianMapping()
         {
-            throw new NotImplementedException();
+            ClinicianMapping map = new ClinicianMapping();
+            map.CreateClinicianMapping();
 
             ExecutePatientMapping();
         }
 
         private void ExecutePatientMapping()
         {
-            throw new NotImplementedException();
+            PatientsMapping map = new PatientsMapping();
+            map.CreatePatientMapping();
 
             ExecutePatientPhoneMapping();
         }
 
         private void ExecutePatientPhoneMapping()
         {
-            throw new NotImplementedException();
+            PatientPhoneNumbersMapping map = new PatientPhoneNumbersMapping();
+            map.CreatePatientPhoneNumbersMapping();
 
             ExecuteInsuranceCompanyMapping();
         }
 
         private void ExecuteInsuranceCompanyMapping()
         {
-            throw new NotImplementedException();
+            InsuranceCompaniesMapping map = new InsuranceCompaniesMapping();
+            map.CreatePatientMapping();
 
             ExecuteInsurancePlanMapping();
         }
 
         private void ExecuteInsurancePlanMapping()
         {
-            throw new NotImplementedException();
+            InsurancePlansMapping map = new InsurancePlansMapping();
+            map.CreateInsurancePlansMapping();
         }
     }
 }

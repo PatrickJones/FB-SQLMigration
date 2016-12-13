@@ -119,6 +119,44 @@ namespace NuLibrary.Migration.Mappings
             return dt;
         }
 
+        public bool ParseFirebirdBoolean(string character)
+        {
+            if (String.IsNullOrEmpty(character))
+            {
+                return false;
+            }
+
+            switch (character.ToLower())
+            {
+                case "t":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public int ParseFirebirdPhoneTypes(string pType)
+        {
+            if (String.IsNullOrEmpty(pType))
+            {
+                return 0;
+            }
+
+            switch (pType.ToLower())
+            {
+                case "cell":
+                    return 3;
+                case "fax":
+                    return 4;
+                case "home":
+                    return 1;
+                case "work":
+                    return 2;
+                default:
+                    return 0;
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -25,7 +25,7 @@ namespace NuLibrary.Migration.SqlValidations
         {
             string[] typeArr = {
                 "Completed",
-                "Canceled",
+                "Cancelled",
                 "Pending",
                 "RejectedByBank"
             };

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.SqlValidations
 {
-    public class ValiateTables
+    public class ValidateTables
     {
         List<ITableValidate> valTables = new List<ITableValidate>();
         Dictionary<string, bool> tableValidations = new Dictionary<string, bool>();
 
-        public ValiateTables()
+        public ValidateTables()
         {
             Intit();
         }

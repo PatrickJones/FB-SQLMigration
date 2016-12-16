@@ -43,7 +43,21 @@ namespace Console.Dev
             //CreateEnums();
             //TestPatientTransaction();
             //TestInstitutionMapping();
-            TestClinicianMapping();
+            //TestClinicianMapping();
+            TestDmdataMapping();
+        }
+
+        private static void TestDmdataMapping()
+        {
+            MigrationVariables.Init();
+            TableAgentCollection.Populate(new List<string> { "PATIENTS", "DMDATA" });
+
+            PatientsMapping pMap = new PatientsMapping();
+            pMap.CreatePatientMapping();
+
+
+            DMDataMapping map = new DMDataMapping();
+            map.CreateDMDataMapping();
         }
 
         private static void TestClinicianMapping()

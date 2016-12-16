@@ -3,25 +3,21 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NuLibrary.Migration.GlobalVar;
-using NuLibrary.Migration.FBDatabase;
 using System.Linq;
 
 namespace NuLibrary.Migration.Test
 {
     /// <summary>
-    /// Summary description for FBDataAccessTest
+    /// Summary description for MigrationVariablesTest
     /// </summary>
     [TestClass]
-    public class FBDataAccessTest
+    public class MigrationVariablesTest
     {
-        FBDataAccess da;
-
-        public FBDataAccessTest()
+        public MigrationVariablesTest()
         {
-            MigrationVariables.CurrentSiteId = 355;
-            MigrationVariables.Init();
-
-            da = new FBDataAccess();
+            //
+            // TODO: Add constructor logic here
+            //
         }
 
         private TestContext testContextInstance;
@@ -65,39 +61,30 @@ namespace NuLibrary.Migration.Test
         #endregion
 
         [TestMethod]
-        public void Verify_DbProvider()
+        public void Verify_SiteId_Change_Loads_Tables()
         {
-            Assert.AreEqual("FirebirdSql.Data.FirebirdClient", da.DatabaseProvider);
+            Assert.IsTrue(MigrationVariables.FirebirdTableNames.Count == 0);
+
+            MigrationVariables.CurrentSiteId = 355;
+
+            Assert.IsTrue(MigrationVariables.FirebirdTableNames.Count > 0);
         }
 
         [TestMethod]
-        public void Verify_ConnectionString()
+        public void Load_Firebird_Tablenames()
         {
-            var conn = da.GetConnnection();
+            MigrationVariables.CurrentSiteId = 355;
 
-            Assert.IsTrue(conn.ConnectionString.Contains("sysdba"));
-            Assert.IsTrue(conn.ConnectionString.Contains("masterkey"));
-            Assert.IsTrue(conn.ConnectionString.Contains("UnitTest"));
+            Assert.IsTrue(MigrationVariables.FirebirdTableNames.Count > 0);
         }
 
         [TestMethod]
-        public void Table_Names()
+        public void Load_SiteIds()
         {
-            var tNames = da.GetTableNames();
+            MigrationVariables.CurrentSiteId = 355;
+            MigrationVariables.Init();
 
-            Assert.IsTrue(tNames.Count > 0);
-            Assert.IsTrue(tNames.Any(a => a == "PATIENTS"));
-            Assert.IsTrue(tNames.Any(a => a == "METERREADINGHEADER"));
-            Assert.IsTrue(tNames.Any(a => a == "METERREADING"));
-            Assert.IsTrue(tNames.Any(a => a == "DMDATA"));
-            Assert.IsTrue(tNames.Any(a => a == "INSURANCECOS"));
-            Assert.IsTrue(tNames.Any(a => a == "INSURANCEPLANS2"));
-            Assert.IsTrue(tNames.Any(a => a == "PHONENUMBERS"));
-            Assert.IsTrue(tNames.Any(a => a == "PATIENTPUMPPROGRAM"));
-            Assert.IsTrue(tNames.Any(a => a == "INSULETPUMPSETTINGS"));
-            Assert.IsTrue(tNames.Any(a => a == "PATIENTPUMP"));
-            Assert.IsTrue(tNames.Any(a => a == "PUMPTIMESLOTS"));
-            Assert.IsTrue(tNames.Any(a => a == "TIMESLOT"));
+            Assert.IsTrue(MigrationVariables.SiteIds.Count > 0);
         }
     }
 }

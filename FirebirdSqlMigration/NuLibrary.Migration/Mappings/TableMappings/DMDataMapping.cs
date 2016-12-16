@@ -38,7 +38,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
             {
                 // get userid from old aspnetdb matching on patientid #####.#####
-                var patId = (String)row["PATIENTID"];
+                var patId = row["PATIENTID"].ToString();
                 var userId = aHelper.GetUserIdFromPatientId(patId);
 
                 if (userId != Guid.Empty)
@@ -46,12 +46,12 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var dm = new DiabetesManagementData
                     {
                         UserId = userId,
-                        LowBGLevel = (Int32)row["LOWBGLEVEL"],
-                        HighBGLevel = (Int32)row["HighBGLevel"],
-                        PremealTarget = (Int32)row["PremealTarget"],
-                        PostmealTarget = (Int32)row["PostmealTarget"],
-                        ModifiedDate = (DateTime)row["ModifiedDate"],
-                        ModifiedUserId = (Guid)row["ModifiedUserId"]
+                        LowBGLevel = (row["LOWBGLEVEL"] is DBNull) ? 19 : (Int32)row["LOWBGLEVEL"],
+                        HighBGLevel = (row["HighBGLevel"] is DBNull) ? 201 : (Int32)row["HighBGLevel"],
+                        PremealTarget = (row["PremealTarget"] is DBNull) ? 50 : (Int32)row["PremealTarget"],
+                        PostmealTarget = (row["PostmealTarget"] is DBNull) ? 50 : (Int32)row["PostmealTarget"],
+                        ModifiedDate = (row["ModifiedDate"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["ModifiedDate"].ToString()),
+                        ModifiedUserId = (row["ModifiedUserId"] is DBNull) ? Guid.Empty : mu.ParseGUID(row["ModifiedUserId"].ToString())
                     };
 
 

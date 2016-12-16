@@ -85,6 +85,14 @@ namespace NuLibrary.Migration.Mappings
             }
         }
 
+        public Guid ParseGUID(string guid)
+        {
+            Guid g = Guid.Empty;
+            var parse = Guid.TryParse(guid, out g);
+
+            return g;
+        }
+
         public Dictionary<string, bool> ParseDMControlTypes(int typeValue)
         {
             var dict = new Dictionary<string, bool>();

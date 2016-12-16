@@ -16,6 +16,8 @@ namespace NuLibrary.Migration.FBDatabase
 {
     public class FBDataAccess : DatabaseAccessADO
     {
+        public string DatabaseProvider { get { return "FirebirdSql.Data.FirebirdClient"; } }
+
         /// <summary>
         /// Gets or sets the site identifier.
         /// </summary>
@@ -37,7 +39,7 @@ namespace NuLibrary.Migration.FBDatabase
         /// <returns></returns>
         public override DbProviderFactory GetDbProvider()
         {
-            return DbProviderFactories.GetFactory("FirebirdSql.Data.FirebirdClient");
+            return DbProviderFactories.GetFactory(DatabaseProvider);
         }
         /// <summary>
         /// Gets the database connnection.
@@ -61,7 +63,9 @@ namespace NuLibrary.Migration.FBDatabase
 
             var dbConn = GetDbProvider();
             DbConnection conn = dbConn.CreateConnection();
-             conn.ConnectionString = connStr;
+            conn.ConnectionString = connStr;
+
+            System.Diagnostics.Debug.WriteLine($"Current Conncetionsting: {connStr}");
 
             return conn;
         }
@@ -135,17 +139,15 @@ namespace NuLibrary.Migration.FBDatabase
 
                     foreach (System.Data.DataRow row in tableNames.Rows)
                     {
-                        Console.WriteLine("Table Name = {0}", row["TABLE_NAME"]);
-
                         if (!row["TABLE_NAME"].ToString().Contains("$"))
                         {
                             results.Add((string)row["TABLE_NAME"]);
+                            System.Diagnostics.Debug.WriteLine($"Adding table: {row["TABLE_NAME"]}");
                         }
                     }
                     cn.Close();
                 }
             }
-            Console.ReadLine();
             return results;
         }
     }

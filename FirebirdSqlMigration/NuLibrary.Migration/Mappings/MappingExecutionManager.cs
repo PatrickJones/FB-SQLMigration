@@ -67,6 +67,27 @@ namespace NuLibrary.Migration.Mappings
         {
             InsurancePlansMapping map = new InsurancePlansMapping();
             map.CreateInsurancePlansMapping();
+
+            ExecuteCareSettingMapping();
+        }
+
+        private void ExecuteCareSettingMapping()
+        {
+            throw new NotImplementedException();
+
+            ExecuteDailyTimeSlotsMapping();
+        }
+
+        private void ExecuteDailyTimeSlotsMapping()
+        {
+            throw new NotImplementedException();
+
+            ExecutePatientDevicesMapping();
+        }
+
+        private void ExecutePatientDevicesMapping()
+        {
+            throw new NotImplementedException();
         }
     }
 }

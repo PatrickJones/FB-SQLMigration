@@ -14,12 +14,13 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<Application> defApps = new List<Application>();
+        public List<Application> DefaultApps = new List<Application>();
         public List<Application> Missing = new List<Application>();
 
         public ApplicationValidation(DbContext context)
         {
             db = (NuMedicsGlobalEntities)context;
+            Init();
         }
 
         public ApplicationValidation()
@@ -29,14 +30,14 @@ namespace NuLibrary.Migration.SqlValidations
 
         private void Init()
         {
-            defApps.Add(
+            DefaultApps.Add(
                 new Application {
                     ApplicationId = Guid.Parse("DFE4EB52-401E-42DA-B7A0-D801749446A0"),
                     ApplicationName = "Administration",
                     Description = "Administration website"
                 });
 
-            defApps.Add(
+            DefaultApps.Add(
                 new Application
                 {
                     ApplicationId = Guid.Parse("4AE4C176-C4A2-4C36-9866-FCDE16FF3AFA"),
@@ -44,7 +45,7 @@ namespace NuLibrary.Migration.SqlValidations
                     Description = "CliniPro-Web site"
                 });
 
-            defApps.Add(
+            DefaultApps.Add(
                 new Application
                 {
                     ApplicationId = Guid.Parse("5E1A0790-68AA-405D-908A-4AB578832EFE"),
@@ -52,7 +53,7 @@ namespace NuLibrary.Migration.SqlValidations
                     Description = "Diabetes Partner site"
                 });
 
-            defApps.Add(
+            DefaultApps.Add(
                 new Application
                 {
                     ApplicationId = Guid.Parse("05475E32-875A-4FED-B33F-34A1E6FE660F"),
@@ -72,7 +73,7 @@ namespace NuLibrary.Migration.SqlValidations
 
         public bool ValidateTable()
         {
-            foreach (var app in defApps)
+            foreach (var app in DefaultApps)
             {
                 if (!db.Applications.Any(a => a.ApplicationId == app.ApplicationId && a.ApplicationName.ToLower() == app.ApplicationName.ToLower()))
                 {

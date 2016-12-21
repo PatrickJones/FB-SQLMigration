@@ -14,12 +14,13 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<CheckStatu> defCheckStatus = new List<CheckStatu>();
+        public List<CheckStatu> DefaultCheckStatus = new List<CheckStatu>();
         public List<CheckStatu> Missing = new List<CheckStatu>();
 
         public CheckStatusValidation(DbContext context)
         {
             db = (NuMedicsGlobalEntities)context;
+            Init();
         }
 
         public CheckStatusValidation()
@@ -37,7 +38,7 @@ namespace NuLibrary.Migration.SqlValidations
             };
 
             Array.ForEach(typeArr, a => {
-                defCheckStatus.Add(
+                DefaultCheckStatus.Add(
                 new CheckStatu
                 {
                     Status = a
@@ -56,7 +57,7 @@ namespace NuLibrary.Migration.SqlValidations
 
         public bool ValidateTable()
         {
-            foreach (var ut in defCheckStatus)
+            foreach (var ut in DefaultCheckStatus)
             {
                 if (!db.CheckStatus.Any(a => a.Status.ToLower() == ut.Status.ToLower()))
                 {

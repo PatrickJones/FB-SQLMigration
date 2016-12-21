@@ -47,7 +47,11 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         public static void ApplicationValidationTestClassCleanup() { nuContext.Object.Dispose(); }
 
         [TestInitialize()]
-        public void ApplicationValidationTestInitialize() { SetDefaultApplications(); }
+        public void ApplicationValidationTestInitialize()
+        {
+            av = new ApplicationValidation();
+            defaultApps = av.DefaultApps;
+        }
 
         [TestCleanup()]
         public void ApplicationValidationTestCleanup() { defaultApps.Clear(); missing.Clear(); }
@@ -55,8 +59,6 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         [TestMethod]
         public void Verify_Table_Name()
         {
-            av = new ApplicationValidation();
-
             Assert.AreEqual("Applications", av.TableName);
         }
 
@@ -109,41 +111,5 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
             Trace.WriteLine($"Missing: {missing.Count}");
             Assert.IsTrue(missing.Count == 0);
         }
-
-        private void SetDefaultApplications()
-        {
-            defaultApps.Add(
-                new Application
-                {
-                    ApplicationId = Guid.Parse("DFE4EB52-401E-42DA-B7A0-D801749446A0"),
-                    ApplicationName = "Administration",
-                    Description = "Administration website"
-                });
-
-            defaultApps.Add(
-                new Application
-                {
-                    ApplicationId = Guid.Parse("4AE4C176-C4A2-4C36-9866-FCDE16FF3AFA"),
-                    ApplicationName = "CliniPro-Web",
-                    Description = "CliniPro-Web site"
-                });
-
-            defaultApps.Add(
-                new Application
-                {
-                    ApplicationId = Guid.Parse("5E1A0790-68AA-405D-908A-4AB578832EFE"),
-                    ApplicationName = "Diabetes Partner",
-                    Description = "Diabetes Partner site"
-                });
-
-            defaultApps.Add(
-                new Application
-                {
-                    ApplicationId = Guid.Parse("05475E32-875A-4FED-B33F-34A1E6FE660F"),
-                    ApplicationName = "OmniPod Partner",
-                    Description = "OmniPod Partner site"
-                });
-        }
-
     }
 }

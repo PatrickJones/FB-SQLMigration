@@ -47,7 +47,11 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         public static void CheckStatusValidationTestClassCleanup() { nuContext.Object.Dispose(); }
 
         [TestInitialize()]
-        public void CheckStatusValidationTestInitialize() { SetDefaults(); }
+        public void CheckStatusValidationTestInitialize()
+        {
+            cv = new CheckStatusValidation();
+            defCheckStatus = cv.DefaultCheckStatus;
+        }
 
         [TestCleanup()]
         public void CheckStatusValidationTestCleanup() { defCheckStatus.Clear(); missing.Clear(); }
@@ -55,8 +59,6 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         [TestMethod]
         public void Verify_Table_Name()
         {
-            cv = new CheckStatusValidation();
-
             Assert.AreEqual("CheckStatus", cv.TableName);
         }
 

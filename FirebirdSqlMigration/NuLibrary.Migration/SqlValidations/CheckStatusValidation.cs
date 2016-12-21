@@ -3,6 +3,7 @@ using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,12 @@ namespace NuLibrary.Migration.SqlValidations
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
         List<CheckStatu> defCheckStatus = new List<CheckStatu>();
-        public List<CheckStatu> Failures = new List<CheckStatu>();
+        public List<CheckStatu> Missing = new List<CheckStatu>();
+
+        public CheckStatusValidation(DbContext context)
+        {
+            db = (NuMedicsGlobalEntities)context;
+        }
 
         public CheckStatusValidation()
         {
@@ -54,16 +60,16 @@ namespace NuLibrary.Migration.SqlValidations
             {
                 if (!db.CheckStatus.Any(a => a.Status.ToLower() == ut.Status.ToLower()))
                 {
-                    Failures.Add(ut);
+                    Missing.Add(ut);
                 }
             }
 
-            return (Failures.Count == 0) ? true : false;
+            return (Missing.Count == 0) ? true : false;
         }
 
         public void SyncTable()
         {
-            db.CheckStatus.AddRange(Failures);
+            db.CheckStatus.AddRange(Missing);
             db.SaveChanges();
         }
 

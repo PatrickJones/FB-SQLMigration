@@ -25,11 +25,6 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         static Mock<DbSet<Application>> moqApps = new Mock<DbSet<Application>>();
         static Mock<NuMedicsGlobalEntities> nuContext = new Mock<NuMedicsGlobalEntities>();
 
-        public ApplicationValidationTest()
-        {
-            //SetDefaultApplications();
-        }
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -48,27 +43,14 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
         [ClassCleanup()]
         public static void ApplicationValidationTestClassCleanup() { nuContext.Object.Dispose(); }
 
-        //Use TestInitialize to run code before running each test
         [TestInitialize()]
         public void ApplicationValidationTestInitialize() { SetDefaultApplications(); }
 
-        //Use TestCleanup to run code after each test has run
         [TestCleanup()]
         public void ApplicationValidationTestCleanup() { defaultApps.Clear(); missing.Clear(); }
-
-        #endregion
 
         [TestMethod]
         public void Verify_Table_Name()

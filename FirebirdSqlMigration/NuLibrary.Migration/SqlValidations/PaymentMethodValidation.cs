@@ -3,6 +3,7 @@ using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,8 +14,14 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod> defPaymentMethods = new List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod>();
-        public List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod> DefaultPaymentMethods = new List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod> Missing = new List<NuLibrary.Migration.SQLDatabase.EF.PaymentMethod>();
+
+        public PaymentMethodValidation(DbContext context)
+        {
+            db = (NuMedicsGlobalEntities)context;
+            Init();
+        }
 
         public PaymentMethodValidation()
         {
@@ -31,7 +38,7 @@ namespace NuLibrary.Migration.SqlValidations
             };
 
             Array.ForEach(typeArr, a => {
-                defPaymentMethods.Add(
+                DefaultPaymentMethods.Add(
                 new NuLibrary.Migration.SQLDatabase.EF.PaymentMethod
                 {
                     MethodName = a
@@ -50,20 +57,20 @@ namespace NuLibrary.Migration.SqlValidations
 
         public bool ValidateTable()
         {
-            foreach (var ut in defPaymentMethods)
+            foreach (var ut in DefaultPaymentMethods)
             {
                 if (!db.PaymentMethods.Any(a => a.MethodName.ToLower() == ut.MethodName.ToLower()))
                 {
-                    Failures.Add(ut);
+                    Missing.Add(ut);
                 }
             }
 
-            return (Failures.Count == 0) ? true : false;
+            return (Missing.Count == 0) ? true : false;
         }
 
         public void SyncTable()
         {
-            db.PaymentMethods.AddRange(Failures);
+            db.PaymentMethods.AddRange(Missing);
             db.SaveChanges();
         }
 

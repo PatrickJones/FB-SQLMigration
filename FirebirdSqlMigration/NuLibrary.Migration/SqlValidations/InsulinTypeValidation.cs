@@ -3,6 +3,7 @@ using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,14 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<NuLibrary.Migration.SQLDatabase.EF.InsulinType> defInsulinTypes = new List<NuLibrary.Migration.SQLDatabase.EF.InsulinType>();
-        public List<NuLibrary.Migration.SQLDatabase.EF.InsulinType> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.InsulinType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.InsulinType> DefaultInsulinTypes = new List<NuLibrary.Migration.SQLDatabase.EF.InsulinType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.InsulinType> Missing = new List<NuLibrary.Migration.SQLDatabase.EF.InsulinType>();
 
+        public InsulinTypeValidation(DbContext context)
+        {
+            db = (NuMedicsGlobalEntities)context;
+            Init();
+        }
         public InsulinTypeValidation()
         {
             Init();
@@ -32,7 +38,7 @@ namespace NuLibrary.Migration.SqlValidations
             };
 
             Array.ForEach(typeArr, a => {
-                defInsulinTypes.Add(
+                DefaultInsulinTypes.Add(
                 new NuLibrary.Migration.SQLDatabase.EF.InsulinType
                 {
                     Type = a
@@ -51,20 +57,20 @@ namespace NuLibrary.Migration.SqlValidations
 
         public bool ValidateTable()
         {
-            foreach (var ut in defInsulinTypes)
+            foreach (var ut in DefaultInsulinTypes)
             {
                 if (!db.InsulinTypes.Any(a => a.Type.ToLower() == ut.Type.ToLower()))
                 {
-                    Failures.Add(ut);
+                    Missing.Add(ut);
                 }
             }
 
-            return (Failures.Count == 0) ? true : false;
+            return (Missing.Count == 0) ? true : false;
         }
 
         public void SyncTable()
         {
-            db.InsulinTypes.AddRange(Failures);
+            db.InsulinTypes.AddRange(Missing);
             db.SaveChanges();
         }
 

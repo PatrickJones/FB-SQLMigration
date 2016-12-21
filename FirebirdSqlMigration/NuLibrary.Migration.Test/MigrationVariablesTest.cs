@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NuLibrary.Migration.GlobalVar;
 using System.Linq;
+using System.Diagnostics;
 
 namespace NuLibrary.Migration.Test
 {
@@ -63,9 +64,13 @@ namespace NuLibrary.Migration.Test
         [TestMethod]
         public void Verify_SiteId_Change_Loads_Tables()
         {
+            MigrationVariables.CurrentSiteId = 0;
+
             Assert.IsTrue(MigrationVariables.FirebirdTableNames.Count == 0);
 
             MigrationVariables.CurrentSiteId = 355;
+
+            Trace.WriteLine($"After : {MigrationVariables.CurrentSiteId}");
 
             Assert.IsTrue(MigrationVariables.FirebirdTableNames.Count > 0);
         }

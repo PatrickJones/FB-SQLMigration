@@ -3,6 +3,7 @@ using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,12 @@ namespace NuLibrary.Migration.SqlValidations
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
         List<Application> defApps = new List<Application>();
-        public List<Application> Failures = new List<Application>();
+        public List<Application> Missing = new List<Application>();
+
+        public ApplicationValidation(DbContext context)
+        {
+            db = (NuMedicsGlobalEntities)context;
+        }
 
         public ApplicationValidation()
         {
@@ -70,16 +76,16 @@ namespace NuLibrary.Migration.SqlValidations
             {
                 if (!db.Applications.Any(a => a.ApplicationId == app.ApplicationId && a.ApplicationName.ToLower() == app.ApplicationName.ToLower()))
                 {
-                    Failures.Add(app);
+                    Missing.Add(app);
                 }
             }
 
-            return (Failures.Count == 0) ? true : false;
+            return (Missing.Count == 0) ? true : false;
         }
 
         public void SyncTable()
         {
-            db.Applications.AddRange(Failures);
+            db.Applications.AddRange(Missing);
             db.SaveChanges();
         }
 

@@ -70,6 +70,10 @@ namespace NuLibrary.Migration.GlobalVar
                 FBDataAccess fba = new FBDataAccess();
                 FirebirdTableNames = fba.GetTableNames();
             }
+            else
+            {
+                FirebirdTableNames.Clear();
+            }
         }
     }
 }

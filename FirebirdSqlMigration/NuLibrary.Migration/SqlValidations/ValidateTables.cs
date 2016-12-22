@@ -1,6 +1,7 @@
 ﻿using NuLibrary.Migration.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace NuLibrary.Migration.SqlValidations
 {
     public class ValidateTables
     {
-        List<ITableValidate> valTables = new List<ITableValidate>();
+        List<ITableValidate> valTables = new List<ITableValidate>(7);
         Dictionary<string, bool> tableValidations = new Dictionary<string, bool>();
 
         public ValidateTables()
@@ -28,7 +29,12 @@ namespace NuLibrary.Migration.SqlValidations
             valTables.Add(new InsulinTypeValidation());
         }
 
-        public Dictionary<string, bool> ValidateAll()
+        public IList<ITableValidate> GetReadonlyValidations()
+        {
+            return valTables.AsReadOnly();
+        }
+
+        public IReadOnlyDictionary<string, bool> ValidateAll()
         {
             foreach (var tb in valTables)
             {

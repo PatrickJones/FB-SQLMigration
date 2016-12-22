@@ -3,6 +3,7 @@ using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,8 +14,14 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<NuLibrary.Migration.SQLDatabase.EF.UserType> defUserTypes = new List<NuLibrary.Migration.SQLDatabase.EF.UserType>();
-        public List<NuLibrary.Migration.SQLDatabase.EF.UserType> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.UserType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.UserType> DefaultUserTypes = new List<NuLibrary.Migration.SQLDatabase.EF.UserType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.UserType> Missing = new List<NuLibrary.Migration.SQLDatabase.EF.UserType>();
+
+        public UserTypeValidation(DbContext context)
+        {
+            db = (NuMedicsGlobalEntities)context;
+            Init();
+        }
 
         public UserTypeValidation()
         {
@@ -30,7 +37,7 @@ namespace NuLibrary.Migration.SqlValidations
             };
 
             Array.ForEach(typeArr, a => {
-                defUserTypes.Add(
+                DefaultUserTypes.Add(
                 new NuLibrary.Migration.SQLDatabase.EF.UserType
                 {
                     TypeName = a
@@ -49,20 +56,20 @@ namespace NuLibrary.Migration.SqlValidations
 
         public bool ValidateTable()
         {
-            foreach (var ut in defUserTypes)
+            foreach (var ut in DefaultUserTypes)
             {
                 if (!db.UserTypes.Any(a => a.TypeName.ToLower() == ut.TypeName.ToLower()))
                 {
-                    Failures.Add(ut);
+                    Missing.Add(ut);
                 }
             }
 
-            return (Failures.Count == 0) ? true : false;
+            return (Missing.Count == 0) ? true : false;
         }
 
         public void SyncTable()
         {
-            db.UserTypes.AddRange(Failures);
+            db.UserTypes.AddRange(Missing);
             db.SaveChanges();
         }
 

@@ -6,23 +6,23 @@ using NuLibrary.Migration.SqlValidations;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System.Data.Entity;
 using Moq;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Linq;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.Test.SqlValidationsTest
 {
     /// <summary>
-    /// Summary description for PaymentMethodValidationTest
+    /// Summary description for UserTypeValidationTest
     /// </summary>
     [TestClass]
-    public class PaymentMethodValidationTest
+    public class UserTypeValidationTest
     {
-        PaymentMethodValidation pv;
-        static List<PaymentMethod> defPaymentMethods = new List<PaymentMethod>();
-        static List<PaymentMethod> missing = new List<PaymentMethod>();
+        UserTypeValidation uv;
+        static List<UserType> defUserType = new List<UserType>();
+        static List<UserType> missing = new List<UserType>();
 
-        static Mock<DbSet<PaymentMethod>> moqStatus = new Mock<DbSet<PaymentMethod>>();
+        static Mock<DbSet<UserType>> moqStatus = new Mock<DbSet<UserType>>();
         static Mock<NuMedicsGlobalEntities> nuContext = new Mock<NuMedicsGlobalEntities>();
 
         private TestContext testContextInstance;
@@ -44,39 +44,39 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         }
 
         [ClassCleanup()]
-        public static void PaymentMethodValidationTestClassCleanup() { nuContext.Object.Dispose(); }
+        public static void UserTypeValidationTestClassCleanup() { nuContext.Object.Dispose(); }
 
         [TestInitialize()]
-        public void PaymentMethodValidationTestInitialize()
+        public void UserTypeValidationTestInitialize()
         {
-            pv = new PaymentMethodValidation();
-            defPaymentMethods = pv.DefaultPaymentMethods;
+            uv = new UserTypeValidation();
+            defUserType = uv.DefaultUserTypes;
         }
 
         [TestCleanup()]
-        public void PaymentTypeValidationTestCleanup() { defPaymentMethods.Clear(); missing.Clear(); }
+        public void UserTypeValidationTestCleanup() { defUserType.Clear(); missing.Clear(); }
 
         [TestMethod]
         public void Verify_Table_Name()
         {
-            Assert.AreEqual("PaymentMethods", pv.TableName);
+            Assert.AreEqual("UserTypes", uv.TableName);
         }
 
         [TestMethod]
         public async Task Sync_Records_If_Missing()
         {
-            pv = new PaymentMethodValidation(nuContext.Object);
+            uv = new UserTypeValidation(nuContext.Object);
 
             moqStatus.SetupData();
             var count = await moqStatus.Object.CountAsync();
 
             Assert.IsTrue(count == 0);
 
-            Array.ForEach(defPaymentMethods.ToArray(), a => {
+            Array.ForEach(defUserType.ToArray(), a => {
                 moqStatus.Object.Add(a);
             });
 
-            Assert.AreEqual(moqStatus.Object.Count(), defPaymentMethods.Count);
+            Assert.AreEqual(moqStatus.Object.Count(), defUserType.Count);
         }
 
         [TestMethod]
@@ -84,25 +84,25 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         {
             moqStatus.SetupData();
             Trace.WriteLine($"Moq apps count : {moqStatus.Object.Count()}");
-            Trace.WriteLine($"Default apps count : {defPaymentMethods.Count}");
-            Array.ForEach(defPaymentMethods.ToArray(), d => {
-                if (!moqStatus.Object.Any(a => a.MethodName.ToLower() == d.MethodName.ToLower()))
+            Trace.WriteLine($"Default apps count : {defUserType.Count}");
+            Array.ForEach(defUserType.ToArray(), d => {
+                if (!moqStatus.Object.Any(a => a.TypeName.ToLower() == d.TypeName.ToLower()))
                 {
                     missing.Add(d);
                 }
             });
 
-            Assert.IsTrue(missing.Count == 4);
+            Assert.IsTrue(missing.Count == 3);
         }
 
         [TestMethod]
         public void Validation_Check_For_No_Missing_Records()
         {
-            moqStatus.SetupData(defPaymentMethods);
+            moqStatus.SetupData(defUserType);
             Trace.WriteLine($"Moq apps count : {moqStatus.Object.Count()}");
-            Trace.WriteLine($"Default apps count : {defPaymentMethods.Count}");
-            Array.ForEach(defPaymentMethods.ToArray(), d => {
-                if (!moqStatus.Object.Any(a => a.MethodName.ToLower() == d.MethodName.ToLower()))
+            Trace.WriteLine($"Default apps count : {defUserType.Count}");
+            Array.ForEach(defUserType.ToArray(), d => {
+                if (!moqStatus.Object.Any(a => a.TypeName.ToLower() == d.TypeName.ToLower()))
                 {
                     missing.Add(d);
                 }

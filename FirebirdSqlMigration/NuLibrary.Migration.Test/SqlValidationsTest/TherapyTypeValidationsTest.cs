@@ -43,17 +43,17 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
             }
         }
         [ClassCleanup()]
-        public static void CheckStatusValidationTestClassCleanup() { nuContext.Object.Dispose(); }
+        public static void TherapyTypeValidationTestClassCleanup() { nuContext.Object.Dispose(); }
 
         [TestInitialize()]
-        public void CheckStatusValidationTestInitialize()
+        public void TherapyTypeValidationTestInitialize()
         {
             tv = new TherapyTypeValidation();
             defTherapyTypes = tv.DefaultTherapyTypes;
         }
 
         [TestCleanup()]
-        public void CheckStatusValidationTestCleanup() { defTherapyTypes.Clear(); missing.Clear(); }
+        public void TherapyTypeValidationTestCleanup() { defTherapyTypes.Clear(); missing.Clear(); }
 
         [TestMethod]
         public void Verify_Table_Name()

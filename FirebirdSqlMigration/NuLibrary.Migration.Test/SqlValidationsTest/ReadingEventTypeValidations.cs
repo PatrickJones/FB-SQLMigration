@@ -54,7 +54,7 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         }
 
         [TestCleanup()]
-        public void CheckStatusValidationTestCleanup() { defReadingEvents.Clear(); missing.Clear(); }
+        public void ReadingEventTypeValidationTestCleanup() { defReadingEvents.Clear(); missing.Clear(); }
 
         [TestMethod]
         public void Verify_Table_Name()

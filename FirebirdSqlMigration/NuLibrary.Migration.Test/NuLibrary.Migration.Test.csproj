@@ -89,6 +89,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FBDatabaseTest\FBDataAccessTest.cs" />
+    <Compile Include="FBDatabaseTest\TableAgentCollectionTest.cs" />
     <Compile Include="FBDatabaseTest\TableAgentTest.cs" />
     <Compile Include="MigrationVariablesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

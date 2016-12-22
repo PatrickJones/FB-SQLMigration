@@ -10,26 +10,6 @@ using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.GlobalVar
 {
-    //public class MigrationVariables
-    //{
-    //    public static int SiteId { get; set; }
-    //    public static ICollection<string> FirebirdTableNames {get; set;}
-
-    //    private void Init()
-    //    {
-    //        var fba = new FBDataAccess();
-    //        FirebirdTableNames = fba.GetTableNames();
-
-    //        TableAgentCollection.Populate();
-    //    }
-
-    //    public MigrationVariables(int siteId)
-    //    {
-    //        SiteId = siteId;
-    //        Init();
-    //    }
-    //}
-
     public static class MigrationVariables
     {
         static int currSiteId;
@@ -48,11 +28,6 @@ namespace NuLibrary.Migration.GlobalVar
 
         public static ICollection<int> SiteIds = new List<int>();
         public static ICollection<string> FirebirdTableNames = new List<string>();
-
-        //static MigrationVariables()
-        //{
-        //    Init();
-        //}
 
         public static void Init()
         {

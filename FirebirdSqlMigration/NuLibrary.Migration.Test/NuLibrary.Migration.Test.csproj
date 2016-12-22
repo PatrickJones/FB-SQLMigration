@@ -91,230 +91,230 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="EF\AdminQueries_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\AdminQuery.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_Applications_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnetDbUnitTestModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aspnetDbUnitTestModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnetDbUnitTestModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnetDbUnitTestModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Applications.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Membership.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\aspnet_Membership_GetPasswordWithFormat_Result.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\aspnet_Membership_GetPassword_Result.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\aspnet_Membership_GetUserByName_Result.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\aspnet_Membership_GetUserByUserId_Result.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_Membership_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_Paths.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_Paths_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_PersonalizationAllUsers.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_PersonalizationAllUsers_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_PersonalizationPerUser.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_PersonalizationPerUser_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_Profile.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\aspnet_Profile_GetProperties_Result.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_Profile_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_Roles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_Roles_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_SchemaVersions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_SchemaVersions_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\aspnet_SearchUsersFromInsulet_Result.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_Users.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\aspnet_UsersInRoles_RemoveUsersFromRoles_Result.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_Users_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_Users_WithFreeUser.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_Users_WithFreeUser_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\aspnet_WebEvent_Events.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\aspnet_WebEvent_Events_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\clinipro_Users.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\clinipro_Users_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\clinipro_Users_WithFreeUser.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\clinipro_Users_WithFreeUser_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\Corporation.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Corporations_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\CorporationsView.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\FirebirdConnections_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\FirebirdConnection.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\help_ImageData_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\help_ImageData.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\help_Images_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\help_Images.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\help_ModuleOrder_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\help_ModuleOrder.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\help_Modules_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\help_Modules.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_Contacts_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_Contacts.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_LocationRegions_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_LocationRegions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_PeopleLocations_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_People.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_PeopleRegions_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_PeopleLocations.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_PeopleRoles_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_PeopleRegions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_People_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_PeopleRoles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_Regions_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_Regions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\insulet_Reports_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\insulet_Reports.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Locations_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\Location.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Membership_Revert_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\Membership_Revert.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Policy_Docs_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\OPP_Logins.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Server_Settings_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\Policy_Docs.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Sites_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\Server_Settings.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\site_IPTrackedEvents_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\Site.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\stats_PageRequests_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\site_IPTrackedEvents.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\subs_Adjustments_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\stats_PageRequests.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\subs_CheckPayments_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\subs_Adjustments.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\subs_Gaps_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\subs_CheckPayments.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\subs_PayPalPayments_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\subs_Gaps.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\subs_Subscriptions_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\subs_PayPalPayments.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\subs_Trials_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\subs_Subscriptions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Table_1_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\subs_Trials.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\UnitTestModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UnitTestModel.Context.tt</DependentUpon>
+    <Compile Include="EF\sysdiagram.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\UnitTestModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\UserProfile.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\UnitTestModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UnitTestModel.edmx</DependentUpon>
+    <Compile Include="EF\users_EmailConfirmations.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\UserProfile_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\users_PasswordConfirmations.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\users_EmailConfirmations_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\users_Sessions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\users_PasswordConfirmations_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\users_Settings.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\users_Sessions_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\users_SmarterMailAccounts.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\users_Settings_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\users_SmarterMailAccounts_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\User_Accounts_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\User_Accounts.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_Applications.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_MembershipUsers.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_Profiles.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_Roles.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_Users.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_UsersInRoles.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_WebPartState_Paths.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_WebPartState_Shared.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_aspnet_WebPartState_User.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\vw_payments_PayPal.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vw_subs_Payments.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\webpages_Membership_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\webpages_Membership.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\webpages_OAuthMembership_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\webpages_OAuthMembership.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\webpages_Roles_Test.cs">
-      <DependentUpon>UnitTestModel.tt</DependentUpon>
+    <Compile Include="EF\webpages_Roles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="FBDatabaseTest\FBDataAccessTest.cs" />
     <Compile Include="FBDatabaseTest\TableAgentCollectionTest.cs" />
@@ -335,12 +335,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="EF\UnitTestModel.edmx">
+    <EntityDeploy Include="EF\aspnetDbUnitTestModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>UnitTestModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>aspnetDbUnitTestModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="EF\UnitTestModel.edmx.diagram">
-      <DependentUpon>UnitTestModel.edmx</DependentUpon>
+    <None Include="EF\aspnetDbUnitTestModel.edmx.diagram">
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -352,19 +352,19 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="EF\UnitTestModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UnitTestModel.edmx</DependentUpon>
-      <LastGenOutput>UnitTestModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="EF\UnitTestModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UnitTestModel.edmx</DependentUpon>
-      <LastGenOutput>UnitTestModel.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Content Include="EF\aspnetDbUnitTestModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
+      <LastGenOutput>aspnetDbUnitTestModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EF\aspnetDbUnitTestModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
+      <LastGenOutput>aspnetDbUnitTestModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

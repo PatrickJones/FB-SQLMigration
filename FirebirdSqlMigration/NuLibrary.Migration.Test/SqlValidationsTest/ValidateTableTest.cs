@@ -63,11 +63,11 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
             };
 
             // verify generic list type
-            Assert.AreEqual(list.GetType().GenericTypeArguments[0].Name, "ITableValidate");
+            Assert.AreEqual("ITableValidate", list.GetType().GenericTypeArguments[0].Name);
 
             // verify returned collection is readonly and contains exact number of instances
             Assert.IsTrue(list.IsReadOnly);
-            Assert.AreEqual(list.Count, 7);
+            Assert.AreEqual(7, list.Count);
 
             // verify collection contains one instance of each table validation class
             Assert.IsTrue(types.Contains(list[0].GetType()));
@@ -83,11 +83,11 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         public void Dictionary_Contains_Validations()
         {
             // verify dicationary is readonly
-            Assert.AreEqual(list.GetType().Name, "ReadOnlyCollection`1");
+            Assert.AreEqual("ReadOnlyCollection`1", list.GetType().Name);
             // verify dictionary key type
-            Assert.AreEqual(dict.GetType().GenericTypeArguments[0].Name.ToLower(), "string");
+            Assert.AreEqual("string", dict.GetType().GenericTypeArguments[0].Name.ToLower());
             // verify dictionary value tpye
-            Assert.AreEqual(dict.GetType().GenericTypeArguments[1].Name.ToLower(), "boolean");
+            Assert.AreEqual("boolean", dict.GetType().GenericTypeArguments[1].Name.ToLower());
             // verify dictionary count matches instance list count
             Assert.AreEqual(dict.Count, list.Count);
         }

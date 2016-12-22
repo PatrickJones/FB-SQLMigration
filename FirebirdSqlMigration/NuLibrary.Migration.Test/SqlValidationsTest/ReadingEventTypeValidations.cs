@@ -1,28 +1,28 @@
-﻿using NuLibrary.Migration.SqlValidations;
-using System;
+﻿using System;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NuLibrary.Migration.SqlValidations;
 using NuLibrary.Migration.SQLDatabase.EF;
 using Moq;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Linq;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NuLibrary.Migration.Test.SqlValidationsTest
 {
     /// <summary>
-    /// Summary description for InsulinTypeValidationTest
+    /// Summary description for ReadingEventTypeValidations
     /// </summary>
     [TestClass]
-    public class InsulinTypeValidationTest
+    public class ReadingEventTypeValidations
     {
-        InsulinTypeValidation iv;
-        static List<InsulinType> defInsulinTypes = new List<InsulinType>();
-        static List<InsulinType> missing = new List<InsulinType>();
+        ReadingEventTypeValidation rv;
+        static List<ReadingEventType> defReadingEvents = new List<ReadingEventType>();
+        static List<ReadingEventType> missing = new List<ReadingEventType>();
 
-        static Mock<DbSet<InsulinType>> moqStatus = new Mock<DbSet<InsulinType>>();
+        static Mock<DbSet<ReadingEventType>> moqStatus = new Mock<DbSet<ReadingEventType>>();
         static Mock<NuMedicsGlobalEntities> nuContext = new Mock<NuMedicsGlobalEntities>();
 
         private TestContext testContextInstance;
@@ -44,39 +44,39 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         }
 
         [ClassCleanup()]
-        public static void InsulinTypeValidationTestClassCleanup() { nuContext.Object.Dispose(); }
+        public static void ReadingEventTypeValidationTestClassCleanup() { nuContext.Object.Dispose(); }
 
         [TestInitialize()]
-        public void InsulinTypeValidationTestInitialize()
+        public void ReadingEventTypeValidationTestInitialize()
         {
-            iv = new InsulinTypeValidation();
-            defInsulinTypes = iv.DefaultInsulinTypes;
+            rv = new ReadingEventTypeValidation();
+            defReadingEvents = rv.DefaultReadingEventTypes;
         }
 
         [TestCleanup()]
-        public void InsulinTypeValidationTestCleanup() { defInsulinTypes.Clear(); missing.Clear(); }
+        public void CheckStatusValidationTestCleanup() { defReadingEvents.Clear(); missing.Clear(); }
 
         [TestMethod]
         public void Verify_Table_Name()
         {
-            Assert.AreEqual("InsulinTypes", iv.TableName);
+            Assert.AreEqual("ReadingEventTypes", rv.TableName);
         }
 
         [TestMethod]
         public async Task Sync_Records_If_Missing()
         {
-            iv = new InsulinTypeValidation(nuContext.Object);
+            rv = new ReadingEventTypeValidation(nuContext.Object);
 
             moqStatus.SetupData();
             var count = await moqStatus.Object.CountAsync();
 
             Assert.IsTrue(count == 0);
 
-            Array.ForEach(defInsulinTypes.ToArray(), a => {
+            Array.ForEach(defReadingEvents.ToArray(), a => {
                 moqStatus.Object.Add(a);
             });
 
-            Assert.AreEqual(moqStatus.Object.Count(), defInsulinTypes.Count);
+            Assert.AreEqual(moqStatus.Object.Count(), defReadingEvents.Count);
         }
 
         [TestMethod]
@@ -84,25 +84,25 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         {
             moqStatus.SetupData();
             Trace.WriteLine($"Moq apps count : {moqStatus.Object.Count()}");
-            Trace.WriteLine($"Default apps count : {defInsulinTypes.Count}");
-            Array.ForEach(defInsulinTypes.ToArray(), d => {
-                if (!moqStatus.Object.Any(a => a.Type.ToLower() == d.Type.ToLower()))
+            Trace.WriteLine($"Default apps count : {defReadingEvents.Count}");
+            Array.ForEach(defReadingEvents.ToArray(), d => {
+                if (!moqStatus.Object.Any(a => a.EventName.ToLower() == d.EventName.ToLower()))
                 {
                     missing.Add(d);
                 }
             });
 
-            Assert.IsTrue(missing.Count == 5);
+            Assert.IsTrue(missing.Count == 8);
         }
 
         [TestMethod]
         public void Validation_Check_For_No_Missing_Records()
         {
-            moqStatus.SetupData(defInsulinTypes);
+            moqStatus.SetupData(defReadingEvents);
             Trace.WriteLine($"Moq apps count : {moqStatus.Object.Count()}");
-            Trace.WriteLine($"Default apps count : {defInsulinTypes.Count}");
-            Array.ForEach(defInsulinTypes.ToArray(), d => {
-                if (!moqStatus.Object.Any(a => a.Type.ToLower() == d.Type.ToLower()))
+            Trace.WriteLine($"Default apps count : {defReadingEvents.Count}");
+            Array.ForEach(defReadingEvents.ToArray(), d => {
+                if (!moqStatus.Object.Any(a => a.EventName.ToLower() == d.EventName.ToLower()))
                 {
                     missing.Add(d);
                 }

@@ -79,6 +79,7 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
             Assert.AreEqual(moqStatus.Object.Count(), defPaymentMethods.Count);
         }
 
+        [TestMethod]
         public void Validation_Check_For_Missing_Records()
         {
             moqStatus.SetupData();

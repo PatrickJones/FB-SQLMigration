@@ -94,6 +94,7 @@
     <Compile Include="SqlValidationsTest\CheckStatusValidationTest.cs" />
     <Compile Include="SqlValidationsTest\InsulinTypeValidationTest.cs" />
     <Compile Include="SqlValidationsTest\PaymentMethodValidationTest.cs" />
+    <Compile Include="SqlValidationsTest\ReadingEventTypeValidations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

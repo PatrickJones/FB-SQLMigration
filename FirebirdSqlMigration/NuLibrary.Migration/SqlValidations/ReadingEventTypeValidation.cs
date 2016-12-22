@@ -3,6 +3,7 @@ using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,8 +14,14 @@ namespace NuLibrary.Migration.SqlValidations
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType> defReadingEventTypes = new List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType>();
-        public List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType> Failures = new List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType> DefaultReadingEventTypes = new List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType>();
+        public List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType> Misssing = new List<NuLibrary.Migration.SQLDatabase.EF.ReadingEventType>();
+
+        public ReadingEventTypeValidation(DbContext context)
+        {
+            db = (NuMedicsGlobalEntities)context;
+            Init();
+        }
 
         public ReadingEventTypeValidation()
         {
@@ -35,7 +42,7 @@ namespace NuLibrary.Migration.SqlValidations
             };
 
             Array.ForEach(typeArr, a => {
-                defReadingEventTypes.Add(
+                DefaultReadingEventTypes.Add(
                 new NuLibrary.Migration.SQLDatabase.EF.ReadingEventType
                 {
                     EventName = a
@@ -54,20 +61,20 @@ namespace NuLibrary.Migration.SqlValidations
 
         public bool ValidateTable()
         {
-            foreach (var ut in defReadingEventTypes)
+            foreach (var ut in DefaultReadingEventTypes)
             {
                 if (!db.ReadingEventTypes.Any(a => a.EventName.ToLower() == ut.EventName.ToLower()))
                 {
-                    Failures.Add(ut);
+                    Misssing.Add(ut);
                 }
             }
 
-            return (Failures.Count == 0) ? true : false;
+            return (Misssing.Count == 0) ? true : false;
         }
 
         public void SyncTable()
         {
-            db.ReadingEventTypes.AddRange(Failures);
+            db.ReadingEventTypes.AddRange(Misssing);
             db.SaveChanges();
         }
 

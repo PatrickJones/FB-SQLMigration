@@ -2,6 +2,7 @@
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +13,19 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
     {
         AspnetDbEntities db = new AspnetDbEntities();
 
+        public AspnetDbHelpers(DbContext context)
+        {
+            db = (AspnetDbEntities)context;
+        }
+
+        public AspnetDbHelpers()
+        {
+
+        }
+
         public Guid GetUserIdFromPatientId(string patientId)
         {
-            var user = db.clinipro_Users.Where(c => c.CliniProID == patientId).FirstOrDefault();
-            return (user != null) ? user.UserId : Guid.Empty;
+            return db.clinipro_Users.Where(c => c.CliniProID == patientId).Select(s => s.UserId).FirstOrDefault();
         }
 
         public ICollection<CorporationsView> GetAllCorporationInfo()

@@ -323,6 +323,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlDatabaseTest\AspnetDbHelpersTest.cs" />
     <Compile Include="SqlDatabaseTest\DbContextDisposal.cs" />
+    <Compile Include="SqlDatabaseTest\NumedicsGlobalHelpersTest.cs" />
     <Compile Include="SqlValidationsTest\ApplicationValidationTest.cs" />
     <Compile Include="SqlValidationsTest\CheckStatusValidationTest.cs" />
     <Compile Include="SqlValidationsTest\InsulinTypeValidationTest.cs" />

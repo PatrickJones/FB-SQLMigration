@@ -2,6 +2,7 @@
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,16 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
     public class NumedicsGlobalHelpers : DatabaseContextDisposal
     {
         NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
+
+        public NumedicsGlobalHelpers()
+        {
+
+        }
+
+        public NumedicsGlobalHelpers(DbContext context)
+        {
+            db = (NuMedicsGlobalEntities)context;
+        }
 
         public ICollection<NuLibrary.Migration.SQLDatabase.EF.UserType> GetAllUserTypes()
         {

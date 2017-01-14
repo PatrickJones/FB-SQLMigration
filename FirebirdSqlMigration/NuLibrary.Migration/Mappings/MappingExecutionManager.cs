@@ -45,7 +45,15 @@ namespace NuLibrary.Migration.Mappings
             ClinicianMapping map = new ClinicianMapping();
             map.CreateClinicianMapping();
 
-            //ExecutePatientMapping();
+            ExecutePatientMapping();
+        }
+
+        private void ExecutePatientMapping()
+        {
+            PatientsMapping map = new PatientsMapping();
+            map.CreatePatientMapping();
+
+            //ExecutePatientPhoneMapping();
             try
             {
                 TransactionManager.ExecuteTransaction(); //TESTING ONLY
@@ -54,14 +62,6 @@ namespace NuLibrary.Migration.Mappings
             {
                 throw;
             }
-        }
-
-        private void ExecutePatientMapping()
-        {
-            PatientsMapping map = new PatientsMapping();
-            map.CreatePatientMapping();
-
-            ExecutePatientPhoneMapping();
         }
 
         private void ExecutePatientPhoneMapping()

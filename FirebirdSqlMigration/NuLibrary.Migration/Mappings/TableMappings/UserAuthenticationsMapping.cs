@@ -104,7 +104,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
             catch (Exception e)
             {
-                throw;
+                throw new Exception("Error creating UserAuthentication mapping.", e);
             }
 
         }

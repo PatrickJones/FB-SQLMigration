@@ -71,6 +71,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return (cName == null) ? 0 : cName.CompanyId;
         }
 
+        public bool UserIdExist(Guid userId)
+        {
+            return db.Users.Any(a => a.UserId == userId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

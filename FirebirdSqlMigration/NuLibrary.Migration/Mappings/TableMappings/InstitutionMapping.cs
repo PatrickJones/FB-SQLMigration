@@ -46,9 +46,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception("Error creating Institution mapping.", e);
             }
         }
 

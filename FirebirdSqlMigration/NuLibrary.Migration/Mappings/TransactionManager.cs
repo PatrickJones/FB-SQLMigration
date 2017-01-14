@@ -23,7 +23,6 @@ namespace NuLibrary.Migration.Mappings
             {
                 try
                 {
-                    //DatabaseContext.SaveChanges();
                     trans.Commit();
                 }
                 catch (Exception e)

@@ -73,7 +73,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.UserType>> moq_UserTypes = new Mock<DbSet<UserType>>();
             moq_UserTypes.SetupData(new List<SQLDatabase.EF.UserType>());
 
-            Array.ForEach(db.UserTypes.ToArray(), a => {
+            Array.ForEach(db.UserTypes.ToArray(), a =>
+            {
                 var nUser = new SQLDatabase.EF.UserType();
 
                 nUser.TypeId = a.TypeId;
@@ -106,7 +107,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.TherapyType>> moq_TherapyTypes = new Mock<DbSet<TherapyType>>();
             moq_TherapyTypes.SetupData(new List<SQLDatabase.EF.TherapyType>());
 
-            Array.ForEach(db.TherapyTypes.ToArray(), a => {
+            Array.ForEach(db.TherapyTypes.ToArray(), a =>
+            {
                 var nTher = new SQLDatabase.EF.TherapyType();
 
                 nTher.TypeId = a.TypeId;
@@ -137,7 +139,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.ReadingEventType>> moq_REType = new Mock<DbSet<ReadingEventType>>();
             moq_REType.SetupData(new List<SQLDatabase.EF.ReadingEventType>());
 
-            Array.ForEach(db.ReadingEventTypes.ToArray(), a => {
+            Array.ForEach(db.ReadingEventTypes.ToArray(), a =>
+            {
                 var nRET = new SQLDatabase.EF.ReadingEventType();
 
                 nRET.EventId = a.EventId;
@@ -179,7 +182,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.PaymentMethod>> moq_PayMeth = new Mock<DbSet<PaymentMethod>>();
             moq_PayMeth.SetupData(new List<SQLDatabase.EF.PaymentMethod>());
 
-            Array.ForEach(db.PaymentMethods.ToArray(), a => {
+            Array.ForEach(db.PaymentMethods.ToArray(), a =>
+            {
                 var nPay = new SQLDatabase.EF.PaymentMethod();
 
                 nPay.MethodId = a.MethodId;
@@ -213,7 +217,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.CheckStatu>> moq_Chk = new Mock<DbSet<CheckStatu>>();
             moq_Chk.SetupData(new List<SQLDatabase.EF.CheckStatu>());
 
-            Array.ForEach(db.CheckStatus.ToArray(), a => {
+            Array.ForEach(db.CheckStatus.ToArray(), a =>
+            {
                 var nChk = new SQLDatabase.EF.CheckStatu();
 
                 nChk.StatusId = a.StatusId;
@@ -247,7 +252,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.InsulinType>> moq_Insulin = new Mock<DbSet<SQLDatabase.EF.InsulinType>>();
             moq_Insulin.SetupData(new List<SQLDatabase.EF.InsulinType>());
 
-            Array.ForEach(db.InsulinTypes.ToArray(), a => {
+            Array.ForEach(db.InsulinTypes.ToArray(), a =>
+            {
                 var nIns = new SQLDatabase.EF.InsulinType();
 
                 nIns.InsulinTypeId = a.InsulinTypeId;
@@ -283,7 +289,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.Application>> moq_App = new Mock<DbSet<Application>>();
             moq_App.SetupData(new List<SQLDatabase.EF.Application>());
 
-            Array.ForEach(db.Applications.ToArray(), a => {
+            Array.ForEach(db.Applications.ToArray(), a =>
+            {
                 var nApp = new SQLDatabase.EF.Application();
 
                 nApp.ApplicationId = a.ApplicationId;
@@ -314,7 +321,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.Institution>> moq_Inst = new Mock<DbSet<Institution>>();
             moq_Inst.SetupData(new List<SQLDatabase.EF.Institution>());
 
-            var nInst = new Institution {
+            var nInst = new Institution
+            {
                 City = "Portland",
                 ContactEmail = "someemail@email.com",
                 ContactFirstname = "John",
@@ -348,7 +356,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Mock<DbSet<SQLDatabase.EF.InsuranceProvider>> moq_Ins = new Mock<DbSet<InsuranceProvider>>();
             moq_Ins.SetupData(new List<SQLDatabase.EF.InsuranceProvider>());
 
-            var nIns = new InsuranceProvider {
+            var nIns = new InsuranceProvider
+            {
                 Name = "Acme Insurance",
                 IsActive = true,
                 CompanyId = 12345
@@ -365,6 +374,13 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             Assert.IsTrue(nh.GetInsuranceCompanyId("99999").Equals(0));
         }
 
+
+        [TestMethod()]
+        public void UserIdExistTest()
+        {
+            Assert.Fail();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -373,6 +389,5 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             }
             base.Dispose(disposing);
         }
-
     }
 }

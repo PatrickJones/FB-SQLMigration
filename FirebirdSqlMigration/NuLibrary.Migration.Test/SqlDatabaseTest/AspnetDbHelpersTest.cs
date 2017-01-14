@@ -362,7 +362,7 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
             AspnetDbHelpers ah = new AspnetDbHelpers(nuContext.Object);
 
             int exp = db.clinipro_Users.Where(w => w.CliniProID.ToLower() == "admin").Count();
-            int act = ah.GetAllAdmins().Count;
+            int act = ah.GetAllAdminsUsers().Count;
 
             Assert.AreEqual(exp, act);
         }

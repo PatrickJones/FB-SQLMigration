@@ -10,6 +10,7 @@ namespace NuLibrary.Migration.Mappings
     public static class TransactionManager
     {
         public static NuMedicsGlobalEntities DatabaseContext;
+        public static ICollection<FailedMappings> FailedMappingCollection = new List<FailedMappings>();
 
         static TransactionManager()
         {
@@ -22,11 +23,12 @@ namespace NuLibrary.Migration.Mappings
             {
                 try
                 {
-                    DatabaseContext.SaveChanges();
+                    //DatabaseContext.SaveChanges();
                     trans.Commit();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    var msg = e.Message;
                     trans.Rollback();
                 }
                 finally

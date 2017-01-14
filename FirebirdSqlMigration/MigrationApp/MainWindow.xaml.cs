@@ -91,8 +91,10 @@ namespace MigrationApp
             TableAgentCollection.Populate(patsTable);
 
             DispatchLabel("Mapping table...");
-            var pMap = new PatientsMapping();
-            pMap.CreatePatientMapping();
+            //var pMap = new PatientsMapping();
+            //pMap.CreatePatientMapping();
+            MappingExecutionManager mm = new MappingExecutionManager();
+            mm.BeginExecution();
 
             DispatchLabel("Mapping Complete.");
         }

@@ -12,10 +12,9 @@ namespace NuLibrary.Migration.Mappings
     {
         public MappingExecutionManager()
         {
-            BeginExecution();
         }
 
-        private void BeginExecution()
+        public void BeginExecution()
         {
             var vt = new ValidateTables();
             var validDict = vt.ValidateAll();
@@ -28,7 +27,17 @@ namespace NuLibrary.Migration.Mappings
             InstitutionMapping map = new InstitutionMapping();
             map.CreateInstitutionMapping();
 
+            ExecuteUserAuthenticationMapping();
+            
+        }
+
+        private void ExecuteUserAuthenticationMapping()
+        {
+            UserAuthenticationsMapping map = new UserAuthenticationsMapping();
+            map.CreateUserAuthenticationMapping();
+
             ExecuteClinicianMapping();
+            
         }
 
         private void ExecuteClinicianMapping()
@@ -36,7 +45,15 @@ namespace NuLibrary.Migration.Mappings
             ClinicianMapping map = new ClinicianMapping();
             map.CreateClinicianMapping();
 
-            ExecutePatientMapping();
+            //ExecutePatientMapping();
+            try
+            {
+                TransactionManager.ExecuteTransaction(); //TESTING ONLY
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         private void ExecutePatientMapping()

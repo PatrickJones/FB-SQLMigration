@@ -1,4 +1,5 @@
-﻿using NuLibrary.Migration.SQLDatabase.EF;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,47 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void CreateInstitutionMapping()
         {
-            foreach (var ins in aHelper.GetAllCorporationInfo())
+            try
             {
-                var inst = new Institution
+                foreach (var ins in aHelper.GetAllCorporationInfo())
                 {
-                    InstitutionId = Guid.NewGuid(),
-                    Name = ins.Site_Name,
-                    LegacySiteId = (ins.SiteId.HasValue) ? ins.SiteId.Value : 0
-                };
+                    var inst = new Institution
+                    {
+                        InstitutionId = Guid.NewGuid(),
+                        Name = ins.Site_Name,
+                        LegacySiteId = (ins.SiteId.HasValue) ? ins.SiteId.Value : 0
+                    };
 
-                TransactionManager.DatabaseContext.Institutions.Add(inst);
+                    if (CanAddToContext(inst.Name, inst.LegacySiteId))
+                    {
+                        TransactionManager.DatabaseContext.Institutions.Add(inst);
+                    }
+                    else
+                    {
+                        TransactionManager.FailedMappingCollection
+                            .Add(new FailedMappings {
+                                Tablename = "Institutions",
+                                ObjectType = typeof(Institution),
+                                JsonSerializedObject = JsonConvert.SerializeObject(inst),
+                                FailedReason = "Instition already exist in database."
+                            });
+                    }
+                }
+
+                TransactionManager.DatabaseContext.SaveChanges();
             }
-        } 
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private bool CanAddToContext(string name, int legacySiteId)
+        {
+            using (var ctx = new NuMedicsGlobalEntities())
+            {
+                return (ctx.Institutions.Any(a => a.Name == name && a.LegacySiteId == legacySiteId)) ? false : true;
+            }
+        }
     }
 }

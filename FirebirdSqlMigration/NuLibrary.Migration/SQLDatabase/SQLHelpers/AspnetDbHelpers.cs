@@ -59,9 +59,19 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.FirebirdConnections.ToList();
         }
 
-        public ICollection<clinipro_Users> GetAllAdmins()
+        public ICollection<clinipro_Users> GetAllAdminsUsers()
         {
             return db.clinipro_Users.Where(w => w.CliniProID.ToLower() == "admin").ToList();
+        }
+
+        public ICollection<clinipro_Users> GetAllPatientUsers()
+        {
+            return db.clinipro_Users.Where(w => w.CliniProID.ToLower() != "admin").ToList();
+        }
+
+        public ICollection<clinipro_Users> GetAllUsers()
+        {
+            return db.clinipro_Users.ToList();
         }
 
         protected override void Dispose(bool disposing)

@@ -1,4 +1,5 @@
-﻿using NuLibrary.Migration.SQLDatabase.EF;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
@@ -15,71 +16,56 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void CreateClinicianMapping()
         {
-            foreach (var adUser in aHelper.GetAllAdmins())
+            try
             {
-                aspnet_Membership member;
-                aspnet_Users aspUser;
-                UserAuthentication uAuth = null;
-                Guid appId = nHelper.GetApplicationId("Diabetes Partner");
-
-                string corp = aHelper.GetCorporationName(adUser.CPSiteId);
-
-                switch (corp)
+                foreach (var adUser in aHelper.GetAllAdminsUsers())
                 {
-                    case "Insulet":
-                        appId = nHelper.GetApplicationId("OmniPod Partner");
-                        break;
-                    case "CliniProWeb":
-                        appId = nHelper.GetApplicationId("CliniPro-Web");
-                        break;
-                    case "NuMedics":
-                    default:
-                        appId = nHelper.GetApplicationId("Administration");
-                        break;
+                    var instId = nHelper.GetInstitutionId(adUser.CPSiteId);
+
+                    var clin = new Clinician
+                    {
+                        UserId = adUser.UserId,
+                        Firstname = "No Name",
+                        Lastname = "No Name",
+                        StateLicenseNumber = "No License Number",
+                        InstitutionId = instId
+                    };
+
+                    if (CanAddToContext(clin.UserId) && instId != Guid.Empty)
+                    {
+                        TransactionManager.DatabaseContext.Clinicians.Add(clin);
+                    }
+                    else
+                    {
+                        TransactionManager.FailedMappingCollection
+                            .Add(new FailedMappings
+                            {
+                                Tablename = "Clinicians",
+                                ObjectType = typeof(Clinician),
+                                JsonSerializedObject = JsonConvert.SerializeObject(clin),
+                                FailedReason = (instId == Guid.Empty) ? "Clinician is not linked to institution." : "Clinician already exist in database."
+                                
+                            });
+                    }
                 }
 
-                member = aHelper.GetMembershipInfo(adUser.UserId);
-                aspUser = aHelper.GetAspUserInfo(adUser.UserId);
+                TransactionManager.DatabaseContext.SaveChanges();
 
-                uAuth = new UserAuthentication
-                {
-                    ApplicationId = appId,
-                    UserId = adUser.UserId,
-                    Username = aspUser.UserName,
-                    Password = member.Password,
-                    PasswordQuestion = member.PasswordQuestion,
-                    PasswordAnswer = member.PasswordAnswer,
-                    PasswordAnswerFailureCount = member.FailedPasswordAnswerAttemptCount,
-                    PasswordFailureCount = member.FailedPasswordAttemptCount,
-                    LastActivityDate = aspUser.LastActivityDate,
-                    LastLockOutDate = member.LastLockoutDate,
-                    IsApproved = member.IsApproved,
-                    IsLockedOut = member.IsLockedOut,
-                    IsTempPassword = member.IsTemp,
-                    IsloggedIn = false
-                };
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
+        }
 
-                var user = new User
-                {
-                    UserId = adUser.UserId,
-                    UserType = (int)UserType.Clinician,
-                    CreationDate = member.CreateDate
-                };
-
-                var clin = new Clinician
-                {
-                    UserId = adUser.UserId,
-                    Firstname = String.Empty,
-                    Lastname = String.Empty,
-                    StateLicenseNumber = String.Empty,
-                    InstitutionId = nHelper.GetInstitutionId(adUser.CPSiteId)
-                };
-
-                user.UserAuthentications.Add(uAuth);
-                user.Clinician = clin;
-
-                TransactionManager.DatabaseContext.Users.Add(user);
+        private bool CanAddToContext(Guid userId)
+        {
+            using (var ctx = new NuMedicsGlobalEntities())
+            {
+                return (ctx.Clinicians.Any(c => c.UserId == userId)) ? false : true;
             }
         }
+
     }
 }

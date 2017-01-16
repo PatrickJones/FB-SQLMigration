@@ -30,16 +30,17 @@ namespace MigrationApp
 
         BackgroundWorker bWorker = new BackgroundWorker();
         BackgroundWorker bTrans = new BackgroundWorker();
+
         int selectedSiteId = 0;
-        List<string> patsTable = new List<string>();
+        List<string> tableNames = new List<string>();
 
         public MainWindow()
         {
             InitializeComponent();
             SetCombo();
 
-            button1.IsEnabled = false;
-            label1.Content = "Ready";
+            btnExecute.IsEnabled = false;
+            lblStatusBar.Content = "Ready";
 
             bWorker.DoWork += BWorker_DoWork;
             bWorker.RunWorkerCompleted += BWorker_RunWorkerCompleted;
@@ -51,32 +52,32 @@ namespace MigrationApp
         {
             foreach (var item in aHelpers.GetAllFirebirdConnections().OrderBy(o => o.SiteId))
             {
-                comboBox.Items.Add(item.SiteId);
+                cbxSiteIds.Items.Add(item.SiteId);
             }
 
-            comboBox.SelectedIndex = 0;
+            cbxSiteIds.SelectedIndex = 0;
         }
 
         delegate void UpdateLabelDelegate(string text);
         private void UpdateLabel(string text)
         {
-            label1.Content = text;
+            lblStatusBar.Content = text;
         }
 
         private void DispatchLabel(string text)
         {
             UpdateLabelDelegate uLabelDel = new UpdateLabelDelegate(UpdateLabel);
-            label1.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, uLabelDel, text);
+            lblStatusBar.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, uLabelDel, text);
         }
 
         private void BTrans_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            label1.Content = "Transaction Complete.";
+            lblStatusBar.Content = "Transaction Complete.";
         }
 
         private void BWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            button1.IsEnabled = true;
+            btnExecute.IsEnabled = true;
         }
 
         private void BTrans_DoWork(object sender, DoWorkEventArgs e)
@@ -87,43 +88,74 @@ namespace MigrationApp
 
         private void BWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            DispatchLabel("Populating table...");
-            TableAgentCollection.Populate(patsTable);
+            if (tableNames.Count() == 0)
+            {
+                DispatchLabel("Populating all tables...");
+                TableAgentCollection.Populate();
+            }
+            else
+            {
+                TableAgentCollection.Populate(tableNames);
+                Array.ForEach(tableNames.ToArray(), a => {
+                    DispatchLabel($"Populating table {a}...");
+                });
+            }    
 
             DispatchLabel("Mapping table...");
-            //var pMap = new PatientsMapping();
-            //pMap.CreatePatientMapping();
             MappingExecutionManager mm = new MappingExecutionManager();
             mm.BeginExecution();
 
             DispatchLabel("Mapping Complete.");
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
-            label1.Content = "Loading PATIENTS table...";
+            lblStatusBar.Content = "Loading Firebird table schemas...";
 
             MigrationVariables.CurrentSiteId = selectedSiteId;
-            patsTable = MigrationVariables.FirebirdTableNames.Where(a => a == "PATIENTS").ToList();
+            tableNames = MigrationVariables.FirebirdTableNames.ToList();
+
+            //*TESTING
+            tableNames = GetFilteredTableNames();
+            //*TESTING
 
             bWorker.RunWorkerAsync();
 
-            button.IsEnabled = false;
-            label1.Content = "PATIENTS table loaded.";
+            btnLoad.IsEnabled = false;
+            lblStatusBar.Content = "Schemas loaded.";
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private List<string> GetFilteredTableNames()
         {
-            label1.Content = "Executing transaction...";
+            return new List<string> {
+                "DMDATA",
+                "INSULETPUMPSETTINGS",
+                "INSURANCECOS",
+                "INSURENCEPLANS2",
+                //"METERREADING",
+                //"METERREADINGHEADER",
+                "NDCS",
+                "PATIENTPUMP",
+                "PATEINTPUMPPROGRAM",
+                "PATIENTS",
+                "PHONENUMBERS",
+                "PUMPTIMESLOTS",
+                "TIMESLOT"
+            };
+        }
+
+        private void btnExecute_Click(object sender, RoutedEventArgs e)
+        {
+            lblStatusBar.Content = "Executing transaction...";
             bTrans.RunWorkerAsync();
 
-            button1.IsEnabled = false;
+            btnExecute.IsEnabled = false;
         }
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbxSiteIds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int id;
-            bool parseSiteId = Int32.TryParse(comboBox.SelectedItem.ToString(), out id);
+            bool parseSiteId = Int32.TryParse(cbxSiteIds.SelectedItem.ToString(), out id);
 
             if (parseSiteId)
             {
@@ -132,7 +164,8 @@ namespace MigrationApp
                 return;
             }
 
-            UpdateLabel($"Unable to parse Site Id: {comboBox.SelectedItem.ToString()} into type Int32.");
+            UpdateLabel($"Unable to parse Site Id: {cbxSiteIds.SelectedItem.ToString()} into type Int32.");
         }
+
     }
 }

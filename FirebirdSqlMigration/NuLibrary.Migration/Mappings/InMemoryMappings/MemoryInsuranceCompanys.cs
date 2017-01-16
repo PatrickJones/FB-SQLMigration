@@ -11,5 +11,6 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         // key = firebird keyid for company
         // value = company name
         public static Dictionary<string, string> Companies = new Dictionary<string, string>();
+
     }
 }

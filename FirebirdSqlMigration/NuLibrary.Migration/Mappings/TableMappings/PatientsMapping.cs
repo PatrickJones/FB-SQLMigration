@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
@@ -40,9 +41,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
                 {
-                    //aspnet_Membership member;
-                    //aspnet_Users aspUser;
-                    //UserAuthentication uAuth = null;
                     User user = new User();
                     Guid instId = nHelper.GetInstitutionId(MigrationVariables.CurrentSiteId);
 
@@ -63,38 +61,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         TransactionManager.DatabaseContext.Users.Add(user);
                         TransactionManager.DatabaseContext.SaveChanges();
                     }
-                    //else
-                    //{
-                    //    //only create authentication record if user has current login
-                    //    var appId = nHelper.GetApplicationId("Diabetes Partner");
-                    //    member = aHelper.GetMembershipInfo(uid);
-                    //    aspUser = aHelper.GetAspUserInfo(uid);
-                    //    if (member != null)
-                    //    {
-                    //        uAuth = new UserAuthentication {
-                    //            ApplicationId = appId,
-                    //            UserId = uid,
-                    //            Username = aspUser.UserName,
-                    //            Password = member.Password,
-                    //            PasswordQuestion = member.PasswordQuestion,
-                    //            PasswordAnswer = member.PasswordAnswer,
-                    //            PasswordAnswerFailureCount = member.FailedPasswordAnswerAttemptCount,
-                    //            PasswordFailureCount = member.FailedPasswordAttemptCount,
-                    //            LastActivityDate = aspUser.LastActivityDate,
-                    //            LastLockOutDate = member.LastLockoutDate,
-                    //            IsApproved = member.IsApproved,
-                    //            IsLockedOut = member.IsLockedOut,
-                    //            IsTempPassword = member.IsTemp,
-                    //            IsloggedIn = false
-                    //        };
-                    //    }
-                    //}
-
-                    //var user = new User {
-                    //    UserId = userId,
-                    //    UserType = (int)UserType.Patient,
-                    //    CreationDate = DateTime.Now
-                    //};
 
                     var pat = new Patient
                     {
@@ -121,13 +87,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString()
                     };
 
-                    //if (uAuth != null)
-                    //{
-                    //    user.UserAuthentications.Add(uAuth);
-                    //}
-
                     pat.PatientAddresses.Add(adr);
-                    //user.Patient = pat;
+
+                    // add patient info to in-memery collection for use throughout application
+                    MemoryPatientInfo.AddPatientInfo(MigrationVariables.CurrentSiteId, patId, pat.UserId);
 
                     if (CanAddToContext(user.UserId))
                     {

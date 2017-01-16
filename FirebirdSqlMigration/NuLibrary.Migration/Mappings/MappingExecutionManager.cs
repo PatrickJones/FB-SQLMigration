@@ -20,6 +20,7 @@ namespace NuLibrary.Migration.Mappings
             var validDict = vt.ValidateAll();
 
             ExecuteInstitutionMapping();
+            //ExecutePatientPhoneMapping();
         }
 
         private void ExecuteInstitutionMapping()
@@ -53,7 +54,16 @@ namespace NuLibrary.Migration.Mappings
             PatientsMapping map = new PatientsMapping();
             map.CreatePatientMapping();
 
-            //ExecutePatientPhoneMapping();
+            ExecutePatientPhoneMapping();
+        }
+
+        private void ExecutePatientPhoneMapping()
+        {
+            PatientPhoneNumbersMapping map = new PatientPhoneNumbersMapping();
+            map.CreatePatientPhoneNumbersMapping();
+
+            //ExecuteInsuranceCompanyMapping();
+
             try
             {
                 TransactionManager.ExecuteTransaction(); //TESTING ONLY
@@ -62,14 +72,6 @@ namespace NuLibrary.Migration.Mappings
             {
                 throw;
             }
-        }
-
-        private void ExecutePatientPhoneMapping()
-        {
-            PatientPhoneNumbersMapping map = new PatientPhoneNumbersMapping();
-            map.CreatePatientPhoneNumbersMapping();
-
-            ExecuteInsuranceCompanyMapping();
         }
 
         private void ExecuteInsuranceCompanyMapping()

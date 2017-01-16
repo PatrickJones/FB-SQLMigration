@@ -1,4 +1,7 @@
-﻿using NuLibrary.Migration.FBDatabase.FBTables;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
@@ -35,14 +38,16 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void CreatePatientPhoneNumbersMapping()
         {
-            foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+            try
             {
-                // get userid from old aspnetdb matching on patientid #####.#####
-                var patId = row["PATIENTID"].ToString();
-                var userId = aHelper.GetUserIdFromPatientId(patId);
+                var rows = TableAgent.DataSet.Tables[FbTableName].Rows;
 
-                if (userId != Guid.Empty)
+                foreach (DataRow row in rows)
                 {
+                    // get userid from old aspnetdb matching on patientid #####.#####
+                    var patId = row["PARENTID"].ToString();
+                    var userId = MemoryPatientInfo.GetUserId(MigrationVariables.CurrentSiteId, patId);
+
                     var patNum = new PatientPhoneNumber
                     {
                         UserId = userId,
@@ -53,11 +58,42 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         RecieveText = (row["RECEIVETEXT"] is DBNull) ? false : map.ParseFirebirdBoolean(row["RECEIVETEXT"].ToString())
                     };
 
-                    TransactionManager.DatabaseContext.PatientPhoneNumbers.Add(patNum);
+                    if (userId != Guid.Empty && CanAddToContext(patNum.Number))
+                    {
+                        TransactionManager.DatabaseContext.PatientPhoneNumbers.Add(patNum);
+                    }
+                    else
+                    {
+                        TransactionManager.FailedMappingCollection
+                            .Add(new FailedMappings
+                            {
+                                Tablename = "PatientPhoneNumbers",
+                                ObjectType = typeof(PatientPhoneNumber),
+                                JsonSerializedObject = JsonConvert.SerializeObject(patNum),
+                                FailedReason = "Patient phone number already exist in database."
+                            });
+                    }
                 }
-                
+
+                TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error creating PatientPhonenumber Mapping mapping.", e);
             }
         }
 
+        private bool CanAddToContext(string phoneNumber)
+        {
+            if (String.IsNullOrEmpty(phoneNumber))
+            {
+                return false;
+            }
+
+            using (var ctx = new NuMedicsGlobalEntities())
+            {
+                return (ctx.PatientPhoneNumbers.Any(a => a.Number == phoneNumber)) ? false : true;
+            }
+        }
     }
 }

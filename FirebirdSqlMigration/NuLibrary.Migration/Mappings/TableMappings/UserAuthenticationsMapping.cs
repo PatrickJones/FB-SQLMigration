@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
@@ -82,6 +83,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
 
                     user.UserAuthentications.Add(uAuth);
+
+                    // add user info to in-memery collection for use throughout application
+                    MemoryPatientInfo.AddPatientInfo(adUser.CPSiteId.Value, adUser.CliniProID, user.UserId);
 
                     if (CanAddToContext(user.UserId))
                     {

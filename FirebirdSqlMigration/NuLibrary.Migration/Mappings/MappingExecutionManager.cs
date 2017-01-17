@@ -62,7 +62,15 @@ namespace NuLibrary.Migration.Mappings
             PatientPhoneNumbersMapping map = new PatientPhoneNumbersMapping();
             map.CreatePatientPhoneNumbersMapping();
 
-            //ExecuteInsuranceCompanyMapping();
+            ExecuteInsuranceCompanyMapping();
+        }
+
+        private void ExecuteInsuranceCompanyMapping()
+        {
+            InsuranceCompaniesMapping map = new InsuranceCompaniesMapping();
+            map.CreatePatientMapping();
+
+            ExecuteInsurancePlanMapping();
 
             try
             {
@@ -72,14 +80,6 @@ namespace NuLibrary.Migration.Mappings
             {
                 throw;
             }
-        }
-
-        private void ExecuteInsuranceCompanyMapping()
-        {
-            InsuranceCompaniesMapping map = new InsuranceCompaniesMapping();
-            map.CreatePatientMapping();
-
-            ExecuteInsurancePlanMapping();
         }
 
         private void ExecuteInsurancePlanMapping()

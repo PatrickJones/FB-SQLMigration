@@ -79,7 +79,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
             catch (Exception e)
             {
-                throw new Exception("Error creating PatientPhonenumber Mapping mapping.", e);
+                throw new Exception("Error creating PatientPhonenumber mapping.", e);
             }
         }
 

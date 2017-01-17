@@ -1,4 +1,7 @@
-﻿using NuLibrary.Migration.FBDatabase.FBTables;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
@@ -35,32 +38,64 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public void CreateInsurancePlansMapping()
         {
             //MappingUtilities mu = new MappingUtilities();
-            foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+            try
             {
-                // get userid from old aspnetdb matching on patientid #####.#####
-                var patId = (String)row["PATIENTID"];
-                var userId = aHelper.GetUserIdFromPatientId(patId);
-
-                if (userId != Guid.Empty)
+                foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
                 {
-                    var insp = new InsurancePlan
-                    {
-                        UserId = userId,
-                        PlanType = (row["INSTYPEID"] is DBNull) ? String.Empty : map.GetInsurancePlanType(row["INSTYPEID"].ToString()),
-                        PlanIdentifier = (row["PLANIDENTIFIER"] is DBNull) ? String.Empty : row["PLANIDENTIFIER"].ToString(),
-                        PolicyNumber = (row["POLICYNUMBER"] is DBNull) ? String.Empty : row["POLICYNUMBER"].ToString(),
-                        GroupName = (row["GROUPNAME"] is DBNull) ? String.Empty : row["GROUPNAME"].ToString(),
-                        GroupIdentifier = (row["GROUPNUMBER"] is DBNull) ? String.Empty : row["GROUPNUMBER"].ToString(),
-                        CoPay = (row["COPAY"] is DBNull) ? 0 : map.ParseMoney(row["COPAY"].ToString()),
-                        Purchaser = (row["PURCHASER"] is DBNull) ? String.Empty : row["PURCHASER"].ToString(),
-                        IsActive = (row["ISACTIVE"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISACTIVE"].ToString()),
-                        InActiveDate = (row["INACTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString()),
-                        EffectiveDate = (row["EFFECTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["EFFECTIVEDATE"].ToString()),
-                        CompanyId = nHelper.GetInsuranceCompanyId(row["INSCOID"].ToString()) //(int)row["INSCOID"] //is a double precision in firebird, may need to convert
-                    };
+                    // get userid from old aspnetdb matching on patientid #####.#####
+                    var patId = (String)row["PATIENTID"];
+                    var userId = MemoryPatientInfo.GetUserId(MigrationVariables.CurrentSiteId, patId);
 
-                    TransactionManager.DatabaseContext.InsurancePlans.Add(insp);
+                    if (userId != Guid.Empty)
+                    {
+                        var insp = new InsurancePlan
+                        {
+                            UserId = userId,
+                            PlanType = (row["INSTYPEID"] is DBNull) ? String.Empty : map.GetInsurancePlanType(row["INSTYPEID"].ToString()),
+                            PlanIdentifier = (row["PLANIDENTIFIER"] is DBNull) ? String.Empty : row["PLANIDENTIFIER"].ToString(),
+                            PolicyNumber = (row["POLICYNUMBER"] is DBNull) ? String.Empty : row["POLICYNUMBER"].ToString(),
+                            GroupName = (row["GROUPNAME"] is DBNull) ? String.Empty : row["GROUPNAME"].ToString(),
+                            GroupIdentifier = (row["GROUPNUMBER"] is DBNull) ? String.Empty : row["GROUPNUMBER"].ToString(),
+                            CoPay = (row["COPAY"] is DBNull) ? 0 : map.ParseMoney(row["COPAY"].ToString()),
+                            Purchaser = (row["PURCHASER"] is DBNull) ? String.Empty : row["PURCHASER"].ToString(),
+                            IsActive = (row["ISACTIVE"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISACTIVE"].ToString()),
+                            InActiveDate = (row["INACTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString()),
+                            EffectiveDate = (row["EFFECTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["EFFECTIVEDATE"].ToString()),
+                            CompanyId = nHelper.GetInsuranceCompanyId(row["INSCOID"].ToString()) //(int)row["INSCOID"] //is a double precision in firebird, may need to convert
+                        };
+
+                        if (CanAddToContext(insp.UserId, insp.PlanType, insp.PolicyNumber))
+                        {
+                            TransactionManager.DatabaseContext.InsurancePlans.Add(insp);
+                        }
+                        else
+                        {
+                            TransactionManager.FailedMappingCollection
+                                .Add(new FailedMappings
+                                {
+                                    Tablename = "InsurancePlans",
+                                    ObjectType = typeof(InsurancePlan),
+                                    JsonSerializedObject = JsonConvert.SerializeObject(insp),
+                                    FailedReason = "Insurance Plan already exist in database."
+                                });
+                        }
+                        
+                    }
                 }
+
+                TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error creating InsurancePlan mapping.", e);
+            }
+        }
+
+        private bool CanAddToContext(Guid userId, string planType, string policyNumber)
+        {
+            using (var ctx = new NuMedicsGlobalEntities())
+            {
+                return (ctx.InsurancePlans.Any(a => a.UserId == userId && a.PlanType == planType && a.PolicyNumber == policyNumber)) ? false : true;
             }
         }
     }

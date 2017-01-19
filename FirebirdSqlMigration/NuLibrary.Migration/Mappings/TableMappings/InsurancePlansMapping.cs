@@ -43,7 +43,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
                 {
                     // get userid from old aspnetdb matching on patientid #####.#####
-                    var patId = (String)row["PATIENTID"];
+                    var patId = (String)row["PATIENTID"].ToString();
                     var userId = MemoryPatientInfo.GetUserId(MigrationVariables.CurrentSiteId, patId);
 
                     if (userId != Guid.Empty)
@@ -51,6 +51,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         var insp = new InsurancePlan
                         {
                             UserId = userId,
+                            PlanName = String.Empty,
                             PlanType = (row["INSTYPEID"] is DBNull) ? String.Empty : map.GetInsurancePlanType(row["INSTYPEID"].ToString()),
                             PlanIdentifier = (row["PLANIDENTIFIER"] is DBNull) ? String.Empty : row["PLANIDENTIFIER"].ToString(),
                             PolicyNumber = (row["POLICYNUMBER"] is DBNull) ? String.Empty : row["POLICYNUMBER"].ToString(),

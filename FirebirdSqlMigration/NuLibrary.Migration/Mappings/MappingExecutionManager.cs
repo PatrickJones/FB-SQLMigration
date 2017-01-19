@@ -71,7 +71,14 @@ namespace NuLibrary.Migration.Mappings
             map.CreatePatientMapping();
 
             ExecuteInsurancePlanMapping();
+        }
 
+        private void ExecuteInsurancePlanMapping()
+        {
+            InsurancePlansMapping map = new InsurancePlansMapping();
+            map.CreateInsurancePlansMapping();
+
+            //ExecuteCareSettingMapping();
             try
             {
                 TransactionManager.ExecuteTransaction(); //TESTING ONLY
@@ -80,14 +87,6 @@ namespace NuLibrary.Migration.Mappings
             {
                 throw;
             }
-        }
-
-        private void ExecuteInsurancePlanMapping()
-        {
-            InsurancePlansMapping map = new InsurancePlansMapping();
-            map.CreateInsurancePlansMapping();
-
-            ExecuteCareSettingMapping();
         }
 
         private void ExecuteCareSettingMapping()

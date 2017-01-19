@@ -131,7 +131,7 @@ namespace MigrationApp
                 "DMDATA",
                 "INSULETPUMPSETTINGS",
                 "INSURANCECOS",
-                "INSURENCEPLANS2",
+                "INSURANCEPLANS2",
                 //"METERREADING",
                 //"METERREADINGHEADER",
                 "NDCS",

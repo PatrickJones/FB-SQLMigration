@@ -32,20 +32,17 @@ namespace NuLibrary.Migration.Mappings
 
         public int FindInsulinBrandId(String insbrand)
         {
-            var ib =  db.InsulinBrands.Where(x => x.BrandName.ToLower() == insbrand.ToLower()).FirstOrDefault();
-            return ib.InsulinBrandId;
+            return db.InsulinBrands.Where(x => x.BrandName.ToLower() == insbrand.ToLower()).Select(s => s.InsulinBrandId).FirstOrDefault();
         }
 
         public int FindInsulinMethodId(String insmethod)
         {
-            var im = db.InsulinMethods.Where(x => x.Method.ToLower() == insmethod.ToLower()).FirstOrDefault();
-            return im.InsulinMethodId;
+            return db.InsulinMethods.Where(x => x.Method.ToLower() == insmethod.ToLower()).Select(s => s.InsulinMethodId).FirstOrDefault();
         }
 
         public int FindDMTypeId(String name)
         {
-            var dmType = db.DiabetesManagementTypes.Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefault();
-            return dmType.TypeId;
+            return db.DiabetesManagementTypes.Where(x => x.Name.ToLower() == name.ToLower()).Select(s => s.TypeId).FirstOrDefault();
         }
 
         public string GetInsurancePlanType(string plan)
@@ -128,13 +125,11 @@ namespace NuLibrary.Migration.Mappings
 
         public Pump FindPatientPump(Guid userId)
         {
-            var pump = db.Pumps.Where(x => x.UserId == userId).FirstOrDefault();
-            return pump;
+            return db.Pumps.Where(x => x.UserId == userId).FirstOrDefault();
         }
         public PumpProgram FindPumpProgram(string name, int pkey)
         {
-            var ppId = db.PumpPrograms.Where(x => x.ProgramName == name && x.ProgramKey == pkey).FirstOrDefault();
-            return ppId;
+            return db.PumpPrograms.Where(x => x.ProgramName == name && x.ProgramKey == pkey).FirstOrDefault();
         }
 
         public ICollection<PumpSetting> CreatePumpSetting(DataRow record, long id)

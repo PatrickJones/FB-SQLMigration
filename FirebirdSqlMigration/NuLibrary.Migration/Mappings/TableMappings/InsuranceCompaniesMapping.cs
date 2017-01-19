@@ -84,7 +84,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             TransactionManager.FailedMappingCollection
                                 .Add(new FailedMappings
                                 {
-                                    Tablename = "InsuranceProviders",
+                                    Tablename = FbTableName,
                                     ObjectType = typeof(InsuranceProvider),
                                     JsonSerializedObject = JsonConvert.SerializeObject(ips),
                                     FailedReason = "Insurance Provider already exist in database."

@@ -1,5 +1,6 @@
 ﻿using NuLibrary.Migration.SQLDatabase.EF;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace NuLibrary.Migration.Mappings
     public static class TransactionManager
     {
         public static NuMedicsGlobalEntities DatabaseContext;
-        public static ICollection<FailedMappings> FailedMappingCollection = new List<FailedMappings>();
+        public static ConcurrentBag<FailedMappings> FailedMappingCollection = new ConcurrentBag<FailedMappings>();
 
         static TransactionManager()
         {

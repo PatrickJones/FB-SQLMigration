@@ -1,25 +1,35 @@
 ﻿using Newtonsoft.Json;
+using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.Mappings.TableMappings
 {
-    public class InstitutionMapping
+    public class InstitutionMapping : IContextHandler
     {
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
         MappingUtilities mu = new MappingUtilities();
 
+        public ICollection<Institution> CompletedMappings = new List<Institution>();
+
+        public int RecordCount = 0;
+        public int FailedCount = 0;
+
         public void CreateInstitutionMapping()
         {
             try
             {
-                foreach (var ins in aHelper.GetAllCorporationInfo())
+                var dataSet = aHelper.GetAllCorporationInfo();
+                RecordCount = dataSet.Count;
+
+                foreach (var ins in dataSet)
                 {
                     var inst = new Institution
                     {
@@ -30,7 +40,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (CanAddToContext(inst.Name, inst.LegacySiteId))
                     {
-                        TransactionManager.DatabaseContext.Institutions.Add(inst);
+                        //TransactionManager.DatabaseContext.Institutions.Add(inst);
+                        CompletedMappings.Add(inst);
                     }
                     else
                     {
@@ -41,14 +52,37 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 JsonSerializedObject = JsonConvert.SerializeObject(inst),
                                 FailedReason = "Instition already exist in database."
                             });
+
+                        FailedCount++;
                     }
                 }
 
-                TransactionManager.DatabaseContext.SaveChanges();
+                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
                 throw new Exception("Error creating Institution mapping.", e);
+            }
+        }
+
+        public void AddToContext()
+        {
+            TransactionManager.DatabaseContext.Institutions.AddRange(CompletedMappings);
+        }
+
+        public void SaveChanges()
+        {
+            try
+            {
+                TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Institution entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Institution entity", e);
             }
         }
 

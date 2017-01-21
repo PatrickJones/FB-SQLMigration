@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +18,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     /// <summary>
     /// Note: Has relationship with - 
     /// </summary>
-    public class PatientsMapping : BaseMapping
+    public class PatientsMapping : BaseMapping, IContextHandler
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
@@ -35,11 +37,21 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
         MappingUtilities mu = new MappingUtilities();
 
+        public ICollection<Patient> CompletedMappings = new List<Patient>();
+        private ICollection<User> newUsers = new List<User>();
+
+        public int RecordCount = 0;
+        public int FailedCount = 0;
+
+
         public void CreatePatientMapping()
         {
             try
             {
-                foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+                var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
+                RecordCount = TableAgent.RowCount;
+
+                foreach (DataRow row in dataSet)
                 {
                     User user = new User();
                     Guid instId = nHelper.GetInstitutionId(MigrationVariables.CurrentSiteId);
@@ -49,6 +61,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["KEYID"].ToString();
                     var uid = aHelper.GetUserIdFromPatientId(patId);
                     var userId = (uid != Guid.Empty) ? uid : Guid.NewGuid();
+
                     // must create clinipro user to store new userid for future usage
                     if (uid == Guid.Empty)
                     {
@@ -58,8 +71,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         user.UserType = (int)UserType.Patient;
                         user.CreationDate = DateTime.Now;
 
-                        TransactionManager.DatabaseContext.Users.Add(user);
-                        TransactionManager.DatabaseContext.SaveChanges();
+                        newUsers.Add(user);
+                        //TransactionManager.DatabaseContext.Users.Add(user);
+                        //TransactionManager.DatabaseContext.SaveChanges();
                     }
 
                     var pat = new Patient
@@ -94,7 +108,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (CanAddToContext(user.UserId))
                     {
-                        TransactionManager.DatabaseContext.Patients.Add(pat);
+                        //TransactionManager.DatabaseContext.Patients.Add(pat);
+                        CompletedMappings.Add(pat);
                     }
                     else
                     {
@@ -106,6 +121,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 JsonSerializedObject = JsonConvert.SerializeObject(user),
                                 FailedReason = "Patient already exist in database."
                             });
+
+                        FailedCount++;
                     }
                 }
 
@@ -114,6 +131,28 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             catch (Exception e)
             {
                 throw new Exception("Error creating Patient mapping.", e);
+            }
+        }
+
+        public void AddToContext()
+        {
+            TransactionManager.DatabaseContext.Users.AddRange(newUsers);
+            TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
+        }
+
+        public void SaveChanges()
+        {
+            try
+            {
+                TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Patient entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Patient entity", e);
             }
         }
 

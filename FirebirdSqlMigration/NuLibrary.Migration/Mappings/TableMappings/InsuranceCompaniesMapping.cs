@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     /// <summary>
     /// Note: Has relationship with - 
     /// </summary>
-    public class InsuranceCompaniesMapping : BaseMapping
+    public class InsuranceCompaniesMapping : BaseMapping, IContextHandler
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
@@ -31,11 +33,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         MappingUtilities map = new MappingUtilities();
 
-        public void CreatePatientMapping()
+        public ICollection<InsuranceProvider> CompletedMappings = new List<InsuranceProvider>();
+
+        public int RecordCount = 0;
+        public int FailedCount = 0;
+
+        public void CreateInsuranceCompanyMapping()
         {
             try
             {
-                foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+                var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
+                RecordCount = TableAgent.RowCount;
+
+                foreach (DataRow row in dataSet)
                 {
                     if (!String.IsNullOrEmpty(row["NAME"].ToString()))
                     {
@@ -77,7 +87,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                         if (CanAddToContext(ips.Name))
                         {
-                            TransactionManager.DatabaseContext.InsuranceProviders.Add(ips);
+                            //TransactionManager.DatabaseContext.InsuranceProviders.Add(ips);
+                            CompletedMappings.Add(ips);
                         }
                         else
                         {
@@ -89,16 +100,40 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                     JsonSerializedObject = JsonConvert.SerializeObject(ips),
                                     FailedReason = "Insurance Provider already exist in database."
                                 });
+
+                            FailedCount++;
                         }
                     }
                 }
-                TransactionManager.DatabaseContext.SaveChanges();
+                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
                 throw new Exception("Error creating InsuranceProvider mapping.", e);
             }
         }
+
+        public void AddToContext()
+        {
+            TransactionManager.DatabaseContext.InsuranceProviders.AddRange(CompletedMappings);
+        }
+
+        public void SaveChanges()
+        {
+            try
+            {
+               TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw new Exception("Error validating InsuranceProvider entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving InsuranceProvider entity", e);
+            }
+        }
+
 
         private bool CanAddToContext(string providerName)
         {

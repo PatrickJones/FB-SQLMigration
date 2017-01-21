@@ -17,7 +17,11 @@ namespace NuLibrary.Migration.Mappings
         public Patient FindPatient(Guid userId)
         {
             return db.Patients.Where(x => x.UserId == userId).FirstOrDefault();
-            
+        }
+
+        public ICollection<Patient> GetPatients()
+        {
+            return db.Patients.ToList();
         }
 
         public InsuranceProvider FindInsuranceCo(int insCoId)
@@ -92,21 +96,29 @@ namespace NuLibrary.Migration.Mappings
 
         public Dictionary<string, bool> ParseDMControlTypes(int typeValue)
         {
-            var dict = new Dictionary<string, bool>();
-            if (typeValue != 0)
+            try
             {
-                //bool Diet = (typeValue / 8) % 2 == 1; // e.g., "13" or "1101 base 2" gives us a "1" or "true"
-                //bool Exercise = (typeValue / 4) % 2 == 1; // // e.g., "13" or "1101 base 2" gives us a "1" or "true"
-                //bool Insulin = (typeValue / 2) % 2 == 1;// e.g., "13" or "1101 base 2" gives us a "0" or "false"
-                //bool Medication = typeValue % 2 == 1;// e.g., "13" or "1101 base 2" gives us a "1" or "true"
+                var dict = new Dictionary<string, bool>();
+                if (typeValue != 0)
+                {
+                    //bool Diet = (typeValue / 8) % 2 == 1; // e.g., "13" or "1101 base 2" gives us a "1" or "true"
+                    //bool Exercise = (typeValue / 4) % 2 == 1; // // e.g., "13" or "1101 base 2" gives us a "1" or "true"
+                    //bool Insulin = (typeValue / 2) % 2 == 1;// e.g., "13" or "1101 base 2" gives us a "0" or "false"
+                    //bool Medication = typeValue % 2 == 1;// e.g., "13" or "1101 base 2" gives us a "1" or "true"
 
-                dict.Add("Diet", ((typeValue / 8) % 2 == 1)); // e.g., "13" or "1101 base 2" gives us a "1" or "true"
-                dict.Add("Exercise", ((typeValue / 4) % 2 == 1)); // // e.g., "13" or "1101 base 2" gives us a "1" or "true"
-                dict.Add("Insulin", ((typeValue / 2) % 2 == 1));// e.g., "13" or "1101 base 2" gives us a "0" or "false"
-                dict.Add("Medication", (typeValue % 2 == 1));// e.g., "13" or "1101 base 2" gives us a "1" or "true"
+                    dict.Add("Diet", ((typeValue / 8) % 2 == 1)); // e.g., "13" or "1101 base 2" gives us a "1" or "true"
+                    dict.Add("Exercise", ((typeValue / 4) % 2 == 1)); // // e.g., "13" or "1101 base 2" gives us a "1" or "true"
+                    dict.Add("Insulin", ((typeValue / 2) % 2 == 1));// e.g., "13" or "1101 base 2" gives us a "0" or "false"
+                    dict.Add("Medication", (typeValue % 2 == 1));// e.g., "13" or "1101 base 2" gives us a "1" or "true"
+                }
+
+                return dict;
+
             }
-
-            return dict;
+            catch (Exception e)
+            {
+                throw new Exception("Unable to parse DMControl Type.", e);
+            }
         }
 
 
@@ -170,6 +182,23 @@ namespace NuLibrary.Migration.Mappings
             }
 
             return dt;
+        }
+
+        public TimeSpan ParseFirebirdTimespan(string timespan)
+        {
+            DateTime dt;
+            var parse = DateTime.TryParse(timespan, out dt);
+
+            TimeSpan ts = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
+
+            if (parse)
+            {
+                return ts;
+            }
+            else
+            {
+                return new TimeSpan(12, 0, 0);
+            }
         }
 
         public bool ParseFirebirdBoolean(string character)

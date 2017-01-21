@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +18,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     /// <summary>
     /// Note: Has relationship with -
     /// </summary>
-    public class DMDataMapping : BaseMapping
+    public class DMDataMapping : BaseMapping, IContextHandler
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
@@ -35,11 +37,20 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         MappingUtilities mu = new MappingUtilities();
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
 
+        public ICollection<CareSetting> CompletedMappings = new List<CareSetting>();
+
+        public int RecordCount = 0;
+        public int FailedCount = 0;
+
+
         public void CreateDMDataMapping()
         {
 
             try
             {
+                var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
+                RecordCount = TableAgent.RowCount;
+
                 foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
                 {
                     // get userid from old aspnetdb matching on patientid #####.#####
@@ -90,7 +101,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                         if (CanAddToContext(careset.UserId, careset.HyperglycemicLevel, careset.HypoglycemicLevel))
                         {
-                            TransactionManager.DatabaseContext.CareSettings.Add(careset);
+                            //TransactionManager.DatabaseContext.CareSettings.Add(careset);
+                            CompletedMappings.Add(careset);
                         }
                         else
                         {
@@ -102,6 +114,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                     JsonSerializedObject = JsonConvert.SerializeObject(careset),
                                     FailedReason = "Unable to add Care Setting to database."
                                 });
+
+                            FailedCount++;
                         }
 
                         //if (CanAddToContext(dm.UserId, dm.LowBGLevel, dm.HighBGLevel, dm.PostmealTarget, dm.PremealTarget))
@@ -122,7 +136,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                TransactionManager.DatabaseContext.SaveChanges();
+                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
@@ -137,6 +151,29 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         //        return (ctx.DiabetesManagementDatas.Any(a => a.UserId == userId && a.LowBGLevel == lowBGLevel && a.HighBGLevel == highBGLevel && a.PostmealTarget == postmealTarget && a.PremealTarget == premealTarget)) ? false : true;
         //    }
         //}
+
+
+        public void AddToContext()
+        {
+            TransactionManager.DatabaseContext.CareSettings.AddRange(CompletedMappings);
+        }
+
+        public void SaveChanges()
+        {
+            try
+            {
+                TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw new Exception("Error validating CareSetting entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving CareSetting entity", e);
+            }
+        }
+
 
         private bool CanAddToContext(Guid userId, int hyperglycemicLevel, int hypoglycemicLevel)
         {

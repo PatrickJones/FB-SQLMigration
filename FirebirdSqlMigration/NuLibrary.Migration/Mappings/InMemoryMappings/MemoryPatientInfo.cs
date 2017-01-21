@@ -1,5 +1,8 @@
-﻿using System;
+﻿using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.SQLDatabase.EF;
+using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +31,11 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
                     patientInfo.Add(tup);
                 }
             }
+        }
+
+        public static int Count()
+        {
+            return patientInfo.Count;
         }
     }
 }

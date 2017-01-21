@@ -101,112 +101,12 @@ namespace NuLibrary.Migration.Mappings
                 mapInstances[i].Value.SaveChanges();
             }
 
-            ExecutePatientDevicesMapping();
+            CommitExecution();
         }
 
 
-        private void ExecuteInstitutionMapping()
-        {
-            //InstitutionMapping map = new InstitutionMapping();
-            //map.CreateInstitutionMapping();
 
-            mapInstances[0].Value.AddToContext();
-            mapInstances[0].Value.SaveChanges();
-
-            ExecuteUserAuthenticationMapping();
-            
-        }
-
-        private void ExecuteUserAuthenticationMapping()
-        {
-            //UserAuthenticationsMapping map = new UserAuthenticationsMapping();
-            //map.CreateUserAuthenticationMapping();
-
-            mapInstances[1].Value.AddToContext();
-            mapInstances[1].Value.SaveChanges();
-
-            ExecuteClinicianMapping();
-            
-        }
-
-        private void ExecuteClinicianMapping()
-        {
-            //ClinicianMapping map = new ClinicianMapping();
-            //map.CreateClinicianMapping();
-
-            mapInstances[2].Value.AddToContext();
-            mapInstances[2].Value.SaveChanges();
-
-            ExecutePatientMapping();
-        }
-
-        private void ExecutePatientMapping()
-        {
-            //PatientsMapping map = new PatientsMapping();
-            //map.CreatePatientMapping();
-
-            mapInstances[3].Value.AddToContext();
-            mapInstances[3].Value.SaveChanges();
-
-            ExecutePatientPhoneMapping();
-        }
-
-        private void ExecutePatientPhoneMapping()
-        {
-            //PatientPhoneNumbersMapping map = new PatientPhoneNumbersMapping();
-            //map.CreatePatientPhoneNumbersMapping();
-
-            mapInstances[4].Value.AddToContext();
-            mapInstances[4].Value.SaveChanges();
-
-            ExecuteInsuranceCompanyMapping();
-        }
-
-        private void ExecuteInsuranceCompanyMapping()
-        {
-            //InsuranceCompaniesMapping map = new InsuranceCompaniesMapping();
-            //map.CreateInsuranceCompanyMapping();
-
-            mapInstances[5].Value.AddToContext();
-            mapInstances[5].Value.SaveChanges();
-
-            ExecuteInsurancePlanMapping();
-        }
-
-        private void ExecuteInsurancePlanMapping()
-        {
-            //InsurancePlansMapping map = new InsurancePlansMapping();
-            //map.CreateInsurancePlansMapping();
-
-            mapInstances[6].Value.AddToContext();
-            mapInstances[6].Value.SaveChanges();
-
-            ExecuteCareSettingMapping();
-        }
-
-        private void ExecuteCareSettingMapping()
-        {
-            //DMDataMapping map = new DMDataMapping();
-            //map.CreateDMDataMapping();
-
-            mapInstances[7].Value.AddToContext();
-            mapInstances[7].Value.SaveChanges();
-
-            ExecuteDailyTimeSlotsMapping();
-        }
-
-        private void ExecuteDailyTimeSlotsMapping()
-        {
-            //TimeSlotsMapping map = new TimeSlotsMapping();
-            //map.CreateTimeSlotsMapping();
-
-            mapInstances[8].Value.AddToContext();
-            mapInstances[8].Value.SaveChanges();
-
-            ExecutePatientDevicesMapping();
-        }
-
-        private void ExecutePatientDevicesMapping()
+        private void CommitExecution()
         {
             //throw new NotImplementedException();
             try
@@ -218,18 +118,6 @@ namespace NuLibrary.Migration.Mappings
             catch (Exception e)
             {
                 throw;
-            }
-        }
-
-        private void ExecutePatientRelationships()
-        {
-            if (MemoryPatientInfo.Count() != 0)
-            {
-                var tasks = new List<Task> {
-                    Task.Run(() => ExecuteDailyTimeSlotsMapping())
-                };
-
-                Task.WhenAll(tasks).ContinueWith(done => { ExecutePatientDevicesMapping(); });
             }
         }
     }

@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.Mappings.TableMappings
 {
-    public class InstitutionMapping : IContextHandler
+    public class SubscriptionsMapping : IContextHandler
     {
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
         MappingUtilities mu = new MappingUtilities();
 
-        public ICollection<Institution> CompletedMappings = new List<Institution>();
+        public ICollection<Subscription> CompletedMappings = new List<Subscription>();
 
         public int RecordCount = 0;
         public int FailedCount = 0;
@@ -26,33 +26,32 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var dataSet = aHelper.GetAllCorporationInfo();
+                var dataSet = aHelper.GetAllPatientUsers();
                 RecordCount = dataSet.Count;
 
-                foreach (var ins in dataSet)
+                foreach (var pat in dataSet)
                 {
-                    var inst = new Institution
-                    {
-                        InstitutionId = Guid.NewGuid(),
-                        Name = ins.Site_Name,
-                        LegacySiteId = (ins.SiteId.HasValue) ? ins.SiteId.Value : 0
-                    };
+                    var sh = aHelper.GetSubscriptionInfo(pat.UserId);
 
-                    if (CanAddToContext(inst.Name, inst.LegacySiteId))
+                    foreach (var sub in sh.GetMappedSubscriptions())
                     {
-                        CompletedMappings.Add(inst);
-                    }
-                    else
-                    {
-                        TransactionManager.FailedMappingCollection
-                            .Add(new FailedMappings {
-                                Tablename = "Institutions",
-                                ObjectType = typeof(Institution),
-                                JsonSerializedObject = JsonConvert.SerializeObject(inst),
-                                FailedReason = "Instition already exist in database."
-                            });
+                        if (CanAddToContext(sub.UserId, sub.SubscriptionType, sub.ExpirationDate))
+                        {
+                            CompletedMappings.Add(sub);
+                        }
+                        else
+                        {
+                            TransactionManager.FailedMappingCollection
+                                .Add(new FailedMappings
+                                {
+                                    Tablename = "Institutions",
+                                    ObjectType = typeof(Subscription),
+                                    JsonSerializedObject = JsonConvert.SerializeObject(sub),
+                                    FailedReason = "Subscription already exist in database."
+                                });
 
-                        FailedCount++;
+                            FailedCount++;
+                        }
                     }
                 }
             }
@@ -62,9 +61,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
+
         public void AddToContext()
         {
-            TransactionManager.DatabaseContext.Institutions.AddRange(CompletedMappings);
+            TransactionManager.DatabaseContext.Subscriptions.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()
@@ -83,12 +83,13 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
-        private bool CanAddToContext(string name, int legacySiteId)
+        private bool CanAddToContext(Guid userid, int subscriptionType, DateTime expiration)
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.Institutions.Any(a => a.Name == name && a.LegacySiteId == legacySiteId)) ? false : true;
+                return (ctx.Subscriptions.Any(a => a.UserId == userid && a.SubscriptionType == subscriptionType && a.ExpirationDate == expiration)) ? false : true;
             }
         }
+
     }
 }

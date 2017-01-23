@@ -84,6 +84,11 @@ namespace NuLibrary.Migration.Mappings
                 {
                     var instance = (PatientsMapping)mapInstances[3].Value;
                     instance.CreatePatientMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = new NuLicenseMapping();
+                    instance.CreateNuLicenseMapping();
                 })
             };
 

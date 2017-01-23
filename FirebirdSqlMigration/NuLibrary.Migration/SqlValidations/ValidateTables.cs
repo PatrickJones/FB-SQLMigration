@@ -27,6 +27,7 @@ namespace NuLibrary.Migration.SqlValidations
             valTables.Add(new TherapyTypeValidation());
             valTables.Add(new UserTypeValidation());
             valTables.Add(new InsulinTypeValidation());
+            valTables.Add(new SubscriptionTypeVaidation());
         }
 
         public IList<ITableValidate> GetReadonlyValidations()

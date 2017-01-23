@@ -16,7 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <AssemblyVersion>1.0.12.0</AssemblyVersion>
+    <AssemblyVersion>1.0.23.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -330,6 +330,7 @@
     <Compile Include="SqlValidationsTest\InsulinTypeValidationTest.cs" />
     <Compile Include="SqlValidationsTest\PaymentMethodValidationTest.cs" />
     <Compile Include="SqlValidationsTest\ReadingEventTypeValidations.cs" />
+    <Compile Include="SqlValidationsTest\SubscriptionTypeValidationTest.cs" />
     <Compile Include="SqlValidationsTest\TherapyTypeValidationsTest.cs" />
     <Compile Include="SqlValidationsTest\UserTypeValidationTest.cs" />
     <Compile Include="SqlValidationsTest\ValidateTableTest.cs" />

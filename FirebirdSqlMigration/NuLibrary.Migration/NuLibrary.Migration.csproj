@@ -79,6 +79,7 @@
     <Compile Include="Mappings\FailedMappings.cs" />
     <Compile Include="Mappings\InMemoryMappings\MemoryDiabetesManagementData.cs" />
     <Compile Include="Mappings\InMemoryMappings\MemoryInsuranceCompanys.cs" />
+    <Compile Include="Mappings\InMemoryMappings\MemoryNuLicenseInfo.cs" />
     <Compile Include="Mappings\InMemoryMappings\MemoryPatientInfo.cs" />
     <Compile Include="Mappings\MappingExecutionManager.cs" />
     <Compile Include="Mappings\MappingUtilities.cs" />
@@ -89,12 +90,14 @@
     <Compile Include="Mappings\TableMappings\InsuranceCompaniesMapping.cs" />
     <Compile Include="Mappings\TableMappings\InsurancePlansMapping.cs" />
     <Compile Include="Mappings\TableMappings\DeviceMeterReadingHeaderMapping.cs" />
+    <Compile Include="Mappings\TableMappings\NuLicenseMapping.cs" />
     <Compile Include="Mappings\TableMappings\PatientPhoneNumbersMapping.cs" />
     <Compile Include="Mappings\TableMappings\PatientsMapping.cs" />
     <Compile Include="Mappings\TableMappings\PumpProgramsMapping.cs" />
     <Compile Include="Mappings\TableMappings\PumpSettingMapping.cs" />
     <Compile Include="Mappings\TableMappings\PumpsMapping.cs" />
     <Compile Include="Mappings\TableMappings\PumpTimeSlotsMapping.cs" />
+    <Compile Include="Mappings\TableMappings\SubscriptionsMapping.cs" />
     <Compile Include="Mappings\TableMappings\TimeSlotsMapping.cs" />
     <Compile Include="Mappings\TableMappings\UserAuthenticationsMapping.cs" />
     <Compile Include="Mappings\TransactionManager.cs" />
@@ -309,6 +312,24 @@
     <Compile Include="SQLDatabase\EF\SubscriptionType.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\subs_Adjustments.cs">
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\subs_CheckPayments.cs">
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\subs_Gaps.cs">
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\subs_PayPalPayments.cs">
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\subs_Subscriptions.cs">
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\subs_Trials.cs">
+      <DependentUpon>AspnetDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\TensReading.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -330,11 +351,13 @@
     <Compile Include="SQLDatabase\SQLHelpers\AspnetDbHelpers.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\DatabaseContextDisposal.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\NumedicsGlobalHelpers.cs" />
+    <Compile Include="SQLDatabase\SQLHelpers\SubscriptionHandler.cs" />
     <Compile Include="SqlValidations\ApplicationValidation.cs" />
     <Compile Include="SqlValidations\CheckStatusValidation.cs" />
     <Compile Include="SqlValidations\InsulinTypeValidation.cs" />
     <Compile Include="SqlValidations\PaymentMethodValidation.cs" />
     <Compile Include="SqlValidations\ReadingEventTypeValidation.cs" />
+    <Compile Include="SqlValidations\SubscriptionTypeVaidation.cs" />
     <Compile Include="SqlValidations\TherapyTypeValidation.cs" />
     <Compile Include="SqlValidations\UserTypeValidation.cs" />
     <Compile Include="SqlValidations\ValidateTables.cs" />

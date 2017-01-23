@@ -96,12 +96,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             dct.IsEnabled = (item.Value) ? true : false;
 
                             careset.DiabetesControlTypes.Add(dct);
-                            //TransactionManager.DatabaseContext.DiabetesControlTypes.Add(dct);
                         }
 
                         if (CanAddToContext(careset.UserId, careset.HyperglycemicLevel, careset.HypoglycemicLevel))
                         {
-                            //TransactionManager.DatabaseContext.CareSettings.Add(careset);
                             CompletedMappings.Add(careset);
                         }
                         else
@@ -117,41 +115,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                             FailedCount++;
                         }
-
-                        //if (CanAddToContext(dm.UserId, dm.LowBGLevel, dm.HighBGLevel, dm.PostmealTarget, dm.PremealTarget))
-                        //{
-                        //    TransactionManager.DatabaseContext.DiabetesManagementDatas.Add(dm);
-                        //}
-                        //else
-                        //{
-                        //    TransactionManager.FailedMappingCollection
-                        //        .Add(new FailedMappings
-                        //        {
-                        //            Tablename = FbTableName,
-                        //            ObjectType = typeof(DiabetesManagementData),
-                        //            JsonSerializedObject = JsonConvert.SerializeObject(dm),
-                        //            FailedReason = "Diabetes Management Data already exist in database."
-                        //        });
-                        //}
                     }
                 }
-
-                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
                 throw new Exception("Error creating CareSetting mapping.", e);
             }
         }
-
-        //private bool CanAddToContext(Guid userId, int lowBGLevel, int highBGLevel, int postmealTarget, int premealTarget)
-        //{
-        //    using (var ctx = new NuMedicsGlobalEntities())
-        //    {
-        //        return (ctx.DiabetesManagementDatas.Any(a => a.UserId == userId && a.LowBGLevel == lowBGLevel && a.HighBGLevel == highBGLevel && a.PostmealTarget == postmealTarget && a.PremealTarget == premealTarget)) ? false : true;
-        //    }
-        //}
-
 
         public void AddToContext()
         {

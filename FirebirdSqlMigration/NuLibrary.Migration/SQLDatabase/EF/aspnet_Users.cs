@@ -14,6 +14,16 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
     public partial class aspnet_Users
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public aspnet_Users()
+        {
+            this.subs_Adjustments = new HashSet<subs_Adjustments>();
+            this.subs_CheckPayments = new HashSet<subs_CheckPayments>();
+            this.subs_Gaps = new HashSet<subs_Gaps>();
+            this.subs_PayPalPayments = new HashSet<subs_PayPalPayments>();
+            this.subs_Trials = new HashSet<subs_Trials>();
+        }
+    
         public System.Guid ApplicationId { get; set; }
         public System.Guid UserId { get; set; }
         public string UserName { get; set; }
@@ -25,5 +35,16 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public Nullable<System.DateTime> EULA_Date { get; set; }
     
         public virtual clinipro_Users clinipro_Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subs_Adjustments> subs_Adjustments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subs_CheckPayments> subs_CheckPayments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subs_Gaps> subs_Gaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subs_PayPalPayments> subs_PayPalPayments { get; set; }
+        public virtual subs_Subscriptions subs_Subscriptions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subs_Trials> subs_Trials { get; set; }
     }
 }

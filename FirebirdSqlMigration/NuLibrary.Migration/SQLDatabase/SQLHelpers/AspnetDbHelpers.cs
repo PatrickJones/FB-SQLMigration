@@ -74,6 +74,19 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.clinipro_Users.ToList();
         }
 
+        public SubscriptionHandler GetSubscriptionInfo(Guid userId)
+        {
+            var sh = new SubscriptionHandler(userId);
+
+            sh.Adjustments = db.subs_Adjustments.Where(w => w.UserId == userId).ToList();
+            sh.CheckPayments = db.subs_CheckPayments.Where(w => w.UserId == userId).ToList();
+            sh.PayPalPayments = db.subs_PayPalPayments.Where(w => w.UserId == userId).ToList();
+            sh.Trials = db.subs_Trials.Where(w => w.UserId == userId).ToList();
+            sh.Subscriptions = db.subs_Subscriptions.Where(w => w.UserId == userId).ToList();
+
+            return sh;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

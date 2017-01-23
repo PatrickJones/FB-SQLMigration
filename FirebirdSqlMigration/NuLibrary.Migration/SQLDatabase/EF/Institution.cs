@@ -33,6 +33,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string ContactEmail { get; set; }
         public System.Guid UserId { get; set; }
         public int LegacySiteId { get; set; }
+        public int Licenses { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Clinician> Clinicians { get; set; }

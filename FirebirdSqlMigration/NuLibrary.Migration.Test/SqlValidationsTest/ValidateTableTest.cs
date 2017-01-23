@@ -59,7 +59,8 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
                 typeof(ReadingEventTypeValidation),
                 typeof(TherapyTypeValidation),
                 typeof(UserTypeValidation),
-                typeof(InsulinTypeValidation)
+                typeof(InsulinTypeValidation),
+                typeof(SubscriptionTypeVaidation)
             };
 
             // verify generic list type
@@ -67,7 +68,7 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
 
             // verify returned collection is readonly and contains exact number of instances
             Assert.IsTrue(list.IsReadOnly);
-            Assert.AreEqual(7, list.Count);
+            Assert.AreEqual(8, list.Count);
 
             // verify collection contains one instance of each table validation class
             Assert.IsTrue(types.Contains(list[0].GetType()));
@@ -77,6 +78,7 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
             Assert.IsTrue(types.Contains(list[4].GetType()));
             Assert.IsTrue(types.Contains(list[5].GetType()));
             Assert.IsTrue(types.Contains(list[6].GetType()));
+            Assert.IsTrue(types.Contains(list[7].GetType()));
         }
 
         [TestMethod]

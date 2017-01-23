@@ -12,19 +12,15 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Subscription
+    public partial class subs_Trials
     {
-        public int SubscriptionId { get; set; }
-        public System.Guid ApplicationId { get; set; }
+        public long TrialId { get; set; }
+        public byte Days { get; set; }
         public System.Guid UserId { get; set; }
-        public int UserType { get; set; }
-        public int SubscriptionType { get; set; }
-        public System.DateTime SubscriptionDate { get; set; }
-        public System.DateTime ExpirationDate { get; set; }
-        public bool IsTrial { get; set; }
+        public System.DateTime Date { get; set; }
+        public bool SubscriptionTimeApplied { get; set; }
+        public System.Guid AddedBy { get; set; }
     
-        public virtual Clinician Clinician { get; set; }
-        public virtual Patient Patient { get; set; }
-        public virtual Payment Payment { get; set; }
+        public virtual aspnet_Users aspnet_Users { get; set; }
     }
 }

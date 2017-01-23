@@ -140,7 +140,8 @@ namespace MigrationApp
                 "PATIENTS",
                 "PHONENUMBERS",
                 "PUMPTIMESLOTS",
-                "TIMESLOT"
+                "TIMESLOT",
+                "NULICENSE"
             };
         }
 

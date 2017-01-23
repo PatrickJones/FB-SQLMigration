@@ -30,5 +30,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<aspnet_Users> aspnet_Users { get; set; }
         public virtual DbSet<clinipro_Users> clinipro_Users { get; set; }
         public virtual DbSet<CorporationsView> CorporationsViews { get; set; }
+        public virtual DbSet<subs_Adjustments> subs_Adjustments { get; set; }
+        public virtual DbSet<subs_CheckPayments> subs_CheckPayments { get; set; }
+        public virtual DbSet<subs_Gaps> subs_Gaps { get; set; }
+        public virtual DbSet<subs_PayPalPayments> subs_PayPalPayments { get; set; }
+        public virtual DbSet<subs_Subscriptions> subs_Subscriptions { get; set; }
+        public virtual DbSet<subs_Trials> subs_Trials { get; set; }
     }
 }

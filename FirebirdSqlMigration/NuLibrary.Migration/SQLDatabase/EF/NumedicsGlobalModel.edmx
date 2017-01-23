@@ -266,6 +266,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="ContactEmail" Type="nvarchar" MaxLength="150" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LegacySiteId" Type="int" Nullable="false" />
+          <Property Name="Licenses" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="InsulinBrands">
           <Key>
@@ -624,6 +625,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="SubscriptionType" Type="int" Nullable="false" />
           <Property Name="SubscriptionDate" Type="datetime" Nullable="false" />
           <Property Name="ExpirationDate" Type="datetime" Nullable="false" />
+          <Property Name="IsTrial" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SubscriptionType">
           <Key>
@@ -1938,6 +1940,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="LegacySiteId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Clinicians" Relationship="Self.FK_Clinicians_Institution" FromRole="Institutions" ToRole="Clinicians" />
           <NavigationProperty Name="Patients" Relationship="Self.Patients_Institutions" FromRole="Institutions" ToRole="Patients" />
+          <Property Name="Licenses" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="InsulinBrand">
           <Key>
@@ -2300,6 +2303,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="Clinician" Relationship="Self.FK_Subscriptions_Clinicians" FromRole="Subscriptions" ToRole="Clinicians" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Subscriptions_Patients" FromRole="Subscriptions" ToRole="Patients" />
           <NavigationProperty Name="Payment" Relationship="Self.FK_Payments_Subscriptions" FromRole="Subscriptions" ToRole="Payments" />
+          <Property Name="IsTrial" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="SubscriptionType">
           <Key>
@@ -3575,6 +3579,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySetMapping Name="Institutions">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Institution">
               <MappingFragment StoreEntitySet="Institutions">
+                <ScalarProperty Name="Licenses" ColumnName="Licenses" />
                 <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Street" ColumnName="Street" />
@@ -3913,6 +3918,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySetMapping Name="Subscriptions">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Subscription">
               <MappingFragment StoreEntitySet="Subscriptions">
+                <ScalarProperty Name="IsTrial" ColumnName="IsTrial" />
                 <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />

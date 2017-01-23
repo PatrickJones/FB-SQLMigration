@@ -85,6 +85,88 @@
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
           <Property Name="ConnectionLifeTime" Type="int" />
         </EntityType>
+        <EntityType Name="subs_Adjustments">
+          <Key>
+            <PropertyRef Name="AdjustmentId" />
+          </Key>
+          <Property Name="AdjustmentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SubscriptionTimeType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SubscriptionTimeAmount" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionTimeApplied" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subs_CheckPayments">
+          <Key>
+            <PropertyRef Name="CheckPaymentId" />
+          </Key>
+          <Property Name="CheckPaymentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SubscriptionTimeType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SubscriptionTimeAmount" Type="int" Nullable="false" />
+          <Property Name="MonthsPurchased" Type="tinyint" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="CheckNumber" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="Code" Type="bigint" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionTimeApplied" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subs_Gaps">
+          <Key>
+            <PropertyRef Name="GapId" />
+          </Key>
+          <Property Name="GapId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Days" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionTimeApplied" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subs_PayPalPayments">
+          <Key>
+            <PropertyRef Name="PayPalPaymentId" />
+          </Key>
+          <Property Name="PayPalPaymentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="txn_id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="parent_txn_id" Type="nvarchar" MaxLength="50" />
+          <Property Name="payment_date" Type="datetime" Nullable="false" />
+          <Property Name="payment_status" Type="nvarchar" MaxLength="50" />
+          <Property Name="pending_reason" Type="nvarchar" MaxLength="50" />
+          <Property Name="reason_code" Type="nvarchar" MaxLength="50" />
+          <Property Name="mc_gross" Type="smallmoney" Nullable="false" />
+          <Property Name="mc_fee" Type="smallmoney" Nullable="false" />
+          <Property Name="PayPal_post_vars" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="MonthsPurchased" Type="smallint" Nullable="false" />
+          <Property Name="SourceIP" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionTimeApplied" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subs_Subscriptions">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExpirationDate" Type="datetime" />
+          <Property Name="DayOfPayment" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subs_Trials">
+          <Key>
+            <PropertyRef Name="TrialId" />
+          </Key>
+          <Property Name="TrialId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Days" Type="tinyint" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionTimeApplied" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CorporationsView">
@@ -120,11 +202,101 @@ warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_subs_Adjustments_aspnet_Users">
+          <End Role="aspnet_Users" Type="Self.aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="subs_Adjustments" Type="Self.subs_Adjustments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Adjustments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_CheckPayments_aspnet_Users">
+          <End Role="aspnet_Users" Type="Self.aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="subs_CheckPayments" Type="Self.subs_CheckPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_CheckPayments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_Gaps_aspnet_Users">
+          <End Role="aspnet_Users" Type="Self.aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="subs_Gaps" Type="Self.subs_Gaps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Gaps">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_PayPalPayments_aspnet_Users">
+          <End Role="aspnet_Users" Type="Self.aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="subs_PayPalPayments" Type="Self.subs_PayPalPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_PayPalPayments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_Subscriptions_aspnet_Users">
+          <End Role="aspnet_Users" Type="Self.aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="subs_Subscriptions" Type="Self.subs_Subscriptions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Subscriptions">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_Trials_aspnet_Users">
+          <End Role="aspnet_Users" Type="Self.aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="subs_Trials" Type="Self.subs_Trials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Trials">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="aspnetdbModelStoreContainer">
           <EntitySet Name="aspnet_Membership" EntityType="Self.aspnet_Membership" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="aspnet_Users" EntityType="Self.aspnet_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="clinipro_Users" EntityType="Self.clinipro_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FirebirdConnections" EntityType="Self.FirebirdConnections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subs_Adjustments" EntityType="Self.subs_Adjustments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subs_CheckPayments" EntityType="Self.subs_CheckPayments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subs_Gaps" EntityType="Self.subs_Gaps" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subs_PayPalPayments" EntityType="Self.subs_PayPalPayments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subs_Subscriptions" EntityType="Self.subs_Subscriptions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subs_Trials" EntityType="Self.subs_Trials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CorporationsView" EntityType="Self.CorporationsView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [CorporationsView].[Corp_Name] AS [Corp_Name], 
@@ -141,6 +313,30 @@ warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a pri
           <AssociationSet Name="FK_clinipro_Users_aspnet_Users" Association="Self.FK_clinipro_Users_aspnet_Users">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="clinipro_Users" EntitySet="clinipro_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_Adjustments_aspnet_Users" Association="Self.FK_subs_Adjustments_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Adjustments" EntitySet="subs_Adjustments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_CheckPayments_aspnet_Users" Association="Self.FK_subs_CheckPayments_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_CheckPayments" EntitySet="subs_CheckPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_Gaps_aspnet_Users" Association="Self.FK_subs_Gaps_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Gaps" EntitySet="subs_Gaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_PayPalPayments_aspnet_Users" Association="Self.FK_subs_PayPalPayments_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_PayPalPayments" EntitySet="subs_PayPalPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_Subscriptions_aspnet_Users" Association="Self.FK_subs_Subscriptions_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Subscriptions" EntitySet="subs_Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_Trials_aspnet_Users" Association="Self.FK_subs_Trials_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Trials" EntitySet="subs_Trials" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -181,6 +377,36 @@ warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a pri
             <End Role="clinipro_Users" EntitySet="clinipro_Users" />
           </AssociationSet>
           <EntitySet Name="CorporationsViews" EntityType="aspnetdbModel.CorporationsView" />
+          <EntitySet Name="subs_Adjustments" EntityType="aspnetdbModel.subs_Adjustments" />
+          <EntitySet Name="subs_CheckPayments" EntityType="aspnetdbModel.subs_CheckPayments" />
+          <EntitySet Name="subs_Gaps" EntityType="aspnetdbModel.subs_Gaps" />
+          <EntitySet Name="subs_PayPalPayments" EntityType="aspnetdbModel.subs_PayPalPayments" />
+          <EntitySet Name="subs_Subscriptions" EntityType="aspnetdbModel.subs_Subscriptions" />
+          <EntitySet Name="subs_Trials" EntityType="aspnetdbModel.subs_Trials" />
+          <AssociationSet Name="FK_subs_Adjustments_aspnet_Users" Association="aspnetdbModel.FK_subs_Adjustments_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Adjustments" EntitySet="subs_Adjustments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_CheckPayments_aspnet_Users" Association="aspnetdbModel.FK_subs_CheckPayments_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_CheckPayments" EntitySet="subs_CheckPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_Gaps_aspnet_Users" Association="aspnetdbModel.FK_subs_Gaps_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Gaps" EntitySet="subs_Gaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_PayPalPayments_aspnet_Users" Association="aspnetdbModel.FK_subs_PayPalPayments_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_PayPalPayments" EntitySet="subs_PayPalPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_Subscriptions_aspnet_Users" Association="aspnetdbModel.FK_subs_Subscriptions_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Subscriptions" EntitySet="subs_Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subs_Trials_aspnet_Users" Association="aspnetdbModel.FK_subs_Trials_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="subs_Trials" EntitySet="subs_Trials" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="aspnet_Membership">
           <Key>
@@ -223,6 +449,12 @@ warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a pri
           <Property Name="EULA_Ver" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EULA_Date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="clinipro_Users" Relationship="aspnetdbModel.FK_clinipro_Users_aspnet_Users" FromRole="aspnet_Users" ToRole="clinipro_Users" />
+          <NavigationProperty Name="subs_Adjustments" Relationship="aspnetdbModel.FK_subs_Adjustments_aspnet_Users" FromRole="aspnet_Users" ToRole="subs_Adjustments" />
+          <NavigationProperty Name="subs_CheckPayments" Relationship="aspnetdbModel.FK_subs_CheckPayments_aspnet_Users" FromRole="aspnet_Users" ToRole="subs_CheckPayments" />
+          <NavigationProperty Name="subs_Gaps" Relationship="aspnetdbModel.FK_subs_Gaps_aspnet_Users" FromRole="aspnet_Users" ToRole="subs_Gaps" />
+          <NavigationProperty Name="subs_PayPalPayments" Relationship="aspnetdbModel.FK_subs_PayPalPayments_aspnet_Users" FromRole="aspnet_Users" ToRole="subs_PayPalPayments" />
+          <NavigationProperty Name="subs_Subscriptions" Relationship="aspnetdbModel.FK_subs_Subscriptions_aspnet_Users" FromRole="aspnet_Users" ToRole="subs_Subscriptions" />
+          <NavigationProperty Name="subs_Trials" Relationship="aspnetdbModel.FK_subs_Trials_aspnet_Users" FromRole="aspnet_Users" ToRole="subs_Trials" />
         </EntityType>
         <EntityType Name="clinipro_Users">
           <Key>
@@ -273,6 +505,178 @@ warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a pri
           <Property Name="SiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="subs_Adjustments">
+          <Key>
+            <PropertyRef Name="AdjustmentId" />
+          </Key>
+          <Property Name="AdjustmentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Notes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubscriptionTimeType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SubscriptionTimeAmount" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionTimeApplied" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="aspnet_Users" Relationship="aspnetdbModel.FK_subs_Adjustments_aspnet_Users" FromRole="subs_Adjustments" ToRole="aspnet_Users" />
+        </EntityType>
+        <EntityType Name="subs_CheckPayments">
+          <Key>
+            <PropertyRef Name="CheckPaymentId" />
+          </Key>
+          <Property Name="CheckPaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SubscriptionTimeType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SubscriptionTimeAmount" Type="Int32" Nullable="false" />
+          <Property Name="MonthsPurchased" Type="Byte" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="CheckNumber" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="Int64" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionTimeApplied" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="aspnet_Users" Relationship="aspnetdbModel.FK_subs_CheckPayments_aspnet_Users" FromRole="subs_CheckPayments" ToRole="aspnet_Users" />
+        </EntityType>
+        <EntityType Name="subs_Gaps">
+          <Key>
+            <PropertyRef Name="GapId" />
+          </Key>
+          <Property Name="GapId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Days" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionTimeApplied" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="aspnet_Users" Relationship="aspnetdbModel.FK_subs_Gaps_aspnet_Users" FromRole="subs_Gaps" ToRole="aspnet_Users" />
+        </EntityType>
+        <EntityType Name="subs_PayPalPayments">
+          <Key>
+            <PropertyRef Name="PayPalPaymentId" />
+          </Key>
+          <Property Name="PayPalPaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="txn_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="parent_txn_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="payment_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="payment_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pending_reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="reason_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="mc_gross" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="mc_fee" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="PayPal_post_vars" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MonthsPurchased" Type="Int16" Nullable="false" />
+          <Property Name="SourceIP" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionTimeApplied" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="aspnet_Users" Relationship="aspnetdbModel.FK_subs_PayPalPayments_aspnet_Users" FromRole="subs_PayPalPayments" ToRole="aspnet_Users" />
+        </EntityType>
+        <EntityType Name="subs_Subscriptions">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="DayOfPayment" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="aspnet_Users" Relationship="aspnetdbModel.FK_subs_Subscriptions_aspnet_Users" FromRole="subs_Subscriptions" ToRole="aspnet_Users" />
+        </EntityType>
+        <EntityType Name="subs_Trials">
+          <Key>
+            <PropertyRef Name="TrialId" />
+          </Key>
+          <Property Name="TrialId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Days" Type="Byte" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionTimeApplied" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="aspnet_Users" Relationship="aspnetdbModel.FK_subs_Trials_aspnet_Users" FromRole="subs_Trials" ToRole="aspnet_Users" />
+        </EntityType>
+        <Association Name="FK_subs_Adjustments_aspnet_Users">
+          <End Type="aspnetdbModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="aspnetdbModel.subs_Adjustments" Role="subs_Adjustments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Adjustments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_CheckPayments_aspnet_Users">
+          <End Type="aspnetdbModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="aspnetdbModel.subs_CheckPayments" Role="subs_CheckPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_CheckPayments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_Gaps_aspnet_Users">
+          <End Type="aspnetdbModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="aspnetdbModel.subs_Gaps" Role="subs_Gaps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Gaps">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_PayPalPayments_aspnet_Users">
+          <End Type="aspnetdbModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="aspnetdbModel.subs_PayPalPayments" Role="subs_PayPalPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_PayPalPayments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_Subscriptions_aspnet_Users">
+          <End Type="aspnetdbModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="aspnetdbModel.subs_Subscriptions" Role="subs_Subscriptions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Subscriptions">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subs_Trials_aspnet_Users">
+          <End Type="aspnetdbModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="aspnetdbModel.subs_Trials" Role="subs_Trials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="subs_Trials">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -375,6 +779,94 @@ warning 6002: The table/view 'aspnetdb.dbo.CorporationsView' does not have a pri
                 <ScalarProperty Name="Location_Name" ColumnName="Location_Name" />
                 <ScalarProperty Name="Site_Name" ColumnName="Site_Name" />
                 <ScalarProperty Name="Corp_Name" ColumnName="Corp_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subs_Adjustments">
+            <EntityTypeMapping TypeName="aspnetdbModel.subs_Adjustments">
+              <MappingFragment StoreEntitySet="subs_Adjustments">
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="SubscriptionTimeApplied" ColumnName="SubscriptionTimeApplied" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SubscriptionTimeAmount" ColumnName="SubscriptionTimeAmount" />
+                <ScalarProperty Name="SubscriptionTimeType" ColumnName="SubscriptionTimeType" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="AdjustmentId" ColumnName="AdjustmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subs_CheckPayments">
+            <EntityTypeMapping TypeName="aspnetdbModel.subs_CheckPayments">
+              <MappingFragment StoreEntitySet="subs_CheckPayments">
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="SubscriptionTimeApplied" ColumnName="SubscriptionTimeApplied" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CheckNumber" ColumnName="CheckNumber" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="MonthsPurchased" ColumnName="MonthsPurchased" />
+                <ScalarProperty Name="SubscriptionTimeAmount" ColumnName="SubscriptionTimeAmount" />
+                <ScalarProperty Name="SubscriptionTimeType" ColumnName="SubscriptionTimeType" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CheckPaymentId" ColumnName="CheckPaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subs_Gaps">
+            <EntityTypeMapping TypeName="aspnetdbModel.subs_Gaps">
+              <MappingFragment StoreEntitySet="subs_Gaps">
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="SubscriptionTimeApplied" ColumnName="SubscriptionTimeApplied" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="GapId" ColumnName="GapId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subs_PayPalPayments">
+            <EntityTypeMapping TypeName="aspnetdbModel.subs_PayPalPayments">
+              <MappingFragment StoreEntitySet="subs_PayPalPayments">
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="SubscriptionTimeApplied" ColumnName="SubscriptionTimeApplied" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SourceIP" ColumnName="SourceIP" />
+                <ScalarProperty Name="MonthsPurchased" ColumnName="MonthsPurchased" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="PayPal_post_vars" ColumnName="PayPal_post_vars" />
+                <ScalarProperty Name="mc_fee" ColumnName="mc_fee" />
+                <ScalarProperty Name="mc_gross" ColumnName="mc_gross" />
+                <ScalarProperty Name="reason_code" ColumnName="reason_code" />
+                <ScalarProperty Name="pending_reason" ColumnName="pending_reason" />
+                <ScalarProperty Name="payment_status" ColumnName="payment_status" />
+                <ScalarProperty Name="payment_date" ColumnName="payment_date" />
+                <ScalarProperty Name="parent_txn_id" ColumnName="parent_txn_id" />
+                <ScalarProperty Name="txn_id" ColumnName="txn_id" />
+                <ScalarProperty Name="PayPalPaymentId" ColumnName="PayPalPaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subs_Subscriptions">
+            <EntityTypeMapping TypeName="aspnetdbModel.subs_Subscriptions">
+              <MappingFragment StoreEntitySet="subs_Subscriptions">
+                <ScalarProperty Name="DayOfPayment" ColumnName="DayOfPayment" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subs_Trials">
+            <EntityTypeMapping TypeName="aspnetdbModel.subs_Trials">
+              <MappingFragment StoreEntitySet="subs_Trials">
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="SubscriptionTimeApplied" ColumnName="SubscriptionTimeApplied" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="TrialId" ColumnName="TrialId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

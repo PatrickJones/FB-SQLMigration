@@ -133,7 +133,7 @@ namespace MigrationApp
                 "INSURANCECOS",
                 "INSURANCEPLANS2",
                 //"METERREADING",
-                //"METERREADINGHEADER",
+                "METERREADINGHEADER",
                 "NDCS",
                 "PATIENTPUMP",
                 "PATEINTPUMPPROGRAM",

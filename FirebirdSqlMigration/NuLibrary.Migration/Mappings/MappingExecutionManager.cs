@@ -7,14 +7,32 @@ using NuLibrary.Migration.SqlValidations;
 using NuLibrary.Migration.Mappings.TableMappings;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.Interfaces;
+using NuLibrary.Migration.SQLDatabase.EF;
 
 namespace NuLibrary.Migration.Mappings
 {
+    /// <summary>
+    /// Manages the execution of the migration.
+    /// </summary>
     public class MappingExecutionManager
     {
+        /// <summary>
+        /// Stores collection of mapping instances
+        /// </summary>
         public Dictionary<int, KeyValuePair<Type, IContextHandler>> mapInstances = new Dictionary<int, KeyValuePair<Type, IContextHandler>>();
 
+        /// <summary>
+        /// Constructor that initializes mapping instances.
+        /// </summary>
         public MappingExecutionManager()
+        {
+            InitializeMappings();
+        }
+
+        /// <summary>
+        /// Initializes mapping instances and adds them to the dictionary
+        /// </summary>
+        private void InitializeMappings()
         {
             mapInstances.Add(0, new KeyValuePair<Type, IContextHandler>(typeof(InstitutionMapping), new InstitutionMapping()));
             mapInstances.Add(1, new KeyValuePair<Type, IContextHandler>(typeof(UserAuthenticationsMapping), new UserAuthenticationsMapping()));
@@ -25,8 +43,13 @@ namespace NuLibrary.Migration.Mappings
             mapInstances.Add(6, new KeyValuePair<Type, IContextHandler>(typeof(InsurancePlansMapping), new InsurancePlansMapping()));
             mapInstances.Add(7, new KeyValuePair<Type, IContextHandler>(typeof(DMDataMapping), new DMDataMapping()));
             mapInstances.Add(8, new KeyValuePair<Type, IContextHandler>(typeof(TimeSlotsMapping), new TimeSlotsMapping()));
+            mapInstances.Add(9, new KeyValuePair<Type, IContextHandler>(typeof(DeviceMeterReadingHeaderMapping), new DeviceMeterReadingHeaderMapping()));
         }
 
+        /// <summary>
+        /// Validates all lookup tables.
+        /// Begins execution of mapping sequence
+        /// </summary>
         public void BeginExecution()
         {
             var vt = new ValidateTables();
@@ -35,8 +58,12 @@ namespace NuLibrary.Migration.Mappings
             CreateMappings();
         }
 
+        /// <summary>
+        /// Creates firebird to sql mappings in paralell
+        /// </summary>
         private void CreateMappings()
         {
+            // this set of task must execute first to populate in-memory objects used by subsequent task list.
             var taskSetA = new List<Task> { 
                 Task.Run(() =>
                 {
@@ -60,7 +87,10 @@ namespace NuLibrary.Migration.Mappings
                 })
             };
 
-            Task.WhenAll(taskSetA).ContinueWith(done => {
+
+            
+
+            Task.WhenAll(taskSetA).ContinueWith(doneA => {
                 var taskSetB = new List<Task> {
                     Task.Run(() =>
                     {
@@ -89,10 +119,25 @@ namespace NuLibrary.Migration.Mappings
                     })
                 };
 
-                Task.WhenAll(taskSetB).ContinueWith(end => { UpdateContext(); });
+                Task.WhenAll(taskSetB).ContinueWith(doneB => {
+                    var taskSetC = new List<Task> {
+                        Task.Run(() =>
+                        {
+                            var instance = (DeviceMeterReadingHeaderMapping)mapInstances[9].Value;
+                            instance.CreateDeviceMeterReadingHeaderMapping();
+                        })
+                    };
+
+                    Task.WhenAll(taskSetC).ContinueWith(doneC => {
+                        UpdateContext();
+                    });
+                });
             });
         }
 
+        /// <summary>
+        /// Updates the database context with in-memory entities and saves the changes.
+        /// </summary>
         public void UpdateContext()
         {
             for (int i = 0; i < mapInstances.Count; i++)
@@ -101,18 +146,37 @@ namespace NuLibrary.Migration.Mappings
                 mapInstances[i].Value.SaveChanges();
             }
 
+            //AddDmDataSet();
             CommitExecution();
         }
 
+        //private void AddDmDataSet()
+        //{
+        //    using (var ctx = new NuMedicsGlobalEntities())
+        //    {
+        //        Array.ForEach(MemoryDiabetesManagementData.DMDataCollection.ToArray(), d => {
+        //            var pd = ctx.PatientDevices.Where(w => w.UserId == d.UserId).FirstOrDefault();
+
+        //            if (pd != null)
+        //            {
+        //                d.PatientDevice = pd;
+        //                ctx.DiabetesManagementDatas.Add(d);
+        //            }
+        //        });
+
+        //        ctx.SaveChanges();
+        //    }
+        //}
 
 
+        /// <summary>
+        /// Commits the transaction.
+        /// </summary>
         private void CommitExecution()
         {
             //throw new NotImplementedException();
             try
             {
-
-
                 TransactionManager.ExecuteTransaction(); //TESTING ONLY
             }
             catch (Exception e)

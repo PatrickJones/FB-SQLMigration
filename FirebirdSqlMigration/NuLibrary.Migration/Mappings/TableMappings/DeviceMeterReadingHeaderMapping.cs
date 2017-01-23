@@ -1,16 +1,21 @@
-﻿using NuLibrary.Migration.FBDatabase.FBTables;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Interfaces;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NuLibrary.Migration.Mappings.TableMappings
 {
-    public class DeviceMeterReadingHeaderMapping : BaseMapping
+    public class DeviceMeterReadingHeaderMapping : BaseMapping, IContextHandler
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
@@ -28,51 +33,122 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         MappingUtilities mu = new MappingUtilities();
 
+        public ICollection<PatientDevice> CompletedMappings = new List<PatientDevice>();
+
+        public int RecordCount = 0;
+        public int FailedCount = 0;
+
         public void CreateDeviceMeterReadingHeaderMapping()
         {
-            foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+            try
             {
-                // get userid from old aspnetdb matching on patientid #####.#####
-                var patId = (String)row["PATIENTID"];
-                var userId = aHelper.GetUserIdFromPatientId(patId);
+                var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
+                RecordCount = TableAgent.RowCount;
 
-                if (userId != Guid.Empty)
+                foreach (DataRow row in dataSet)
                 {
-                    var dev = new PatientDevice
+                    // get userid from old aspnetdb matching on patientid #####.#####
+                    var patId = row["PATIENTKEYID"].ToString();
+                    var userId = MemoryPatientInfo.GetUserId(MigrationVariables.CurrentSiteId, patId);
+
+
+
+                    if (userId != Guid.Empty)
                     {
-                        UserId = userId,
-                        MeterIndex = (int)row["NUMEDICSMETERINDEX"],
-                        Manufacturer = (String)row["MANUFACTURER"],
-                        DeviceModel = (String)row["METERMODEL"],
-                        DeviceName = (String)row["METERNAME"],
-                        SerialNumber = (String)row["SERIALNUMBER"],
-                        SoftwareVersion = (String)row["SOFTWAREVERSION"],
-                        HardwareVersion = (String)row["HARDWAREVERSION"]
-                    };
+                        var dmData = MemoryDiabetesManagementData.DMDataCollection.Where(w => w.UserId == userId).FirstOrDefault();
 
-                    var mrh = new ReadingHeader
-                    {
-                        UserId = userId,
-                        DownloadKeyId = (int)row["DOWNLOADKEYID"],
-                        DeviceId = (int)row[dev.DeviceId],
-                        ServerDateTime = (DateTime)row["SERVERDATETIME"],
-                        MeterDateTime = (DateTime)row["METERDATETIME"],
-                        Readings = (int)row["READINGS"],
-                        SiteSource = (String)row["SOURCE"],
-                        ReviewedOn = (DateTime)row["REVIEWEDON"]
-                    };
+                        var dev = new PatientDevice
+                        {
+                            UserId = userId,
+                            MeterIndex = (row["NUMEDICSMETERINDEX"] is DBNull) ? 0 : (Int32)row["NUMEDICSMETERINDEX"],
+                            Manufacturer = (row["MANUFACTURER"] is DBNull) ? String.Empty : row["MANUFACTURER"].ToString(),
+                            DeviceModel = (row["METERMODEL"] is DBNull) ? String.Empty : row["METERMODEL"].ToString(),
+                            DeviceName = (row["METERNAME"] is DBNull) ? String.Empty : row["METERNAME"].ToString(),
+                            SerialNumber = (row["SERIALNUMBER"] is DBNull) ? string.Empty : row["SERIALNUMBER"].ToString(),
+                            SoftwareVersion = (row["SOFTWAREVERSION"] is DBNull) ? String.Empty : row["SOFTWAREVERSION"].ToString(),
+                            HardwareVersion = (row["HARDWAREVERSION"] is DBNull) ? String.Empty : row["HARDWAREVERSION"].ToString()
+                        };
 
+                        if (dmData != null)
+                        {
+                            dev.DiabetesManagementData = dmData;
+                        }
 
+                        var mrh = new ReadingHeader
+                        {
+                            UserId = userId,
+                            //DownloadKeyId = (row["DOWNLOADKEYID"] is DBNull) ? 0 : (Int32)row["DOWNLOADKEYID"],
+                            ServerDateTime = (row["SERVERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["SERVERDATETIME"].ToString()),
+                            MeterDateTime = (row["METERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["METERDATETIME"].ToString()),
+                            Readings = (row["READINGS"] is DBNull) ? 0 : (Int32)row["READINGS"],
+                            SiteSource = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString(),
+                            ReviewedOn = (row["REVIEWEDON"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["REVIEWEDON"].ToString())
+                        };
 
-                    var pat = mu.FindPatient(userId);
-                    pat.PatientDevices.Add(dev);
+                        dev.ReadingHeaders.Add(mrh);
 
-                    TransactionManager.DatabaseContext.PatientDevices.Add(dev);
-                    TransactionManager.DatabaseContext.ReadingHeaders.Add(mrh);
-                    TransactionManager.DatabaseContext.Patients.Add(pat);
+                        if (CanAddToContext(dev.UserId, dev.SerialNumber))
+                        {
+                            if (!CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
+                            {
+                                CompletedMappings.Add(dev);
+                            }
+                        }
+                        else
+                        {
+                            TransactionManager.FailedMappingCollection
+                                .Add(new FailedMappings
+                                {
+                                    Tablename = FbTableName,
+                                    ObjectType = typeof(PatientDevice),
+                                    JsonSerializedObject = JsonConvert.SerializeObject(dev),
+                                    FailedReason = "Unable to add Patient Device to database."
+                                });
 
+                            FailedCount++;
+                        }
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                throw new Exception("Error creating Patient Device (MeterReadingHeader) mapping.", e);
+            }
         }
+
+        public void AddToContext()
+        {
+            TransactionManager.DatabaseContext.PatientDevices.AddRange(CompletedMappings);
+        }
+
+        public void SaveChanges()
+        {
+            try
+            {
+                TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw new Exception("Error validating PatientDevice entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving PatientDevice entity", e);
+            }
+        }
+
+        private bool CanAddToContext(Guid userId, string serialNumber)
+        {
+            if (String.IsNullOrEmpty(serialNumber))
+            {
+                return false;
+            }
+
+            using (var ctx = new NuMedicsGlobalEntities())
+            {
+                return (ctx.PatientDevices.Any(a => a.UserId == userId && a.SerialNumber == serialNumber)) ? false : true;
+            }
+        }
+
     }
 }

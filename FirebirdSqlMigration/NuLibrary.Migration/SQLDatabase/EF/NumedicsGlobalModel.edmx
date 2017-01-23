@@ -222,7 +222,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Key>
             <PropertyRef Name="DMDataId" />
           </Key>
-          <Property Name="DMDataId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DMDataId" Type="int" Nullable="false" />
           <Property Name="LowBGLevel" Type="int" Nullable="false" />
           <Property Name="HighBGLevel" Type="int" Nullable="false" />
           <Property Name="PremealTarget" Type="int" Nullable="false" />
@@ -2389,7 +2389,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <PropertyRef Name="TypeId" />
           </Key>
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TypeName" Type="String" Nullable="false" />
+          <Property Name="TypeName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="AppLoginHistory">
           <Key>

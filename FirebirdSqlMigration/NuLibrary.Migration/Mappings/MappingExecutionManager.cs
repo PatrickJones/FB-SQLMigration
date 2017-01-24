@@ -44,6 +44,7 @@ namespace NuLibrary.Migration.Mappings
             mapInstances.Add(7, new KeyValuePair<Type, IContextHandler>(typeof(DMDataMapping), new DMDataMapping()));
             mapInstances.Add(8, new KeyValuePair<Type, IContextHandler>(typeof(TimeSlotsMapping), new TimeSlotsMapping()));
             mapInstances.Add(9, new KeyValuePair<Type, IContextHandler>(typeof(DeviceMeterReadingHeaderMapping), new DeviceMeterReadingHeaderMapping()));
+            mapInstances.Add(10, new KeyValuePair<Type, IContextHandler>(typeof(SubscriptionsMapping), new SubscriptionsMapping()));
         }
 
         /// <summary>
@@ -130,6 +131,11 @@ namespace NuLibrary.Migration.Mappings
                         {
                             var instance = (DeviceMeterReadingHeaderMapping)mapInstances[9].Value;
                             instance.CreateDeviceMeterReadingHeaderMapping();
+                        }),
+                        Task.Run(() =>
+                        {
+                            var instance = (SubscriptionsMapping)mapInstances[10].Value;
+                            instance.CreateSubscriptionMapping();
                         })
                     };
 

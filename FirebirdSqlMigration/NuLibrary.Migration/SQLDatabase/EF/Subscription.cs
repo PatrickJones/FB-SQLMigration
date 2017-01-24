@@ -22,9 +22,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.DateTime SubscriptionDate { get; set; }
         public System.DateTime ExpirationDate { get; set; }
         public bool IsTrial { get; set; }
+        public System.Guid InstitutionId { get; set; }
     
         public virtual Clinician Clinician { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual Payment Payment { get; set; }
+        public virtual Institution Institution { get; set; }
     }
 }

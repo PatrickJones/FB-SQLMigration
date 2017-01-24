@@ -151,7 +151,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Key>
             <PropertyRef Name="CheckId" />
           </Key>
-          <Property Name="CheckId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckId" Type="int" Nullable="false" />
           <Property Name="CheckStatus" Type="int" Nullable="false" />
           <Property Name="CheckNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CheckCode" Type="bigint" Nullable="false" />
@@ -496,7 +496,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Key>
             <PropertyRef Name="PaymentId" />
           </Key>
-          <Property Name="PaymentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentId" Type="int" Nullable="false" />
           <Property Name="PaymentMethod" Type="int" Nullable="false" />
           <Property Name="PaymentApproved" Type="bit" Nullable="false" />
         </EntityType>
@@ -504,7 +504,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Key>
             <PropertyRef Name="PayPalId" />
           </Key>
-          <Property Name="PayPalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PayPalId" Type="int" Nullable="false" />
           <Property Name="txn_id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="parent_txN_id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="payment_date" Type="datetime" Nullable="false" />
@@ -626,6 +626,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="SubscriptionDate" Type="datetime" Nullable="false" />
           <Property Name="ExpirationDate" Type="datetime" Nullable="false" />
           <Property Name="IsTrial" Type="bit" Nullable="false" />
+          <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="SubscriptionType">
           <Key>
@@ -1295,15 +1296,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Subscriptions_Clinicians">
-          <End Role="Clinicians" Type="Self.Clinicians" Multiplicity="1" />
+        <Association Name="FK_Subscriptions_Institutions">
+          <End Role="Institutions" Type="Self.Institutions" Multiplicity="1" />
           <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Clinicians">
-              <PropertyRef Name="UserId" />
+            <Principal Role="Institutions">
+              <PropertyRef Name="InstitutionId" />
             </Principal>
             <Dependent Role="Subscriptions">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="InstitutionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1641,8 +1642,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="ReadingEvents" EntitySet="ReadingEvents" />
           </AssociationSet>
-          <AssociationSet Name="FK_Subscriptions_Clinicians" Association="Self.FK_Subscriptions_Clinicians">
-            <End Role="Clinicians" EntitySet="Clinicians" />
+          <AssociationSet Name="FK_Subscriptions_Institutions" Association="Self.FK_Subscriptions_Institutions">
+            <End Role="Institutions" EntitySet="Institutions" />
             <End Role="Subscriptions" EntitySet="Subscriptions" />
           </AssociationSet>
           <AssociationSet Name="FK_Subscriptions_Patients" Association="Self.FK_Subscriptions_Patients">
@@ -1850,9 +1851,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="Lastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="StateLicenseNumber" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="InstitutionId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Institution" Relationship="Self.FK_Clinicians_Institution" FromRole="Clinicians" ToRole="Institutions" />
           <NavigationProperty Name="User" Relationship="Self.FK_Clinicians_Users" FromRole="Clinicians" ToRole="Users" />
-          <NavigationProperty Name="Subscriptions" Relationship="Self.FK_Subscriptions_Clinicians" FromRole="Clinicians" ToRole="Subscriptions" />
+          <NavigationProperty Name="Institution" Relationship="NuMedicsGlobalModel.FK_Clinicians_Institution" FromRole="Clinician" ToRole="Institution" />
+          <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Clinicians" FromRole="Clinician" ToRole="Subscription" />
         </EntityType>
         <EntityType Name="CorrectionFactor">
           <Key>
@@ -1921,26 +1922,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           </Key>
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Institution">
-          <Key>
-            <PropertyRef Name="InstitutionId" />
-          </Key>
-          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Street" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ContactFirstname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ContactLastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ContactEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="LegacySiteId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Clinicians" Relationship="Self.FK_Clinicians_Institution" FromRole="Institutions" ToRole="Clinicians" />
-          <NavigationProperty Name="Patients" Relationship="Self.Patients_Institutions" FromRole="Institutions" ToRole="Patients" />
-          <Property Name="Licenses" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="InsulinBrand">
           <Key>
@@ -2129,9 +2110,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="PatientPhoneNumbers" Relationship="Self.FK_PatientPhoneNumbers_Patients" FromRole="Patients" ToRole="PatientPhoneNumbers" />
           <NavigationProperty Name="PatientPhotos" Relationship="Self.FK_PatientPhotos_Patients" FromRole="Patients" ToRole="PatientPhotos" />
           <NavigationProperty Name="User" Relationship="Self.FK_Patients_Users" FromRole="Patients" ToRole="Users" />
-          <NavigationProperty Name="Subscriptions" Relationship="Self.FK_Subscriptions_Patients" FromRole="Patients" ToRole="Subscriptions" />
-          <NavigationProperty Name="Institutions" Relationship="Self.Patients_Institutions" FromRole="Patients" ToRole="Institutions" />
           <NavigationProperty Name="InsurancePlans" Relationship="Self.Patients_InsurancePlans" FromRole="Patients" ToRole="InsurancePlans" />
+          <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Patients" FromRole="Patient" ToRole="Subscription" />
+          <NavigationProperty Name="Institutions" Relationship="NuMedicsGlobalModel.Patients_Institutions" FromRole="Patient" ToRole="Institution" />
         </EntityType>
         <EntityType Name="PaymentMethod">
           <Key>
@@ -2148,8 +2129,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="PaymentMethod" Type="Int32" Nullable="false" />
           <Property Name="PaymentApproved" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Check" Relationship="Self.FK_Checks_Payments" FromRole="Payments" ToRole="Checks" />
-          <NavigationProperty Name="Subscription" Relationship="Self.FK_Payments_Subscriptions" FromRole="Payments" ToRole="Subscriptions" />
           <NavigationProperty Name="PayPal" Relationship="Self.FK_PayPal_Payments" FromRole="Payments" ToRole="PayPal" />
+          <NavigationProperty Name="Subscription" Relationship="NuMedicsGlobalModel.FK_Payments_Subscriptions" FromRole="Payment" ToRole="Subscription" />
         </EntityType>
         <EntityType Name="PayPal">
           <Key>
@@ -2288,22 +2269,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="NutritionReadings" Relationship="Self.FK_NutritionReadings_ReadingHeaders" FromRole="ReadingHeaders" ToRole="NutritionReadings" />
           <NavigationProperty Name="TensReadings" Relationship="Self.FK_TensReadings_ReadingHeaders" FromRole="ReadingHeaders" ToRole="TensReadings" />
           <NavigationProperty Name="TotalDailyInsulinDeliveries" Relationship="Self.FK_TotalDailyInsulinDeliveries_ReadingHeaders" FromRole="ReadingHeaders" ToRole="TotalDailyInsulinDeliveries" />
-        </EntityType>
-        <EntityType Name="Subscription">
-          <Key>
-            <PropertyRef Name="SubscriptionId" />
-          </Key>
-          <Property Name="SubscriptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
-          <Property Name="SubscriptionType" Type="Int32" Nullable="false" />
-          <Property Name="SubscriptionDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Clinician" Relationship="Self.FK_Subscriptions_Clinicians" FromRole="Subscriptions" ToRole="Clinicians" />
-          <NavigationProperty Name="Patient" Relationship="Self.FK_Subscriptions_Patients" FromRole="Subscriptions" ToRole="Patients" />
-          <NavigationProperty Name="Payment" Relationship="Self.FK_Payments_Subscriptions" FromRole="Subscriptions" ToRole="Payments" />
-          <Property Name="IsTrial" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="SubscriptionType">
           <Key>
@@ -2693,18 +2658,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Clinicians_Institution">
-          <End Role="Institutions" Type="Self.Institution" Multiplicity="1" />
-          <End Role="Clinicians" Type="Self.Clinician" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Institutions">
-              <PropertyRef Name="InstitutionId" />
-            </Principal>
-            <Dependent Role="Clinicians">
-              <PropertyRef Name="InstitutionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Clinicians_Users">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Clinicians" Type="Self.Clinician" Multiplicity="0..1" />
@@ -2713,18 +2666,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Clinicians">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Subscriptions_Clinicians">
-          <End Role="Clinicians" Type="Self.Clinician" Multiplicity="1" />
-          <End Role="Subscriptions" Type="Self.Subscription" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Clinicians">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Subscriptions">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2877,30 +2818,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Subscriptions_Patients">
-          <End Role="Patients" Type="Self.Patient" Multiplicity="1" />
-          <End Role="Subscriptions" Type="Self.Subscription" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patients">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Subscriptions">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Payments_Subscriptions">
-          <End Role="Subscriptions" Type="Self.Subscription" Multiplicity="1" />
-          <End Role="Payments" Type="Self.Payment" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Subscriptions">
-              <PropertyRef Name="SubscriptionId" />
-            </Principal>
-            <Dependent Role="Payments">
-              <PropertyRef Name="PaymentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PayPal_Payments">
           <End Role="Payments" Type="Self.Payment" Multiplicity="1" />
           <End Role="PayPal" Type="Self.PayPal" Multiplicity="0..1" />
@@ -3049,10 +2966,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Patients_Institutions">
-          <End Role="Institutions" Type="Self.Institution" Multiplicity="*" />
-          <End Role="Patients" Type="Self.Patient" Multiplicity="*" />
-        </Association>
         <Association Name="Patients_InsurancePlans">
           <End Role="InsurancePlans" Type="Self.InsurancePlan" Multiplicity="*" />
           <End Role="Patients" Type="Self.Patient" Multiplicity="*" />
@@ -3080,7 +2993,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="DiabetesControlTypes" EntityType="Self.DiabetesControlType" />
           <EntitySet Name="DiabetesManagementDatas" EntityType="Self.DiabetesManagementData" />
           <EntitySet Name="DiabetesManagementTypes" EntityType="Self.DiabetesManagementType" />
-          <EntitySet Name="Institutions" EntityType="Self.Institution" />
           <EntitySet Name="InsulinBrands" EntityType="Self.InsulinBrand" />
           <EntitySet Name="InsulinCarbRatios" EntityType="Self.InsulinCarbRatio" />
           <EntitySet Name="InsulinCorrections" EntityType="Self.InsulinCorrection" />
@@ -3106,7 +3018,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="ReadingEvents" EntityType="Self.ReadingEvent" />
           <EntitySet Name="ReadingEventTypes" EntityType="Self.ReadingEventType" />
           <EntitySet Name="ReadingHeaders" EntityType="Self.ReadingHeader" />
-          <EntitySet Name="Subscriptions" EntityType="Self.Subscription" />
           <EntitySet Name="SubscriptionTypes" EntityType="Self.SubscriptionType" />
           <EntitySet Name="TensReadings" EntityType="Self.TensReading" />
           <EntitySet Name="TherapyTypes" EntityType="Self.TherapyType" />
@@ -3198,17 +3109,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Payments" EntitySet="Payments" />
             <End Role="Checks" EntitySet="Checks" />
           </AssociationSet>
-          <AssociationSet Name="FK_Clinicians_Institution" Association="Self.FK_Clinicians_Institution">
-            <End Role="Institutions" EntitySet="Institutions" />
-            <End Role="Clinicians" EntitySet="Clinicians" />
-          </AssociationSet>
           <AssociationSet Name="FK_Clinicians_Users" Association="Self.FK_Clinicians_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Clinicians" EntitySet="Clinicians" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Subscriptions_Clinicians" Association="Self.FK_Subscriptions_Clinicians">
-            <End Role="Clinicians" EntitySet="Clinicians" />
-            <End Role="Subscriptions" EntitySet="Subscriptions" />
           </AssociationSet>
           <AssociationSet Name="FK_DeviceData_PatientDevices" Association="Self.FK_DeviceData_PatientDevices">
             <End Role="PatientDevices" EntitySet="PatientDevices" />
@@ -3253,14 +3156,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_Patients_Users" Association="Self.FK_Patients_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Patients" EntitySet="Patients" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Subscriptions_Patients" Association="Self.FK_Subscriptions_Patients">
-            <End Role="Patients" EntitySet="Patients" />
-            <End Role="Subscriptions" EntitySet="Subscriptions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Payments_Subscriptions" Association="Self.FK_Payments_Subscriptions">
-            <End Role="Subscriptions" EntitySet="Subscriptions" />
-            <End Role="Payments" EntitySet="Payments" />
           </AssociationSet>
           <AssociationSet Name="FK_PayPal_Payments" Association="Self.FK_PayPal_Payments">
             <End Role="Payments" EntitySet="Payments" />
@@ -3310,15 +3205,37 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
           </AssociationSet>
-          <AssociationSet Name="Patients_Institutions" Association="Self.Patients_Institutions">
-            <End Role="Institutions" EntitySet="Institutions" />
-            <End Role="Patients" EntitySet="Patients" />
-          </AssociationSet>
           <AssociationSet Name="Patients_InsurancePlans" Association="Self.Patients_InsurancePlans">
             <End Role="InsurancePlans" EntitySet="InsurancePlans" />
             <End Role="Patients" EntitySet="Patients" />
           </AssociationSet>
           <EntitySet Name="InsulinTypes" EntityType="NuMedicsGlobalModel.InsulinType" />
+          <EntitySet Name="Institutions" EntityType="NuMedicsGlobalModel.Institution" />
+          <EntitySet Name="Subscriptions" EntityType="NuMedicsGlobalModel.Subscription" />
+          <AssociationSet Name="FK_Clinicians_Institution" Association="NuMedicsGlobalModel.FK_Clinicians_Institution">
+            <End Role="Institution" EntitySet="Institutions" />
+            <End Role="Clinician" EntitySet="Clinicians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Clinicians" Association="NuMedicsGlobalModel.FK_Subscriptions_Clinicians">
+            <End Role="Clinician" EntitySet="Clinicians" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Patients" Association="NuMedicsGlobalModel.FK_Subscriptions_Patients">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payments_Subscriptions" Association="NuMedicsGlobalModel.FK_Payments_Subscriptions">
+            <End Role="Subscription" EntitySet="Subscriptions" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="Patients_Institutions" Association="NuMedicsGlobalModel.Patients_Institutions">
+            <End Role="Institution" EntitySet="Institutions" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Institutions" Association="NuMedicsGlobalModel.FK_Subscriptions_Institutions">
+            <End Role="Institution" EntitySet="Institutions" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="InsulinType">
           <Key>
@@ -3327,6 +3244,109 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="InsulinTypeId" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Institution">
+          <Key>
+            <PropertyRef Name="InstitutionId" />
+          </Key>
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ContactFirstname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContactLastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContactEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="LegacySiteId" Type="Int32" Nullable="false" />
+          <Property Name="Licenses" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Clinicians" Relationship="NuMedicsGlobalModel.FK_Clinicians_Institution" FromRole="Institution" ToRole="Clinician" />
+          <NavigationProperty Name="Patients" Relationship="NuMedicsGlobalModel.Patients_Institutions" FromRole="Institution" ToRole="Patient" />
+          <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Institutions" FromRole="Institution" ToRole="Subscription" />
+        </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+          </Key>
+          <Property Name="SubscriptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="SubscriptionType" Type="Int32" Nullable="false" />
+          <Property Name="SubscriptionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Clinician" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Clinicians" FromRole="Subscription" ToRole="Clinician" />
+          <NavigationProperty Name="Patient" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Patients" FromRole="Subscription" ToRole="Patient" />
+          <NavigationProperty Name="Payment" Relationship="NuMedicsGlobalModel.FK_Payments_Subscriptions" FromRole="Subscription" ToRole="Payment" />
+          <Property Name="IsTrial" Type="Boolean" Nullable="false" />
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Institution" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Institutions" FromRole="Subscription" ToRole="Institution" />
+        </EntityType>
+        <Association Name="FK_Clinicians_Institution">
+          <End Type="NuMedicsGlobalModel.Institution" Role="Institution" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.Clinician" Role="Clinician" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institution">
+              <PropertyRef Name="InstitutionId" />
+            </Principal>
+            <Dependent Role="Clinician">
+              <PropertyRef Name="InstitutionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Clinicians">
+          <End Type="NuMedicsGlobalModel.Clinician" Role="Clinician" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clinician">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Patients">
+          <End Type="NuMedicsGlobalModel.Patient" Role="Patient" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payments_Subscriptions">
+          <End Type="NuMedicsGlobalModel.Subscription" Role="Subscription" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.Payment" Role="Payment" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Subscription">
+              <PropertyRef Name="SubscriptionId" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Patients_Institutions">
+          <End Type="NuMedicsGlobalModel.Institution" Role="Institution" Multiplicity="*" />
+          <End Type="NuMedicsGlobalModel.Patient" Role="Patient" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Subscriptions_Institutions">
+          <End Type="NuMedicsGlobalModel.Institution" Role="Institution" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institution">
+              <PropertyRef Name="InstitutionId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="InstitutionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3573,25 +3593,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               <MappingFragment StoreEntitySet="DiabetesManagementTypes">
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Institutions">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.Institution">
-              <MappingFragment StoreEntitySet="Institutions">
-                <ScalarProperty Name="Licenses" ColumnName="Licenses" />
-                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Street" ColumnName="Street" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="ContactFirstname" ColumnName="ContactFirstname" />
-                <ScalarProperty Name="ContactLastname" ColumnName="ContactLastname" />
-                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="LegacySiteId" ColumnName="LegacySiteId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3915,20 +3916,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Subscriptions">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.Subscription">
-              <MappingFragment StoreEntitySet="Subscriptions">
-                <ScalarProperty Name="IsTrial" ColumnName="IsTrial" />
-                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
-                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="SubscriptionType" ColumnName="SubscriptionType" />
-                <ScalarProperty Name="SubscriptionDate" ColumnName="SubscriptionDate" />
-                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SubscriptionTypes">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.SubscriptionType">
               <MappingFragment StoreEntitySet="SubscriptionType">
@@ -4056,14 +4043,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Patients_Institutions" TypeName="NuMedicsGlobalModel.Patients_Institutions" StoreEntitySet="Patients_Institutions">
-            <EndProperty Name="Institutions">
-              <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
-            </EndProperty>
-            <EndProperty Name="Patients">
-              <ScalarProperty Name="UserId" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="Patients_InsurancePlans" TypeName="NuMedicsGlobalModel.Patients_InsurancePlans" StoreEntitySet="Patients_InsurancePlans">
             <EndProperty Name="InsurancePlans">
               <ScalarProperty Name="PlanId" ColumnName="PlanId" />
@@ -4080,6 +4059,48 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Institutions">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.Institution">
+              <MappingFragment StoreEntitySet="Institutions">
+                <ScalarProperty Name="Licenses" ColumnName="Licenses" />
+                <ScalarProperty Name="LegacySiteId" ColumnName="LegacySiteId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+                <ScalarProperty Name="ContactLastname" ColumnName="ContactLastname" />
+                <ScalarProperty Name="ContactFirstname" ColumnName="ContactFirstname" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscriptions">
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="IsTrial" ColumnName="IsTrial" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="SubscriptionDate" ColumnName="SubscriptionDate" />
+                <ScalarProperty Name="SubscriptionType" ColumnName="SubscriptionType" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Patients_Institutions" TypeName="NuMedicsGlobalModel.Patients_Institutions" StoreEntitySet="Patients_Institutions">
+            <EndProperty Name="Patient">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="Institution">
+              <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

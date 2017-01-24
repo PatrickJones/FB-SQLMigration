@@ -19,7 +19,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public bool PaymentApproved { get; set; }
     
         public virtual Check Check { get; set; }
-        public virtual Subscription Subscription { get; set; }
         public virtual PayPal PayPal { get; set; }
+        public virtual Subscription Subscription { get; set; }
     }
 }

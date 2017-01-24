@@ -109,7 +109,7 @@ namespace NuLibrary.Migration.SqlValidations
         {
             get
             {
-                return "UserTypes";
+                return "SubscriptionType";
             }
         }
 
@@ -124,7 +124,15 @@ namespace NuLibrary.Migration.SqlValidations
                 }
             }
 
-            return (Missing.Count == 0) ? true : false;
+            if (Missing.Count == DefaultSubscriptionTypes.Count)
+            {
+                SyncTable();
+                return true;
+            }
+            else
+            {
+                return (Missing.Count == 0) ? true : false;
+            }
         }
 
         public void SyncTable()

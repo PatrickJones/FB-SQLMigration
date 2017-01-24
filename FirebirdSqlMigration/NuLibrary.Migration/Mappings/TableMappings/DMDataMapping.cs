@@ -55,7 +55,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 {
                     // get userid from old aspnetdb matching on patientid #####.#####
                     var patId = row["PATIENTID"].ToString();
-                    var userId = MemoryPatientInfo.GetUserId(MigrationVariables.CurrentSiteId, patId);
+                    var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
                     if (userId != Guid.Empty)
                     {
@@ -71,7 +71,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         };
 
                         // add to temp collection for addition with "PatientDevicesMapping"
-                        MemoryDiabetesManagementData.DMDataCollection.Add(dm);
+                        MemoryMappings.AddDiabetesManagementData(dm);
 
                         var ibId = mu.FindInsulinBrandId(row["INSULINBRAND"].ToString());
                         var imId = mu.FindInsulinMethodId(row["INSULINMETHOD"].ToString());

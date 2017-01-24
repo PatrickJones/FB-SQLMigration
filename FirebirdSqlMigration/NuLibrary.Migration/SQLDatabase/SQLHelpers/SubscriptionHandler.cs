@@ -1,4 +1,5 @@
-﻿using NuLibrary.Migration.SQLDatabase.EF;
+﻿using NuLibrary.Migration.Mappings.InMemoryMappings;
+using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 {
     public class SubscriptionHandler
     {
+        NumedicsGlobalHelpers nh;
+
         public Guid UserId { get; private set; }
 
+        public clinipro_Users cliniProUser { get; set; }
         public ICollection<subs_CheckPayments> CheckPayments = new List<subs_CheckPayments>();
         public ICollection<subs_Adjustments> Adjustments = new List<subs_Adjustments>();
         public ICollection<subs_PayPalPayments> PayPalPayments = new List<subs_PayPalPayments>();
@@ -19,11 +23,15 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private ICollection<Subscription> subscriptions = new List<Subscription>();
         private Guid applicationId = Guid.Parse("5E1A0790-68AA-405D-908A-4AB578832EFE");
+        private Guid institutionId = Guid.Empty;
         private int UserType = 2;
 
         public SubscriptionHandler(Guid userId)
         {
             UserId = userId;
+
+            nh = new NumedicsGlobalHelpers();
+            institutionId = MemoryMappings.GetAllInstitutions().Where(w => w.LegacySiteId == 20001).Select(s => s.InstitutionId).FirstOrDefault();// nh.GetInstitutionId(20001); // TODO: place in config file, because will change based on environment
         }
 
         public ICollection<Subscription> GetMappedSubscriptions()
@@ -53,7 +61,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                             SubscriptionType = 0,
                             SubscriptionDate = tr.Date,
                             ExpirationDate = tr.Date.AddDays(tr.Days),
-                            IsTrial = true
+                            IsTrial = true,
+                            InstitutionId = institutionId
                         };
 
                         subscriptions.Add(sub);
@@ -101,7 +110,9 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                             UserType = UserType,
                             SubscriptionType = GetSubscriptionType((byte)pp.MonthsPurchased),
                             SubscriptionDate = pp.Date,
-                            ExpirationDate = pp.Date.AddMonths(pp.MonthsPurchased)
+                            ExpirationDate = pp.Date.AddMonths(pp.MonthsPurchased),
+                            InstitutionId = institutionId
+
                         };
 
                         nPayment.PayPal = nPay;
@@ -138,7 +149,9 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                             UserType = UserType,
                             SubscriptionType = 7,
                             SubscriptionDate = ad.Date,
-                            ExpirationDate = (ad.SubscriptionTimeType.ToLower().StartsWith("day", StringComparison.Ordinal)) ? ad.Date.AddDays(ad.SubscriptionTimeAmount) : ad.Date.AddMonths(ad.SubscriptionTimeAmount)
+                            ExpirationDate = (ad.SubscriptionTimeType.ToLower().StartsWith("day", StringComparison.Ordinal)) ? ad.Date.AddDays(ad.SubscriptionTimeAmount) : ad.Date.AddMonths(ad.SubscriptionTimeAmount),
+                            InstitutionId = institutionId
+
                         };
 
                         sub.Payment = nPayment;
@@ -182,7 +195,9 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                             UserType = UserType,
                             SubscriptionType = GetSubscriptionType(cp.MonthsPurchased),
                             SubscriptionDate = cp.Date,
-                            ExpirationDate = cp.Date.AddMonths(cp.MonthsPurchased)
+                            ExpirationDate = cp.Date.AddMonths(cp.MonthsPurchased),
+                            InstitutionId = institutionId
+
                         };
 
                         nPayment.Check = nCheck;

@@ -26,8 +26,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string StateLicenseNumber { get; set; }
         public System.Guid InstitutionId { get; set; }
     
-        public virtual Institution Institution { get; set; }
         public virtual User User { get; set; }
+        public virtual Institution Institution { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Subscription> Subscriptions { get; set; }
     }

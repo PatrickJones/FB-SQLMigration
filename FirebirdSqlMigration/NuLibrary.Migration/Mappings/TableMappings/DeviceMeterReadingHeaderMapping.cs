@@ -49,13 +49,13 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 {
                     // get userid from old aspnetdb matching on patientid #####.#####
                     var patId = row["PATIENTKEYID"].ToString();
-                    var userId = MemoryPatientInfo.GetUserId(MigrationVariables.CurrentSiteId, patId);
+                    var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
 
 
                     if (userId != Guid.Empty)
                     {
-                        var dmData = MemoryDiabetesManagementData.DMDataCollection.Where(w => w.UserId == userId).FirstOrDefault();
+                        var dmData = MemoryMappings.GetAllDiabetesManagementData().Where(w => w.UserId == userId).FirstOrDefault();
 
                         var dev = new PatientDevice
                         {

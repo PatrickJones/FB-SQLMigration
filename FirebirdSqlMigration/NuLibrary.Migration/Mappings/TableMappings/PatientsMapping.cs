@@ -104,7 +104,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     pat.PatientAddresses.Add(adr);
 
                     // add patient info to in-memery collection for use throughout application
-                    MemoryPatientInfo.AddPatientInfo(MigrationVariables.CurrentSiteId, patId, pat.UserId);
+                    MemoryMappings.AddPatientInfo(MigrationVariables.CurrentSiteId, patId, pat.UserId);
 
                     if (CanAddToContext(user.UserId))
                     {

@@ -52,10 +52,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         var name = row["NAME"].ToString();
                         var kId = row["KEYID"].ToString();
 
-                        if (!MemoryInsuranceCompanys.Companies.ContainsKey(kId))
-                        {
-                            MemoryInsuranceCompanys.Companies.Add(kId, name);
-                        }
+                        MemoryMappings.AddCompnay(kId, name);
 
                         var ips = new InsuranceProvider
                         {

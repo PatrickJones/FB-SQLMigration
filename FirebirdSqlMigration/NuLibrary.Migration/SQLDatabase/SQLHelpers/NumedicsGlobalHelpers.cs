@@ -66,7 +66,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         public int GetInsuranceCompanyId(string companyKeyId)
         {
-            var kv = MemoryInsuranceCompanys.Companies.Where(n => n.Key == companyKeyId).FirstOrDefault();
+            var kv = MemoryMappings.GetAllCompanies().Where(n => n.Key == companyKeyId).FirstOrDefault();
             var cName = db.InsuranceProviders.Where(n => n.Name == kv.Value).FirstOrDefault();
             return (cName == null) ? 0 : cName.CompanyId;
         }

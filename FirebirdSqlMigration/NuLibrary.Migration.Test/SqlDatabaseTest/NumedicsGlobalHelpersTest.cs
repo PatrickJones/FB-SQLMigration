@@ -351,7 +351,7 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
         [TestMethod()]
         public void GetInsuranceCompanyIdTest()
         {
-            MemoryInsuranceCompanys.Companies.Add("12345", "Acme Insurance");
+            MemoryMappings.AddCompnay("12345", "Acme Insurance");
 
             Mock<DbSet<SQLDatabase.EF.InsuranceProvider>> moq_Ins = new Mock<DbSet<InsuranceProvider>>();
             moq_Ins.SetupData(new List<SQLDatabase.EF.InsuranceProvider>());

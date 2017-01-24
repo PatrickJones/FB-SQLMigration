@@ -54,7 +54,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 {
                     // get userid from old aspnetdb matching on patientid #####.#####
                     var patId = row["PATIENTID"].ToString();
-                    var userId = MemoryPatientInfo.GetUserId(MigrationVariables.CurrentSiteId, patId);
+                    var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
                     if (userId != Guid.Empty)
                     {

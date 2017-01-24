@@ -47,7 +47,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<DiabetesControlType> DiabetesControlTypes { get; set; }
         public virtual DbSet<DiabetesManagementData> DiabetesManagementDatas { get; set; }
         public virtual DbSet<DiabetesManagementType> DiabetesManagementTypes { get; set; }
-        public virtual DbSet<Institution> Institutions { get; set; }
         public virtual DbSet<InsulinBrand> InsulinBrands { get; set; }
         public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
         public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
@@ -73,7 +72,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<ReadingEvent> ReadingEvents { get; set; }
         public virtual DbSet<ReadingEventType> ReadingEventTypes { get; set; }
         public virtual DbSet<ReadingHeader> ReadingHeaders { get; set; }
-        public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<SubscriptionType> SubscriptionTypes { get; set; }
         public virtual DbSet<TensReading> TensReadings { get; set; }
         public virtual DbSet<TherapyType> TherapyTypes { get; set; }
@@ -86,5 +84,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
         public virtual DbSet<InsulinType> InsulinTypes { get; set; }
+        public virtual DbSet<Institution> Institutions { get; set; }
+        public virtual DbSet<Subscription> Subscriptions { get; set; }
     }
 }

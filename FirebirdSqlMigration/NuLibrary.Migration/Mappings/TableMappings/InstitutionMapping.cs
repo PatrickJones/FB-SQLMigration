@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NuLibrary.Migration.Interfaces;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
@@ -37,6 +38,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         Name = ins.Site_Name,
                         LegacySiteId = (ins.SiteId.HasValue) ? ins.SiteId.Value : 0
                     };
+
+                    MemoryMappings.AddInstitution(inst);
 
                     if (CanAddToContext(inst.Name, inst.LegacySiteId))
                     {

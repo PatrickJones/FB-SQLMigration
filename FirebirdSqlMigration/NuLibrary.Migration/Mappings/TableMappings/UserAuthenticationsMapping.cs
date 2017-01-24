@@ -96,7 +96,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     user.UserAuthentications.Add(uAuth);
 
                     // add user info to in-memery collection for use throughout application
-                    MemoryPatientInfo.AddPatientInfo(adUser.CPSiteId.Value, adUser.CliniProID, user.UserId);
+                    MemoryMappings.AddPatientInfo(adUser.CPSiteId.Value, adUser.CliniProID, user.UserId);
 
                     if (CanAddToContext(user.UserId))
                     {

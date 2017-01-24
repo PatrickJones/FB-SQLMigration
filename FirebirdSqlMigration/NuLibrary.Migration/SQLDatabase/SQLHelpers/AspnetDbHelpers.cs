@@ -78,6 +78,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
         {
             var sh = new SubscriptionHandler(userId);
 
+            sh.cliniProUser = db.clinipro_Users.Where(w => w.UserId == userId).FirstOrDefault();
+
             sh.Adjustments = db.subs_Adjustments.Where(w => w.UserId == userId).ToList();
             sh.CheckPayments = db.subs_CheckPayments.Where(w => w.UserId == userId).ToList();
             sh.PayPalPayments = db.subs_PayPalPayments.Where(w => w.UserId == userId).ToList();

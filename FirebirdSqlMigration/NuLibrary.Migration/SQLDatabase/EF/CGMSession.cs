@@ -14,10 +14,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
     public partial class CGMSession
     {
-        public long CGMSessionId { get; set; }
         public System.DateTime SessionDateTime { get; set; }
         public int TimeInSeconds { get; set; }
         public bool IsActive { get; set; }
+        public System.Guid CGMId { get; set; }
     
         public virtual Pump Pump { get; set; }
     }

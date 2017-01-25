@@ -19,9 +19,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.DateTime ReadingDateTime { get; set; }
         public string Units { get; set; }
         public string Value { get; set; }
-        public long DownloadKedyId { get; set; }
         public System.Guid UserId { get; set; }
         public bool Active { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

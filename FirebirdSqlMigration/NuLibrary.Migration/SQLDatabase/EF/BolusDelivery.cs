@@ -28,7 +28,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string BolusTrigger { get; set; }
         public string Status { get; set; }
         public string Type { get; set; }
-        public long DownloadKeyId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual BGTarget BGTarget { get; set; }
         public virtual ReadingHeader ReadingHeader { get; set; }

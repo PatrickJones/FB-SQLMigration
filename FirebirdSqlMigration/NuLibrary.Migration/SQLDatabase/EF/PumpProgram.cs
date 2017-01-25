@@ -28,7 +28,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int ProgramKey { get; set; }
         public bool Valid { get; set; }
         public int NumOfSegments { get; set; }
-        public long PumpId { get; set; }
+        public System.Guid PumpkeyId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }

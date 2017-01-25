@@ -23,7 +23,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int Aplitude { get; set; }
         public int PulseWidth { get; set; }
         public int Frequency { get; set; }
-        public long DownloadKeyId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

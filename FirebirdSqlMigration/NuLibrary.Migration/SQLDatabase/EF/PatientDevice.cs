@@ -32,8 +32,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
         public virtual DeviceData DeviceData { get; set; }
         public virtual DiabetesManagementData DiabetesManagementData { get; set; }
+        public virtual Patient Patient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReadingHeader> ReadingHeaders { get; set; }
-        public virtual Patient Patient { get; set; }
     }
 }

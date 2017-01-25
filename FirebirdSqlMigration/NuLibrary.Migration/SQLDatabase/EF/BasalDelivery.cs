@@ -26,7 +26,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public bool IsTemp { get; set; }
         public string Duration { get; set; }
         public System.DateTime StartDateTime { get; set; }
-        public long DownloadKeyId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

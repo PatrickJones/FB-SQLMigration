@@ -21,7 +21,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int Nausea { get; set; }
         public int CaloriesBurned { get; set; }
         public int CaloriesConsumed { get; set; }
-        public long DownloadKeyId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

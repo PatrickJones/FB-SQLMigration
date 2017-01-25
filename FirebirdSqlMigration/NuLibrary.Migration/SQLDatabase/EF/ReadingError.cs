@@ -15,11 +15,12 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     public partial class ReadingError
     {
         public int ErrorId { get; set; }
-        public long DownloadKeyId { get; set; }
         public System.DateTime Time { get; set; }
         public string ErrorName { get; set; }
         public string ErrorText { get; set; }
         public bool IsActive { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

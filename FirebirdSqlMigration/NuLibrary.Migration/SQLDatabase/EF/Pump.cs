@@ -22,7 +22,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
             this.PumpSettings = new HashSet<PumpSetting>();
         }
     
-        public long PumpId { get; set; }
         public string PumpType { get; set; }
         public string PumpName { get; set; }
         public System.DateTime PumpStartDate { get; set; }
@@ -32,13 +31,13 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.DateTime ReplacementDate { get; set; }
         public string Notes { get; set; }
         public System.Guid UserId { get; set; }
+        public System.Guid PumpKeyId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CGMReminder> CGMReminders { get; set; }
         public virtual CGMSession CGMSession { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PumpProgram> PumpPrograms { get; set; }
-        public virtual ReadingHeader ReadingHeader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PumpSetting> PumpSettings { get; set; }
     }

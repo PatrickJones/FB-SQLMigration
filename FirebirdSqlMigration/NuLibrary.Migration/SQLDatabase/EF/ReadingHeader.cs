@@ -28,7 +28,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
             this.TotalDailyInsulinDeliveries = new HashSet<TotalDailyInsulinDelivery>();
         }
     
-        public long DownloadKeyId { get; set; }
         public int DeviceId { get; set; }
         public System.DateTime ServerDateTime { get; set; }
         public System.DateTime MeterDateTime { get; set; }
@@ -37,6 +36,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.DateTime ReviewedOn { get; set; }
         public bool IsCGMData { get; set; }
         public System.Guid UserId { get; set; }
+        public string LegacyDownloadKeyId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasalDelivery> BasalDeliveries { get; set; }
@@ -47,7 +48,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual PatientDevice PatientDevice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PhysiologicalReading> PhysiologicalReadings { get; set; }
-        public virtual Pump Pump { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReadingError> ReadingErrors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

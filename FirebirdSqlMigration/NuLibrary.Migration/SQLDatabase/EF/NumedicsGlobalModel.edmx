@@ -38,7 +38,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="IsTemp" Type="bit" Nullable="false" />
           <Property Name="Duration" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="StartDateTime" Type="datetime" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="BasalDeliveryData">
           <Key>
@@ -78,9 +79,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="ReadingDateTime" Type="datetime" Nullable="false" />
           <Property Name="Units" Type="nvarchar" MaxLength="50" />
           <Property Name="Value" Type="nvarchar" MaxLength="50" />
-          <Property Name="DownloadKedyId" Type="bigint" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="BolusDelivery">
           <Key>
@@ -94,7 +95,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="BolusTrigger" Type="nvarchar" MaxLength="50" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="BolusDeliveryData">
           <Key>
@@ -136,16 +138,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
           <Property Name="Time" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="PumpId" Type="bigint" Nullable="false" />
+          <Property Name="PumpKeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="CGMSessions">
           <Key>
-            <PropertyRef Name="CGMSessionId" />
+            <PropertyRef Name="CGMId" />
           </Key>
-          <Property Name="CGMSessionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SessionDateTime" Type="datetime" Nullable="false" />
           <Property Name="TimeInSeconds" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CGMId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Checks">
           <Key>
@@ -371,12 +373,14 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.NutritionReadings' does not hav
             <PropertyRef Name="ReadingId" />
             <PropertyRef Name="Carbohydrates" />
             <PropertyRef Name="ReadingDateTime" />
-            <PropertyRef Name="DownloadKeyId" />
+            <PropertyRef Name="ReadingKeyId" />
+            <PropertyRef Name="UserId" />
           </Key>
           <Property Name="ReadingId" Type="int" Nullable="false" />
           <Property Name="Carbohydrates" Type="float" Nullable="false" />
           <Property Name="ReadingDateTime" Type="datetime" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -528,7 +532,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="Nausea" Type="int" Nullable="false" />
           <Property Name="CaloriesBurned" Type="int" Nullable="false" />
           <Property Name="CaloriesConsumed" Type="int" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PumpPrograms">
           <Key>
@@ -541,13 +546,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="ProgramKey" Type="int" Nullable="false" />
           <Property Name="Valid" Type="bit" Nullable="false" />
           <Property Name="NumOfSegments" Type="int" Nullable="false" />
-          <Property Name="PumpId" Type="bigint" Nullable="false" />
+          <Property Name="PumpkeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Pumps">
           <Key>
-            <PropertyRef Name="PumpId" />
+            <PropertyRef Name="PumpKeyId" />
           </Key>
-          <Property Name="PumpId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PumpType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PumpName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PumpStartDate" Type="datetime" Nullable="false" />
@@ -557,6 +561,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="ReplacementDate" Type="datetime" Nullable="false" />
           <Property Name="Notes" Type="nvarchar" MaxLength="200" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PumpKeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PumpSettings">
           <Key>
@@ -567,31 +572,33 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="SettingName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="SettingValue" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="SettingValueType" Type="nvarchar" MaxLength="150" />
-          <Property Name="PumpId" Type="bigint" Nullable="false" />
+          <Property Name="PumpKeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="ReadingErrors">
           <Key>
             <PropertyRef Name="ErrorId" />
           </Key>
           <Property Name="ErrorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="ErrorName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ErrorText" Type="nvarchar" MaxLength="250" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="ReadingEvents">
           <Key>
             <PropertyRef Name="Eventid" />
           </Key>
           <Property Name="Eventid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
           <Property Name="EventType" Type="int" Nullable="false" />
           <Property Name="EventValue" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="EventTime" Type="datetime" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="ResumeTime" Type="datetime" Nullable="false" />
           <Property Name="StopTime" Type="datetime" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="ReadingEventTypes">
           <Key>
@@ -602,9 +609,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
         </EntityType>
         <EntityType Name="ReadingHeaders">
           <Key>
-            <PropertyRef Name="DownloadKeyId" />
+            <PropertyRef Name="ReadingKeyId" />
           </Key>
-          <Property Name="DownloadKeyId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DeviceId" Type="int" Nullable="false" />
           <Property Name="ServerDateTime" Type="datetime" Nullable="false" />
           <Property Name="MeterDateTime" Type="datetime" Nullable="false" />
@@ -613,6 +619,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="ReviewedOn" Type="datetime" Nullable="false" />
           <Property Name="IsCGMData" Type="bit" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LegacyDownloadKeyId" Type="nvarchar" MaxLength="80" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Subscriptions">
           <Key>
@@ -652,7 +660,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="Aplitude" Type="int" Nullable="false" />
           <Property Name="PulseWidth" Type="int" Nullable="false" />
           <Property Name="Frequency" Type="int" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="TherapyTypes">
           <Key>
@@ -672,7 +681,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="TempActivated" Type="bit" Nullable="false" />
           <Property Name="Valid" Type="bit" Nullable="false" />
           <Property Name="BolusDelivered" Type="float" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="bigint" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="UserAuthentications">
           <Key>
@@ -722,15 +732,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BasalDeliveries_ReadingHeaders">
+        <Association Name="FK_BasalDeliveries_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="BasalDeliveries" Type="Self.BasalDeliveries" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="BasalDeliveries">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -758,15 +768,27 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BolusDelivery_ReadingHeaders">
+        <Association Name="FK_BloodGlucoseReadings_ReadingHeaders">
+          <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
+          <End Role="BloodGlucoseReadings" Type="Self.BloodGlucoseReadings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeaders">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="BloodGlucoseReadings">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BolusDelivery_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="BolusDelivery" Type="Self.BolusDelivery" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="BolusDelivery">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -810,29 +832,27 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CGMReminders_Pumps">
-          <End Role="Pumps" Type="Self.Pumps" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="FK_CGMReminders_Pumps1">
+          <End Role="Pumps" Type="Self.Pumps" Multiplicity="1" />
           <End Role="CGMReminders" Type="Self.CGMReminders" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
+              <PropertyRef Name="PumpKeyId" />
             </Principal>
             <Dependent Role="CGMReminders">
-              <PropertyRef Name="PumpId" />
+              <PropertyRef Name="PumpKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CGMSession_Pumps">
+        <Association Name="FK_CGMSessions_Pumps">
           <End Role="Pumps" Type="Self.Pumps" Multiplicity="1" />
           <End Role="CGMSessions" Type="Self.CGMSessions" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
+              <PropertyRef Name="PumpKeyId" />
             </Principal>
             <Dependent Role="CGMSessions">
-              <PropertyRef Name="CGMSessionId" />
+              <PropertyRef Name="CGMId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1024,29 +1044,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MeterReadings_MeterReadingHeader">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BloodGlucoseReadings" Type="Self.BloodGlucoseReadings" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="BloodGlucoseReadings">
-              <PropertyRef Name="DownloadKedyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NutritionReadings_ReadingHeaders">
+        <Association Name="FK_NutritionReadings_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="NutritionReadings" Type="Self.NutritionReadings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="NutritionReadings">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1206,29 +1212,27 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PhysiologicalReadings_ReadingHeaders">
+        <Association Name="FK_PhysiologicalReadings_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="PhysiologicalReadings" Type="Self.PhysiologicalReadings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="PhysiologicalReadings">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PumpPrograms_Pumps">
-          <End Role="Pumps" Type="Self.Pumps" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="FK_PumpPrograms_Pumps1">
+          <End Role="Pumps" Type="Self.Pumps" Multiplicity="1" />
           <End Role="PumpPrograms" Type="Self.PumpPrograms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
+              <PropertyRef Name="PumpKeyId" />
             </Principal>
             <Dependent Role="PumpPrograms">
-              <PropertyRef Name="PumpId" />
+              <PropertyRef Name="PumpkeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1246,53 +1250,39 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Pumps_MeterReadingHeader">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
-          <End Role="Pumps" Type="Self.Pumps" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="Pumps">
-              <PropertyRef Name="PumpId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PumpSettings_Pumps">
-          <End Role="Pumps" Type="Self.Pumps" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="FK_PumpSettings_Pumps1">
+          <End Role="Pumps" Type="Self.Pumps" Multiplicity="1" />
           <End Role="PumpSettings" Type="Self.PumpSettings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
+              <PropertyRef Name="PumpKeyId" />
             </Principal>
             <Dependent Role="PumpSettings">
-              <PropertyRef Name="PumpId" />
+              <PropertyRef Name="PumpKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ReadingErrors_ReadingHeaders">
+        <Association Name="FK_ReadingErrors_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="ReadingErrors" Type="Self.ReadingErrors" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="ReadingErrors">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ReadingEvents_ReadingHeaders">
+        <Association Name="FK_ReadingEvents_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="ReadingEvents" Type="Self.ReadingEvents" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="ReadingEvents">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1320,27 +1310,27 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TensReadings_ReadingHeaders">
+        <Association Name="FK_TensReadings_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="TensReadings" Type="Self.TensReadings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="TensReadings">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders">
+        <Association Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="TotalDailyInsulinDeliveries" Type="Self.TotalDailyInsulinDeliveries" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="TotalDailyInsulinDeliveries">
-              <PropertyRef Name="DownloadKeyId" />
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1447,7 +1437,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
     [NutritionReadings].[ReadingId] AS [ReadingId], 
     [NutritionReadings].[Carbohydrates] AS [Carbohydrates], 
     [NutritionReadings].[ReadingDateTime] AS [ReadingDateTime], 
-    [NutritionReadings].[DownloadKeyId] AS [DownloadKeyId]
+    [NutritionReadings].[ReadingKeyId] AS [ReadingKeyId], 
+    [NutritionReadings].[UserId] AS [UserId]
     FROM [dbo].[NutritionReadings] AS [NutritionReadings]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistories" store:Type="Tables" store:Schema="dbo">
@@ -1462,7 +1453,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Applications" EntitySet="Applications" />
             <End Role="AppLoginHistories" EntitySet="AppLoginHistories" />
           </AssociationSet>
-          <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders" Association="Self.FK_BasalDeliveries_ReadingHeaders">
+          <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders1" Association="Self.FK_BasalDeliveries_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="BasalDeliveries" EntitySet="BasalDeliveries" />
           </AssociationSet>
@@ -1474,7 +1465,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="BolusDelivery" EntitySet="BolusDelivery" />
             <End Role="BGTargets" EntitySet="BGTargets" />
           </AssociationSet>
-          <AssociationSet Name="FK_BolusDelivery_ReadingHeaders" Association="Self.FK_BolusDelivery_ReadingHeaders">
+          <AssociationSet Name="FK_BloodGlucoseReadings_ReadingHeaders" Association="Self.FK_BloodGlucoseReadings_ReadingHeaders">
+            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
+            <End Role="BloodGlucoseReadings" EntitySet="BloodGlucoseReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BolusDelivery_ReadingHeaders1" Association="Self.FK_BolusDelivery_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="BolusDelivery" EntitySet="BolusDelivery" />
           </AssociationSet>
@@ -1490,11 +1485,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Patients" EntitySet="Patients" />
             <End Role="CareSettings" EntitySet="CareSettings" />
           </AssociationSet>
-          <AssociationSet Name="FK_CGMReminders_Pumps" Association="Self.FK_CGMReminders_Pumps">
+          <AssociationSet Name="FK_CGMReminders_Pumps1" Association="Self.FK_CGMReminders_Pumps1">
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="CGMReminders" EntitySet="CGMReminders" />
           </AssociationSet>
-          <AssociationSet Name="FK_CGMSession_Pumps" Association="Self.FK_CGMSession_Pumps">
+          <AssociationSet Name="FK_CGMSessions_Pumps" Association="Self.FK_CGMSessions_Pumps">
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="CGMSessions" EntitySet="CGMSessions" />
           </AssociationSet>
@@ -1558,11 +1553,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="PatientDevices" EntitySet="PatientDevices" />
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
           </AssociationSet>
-          <AssociationSet Name="FK_MeterReadings_MeterReadingHeader" Association="Self.FK_MeterReadings_MeterReadingHeader">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="BloodGlucoseReadings" EntitySet="BloodGlucoseReadings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders" Association="Self.FK_NutritionReadings_ReadingHeaders">
+          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="Self.FK_NutritionReadings_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="NutritionReadings" EntitySet="NutritionReadings" />
           </AssociationSet>
@@ -1614,11 +1605,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Payments" EntitySet="Payments" />
             <End Role="PayPal" EntitySet="PayPal" />
           </AssociationSet>
-          <AssociationSet Name="FK_PhysiologicalReadings_ReadingHeaders" Association="Self.FK_PhysiologicalReadings_ReadingHeaders">
+          <AssociationSet Name="FK_PhysiologicalReadings_ReadingHeaders1" Association="Self.FK_PhysiologicalReadings_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="PhysiologicalReadings" EntitySet="PhysiologicalReadings" />
           </AssociationSet>
-          <AssociationSet Name="FK_PumpPrograms_Pumps" Association="Self.FK_PumpPrograms_Pumps">
+          <AssociationSet Name="FK_PumpPrograms_Pumps1" Association="Self.FK_PumpPrograms_Pumps1">
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="PumpPrograms" EntitySet="PumpPrograms" />
           </AssociationSet>
@@ -1626,19 +1617,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="PumpPrograms" EntitySet="PumpPrograms" />
             <End Role="BasalProgramTimeSlots" EntitySet="BasalProgramTimeSlots" />
           </AssociationSet>
-          <AssociationSet Name="FK_Pumps_MeterReadingHeader" Association="Self.FK_Pumps_MeterReadingHeader">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="Pumps" EntitySet="Pumps" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PumpSettings_Pumps" Association="Self.FK_PumpSettings_Pumps">
+          <AssociationSet Name="FK_PumpSettings_Pumps1" Association="Self.FK_PumpSettings_Pumps1">
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="PumpSettings" EntitySet="PumpSettings" />
           </AssociationSet>
-          <AssociationSet Name="FK_ReadingErrors_ReadingHeaders" Association="Self.FK_ReadingErrors_ReadingHeaders">
+          <AssociationSet Name="FK_ReadingErrors_ReadingHeaders1" Association="Self.FK_ReadingErrors_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="ReadingErrors" EntitySet="ReadingErrors" />
           </AssociationSet>
-          <AssociationSet Name="FK_ReadingEvents_ReadingHeaders" Association="Self.FK_ReadingEvents_ReadingHeaders">
+          <AssociationSet Name="FK_ReadingEvents_ReadingHeaders1" Association="Self.FK_ReadingEvents_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="ReadingEvents" EntitySet="ReadingEvents" />
           </AssociationSet>
@@ -1650,11 +1637,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Patients" EntitySet="Patients" />
             <End Role="Subscriptions" EntitySet="Subscriptions" />
           </AssociationSet>
-          <AssociationSet Name="FK_TensReadings_ReadingHeaders" Association="Self.FK_TensReadings_ReadingHeaders">
+          <AssociationSet Name="FK_TensReadings_ReadingHeaders1" Association="Self.FK_TensReadings_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="TensReadings" EntitySet="TensReadings" />
           </AssociationSet>
-          <AssociationSet Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders" Association="Self.FK_TotalDailyInsulinDeliveries_ReadingHeaders">
+          <AssociationSet Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders1" Association="Self.FK_TotalDailyInsulinDeliveries_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="TotalDailyInsulinDeliveries" EntitySet="TotalDailyInsulinDeliveries" />
           </AssociationSet>
@@ -1685,107 +1672,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="EndUserLicenseAgreements" Relationship="Self.FK_EndUserLicenseAgreements_Applications" FromRole="Applications" ToRole="EndUserLicenseAgreements" />
           <NavigationProperty Name="UserAuthentications" Relationship="Self.FK_UserAuthentications_Applications" FromRole="Applications" ToRole="UserAuthentications" />
         </EntityType>
-        <EntityType Name="BasalDelivery">
-          <Key>
-            <PropertyRef Name="BasalDeliveryId" />
-          </Key>
-          <Property Name="BasalDeliveryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AmountDelivered" Type="Int32" Nullable="false" />
-          <Property Name="DeliveryRate" Type="Double" Nullable="false" />
-          <Property Name="IsTemp" Type="Boolean" Nullable="false" />
-          <Property Name="Duration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_BasalDeliveries_ReadingHeaders" FromRole="BasalDeliveries" ToRole="ReadingHeaders" />
-          <NavigationProperty Name="BasalDeliveryDatas" Relationship="Self.FK_BasalDeliveryData_BasalDeliveries" FromRole="BasalDeliveries" ToRole="BasalDeliveryData" />
-        </EntityType>
-        <EntityType Name="BasalDeliveryData">
-          <Key>
-            <PropertyRef Name="DataId" />
-          </Key>
-          <Property Name="DataId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BasalDeliveryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BasalDelivery" Relationship="Self.FK_BasalDeliveryData_BasalDeliveries" FromRole="BasalDeliveryData" ToRole="BasalDeliveries" />
-        </EntityType>
-        <EntityType Name="BasalProgramTimeSlot">
-          <Key>
-            <PropertyRef Name="BasalSlotId" />
-          </Key>
-          <Property Name="BasalSlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BasalValue" Type="Double" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="PumpProgram" Relationship="Self.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="BasalProgramTimeSlots" ToRole="PumpPrograms" />
-        </EntityType>
-        <EntityType Name="BGTarget">
-          <Key>
-            <PropertyRef Name="TargetId" />
-          </Key>
-          <Property Name="TargetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TargetBG" Type="Int32" Nullable="false" />
-          <Property Name="TargetBGCorrect" Type="Int32" Nullable="false" />
-          <Property Name="TargetBGStart" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="TargetBGStop" Type="Time" Nullable="false" Precision="2" />
-          <NavigationProperty Name="BolusDelivery" Relationship="Self.FK_BGTargets_BolusDelivery" FromRole="BGTargets" ToRole="BolusDelivery" />
-        </EntityType>
-        <EntityType Name="BloodGlucoseReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DatetimeKey" Type="Int32" Nullable="false" />
-          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Units" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DownloadKedyId" Type="Int64" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="BloodGlucoseReadings" ToRole="ReadingHeaders" />
-        </EntityType>
-        <EntityType Name="BolusDelivery">
-          <Key>
-            <PropertyRef Name="BolusDeliveryId" />
-          </Key>
-          <Property Name="BolusDeliveryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AmountDelivered" Type="Int32" Nullable="false" />
-          <Property Name="AmountSuggested" Type="Int32" Nullable="false" />
-          <Property Name="Duration" Type="Int32" Nullable="false" />
-          <Property Name="BolusTrigger" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="BGTarget" Relationship="Self.FK_BGTargets_BolusDelivery" FromRole="BolusDelivery" ToRole="BGTargets" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_BolusDelivery_ReadingHeaders" FromRole="BolusDelivery" ToRole="ReadingHeaders" />
-          <NavigationProperty Name="BolusDeliveryDatas" Relationship="Self.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDelivery" ToRole="BolusDeliveryData" />
-          <NavigationProperty Name="CorrectionFactor" Relationship="Self.FK_CorrectionFactors_BolusDelivery" FromRole="BolusDelivery" ToRole="CorrectionFactors" />
-          <NavigationProperty Name="InsulinCarbRatio" Relationship="Self.FK_InsulinCarbRatio_BolusDelivery" FromRole="BolusDelivery" ToRole="InsulinCarbRatio" />
-          <NavigationProperty Name="InsulinCorrection" Relationship="Self.FK_InsulinCorrections_BolusDelivery" FromRole="BolusDelivery" ToRole="InsulinCorrections" />
-        </EntityType>
-        <EntityType Name="BolusDeliveryData">
-          <Key>
-            <PropertyRef Name="DataId" />
-          </Key>
-          <Property Name="DataId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BolusDeliveryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BolusDelivery" Relationship="Self.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDeliveryData" ToRole="BolusDelivery" />
-        </EntityType>
-        <EntityType Name="BolusProgramTimeSlot">
-          <Key>
-            <PropertyRef Name="BolusSlotId" />
-          </Key>
-          <Property Name="BolusSlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BolusValue" Type="Double" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="PumpProgram" Relationship="Self.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="BolusProgramTimeSlots" ToRole="PumpPrograms" />
-        </EntityType>
         <EntityType Name="CareSetting">
           <Key>
             <PropertyRef Name="CareSettingsId" />
@@ -1801,27 +1687,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="Patient" Relationship="Self.FK_CareSettings_Patients1" FromRole="CareSettings" ToRole="Patients" />
           <NavigationProperty Name="DailyTimeSlots" Relationship="Self.FK_DailyTimeSlots_CareSettings" FromRole="CareSettings" ToRole="DailyTimeSlots" />
           <NavigationProperty Name="DiabetesControlTypes" Relationship="Self.FK_DiabetesControlTypes_CareSettings" FromRole="CareSettings" ToRole="DiabetesControlTypes" />
-        </EntityType>
-        <EntityType Name="CGMReminder">
-          <Key>
-            <PropertyRef Name="ReminderId" />
-          </Key>
-          <Property Name="ReminderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
-          <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PumpId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Pump" Relationship="Self.FK_CGMReminders_Pumps" FromRole="CGMReminders" ToRole="Pumps" />
-        </EntityType>
-        <EntityType Name="CGMSession">
-          <Key>
-            <PropertyRef Name="CGMSessionId" />
-          </Key>
-          <Property Name="CGMSessionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SessionDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TimeInSeconds" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Pump" Relationship="Self.FK_CGMSession_Pumps" FromRole="CGMSessions" ToRole="Pumps" />
         </EntityType>
         <EntityType Name="Check">
           <Key>
@@ -1854,16 +1719,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="User" Relationship="Self.FK_Clinicians_Users" FromRole="Clinicians" ToRole="Users" />
           <NavigationProperty Name="Institution" Relationship="NuMedicsGlobalModel.FK_Clinicians_Institution" FromRole="Clinician" ToRole="Institution" />
           <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Clinicians" FromRole="Clinician" ToRole="Subscription" />
-        </EntityType>
-        <EntityType Name="CorrectionFactor">
-          <Key>
-            <PropertyRef Name="FactorId" />
-          </Key>
-          <Property Name="FactorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CorrectionFactorValue" Type="Int32" Nullable="false" />
-          <Property Name="CorrectionFactorStart" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="CorrectionFactorStop" Type="Time" Nullable="false" Precision="2" />
-          <NavigationProperty Name="BolusDelivery" Relationship="Self.FK_CorrectionFactors_BolusDelivery" FromRole="CorrectionFactors" ToRole="BolusDelivery" />
         </EntityType>
         <EntityType Name="DailyTimeSlot">
           <Key>
@@ -1931,26 +1786,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="BrandName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Manufacturer" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="InsulinType" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="InsulinCarbRatio">
-          <Key>
-            <PropertyRef Name="RatioId" />
-          </Key>
-          <Property Name="RatioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ICRatio" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
-          <NavigationProperty Name="BolusDelivery" Relationship="Self.FK_InsulinCarbRatio_BolusDelivery" FromRole="InsulinCarbRatio" ToRole="BolusDelivery" />
-        </EntityType>
-        <EntityType Name="InsulinCorrection">
-          <Key>
-            <PropertyRef Name="CorrectionId" />
-          </Key>
-          <Property Name="CorrectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InsulinCorrectionValue" Type="Int32" Nullable="false" />
-          <Property Name="InsulinCorrectionStart" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="InsulinCorrectionStop" Type="Time" Nullable="false" Precision="2" />
-          <NavigationProperty Name="BolusDelivery" Relationship="Self.FK_InsulinCorrections_BolusDelivery" FromRole="InsulinCorrections" ToRole="BolusDelivery" />
         </EntityType>
         <EntityType Name="InsulinMethod">
           <Key>
@@ -2052,8 +1887,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="HardwareVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="DeviceData" Relationship="Self.FK_DeviceData_PatientDevices" FromRole="PatientDevices" ToRole="DeviceData" />
           <NavigationProperty Name="DiabetesManagementData" Relationship="Self.FK_DiabetesManagementData_PatientDevices" FromRole="PatientDevices" ToRole="DiabetesManagementData" />
-          <NavigationProperty Name="ReadingHeaders" Relationship="Self.FK_MeterReadingHeader_PatientDevices" FromRole="PatientDevices" ToRole="ReadingHeaders" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientDevices_Patients" FromRole="PatientDevices" ToRole="Patients" />
+          <NavigationProperty Name="ReadingHeaders" Relationship="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices" FromRole="PatientDevice" ToRole="ReadingHeader" />
         </EntityType>
         <EntityType Name="PatientLinkLog">
           <Key>
@@ -2150,125 +1985,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="PaymentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Payment" Relationship="Self.FK_PayPal_Payments" FromRole="PayPal" ToRole="Payments" />
         </EntityType>
-        <EntityType Name="PhysiologicalReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Weight" Type="Int32" Nullable="false" />
-          <Property Name="Hunger" Type="Int32" Nullable="false" />
-          <Property Name="Nausea" Type="Int32" Nullable="false" />
-          <Property Name="CaloriesBurned" Type="Int32" Nullable="false" />
-          <Property Name="CaloriesConsumed" Type="Int32" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_PhysiologicalReadings_ReadingHeaders" FromRole="PhysiologicalReadings" ToRole="ReadingHeaders" />
-        </EntityType>
-        <EntityType Name="PumpProgram">
-          <Key>
-            <PropertyRef Name="PumpProgramId" />
-          </Key>
-          <Property Name="PumpProgramId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Source" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProgramName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProgramKey" Type="Int32" Nullable="false" />
-          <Property Name="Valid" Type="Boolean" Nullable="false" />
-          <Property Name="NumOfSegments" Type="Int32" Nullable="false" />
-          <Property Name="PumpId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="BasalProgramTimeSlots" Relationship="Self.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="PumpPrograms" ToRole="BasalProgramTimeSlots" />
-          <NavigationProperty Name="BolusProgramTimeSlots" Relationship="Self.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="PumpPrograms" ToRole="BolusProgramTimeSlots" />
-          <NavigationProperty Name="Pump" Relationship="Self.FK_PumpPrograms_Pumps" FromRole="PumpPrograms" ToRole="Pumps" />
-        </EntityType>
-        <EntityType Name="Pump">
-          <Key>
-            <PropertyRef Name="PumpId" />
-          </Key>
-          <Property Name="PumpId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PumpType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PumpName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PumpStartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PumpInfusionSet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ActiveProgramId" Type="Int32" Nullable="false" />
-          <Property Name="Cannula" Type="Double" Nullable="false" />
-          <Property Name="ReplacementDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Notes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="CGMReminders" Relationship="Self.FK_CGMReminders_Pumps" FromRole="Pumps" ToRole="CGMReminders" />
-          <NavigationProperty Name="CGMSession" Relationship="Self.FK_CGMSession_Pumps" FromRole="Pumps" ToRole="CGMSessions" />
-          <NavigationProperty Name="PumpPrograms" Relationship="Self.FK_PumpPrograms_Pumps" FromRole="Pumps" ToRole="PumpPrograms" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_Pumps_MeterReadingHeader" FromRole="Pumps" ToRole="ReadingHeaders" />
-          <NavigationProperty Name="PumpSettings" Relationship="Self.FK_PumpSettings_Pumps" FromRole="Pumps" ToRole="PumpSettings" />
-        </EntityType>
-        <EntityType Name="PumpSetting">
-          <Key>
-            <PropertyRef Name="SettingId" />
-          </Key>
-          <Property Name="SettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SettingType" Type="Int32" Nullable="false" />
-          <Property Name="SettingName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SettingValue" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SettingValueType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="PumpId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Pump" Relationship="Self.FK_PumpSettings_Pumps" FromRole="PumpSettings" ToRole="Pumps" />
-        </EntityType>
-        <EntityType Name="ReadingError">
-          <Key>
-            <PropertyRef Name="ErrorId" />
-          </Key>
-          <Property Name="ErrorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ErrorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ErrorText" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_ReadingErrors_ReadingHeaders" FromRole="ReadingErrors" ToRole="ReadingHeaders" />
-        </EntityType>
-        <EntityType Name="ReadingEvent">
-          <Key>
-            <PropertyRef Name="Eventid" />
-          </Key>
-          <Property Name="Eventid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <Property Name="EventType" Type="Int32" Nullable="false" />
-          <Property Name="EventValue" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EventTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ResumeTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StopTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_ReadingEvents_ReadingHeaders" FromRole="ReadingEvents" ToRole="ReadingHeaders" />
-        </EntityType>
         <EntityType Name="ReadingEventType">
           <Key>
             <PropertyRef Name="EventId" />
           </Key>
           <Property Name="EventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EventName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ReadingHeader">
-          <Key>
-            <PropertyRef Name="DownloadKeyId" />
-          </Key>
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DeviceId" Type="Int32" Nullable="false" />
-          <Property Name="ServerDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MeterDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Readings" Type="Int32" Nullable="false" />
-          <Property Name="SiteSource" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReviewedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsCGMData" Type="Boolean" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="BasalDeliveries" Relationship="Self.FK_BasalDeliveries_ReadingHeaders" FromRole="ReadingHeaders" ToRole="BasalDeliveries" />
-          <NavigationProperty Name="BloodGlucoseReadings" Relationship="Self.FK_MeterReadings_MeterReadingHeader" FromRole="ReadingHeaders" ToRole="BloodGlucoseReadings" />
-          <NavigationProperty Name="BolusDeliveries" Relationship="Self.FK_BolusDelivery_ReadingHeaders" FromRole="ReadingHeaders" ToRole="BolusDelivery" />
-          <NavigationProperty Name="PatientDevice" Relationship="Self.FK_MeterReadingHeader_PatientDevices" FromRole="ReadingHeaders" ToRole="PatientDevices" />
-          <NavigationProperty Name="PhysiologicalReadings" Relationship="Self.FK_PhysiologicalReadings_ReadingHeaders" FromRole="ReadingHeaders" ToRole="PhysiologicalReadings" />
-          <NavigationProperty Name="Pump" Relationship="Self.FK_Pumps_MeterReadingHeader" FromRole="ReadingHeaders" ToRole="Pumps" />
-          <NavigationProperty Name="ReadingErrors" Relationship="Self.FK_ReadingErrors_ReadingHeaders" FromRole="ReadingHeaders" ToRole="ReadingErrors" />
-          <NavigationProperty Name="ReadingEvents" Relationship="Self.FK_ReadingEvents_ReadingHeaders" FromRole="ReadingHeaders" ToRole="ReadingEvents" />
-          <NavigationProperty Name="NutritionReadings" Relationship="Self.FK_NutritionReadings_ReadingHeaders" FromRole="ReadingHeaders" ToRole="NutritionReadings" />
-          <NavigationProperty Name="TensReadings" Relationship="Self.FK_TensReadings_ReadingHeaders" FromRole="ReadingHeaders" ToRole="TensReadings" />
-          <NavigationProperty Name="TotalDailyInsulinDeliveries" Relationship="Self.FK_TotalDailyInsulinDeliveries_ReadingHeaders" FromRole="ReadingHeaders" ToRole="TotalDailyInsulinDeliveries" />
         </EntityType>
         <EntityType Name="SubscriptionType">
           <Key>
@@ -2281,42 +2003,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
         </EntityType>
-        <EntityType Name="TensReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReadingDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StartTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TherapyType" Type="Int32" Nullable="false" />
-          <Property Name="DurationScheduled" Type="Int32" Nullable="false" />
-          <Property Name="DurationCompleted" Type="Int32" Nullable="false" />
-          <Property Name="Aplitude" Type="Int32" Nullable="false" />
-          <Property Name="PulseWidth" Type="Int32" Nullable="false" />
-          <Property Name="Frequency" Type="Int32" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_TensReadings_ReadingHeaders" FromRole="TensReadings" ToRole="ReadingHeaders" />
-        </EntityType>
         <EntityType Name="TherapyType">
           <Key>
             <PropertyRef Name="TypeId" />
           </Key>
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TypeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TotalDailyInsulinDelivery">
-          <Key>
-            <PropertyRef Name="DeliveryId" />
-          </Key>
-          <Property Name="DeliveryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TotalDelivered" Type="Double" Nullable="false" />
-          <Property Name="BasalDelivered" Type="Double" Nullable="false" />
-          <Property Name="Suspended" Type="Boolean" />
-          <Property Name="TempActivated" Type="Boolean" Nullable="false" />
-          <Property Name="Valid" Type="Boolean" Nullable="false" />
-          <Property Name="BolusDelivered" Type="Double" Nullable="false" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_TotalDailyInsulinDeliveries_ReadingHeaders" FromRole="TotalDailyInsulinDeliveries" ToRole="ReadingHeaders" />
         </EntityType>
         <EntityType Name="UserAuthentication">
           <Key>
@@ -2382,19 +2074,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="ApplicationId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Application" Relationship="Self.FK_EndUserLicenseAgreements_Applications" FromRole="EndUserLicenseAgreements" ToRole="Applications" />
         </EntityType>
-        <EntityType Name="NutritionReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-            <PropertyRef Name="Carbohydrates" />
-            <PropertyRef Name="ReadingDateTime" />
-            <PropertyRef Name="DownloadKeyId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" />
-          <Property Name="Carbohydrates" Type="Double" Nullable="false" />
-          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DownloadKeyId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_NutritionReadings_ReadingHeaders" FromRole="NutritionReadings" ToRole="ReadingHeaders" />
-        </EntityType>
         <EntityType Name="PasswordHistory">
           <Key>
             <PropertyRef Name="Password" />
@@ -2444,146 +2123,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BasalDeliveries_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="BasalDeliveries" Type="Self.BasalDelivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="BasalDeliveries">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BasalDeliveryData_BasalDeliveries">
-          <End Role="BasalDeliveries" Type="Self.BasalDelivery" Multiplicity="1" />
-          <End Role="BasalDeliveryData" Type="Self.BasalDeliveryData" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BasalDeliveries">
-              <PropertyRef Name="BasalDeliveryId" />
-            </Principal>
-            <Dependent Role="BasalDeliveryData">
-              <PropertyRef Name="BasalDeliveryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PumpProgramTimeSlots_PumpPrograms">
-          <End Role="PumpPrograms" Type="Self.PumpProgram" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BasalProgramTimeSlots" Type="Self.BasalProgramTimeSlot" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PumpPrograms">
-              <PropertyRef Name="PumpProgramId" />
-            </Principal>
-            <Dependent Role="BasalProgramTimeSlots">
-              <PropertyRef Name="PumpProgramId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BGTargets_BolusDelivery">
-          <End Role="BolusDelivery" Type="Self.BolusDelivery" Multiplicity="1" />
-          <End Role="BGTargets" Type="Self.BGTarget" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="BolusDelivery">
-              <PropertyRef Name="BolusDeliveryId" />
-            </Principal>
-            <Dependent Role="BGTargets">
-              <PropertyRef Name="TargetId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MeterReadings_MeterReadingHeader">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BloodGlucoseReadings" Type="Self.BloodGlucoseReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="BloodGlucoseReadings">
-              <PropertyRef Name="DownloadKedyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BolusDelivery_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="BolusDelivery" Type="Self.BolusDelivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="BolusDelivery">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BolusDeliveryData_BolusDelivery">
-          <End Role="BolusDelivery" Type="Self.BolusDelivery" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BolusDeliveryData" Type="Self.BolusDeliveryData" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BolusDelivery">
-              <PropertyRef Name="BolusDeliveryId" />
-            </Principal>
-            <Dependent Role="BolusDeliveryData">
-              <PropertyRef Name="BolusDeliveryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CorrectionFactors_BolusDelivery">
-          <End Role="BolusDelivery" Type="Self.BolusDelivery" Multiplicity="1" />
-          <End Role="CorrectionFactors" Type="Self.CorrectionFactor" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="BolusDelivery">
-              <PropertyRef Name="BolusDeliveryId" />
-            </Principal>
-            <Dependent Role="CorrectionFactors">
-              <PropertyRef Name="FactorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InsulinCarbRatio_BolusDelivery">
-          <End Role="BolusDelivery" Type="Self.BolusDelivery" Multiplicity="1" />
-          <End Role="InsulinCarbRatio" Type="Self.InsulinCarbRatio" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="BolusDelivery">
-              <PropertyRef Name="BolusDeliveryId" />
-            </Principal>
-            <Dependent Role="InsulinCarbRatio">
-              <PropertyRef Name="RatioId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InsulinCorrections_BolusDelivery">
-          <End Role="BolusDelivery" Type="Self.BolusDelivery" Multiplicity="1" />
-          <End Role="InsulinCorrections" Type="Self.InsulinCorrection" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="BolusDelivery">
-              <PropertyRef Name="BolusDeliveryId" />
-            </Principal>
-            <Dependent Role="InsulinCorrections">
-              <PropertyRef Name="CorrectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BolusProgramTimeSlots_PumpPrograms">
-          <End Role="PumpPrograms" Type="Self.PumpProgram" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BolusProgramTimeSlots" Type="Self.BolusProgramTimeSlot" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PumpPrograms">
-              <PropertyRef Name="PumpProgramId" />
-            </Principal>
-            <Dependent Role="BolusProgramTimeSlots">
-              <PropertyRef Name="PumpProgramId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CareSettings_Patients1">
           <End Role="Patients" Type="Self.Patient" Multiplicity="1" />
           <End Role="CareSettings" Type="Self.CareSetting" Multiplicity="*" />
@@ -2617,32 +2156,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Principal>
             <Dependent Role="DiabetesControlTypes">
               <PropertyRef Name="CareSettingsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CGMReminders_Pumps">
-          <End Role="Pumps" Type="Self.Pump" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CGMReminders" Type="Self.CGMReminder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
-            </Principal>
-            <Dependent Role="CGMReminders">
-              <PropertyRef Name="PumpId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CGMSession_Pumps">
-          <End Role="Pumps" Type="Self.Pump" Multiplicity="1" />
-          <End Role="CGMSessions" Type="Self.CGMSession" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
-            </Principal>
-            <Dependent Role="CGMSessions">
-              <PropertyRef Name="CGMSessionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2750,20 +2263,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MeterReadingHeader_PatientDevices">
-          <End Role="PatientDevices" Type="Self.PatientDevice" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PatientDevices">
-              <PropertyRef Name="DeviceId" />
-            </Principal>
-            <Dependent Role="ReadingHeaders">
-              <PropertyRef Name="DeviceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PatientDevices_Patients">
           <End Role="Patients" Type="Self.Patient" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2830,118 +2329,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PhysiologicalReadings_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="PhysiologicalReadings" Type="Self.PhysiologicalReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="PhysiologicalReadings">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PumpPrograms_Pumps">
-          <End Role="Pumps" Type="Self.Pump" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PumpPrograms" Type="Self.PumpProgram" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
-            </Principal>
-            <Dependent Role="PumpPrograms">
-              <PropertyRef Name="PumpId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Pumps_MeterReadingHeader">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="Pumps" Type="Self.Pump" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="Pumps">
-              <PropertyRef Name="PumpId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PumpSettings_Pumps">
-          <End Role="Pumps" Type="Self.Pump" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PumpSettings" Type="Self.PumpSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Pumps">
-              <PropertyRef Name="PumpId" />
-            </Principal>
-            <Dependent Role="PumpSettings">
-              <PropertyRef Name="PumpId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReadingErrors_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="ReadingErrors" Type="Self.ReadingError" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="ReadingErrors">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReadingEvents_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="ReadingEvents" Type="Self.ReadingEvent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="ReadingEvents">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NutritionReadings_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="NutritionReadings" Type="Self.NutritionReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="NutritionReadings">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TensReadings_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="TensReadings" Type="Self.TensReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="TensReadings">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders">
-          <End Role="ReadingHeaders" Type="Self.ReadingHeader" Multiplicity="1" />
-          <End Role="TotalDailyInsulinDeliveries" Type="Self.TotalDailyInsulinDelivery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeaders">
-              <PropertyRef Name="DownloadKeyId" />
-            </Principal>
-            <Dependent Role="TotalDailyInsulinDeliveries">
-              <PropertyRef Name="DownloadKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PasswordHistories_UserAuthentications">
           <End Role="UserAuthentications" Type="Self.UserAuthentication" Multiplicity="1" />
           <End Role="PasswordHistories" Type="Self.PasswordHistory" Multiplicity="*" />
@@ -2972,21 +2359,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
         </Association>
         <EntityContainer Name="NuMedicsGlobalEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Applications" EntityType="Self.Application" />
-          <EntitySet Name="BasalDeliveries" EntityType="Self.BasalDelivery" />
-          <EntitySet Name="BasalDeliveryDatas" EntityType="Self.BasalDeliveryData" />
-          <EntitySet Name="BasalProgramTimeSlots" EntityType="Self.BasalProgramTimeSlot" />
-          <EntitySet Name="BGTargets" EntityType="Self.BGTarget" />
-          <EntitySet Name="BloodGlucoseReadings" EntityType="Self.BloodGlucoseReading" />
-          <EntitySet Name="BolusDeliveries" EntityType="Self.BolusDelivery" />
-          <EntitySet Name="BolusDeliveryDatas" EntityType="Self.BolusDeliveryData" />
-          <EntitySet Name="BolusProgramTimeSlots" EntityType="Self.BolusProgramTimeSlot" />
           <EntitySet Name="CareSettings" EntityType="Self.CareSetting" />
-          <EntitySet Name="CGMReminders" EntityType="Self.CGMReminder" />
-          <EntitySet Name="CGMSessions" EntityType="Self.CGMSession" />
           <EntitySet Name="Checks" EntityType="Self.Check" />
           <EntitySet Name="CheckStatus" EntityType="Self.CheckStatu" />
           <EntitySet Name="Clinicians" EntityType="Self.Clinician" />
-          <EntitySet Name="CorrectionFactors" EntityType="Self.CorrectionFactor" />
           <EntitySet Name="DailyTimeSlots" EntityType="Self.DailyTimeSlot" />
           <EntitySet Name="DatabaseInfoes" EntityType="Self.DatabaseInfo" />
           <EntitySet Name="DeviceDatas" EntityType="Self.DeviceData" />
@@ -2994,8 +2370,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="DiabetesManagementDatas" EntityType="Self.DiabetesManagementData" />
           <EntitySet Name="DiabetesManagementTypes" EntityType="Self.DiabetesManagementType" />
           <EntitySet Name="InsulinBrands" EntityType="Self.InsulinBrand" />
-          <EntitySet Name="InsulinCarbRatios" EntityType="Self.InsulinCarbRatio" />
-          <EntitySet Name="InsulinCorrections" EntityType="Self.InsulinCorrection" />
           <EntitySet Name="InsulinMethods" EntityType="Self.InsulinMethod" />
           <EntitySet Name="InsuranceAddresses" EntityType="Self.InsuranceAddress" />
           <EntitySet Name="InsuranceContacts" EntityType="Self.InsuranceContact" />
@@ -3010,24 +2384,14 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethod" />
           <EntitySet Name="Payments" EntityType="Self.Payment" />
           <EntitySet Name="PayPals" EntityType="Self.PayPal" />
-          <EntitySet Name="PhysiologicalReadings" EntityType="Self.PhysiologicalReading" />
-          <EntitySet Name="PumpPrograms" EntityType="Self.PumpProgram" />
-          <EntitySet Name="Pumps" EntityType="Self.Pump" />
-          <EntitySet Name="PumpSettings" EntityType="Self.PumpSetting" />
-          <EntitySet Name="ReadingErrors" EntityType="Self.ReadingError" />
-          <EntitySet Name="ReadingEvents" EntityType="Self.ReadingEvent" />
           <EntitySet Name="ReadingEventTypes" EntityType="Self.ReadingEventType" />
-          <EntitySet Name="ReadingHeaders" EntityType="Self.ReadingHeader" />
           <EntitySet Name="SubscriptionTypes" EntityType="Self.SubscriptionType" />
-          <EntitySet Name="TensReadings" EntityType="Self.TensReading" />
           <EntitySet Name="TherapyTypes" EntityType="Self.TherapyType" />
-          <EntitySet Name="TotalDailyInsulinDeliveries" EntityType="Self.TotalDailyInsulinDelivery" />
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentication" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistory" />
           <EntitySet Name="EndUserLicenseAgreements" EntityType="Self.EndUserLicenseAgreement" />
-          <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReading" />
           <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistory" />
           <AssociationSet Name="FK_AppLoginHistories_Applications" Association="Self.FK_AppLoginHistories_Applications">
             <End Role="Applications" EntitySet="Applications" />
@@ -3041,50 +2405,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Applications" EntitySet="Applications" />
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
           </AssociationSet>
-          <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders" Association="Self.FK_BasalDeliveries_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="BasalDeliveries" EntitySet="BasalDeliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BasalDeliveryData_BasalDeliveries" Association="Self.FK_BasalDeliveryData_BasalDeliveries">
-            <End Role="BasalDeliveries" EntitySet="BasalDeliveries" />
-            <End Role="BasalDeliveryData" EntitySet="BasalDeliveryDatas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PumpProgramTimeSlots_PumpPrograms" Association="Self.FK_PumpProgramTimeSlots_PumpPrograms">
-            <End Role="PumpPrograms" EntitySet="PumpPrograms" />
-            <End Role="BasalProgramTimeSlots" EntitySet="BasalProgramTimeSlots" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BGTargets_BolusDelivery" Association="Self.FK_BGTargets_BolusDelivery">
-            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
-            <End Role="BGTargets" EntitySet="BGTargets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MeterReadings_MeterReadingHeader" Association="Self.FK_MeterReadings_MeterReadingHeader">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="BloodGlucoseReadings" EntitySet="BloodGlucoseReadings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BolusDelivery_ReadingHeaders" Association="Self.FK_BolusDelivery_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BolusDeliveryData_BolusDelivery" Association="Self.FK_BolusDeliveryData_BolusDelivery">
-            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
-            <End Role="BolusDeliveryData" EntitySet="BolusDeliveryDatas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CorrectionFactors_BolusDelivery" Association="Self.FK_CorrectionFactors_BolusDelivery">
-            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
-            <End Role="CorrectionFactors" EntitySet="CorrectionFactors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_InsulinCarbRatio_BolusDelivery" Association="Self.FK_InsulinCarbRatio_BolusDelivery">
-            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
-            <End Role="InsulinCarbRatio" EntitySet="InsulinCarbRatios" />
-          </AssociationSet>
-          <AssociationSet Name="FK_InsulinCorrections_BolusDelivery" Association="Self.FK_InsulinCorrections_BolusDelivery">
-            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
-            <End Role="InsulinCorrections" EntitySet="InsulinCorrections" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BolusProgramTimeSlots_PumpPrograms" Association="Self.FK_BolusProgramTimeSlots_PumpPrograms">
-            <End Role="PumpPrograms" EntitySet="PumpPrograms" />
-            <End Role="BolusProgramTimeSlots" EntitySet="BolusProgramTimeSlots" />
-          </AssociationSet>
           <AssociationSet Name="FK_CareSettings_Patients1" Association="Self.FK_CareSettings_Patients1">
             <End Role="Patients" EntitySet="Patients" />
             <End Role="CareSettings" EntitySet="CareSettings" />
@@ -3096,14 +2416,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_DiabetesControlTypes_CareSettings" Association="Self.FK_DiabetesControlTypes_CareSettings">
             <End Role="CareSettings" EntitySet="CareSettings" />
             <End Role="DiabetesControlTypes" EntitySet="DiabetesControlTypes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CGMReminders_Pumps" Association="Self.FK_CGMReminders_Pumps">
-            <End Role="Pumps" EntitySet="Pumps" />
-            <End Role="CGMReminders" EntitySet="CGMReminders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CGMSession_Pumps" Association="Self.FK_CGMSession_Pumps">
-            <End Role="Pumps" EntitySet="Pumps" />
-            <End Role="CGMSessions" EntitySet="CGMSessions" />
           </AssociationSet>
           <AssociationSet Name="FK_Checks_Payments" Association="Self.FK_Checks_Payments">
             <End Role="Payments" EntitySet="Payments" />
@@ -3137,10 +2449,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientAddresses" EntitySet="PatientAddresses" />
           </AssociationSet>
-          <AssociationSet Name="FK_MeterReadingHeader_PatientDevices" Association="Self.FK_MeterReadingHeader_PatientDevices">
-            <End Role="PatientDevices" EntitySet="PatientDevices" />
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-          </AssociationSet>
           <AssociationSet Name="FK_PatientDevices_Patients" Association="Self.FK_PatientDevices_Patients">
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientDevices" EntitySet="PatientDevices" />
@@ -3160,42 +2468,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_PayPal_Payments" Association="Self.FK_PayPal_Payments">
             <End Role="Payments" EntitySet="Payments" />
             <End Role="PayPal" EntitySet="PayPals" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PhysiologicalReadings_ReadingHeaders" Association="Self.FK_PhysiologicalReadings_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="PhysiologicalReadings" EntitySet="PhysiologicalReadings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PumpPrograms_Pumps" Association="Self.FK_PumpPrograms_Pumps">
-            <End Role="Pumps" EntitySet="Pumps" />
-            <End Role="PumpPrograms" EntitySet="PumpPrograms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Pumps_MeterReadingHeader" Association="Self.FK_Pumps_MeterReadingHeader">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="Pumps" EntitySet="Pumps" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PumpSettings_Pumps" Association="Self.FK_PumpSettings_Pumps">
-            <End Role="Pumps" EntitySet="Pumps" />
-            <End Role="PumpSettings" EntitySet="PumpSettings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReadingErrors_ReadingHeaders" Association="Self.FK_ReadingErrors_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="ReadingErrors" EntitySet="ReadingErrors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReadingEvents_ReadingHeaders" Association="Self.FK_ReadingEvents_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="ReadingEvents" EntitySet="ReadingEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders" Association="Self.FK_NutritionReadings_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="NutritionReadings" EntitySet="NutritionReadings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TensReadings_ReadingHeaders" Association="Self.FK_TensReadings_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="TensReadings" EntitySet="TensReadings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders" Association="Self.FK_TotalDailyInsulinDeliveries_ReadingHeaders">
-            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
-            <End Role="TotalDailyInsulinDeliveries" EntitySet="TotalDailyInsulinDeliveries" />
           </AssociationSet>
           <AssociationSet Name="FK_PasswordHistories_UserAuthentications" Association="Self.FK_PasswordHistories_UserAuthentications">
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
@@ -3236,7 +2508,118 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Institution" EntitySet="Institutions" />
             <End Role="Subscription" EntitySet="Subscriptions" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="BasalDeliveries" EntityType="NuMedicsGlobalModel.BasalDelivery" />
+          <EntitySet Name="BasalDeliveryDatas" EntityType="NuMedicsGlobalModel.BasalDeliveryData" />
+          <EntitySet Name="BasalProgramTimeSlots" EntityType="NuMedicsGlobalModel.BasalProgramTimeSlot" />
+          <EntitySet Name="BGTargets" EntityType="NuMedicsGlobalModel.BGTarget" />
+          <EntitySet Name="BloodGlucoseReadings" EntityType="NuMedicsGlobalModel.BloodGlucoseReading" />
+          <EntitySet Name="BolusDeliveries" EntityType="NuMedicsGlobalModel.BolusDelivery" />
+          <EntitySet Name="BolusDeliveryDatas" EntityType="NuMedicsGlobalModel.BolusDeliveryData" />
+          <EntitySet Name="BolusProgramTimeSlots" EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" />
+          <EntitySet Name="CGMReminders" EntityType="NuMedicsGlobalModel.CGMReminder" />
+          <EntitySet Name="CGMSessions" EntityType="NuMedicsGlobalModel.CGMSession" />
+          <EntitySet Name="CorrectionFactors" EntityType="NuMedicsGlobalModel.CorrectionFactor" />
+          <EntitySet Name="InsulinCarbRatios" EntityType="NuMedicsGlobalModel.InsulinCarbRatio" />
+          <EntitySet Name="InsulinCorrections" EntityType="NuMedicsGlobalModel.InsulinCorrection" />
+          <EntitySet Name="PhysiologicalReadings" EntityType="NuMedicsGlobalModel.PhysiologicalReading" />
+          <EntitySet Name="PumpPrograms" EntityType="NuMedicsGlobalModel.PumpProgram" />
+          <EntitySet Name="PumpSettings" EntityType="NuMedicsGlobalModel.PumpSetting" />
+          <EntitySet Name="ReadingErrors" EntityType="NuMedicsGlobalModel.ReadingError" />
+          <EntitySet Name="ReadingEvents" EntityType="NuMedicsGlobalModel.ReadingEvent" />
+          <EntitySet Name="ReadingHeaders" EntityType="NuMedicsGlobalModel.ReadingHeader" />
+          <EntitySet Name="TensReadings" EntityType="NuMedicsGlobalModel.TensReading" />
+          <EntitySet Name="TotalDailyInsulinDeliveries" EntityType="NuMedicsGlobalModel.TotalDailyInsulinDelivery" />
+          <EntitySet Name="NutritionReadings" EntityType="NuMedicsGlobalModel.NutritionReading" />
+          <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="BasalDelivery" EntitySet="BasalDeliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BasalDeliveryData_BasalDeliveries" Association="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries">
+            <End Role="BasalDelivery" EntitySet="BasalDeliveries" />
+            <End Role="BasalDeliveryData" EntitySet="BasalDeliveryDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PumpProgramTimeSlots_PumpPrograms" Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms">
+            <End Role="PumpProgram" EntitySet="PumpPrograms" />
+            <End Role="BasalProgramTimeSlot" EntitySet="BasalProgramTimeSlots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BGTargets_BolusDelivery" Association="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery">
+            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
+            <End Role="BGTarget" EntitySet="BGTargets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BloodGlucoseReadings_ReadingHeaders" Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="BloodGlucoseReading" EntitySet="BloodGlucoseReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BolusDelivery_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BolusDeliveryData_BolusDelivery" Association="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery">
+            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
+            <End Role="BolusDeliveryData" EntitySet="BolusDeliveryDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectionFactors_BolusDelivery" Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery">
+            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
+            <End Role="CorrectionFactor" EntitySet="CorrectionFactors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InsulinCarbRatio_BolusDelivery" Association="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery">
+            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
+            <End Role="InsulinCarbRatio" EntitySet="InsulinCarbRatios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InsulinCorrections_BolusDelivery" Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery">
+            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
+            <End Role="InsulinCorrection" EntitySet="InsulinCorrections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BolusProgramTimeSlots_PumpPrograms" Association="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms">
+            <End Role="PumpProgram" EntitySet="PumpPrograms" />
+            <End Role="BolusProgramTimeSlot" EntitySet="BolusProgramTimeSlots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MeterReadingHeader_PatientDevices" Association="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices">
+            <End Role="PatientDevice" EntitySet="PatientDevices" />
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PhysiologicalReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="PhysiologicalReading" EntitySet="PhysiologicalReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReadingErrors_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="ReadingError" EntitySet="ReadingErrors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReadingEvents_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="ReadingEvent" EntitySet="ReadingEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="NutritionReading" EntitySet="NutritionReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TensReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="TensReading" EntitySet="TensReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="TotalDailyInsulinDelivery" EntitySet="TotalDailyInsulinDeliveries" />
+          </AssociationSet>
+          <EntitySet Name="Pumps" EntityType="NuMedicsGlobalModel.Pump" />
+          <AssociationSet Name="FK_CGMReminders_Pumps1" Association="NuMedicsGlobalModel.FK_CGMReminders_Pumps1">
+            <End Role="Pump" EntitySet="Pumps" />
+            <End Role="CGMReminder" EntitySet="CGMReminders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CGMSessions_Pumps" Association="NuMedicsGlobalModel.FK_CGMSessions_Pumps">
+            <End Role="Pump" EntitySet="Pumps" />
+            <End Role="CGMSession" EntitySet="CGMSessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PumpPrograms_Pumps1" Association="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1">
+            <End Role="Pump" EntitySet="Pumps" />
+            <End Role="PumpProgram" EntitySet="PumpPrograms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PumpSettings_Pumps1" Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1">
+            <End Role="Pump" EntitySet="Pumps" />
+            <End Role="PumpSetting" EntitySet="PumpSettings" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="InsulinType">
           <Key>
             <PropertyRef Name="InsulinTypeId" />
@@ -3347,7 +2730,595 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="BasalDelivery">
+          <Key>
+            <PropertyRef Name="BasalDeliveryId" />
+          </Key>
+          <Property Name="BasalDeliveryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AmountDelivered" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryRate" Type="Double" Nullable="false" />
+          <Property Name="IsTemp" Type="Boolean" Nullable="false" />
+          <Property Name="Duration" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" FromRole="BasalDelivery" ToRole="ReadingHeader" />
+          <NavigationProperty Name="BasalDeliveryDatas" Relationship="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries" FromRole="BasalDelivery" ToRole="BasalDeliveryData" />
+        </EntityType>
+        <EntityType Name="BasalDeliveryData">
+          <Key>
+            <PropertyRef Name="DataId" />
+          </Key>
+          <Property Name="DataId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="BasalDeliveryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BasalDelivery" Relationship="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries" FromRole="BasalDeliveryData" ToRole="BasalDelivery" />
+        </EntityType>
+        <EntityType Name="BasalProgramTimeSlot">
+          <Key>
+            <PropertyRef Name="BasalSlotId" />
+          </Key>
+          <Property Name="BasalSlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BasalValue" Type="Double" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PumpProgram" Relationship="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="BasalProgramTimeSlot" ToRole="PumpProgram" />
+        </EntityType>
+        <EntityType Name="BGTarget">
+          <Key>
+            <PropertyRef Name="TargetId" />
+          </Key>
+          <Property Name="TargetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TargetBG" Type="Int32" Nullable="false" />
+          <Property Name="TargetBGCorrect" Type="Int32" Nullable="false" />
+          <Property Name="TargetBGStart" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="TargetBGStop" Type="Time" Nullable="false" Precision="2" />
+          <NavigationProperty Name="BolusDelivery" Relationship="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" FromRole="BGTarget" ToRole="BolusDelivery" />
+        </EntityType>
+        <EntityType Name="BloodGlucoseReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DatetimeKey" Type="Int32" Nullable="false" />
+          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Units" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="BloodGlucoseReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="BolusDelivery">
+          <Key>
+            <PropertyRef Name="BolusDeliveryId" />
+          </Key>
+          <Property Name="BolusDeliveryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AmountDelivered" Type="Int32" Nullable="false" />
+          <Property Name="AmountSuggested" Type="Int32" Nullable="false" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <Property Name="BolusTrigger" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="BGTarget" Relationship="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" FromRole="BolusDelivery" ToRole="BGTarget" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" FromRole="BolusDelivery" ToRole="ReadingHeader" />
+          <NavigationProperty Name="BolusDeliveryDatas" Relationship="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDelivery" ToRole="BolusDeliveryData" />
+          <NavigationProperty Name="CorrectionFactor" Relationship="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" FromRole="BolusDelivery" ToRole="CorrectionFactor" />
+          <NavigationProperty Name="InsulinCarbRatio" Relationship="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" FromRole="BolusDelivery" ToRole="InsulinCarbRatio" />
+          <NavigationProperty Name="InsulinCorrection" Relationship="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" FromRole="BolusDelivery" ToRole="InsulinCorrection" />
+        </EntityType>
+        <EntityType Name="BolusDeliveryData">
+          <Key>
+            <PropertyRef Name="DataId" />
+          </Key>
+          <Property Name="DataId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="BolusDeliveryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BolusDelivery" Relationship="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDeliveryData" ToRole="BolusDelivery" />
+        </EntityType>
+        <EntityType Name="BolusProgramTimeSlot">
+          <Key>
+            <PropertyRef Name="BolusSlotId" />
+          </Key>
+          <Property Name="BolusSlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BolusValue" Type="Double" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PumpProgram" Relationship="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="BolusProgramTimeSlot" ToRole="PumpProgram" />
+        </EntityType>
+        <EntityType Name="CGMReminder">
+          <Key>
+            <PropertyRef Name="ReminderId" />
+          </Key>
+          <Property Name="ReminderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Time" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PumpKeyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_CGMReminders_Pumps1" FromRole="CGMReminder" ToRole="Pump" />
+        </EntityType>
+        <EntityType Name="CGMSession">
+          <Key>
+            <PropertyRef Name="CGMId" />
+          </Key>
+          <Property Name="SessionDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeInSeconds" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CGMId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_CGMSessions_Pumps" FromRole="CGMSession" ToRole="Pump" />
+        </EntityType>
+        <EntityType Name="CorrectionFactor">
+          <Key>
+            <PropertyRef Name="FactorId" />
+          </Key>
+          <Property Name="FactorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorrectionFactorValue" Type="Int32" Nullable="false" />
+          <Property Name="CorrectionFactorStart" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="CorrectionFactorStop" Type="Time" Nullable="false" Precision="2" />
+          <NavigationProperty Name="BolusDelivery" Relationship="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" FromRole="CorrectionFactor" ToRole="BolusDelivery" />
+        </EntityType>
+        <EntityType Name="InsulinCarbRatio">
+          <Key>
+            <PropertyRef Name="RatioId" />
+          </Key>
+          <Property Name="RatioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICRatio" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
+          <NavigationProperty Name="BolusDelivery" Relationship="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" FromRole="InsulinCarbRatio" ToRole="BolusDelivery" />
+        </EntityType>
+        <EntityType Name="InsulinCorrection">
+          <Key>
+            <PropertyRef Name="CorrectionId" />
+          </Key>
+          <Property Name="CorrectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InsulinCorrectionValue" Type="Int32" Nullable="false" />
+          <Property Name="InsulinCorrectionStart" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="InsulinCorrectionStop" Type="Time" Nullable="false" Precision="2" />
+          <NavigationProperty Name="BolusDelivery" Relationship="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" FromRole="InsulinCorrection" ToRole="BolusDelivery" />
+        </EntityType>
+        <EntityType Name="PhysiologicalReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Weight" Type="Int32" Nullable="false" />
+          <Property Name="Hunger" Type="Int32" Nullable="false" />
+          <Property Name="Nausea" Type="Int32" Nullable="false" />
+          <Property Name="CaloriesBurned" Type="Int32" Nullable="false" />
+          <Property Name="CaloriesConsumed" Type="Int32" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="PhysiologicalReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="PumpProgram">
+          <Key>
+            <PropertyRef Name="PumpProgramId" />
+          </Key>
+          <Property Name="PumpProgramId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Source" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProgramName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProgramKey" Type="Int32" Nullable="false" />
+          <Property Name="Valid" Type="Boolean" Nullable="false" />
+          <Property Name="NumOfSegments" Type="Int32" Nullable="false" />
+          <Property Name="PumpkeyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="BasalProgramTimeSlots" Relationship="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="PumpProgram" ToRole="BasalProgramTimeSlot" />
+          <NavigationProperty Name="BolusProgramTimeSlots" Relationship="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="PumpProgram" ToRole="BolusProgramTimeSlot" />
+          <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" FromRole="PumpProgram" ToRole="Pump" />
+        </EntityType>
+        <EntityType Name="PumpSetting">
+          <Key>
+            <PropertyRef Name="SettingId" />
+          </Key>
+          <Property Name="SettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SettingType" Type="Int32" Nullable="false" />
+          <Property Name="SettingName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SettingValue" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SettingValueType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PumpKeyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" FromRole="PumpSetting" ToRole="Pump" />
+        </EntityType>
+        <EntityType Name="ReadingError">
+          <Key>
+            <PropertyRef Name="ErrorId" />
+          </Key>
+          <Property Name="ErrorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ErrorName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorText" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1" FromRole="ReadingError" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="ReadingEvent">
+          <Key>
+            <PropertyRef Name="Eventid" />
+          </Key>
+          <Property Name="Eventid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventType" Type="Int32" Nullable="false" />
+          <Property Name="EventValue" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="EventTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ResumeTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StopTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1" FromRole="ReadingEvent" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="ReadingHeader">
+          <Key>
+            <PropertyRef Name="ReadingKeyId" />
+          </Key>
+          <Property Name="DeviceId" Type="Int32" Nullable="false" />
+          <Property Name="ServerDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MeterDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Readings" Type="Int32" Nullable="false" />
+          <Property Name="SiteSource" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsCGMData" Type="Boolean" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="LegacyDownloadKeyId" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="BasalDeliveries" Relationship="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" FromRole="ReadingHeader" ToRole="BasalDelivery" />
+          <NavigationProperty Name="BloodGlucoseReadings" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="ReadingHeader" ToRole="BloodGlucoseReading" />
+          <NavigationProperty Name="BolusDeliveries" Relationship="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" FromRole="ReadingHeader" ToRole="BolusDelivery" />
+          <NavigationProperty Name="PatientDevice" Relationship="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices" FromRole="ReadingHeader" ToRole="PatientDevice" />
+          <NavigationProperty Name="PhysiologicalReadings" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="PhysiologicalReading" />
+          <NavigationProperty Name="ReadingErrors" Relationship="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1" FromRole="ReadingHeader" ToRole="ReadingError" />
+          <NavigationProperty Name="ReadingEvents" Relationship="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1" FromRole="ReadingHeader" ToRole="ReadingEvent" />
+          <NavigationProperty Name="NutritionReadings" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="NutritionReading" />
+          <NavigationProperty Name="TensReadings" Relationship="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TensReading" />
+          <NavigationProperty Name="TotalDailyInsulinDeliveries" Relationship="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TotalDailyInsulinDelivery" />
+        </EntityType>
+        <EntityType Name="TensReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReadingDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TherapyType" Type="Int32" Nullable="false" />
+          <Property Name="DurationScheduled" Type="Int32" Nullable="false" />
+          <Property Name="DurationCompleted" Type="Int32" Nullable="false" />
+          <Property Name="Aplitude" Type="Int32" Nullable="false" />
+          <Property Name="PulseWidth" Type="Int32" Nullable="false" />
+          <Property Name="Frequency" Type="Int32" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" FromRole="TensReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="TotalDailyInsulinDelivery">
+          <Key>
+            <PropertyRef Name="DeliveryId" />
+          </Key>
+          <Property Name="DeliveryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TotalDelivered" Type="Double" Nullable="false" />
+          <Property Name="BasalDelivered" Type="Double" Nullable="false" />
+          <Property Name="Suspended" Type="Boolean" />
+          <Property Name="TempActivated" Type="Boolean" Nullable="false" />
+          <Property Name="Valid" Type="Boolean" Nullable="false" />
+          <Property Name="BolusDelivered" Type="Double" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" FromRole="TotalDailyInsulinDelivery" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="NutritionReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+            <PropertyRef Name="Carbohydrates" />
+            <PropertyRef Name="ReadingDateTime" />
+            <PropertyRef Name="ReadingKeyId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" />
+          <Property Name="Carbohydrates" Type="Double" Nullable="false" />
+          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="NutritionReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <Association Name="FK_BasalDeliveries_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.BasalDelivery" Role="BasalDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="BasalDelivery">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BasalDeliveryData_BasalDeliveries">
+          <End Type="NuMedicsGlobalModel.BasalDelivery" Role="BasalDelivery" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.BasalDeliveryData" Role="BasalDeliveryData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BasalDelivery">
+              <PropertyRef Name="BasalDeliveryId" />
+            </Principal>
+            <Dependent Role="BasalDeliveryData">
+              <PropertyRef Name="BasalDeliveryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PumpProgramTimeSlots_PumpPrograms">
+          <End Type="NuMedicsGlobalModel.PumpProgram" Role="PumpProgram" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NuMedicsGlobalModel.BasalProgramTimeSlot" Role="BasalProgramTimeSlot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PumpProgram">
+              <PropertyRef Name="PumpProgramId" />
+            </Principal>
+            <Dependent Role="BasalProgramTimeSlot">
+              <PropertyRef Name="PumpProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BGTargets_BolusDelivery">
+          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.BGTarget" Role="BGTarget" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BolusDelivery">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Principal>
+            <Dependent Role="BGTarget">
+              <PropertyRef Name="TargetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BloodGlucoseReadings_ReadingHeaders">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.BloodGlucoseReading" Role="BloodGlucoseReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="BloodGlucoseReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BolusDelivery_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="BolusDelivery">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BolusDeliveryData_BolusDelivery">
+          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NuMedicsGlobalModel.BolusDeliveryData" Role="BolusDeliveryData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BolusDelivery">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Principal>
+            <Dependent Role="BolusDeliveryData">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectionFactors_BolusDelivery">
+          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.CorrectionFactor" Role="CorrectionFactor" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BolusDelivery">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Principal>
+            <Dependent Role="CorrectionFactor">
+              <PropertyRef Name="FactorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InsulinCarbRatio_BolusDelivery">
+          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.InsulinCarbRatio" Role="InsulinCarbRatio" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BolusDelivery">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Principal>
+            <Dependent Role="InsulinCarbRatio">
+              <PropertyRef Name="RatioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InsulinCorrections_BolusDelivery">
+          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.InsulinCorrection" Role="InsulinCorrection" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BolusDelivery">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Principal>
+            <Dependent Role="InsulinCorrection">
+              <PropertyRef Name="CorrectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BolusProgramTimeSlots_PumpPrograms">
+          <End Type="NuMedicsGlobalModel.PumpProgram" Role="PumpProgram" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NuMedicsGlobalModel.BolusProgramTimeSlot" Role="BolusProgramTimeSlot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PumpProgram">
+              <PropertyRef Name="PumpProgramId" />
+            </Principal>
+            <Dependent Role="BolusProgramTimeSlot">
+              <PropertyRef Name="PumpProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MeterReadingHeader_PatientDevices">
+          <End Type="NuMedicsGlobalModel.PatientDevice" Role="PatientDevice" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientDevice">
+              <PropertyRef Name="DeviceId" />
+            </Principal>
+            <Dependent Role="ReadingHeader">
+              <PropertyRef Name="DeviceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PhysiologicalReadings_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.PhysiologicalReading" Role="PhysiologicalReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="PhysiologicalReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReadingErrors_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.ReadingError" Role="ReadingError" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="ReadingError">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReadingEvents_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.ReadingEvent" Role="ReadingEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="ReadingEvent">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NutritionReadings_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.NutritionReading" Role="NutritionReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="NutritionReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TensReadings_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.TensReading" Role="TensReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="TensReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.TotalDailyInsulinDelivery" Role="TotalDailyInsulinDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="TotalDailyInsulinDelivery">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Pump">
+          <Key>
+            <PropertyRef Name="PumpKeyId" />
+          </Key>
+          <Property Name="PumpType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PumpName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PumpStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PumpInfusionSet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ActiveProgramId" Type="Int32" Nullable="false" />
+          <Property Name="Cannula" Type="Double" Nullable="false" />
+          <Property Name="ReplacementDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Notes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="PumpKeyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CGMReminders" Relationship="NuMedicsGlobalModel.FK_CGMReminders_Pumps1" FromRole="Pump" ToRole="CGMReminder" />
+          <NavigationProperty Name="CGMSession" Relationship="NuMedicsGlobalModel.FK_CGMSessions_Pumps" FromRole="Pump" ToRole="CGMSession" />
+          <NavigationProperty Name="PumpPrograms" Relationship="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" FromRole="Pump" ToRole="PumpProgram" />
+          <NavigationProperty Name="PumpSettings" Relationship="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" FromRole="Pump" ToRole="PumpSetting" />
+        </EntityType>
+        <Association Name="FK_CGMReminders_Pumps1">
+          <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.CGMReminder" Role="CGMReminder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pump">
+              <PropertyRef Name="PumpKeyId" />
+            </Principal>
+            <Dependent Role="CGMReminder">
+              <PropertyRef Name="PumpKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CGMSessions_Pumps">
+          <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.CGMSession" Role="CGMSession" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Pump">
+              <PropertyRef Name="PumpKeyId" />
+            </Principal>
+            <Dependent Role="CGMSession">
+              <PropertyRef Name="CGMId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PumpPrograms_Pumps1">
+          <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.PumpProgram" Role="PumpProgram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pump">
+              <PropertyRef Name="PumpKeyId" />
+            </Principal>
+            <Dependent Role="PumpProgram">
+              <PropertyRef Name="PumpkeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PumpSettings_Pumps1">
+          <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.PumpSetting" Role="PumpSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pump">
+              <PropertyRef Name="PumpKeyId" />
+            </Principal>
+            <Dependent Role="PumpSetting">
+              <PropertyRef Name="PumpKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3365,101 +3336,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BasalDeliveries">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalDelivery">
-              <MappingFragment StoreEntitySet="BasalDeliveries">
-                <ScalarProperty Name="BasalDeliveryId" ColumnName="BasalDeliveryId" />
-                <ScalarProperty Name="AmountDelivered" ColumnName="AmountDelivered" />
-                <ScalarProperty Name="DeliveryRate" ColumnName="DeliveryRate" />
-                <ScalarProperty Name="IsTemp" ColumnName="IsTemp" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BasalDeliveryDatas">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalDeliveryData">
-              <MappingFragment StoreEntitySet="BasalDeliveryData">
-                <ScalarProperty Name="DataId" ColumnName="DataId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="BasalDeliveryId" ColumnName="BasalDeliveryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BasalProgramTimeSlots">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalProgramTimeSlot">
-              <MappingFragment StoreEntitySet="BasalProgramTimeSlots">
-                <ScalarProperty Name="BasalSlotId" ColumnName="BasalSlotId" />
-                <ScalarProperty Name="BasalValue" ColumnName="BasalValue" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
-                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BGTargets">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BGTarget">
-              <MappingFragment StoreEntitySet="BGTargets">
-                <ScalarProperty Name="TargetId" ColumnName="TargetId" />
-                <ScalarProperty Name="TargetBG" ColumnName="TargetBG" />
-                <ScalarProperty Name="TargetBGCorrect" ColumnName="TargetBGCorrect" />
-                <ScalarProperty Name="TargetBGStart" ColumnName="TargetBGStart" />
-                <ScalarProperty Name="TargetBGStop" ColumnName="TargetBGStop" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BloodGlucoseReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BloodGlucoseReading">
-              <MappingFragment StoreEntitySet="BloodGlucoseReadings">
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-                <ScalarProperty Name="DatetimeKey" ColumnName="DatetimeKey" />
-                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
-                <ScalarProperty Name="Units" ColumnName="Units" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="DownloadKedyId" ColumnName="DownloadKedyId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BolusDeliveries">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusDelivery">
-              <MappingFragment StoreEntitySet="BolusDelivery">
-                <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
-                <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
-                <ScalarProperty Name="AmountDelivered" ColumnName="AmountDelivered" />
-                <ScalarProperty Name="AmountSuggested" ColumnName="AmountSuggested" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="BolusTrigger" ColumnName="BolusTrigger" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BolusDeliveryDatas">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusDeliveryData">
-              <MappingFragment StoreEntitySet="BolusDeliveryData">
-                <ScalarProperty Name="DataId" ColumnName="DataId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BolusProgramTimeSlots">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusProgramTimeSlot">
-              <MappingFragment StoreEntitySet="BolusProgramTimeSlots">
-                <ScalarProperty Name="BolusSlotId" ColumnName="BolusSlotId" />
-                <ScalarProperty Name="BolusValue" ColumnName="BolusValue" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
-                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CareSettings">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.CareSetting">
               <MappingFragment StoreEntitySet="CareSettings">
@@ -3471,27 +3347,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="DiabetesManagementType" ColumnName="DiabetesManagementType" />
                 <ScalarProperty Name="InsulinBrand" ColumnName="InsulinBrand" />
                 <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CGMReminders">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.CGMReminder">
-              <MappingFragment StoreEntitySet="CGMReminders">
-                <ScalarProperty Name="ReminderId" ColumnName="ReminderId" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
-                <ScalarProperty Name="PumpId" ColumnName="PumpId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CGMSessions">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.CGMSession">
-              <MappingFragment StoreEntitySet="CGMSessions">
-                <ScalarProperty Name="CGMSessionId" ColumnName="CGMSessionId" />
-                <ScalarProperty Name="SessionDateTime" ColumnName="SessionDateTime" />
-                <ScalarProperty Name="TimeInSeconds" ColumnName="TimeInSeconds" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3523,16 +3378,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="Lastname" ColumnName="Lastname" />
                 <ScalarProperty Name="StateLicenseNumber" ColumnName="StateLicenseNumber" />
                 <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CorrectionFactors">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.CorrectionFactor">
-              <MappingFragment StoreEntitySet="CorrectionFactors">
-                <ScalarProperty Name="FactorId" ColumnName="FactorId" />
-                <ScalarProperty Name="CorrectionFactorValue" ColumnName="CorrectionFactorValue" />
-                <ScalarProperty Name="CorrectionFactorStart" ColumnName="CorrectionFactorStart" />
-                <ScalarProperty Name="CorrectionFactorStop" ColumnName="CorrectionFactorStop" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3603,26 +3448,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="InsulinBrandId" ColumnName="InsulinBrandId" />
                 <ScalarProperty Name="BrandName" ColumnName="BrandName" />
                 <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InsulinCarbRatios">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsulinCarbRatio">
-              <MappingFragment StoreEntitySet="InsulinCarbRatio">
-                <ScalarProperty Name="RatioId" ColumnName="RatioId" />
-                <ScalarProperty Name="ICRatio" ColumnName="ICRatio" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InsulinCorrections">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsulinCorrection">
-              <MappingFragment StoreEntitySet="InsulinCorrections">
-                <ScalarProperty Name="CorrectionId" ColumnName="CorrectionId" />
-                <ScalarProperty Name="InsulinCorrectionValue" ColumnName="InsulinCorrectionValue" />
-                <ScalarProperty Name="InsulinCorrectionStart" ColumnName="InsulinCorrectionStart" />
-                <ScalarProperty Name="InsulinCorrectionStop" ColumnName="InsulinCorrectionStop" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3811,108 +3636,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PhysiologicalReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PhysiologicalReading">
-              <MappingFragment StoreEntitySet="PhysiologicalReadings">
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
-                <ScalarProperty Name="Hunger" ColumnName="Hunger" />
-                <ScalarProperty Name="Nausea" ColumnName="Nausea" />
-                <ScalarProperty Name="CaloriesBurned" ColumnName="CaloriesBurned" />
-                <ScalarProperty Name="CaloriesConsumed" ColumnName="CaloriesConsumed" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PumpPrograms">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpProgram">
-              <MappingFragment StoreEntitySet="PumpPrograms">
-                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="ProgramName" ColumnName="ProgramName" />
-                <ScalarProperty Name="ProgramKey" ColumnName="ProgramKey" />
-                <ScalarProperty Name="Valid" ColumnName="Valid" />
-                <ScalarProperty Name="NumOfSegments" ColumnName="NumOfSegments" />
-                <ScalarProperty Name="PumpId" ColumnName="PumpId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Pumps">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.Pump">
-              <MappingFragment StoreEntitySet="Pumps">
-                <ScalarProperty Name="PumpId" ColumnName="PumpId" />
-                <ScalarProperty Name="PumpType" ColumnName="PumpType" />
-                <ScalarProperty Name="PumpName" ColumnName="PumpName" />
-                <ScalarProperty Name="PumpStartDate" ColumnName="PumpStartDate" />
-                <ScalarProperty Name="PumpInfusionSet" ColumnName="PumpInfusionSet" />
-                <ScalarProperty Name="ActiveProgramId" ColumnName="ActiveProgramId" />
-                <ScalarProperty Name="Cannula" ColumnName="Cannula" />
-                <ScalarProperty Name="ReplacementDate" ColumnName="ReplacementDate" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PumpSettings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpSetting">
-              <MappingFragment StoreEntitySet="PumpSettings">
-                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
-                <ScalarProperty Name="SettingType" ColumnName="SettingType" />
-                <ScalarProperty Name="SettingName" ColumnName="SettingName" />
-                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
-                <ScalarProperty Name="SettingValueType" ColumnName="SettingValueType" />
-                <ScalarProperty Name="PumpId" ColumnName="PumpId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReadingErrors">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingError">
-              <MappingFragment StoreEntitySet="ReadingErrors">
-                <ScalarProperty Name="ErrorId" ColumnName="ErrorId" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
-                <ScalarProperty Name="ErrorName" ColumnName="ErrorName" />
-                <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReadingEvents">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingEvent">
-              <MappingFragment StoreEntitySet="ReadingEvents">
-                <ScalarProperty Name="Eventid" ColumnName="Eventid" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
-                <ScalarProperty Name="EventType" ColumnName="EventType" />
-                <ScalarProperty Name="EventValue" ColumnName="EventValue" />
-                <ScalarProperty Name="EventTime" ColumnName="EventTime" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="ResumeTime" ColumnName="ResumeTime" />
-                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ReadingEventTypes">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingEventType">
               <MappingFragment StoreEntitySet="ReadingEventTypes">
                 <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="EventName" ColumnName="EventName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReadingHeaders">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingHeader">
-              <MappingFragment StoreEntitySet="ReadingHeaders">
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
-                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
-                <ScalarProperty Name="ServerDateTime" ColumnName="ServerDateTime" />
-                <ScalarProperty Name="MeterDateTime" ColumnName="MeterDateTime" />
-                <ScalarProperty Name="Readings" ColumnName="Readings" />
-                <ScalarProperty Name="SiteSource" ColumnName="SiteSource" />
-                <ScalarProperty Name="ReviewedOn" ColumnName="ReviewedOn" />
-                <ScalarProperty Name="IsCGMData" ColumnName="IsCGMData" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3928,41 +3656,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TensReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TensReading">
-              <MappingFragment StoreEntitySet="TensReadings">
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-                <ScalarProperty Name="ReadingDate" ColumnName="ReadingDate" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="TherapyType" ColumnName="TherapyType" />
-                <ScalarProperty Name="DurationScheduled" ColumnName="DurationScheduled" />
-                <ScalarProperty Name="DurationCompleted" ColumnName="DurationCompleted" />
-                <ScalarProperty Name="Aplitude" ColumnName="Aplitude" />
-                <ScalarProperty Name="PulseWidth" ColumnName="PulseWidth" />
-                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TherapyTypes">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.TherapyType">
               <MappingFragment StoreEntitySet="TherapyTypes">
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="TypeName" ColumnName="TypeName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TotalDailyInsulinDeliveries">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TotalDailyInsulinDelivery">
-              <MappingFragment StoreEntitySet="TotalDailyInsulinDeliveries">
-                <ScalarProperty Name="DeliveryId" ColumnName="DeliveryId" />
-                <ScalarProperty Name="TotalDelivered" ColumnName="TotalDelivered" />
-                <ScalarProperty Name="BasalDelivered" ColumnName="BasalDelivered" />
-                <ScalarProperty Name="Suspended" ColumnName="Suspended" />
-                <ScalarProperty Name="TempActivated" ColumnName="TempActivated" />
-                <ScalarProperty Name="Valid" ColumnName="Valid" />
-                <ScalarProperty Name="BolusDelivered" ColumnName="BolusDelivered" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4020,16 +3718,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="AgreementDate" ColumnName="AgreementDate" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NutritionReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.NutritionReading">
-              <MappingFragment StoreEntitySet="NutritionReadings">
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-                <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
-                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
-                <ScalarProperty Name="DownloadKeyId" ColumnName="DownloadKeyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4101,6 +3789,298 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="BasalDeliveries">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalDelivery">
+              <MappingFragment StoreEntitySet="BasalDeliveries">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="IsTemp" ColumnName="IsTemp" />
+                <ScalarProperty Name="DeliveryRate" ColumnName="DeliveryRate" />
+                <ScalarProperty Name="AmountDelivered" ColumnName="AmountDelivered" />
+                <ScalarProperty Name="BasalDeliveryId" ColumnName="BasalDeliveryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BasalDeliveryDatas">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalDeliveryData">
+              <MappingFragment StoreEntitySet="BasalDeliveryData">
+                <ScalarProperty Name="BasalDeliveryId" ColumnName="BasalDeliveryId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DataId" ColumnName="DataId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BasalProgramTimeSlots">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalProgramTimeSlot">
+              <MappingFragment StoreEntitySet="BasalProgramTimeSlots">
+                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
+                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="BasalValue" ColumnName="BasalValue" />
+                <ScalarProperty Name="BasalSlotId" ColumnName="BasalSlotId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BGTargets">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BGTarget">
+              <MappingFragment StoreEntitySet="BGTargets">
+                <ScalarProperty Name="TargetBGStop" ColumnName="TargetBGStop" />
+                <ScalarProperty Name="TargetBGStart" ColumnName="TargetBGStart" />
+                <ScalarProperty Name="TargetBGCorrect" ColumnName="TargetBGCorrect" />
+                <ScalarProperty Name="TargetBG" ColumnName="TargetBG" />
+                <ScalarProperty Name="TargetId" ColumnName="TargetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BloodGlucoseReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BloodGlucoseReading">
+              <MappingFragment StoreEntitySet="BloodGlucoseReadings">
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Units" ColumnName="Units" />
+                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
+                <ScalarProperty Name="DatetimeKey" ColumnName="DatetimeKey" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BolusDeliveries">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusDelivery">
+              <MappingFragment StoreEntitySet="BolusDelivery">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BolusTrigger" ColumnName="BolusTrigger" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="AmountSuggested" ColumnName="AmountSuggested" />
+                <ScalarProperty Name="AmountDelivered" ColumnName="AmountDelivered" />
+                <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+                <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BolusDeliveryDatas">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusDeliveryData">
+              <MappingFragment StoreEntitySet="BolusDeliveryData">
+                <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DataId" ColumnName="DataId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BolusProgramTimeSlots">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusProgramTimeSlot">
+              <MappingFragment StoreEntitySet="BolusProgramTimeSlots">
+                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
+                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="BolusValue" ColumnName="BolusValue" />
+                <ScalarProperty Name="BolusSlotId" ColumnName="BolusSlotId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CGMReminders">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.CGMReminder">
+              <MappingFragment StoreEntitySet="CGMReminders">
+                <ScalarProperty Name="PumpKeyId" ColumnName="PumpKeyId" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ReminderId" ColumnName="ReminderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CGMSessions">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.CGMSession">
+              <MappingFragment StoreEntitySet="CGMSessions">
+                <ScalarProperty Name="CGMId" ColumnName="CGMId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TimeInSeconds" ColumnName="TimeInSeconds" />
+                <ScalarProperty Name="SessionDateTime" ColumnName="SessionDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorrectionFactors">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.CorrectionFactor">
+              <MappingFragment StoreEntitySet="CorrectionFactors">
+                <ScalarProperty Name="CorrectionFactorStop" ColumnName="CorrectionFactorStop" />
+                <ScalarProperty Name="CorrectionFactorStart" ColumnName="CorrectionFactorStart" />
+                <ScalarProperty Name="CorrectionFactorValue" ColumnName="CorrectionFactorValue" />
+                <ScalarProperty Name="FactorId" ColumnName="FactorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsulinCarbRatios">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsulinCarbRatio">
+              <MappingFragment StoreEntitySet="InsulinCarbRatio">
+                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="ICRatio" ColumnName="ICRatio" />
+                <ScalarProperty Name="RatioId" ColumnName="RatioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsulinCorrections">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsulinCorrection">
+              <MappingFragment StoreEntitySet="InsulinCorrections">
+                <ScalarProperty Name="InsulinCorrectionStop" ColumnName="InsulinCorrectionStop" />
+                <ScalarProperty Name="InsulinCorrectionStart" ColumnName="InsulinCorrectionStart" />
+                <ScalarProperty Name="InsulinCorrectionValue" ColumnName="InsulinCorrectionValue" />
+                <ScalarProperty Name="CorrectionId" ColumnName="CorrectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhysiologicalReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PhysiologicalReading">
+              <MappingFragment StoreEntitySet="PhysiologicalReadings">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="CaloriesConsumed" ColumnName="CaloriesConsumed" />
+                <ScalarProperty Name="CaloriesBurned" ColumnName="CaloriesBurned" />
+                <ScalarProperty Name="Nausea" ColumnName="Nausea" />
+                <ScalarProperty Name="Hunger" ColumnName="Hunger" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PumpPrograms">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpProgram">
+              <MappingFragment StoreEntitySet="PumpPrograms">
+                <ScalarProperty Name="PumpkeyId" ColumnName="PumpkeyId" />
+                <ScalarProperty Name="NumOfSegments" ColumnName="NumOfSegments" />
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="ProgramKey" ColumnName="ProgramKey" />
+                <ScalarProperty Name="ProgramName" ColumnName="ProgramName" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PumpSettings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpSetting">
+              <MappingFragment StoreEntitySet="PumpSettings">
+                <ScalarProperty Name="PumpKeyId" ColumnName="PumpKeyId" />
+                <ScalarProperty Name="SettingValueType" ColumnName="SettingValueType" />
+                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
+                <ScalarProperty Name="SettingName" ColumnName="SettingName" />
+                <ScalarProperty Name="SettingType" ColumnName="SettingType" />
+                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReadingErrors">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingError">
+              <MappingFragment StoreEntitySet="ReadingErrors">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
+                <ScalarProperty Name="ErrorName" ColumnName="ErrorName" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="ErrorId" ColumnName="ErrorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReadingEvents">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingEvent">
+              <MappingFragment StoreEntitySet="ReadingEvents">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+                <ScalarProperty Name="ResumeTime" ColumnName="ResumeTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EventTime" ColumnName="EventTime" />
+                <ScalarProperty Name="EventValue" ColumnName="EventValue" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="Eventid" ColumnName="Eventid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReadingHeaders">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingHeader">
+              <MappingFragment StoreEntitySet="ReadingHeaders">
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="LegacyDownloadKeyId" ColumnName="LegacyDownloadKeyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IsCGMData" ColumnName="IsCGMData" />
+                <ScalarProperty Name="ReviewedOn" ColumnName="ReviewedOn" />
+                <ScalarProperty Name="SiteSource" ColumnName="SiteSource" />
+                <ScalarProperty Name="Readings" ColumnName="Readings" />
+                <ScalarProperty Name="MeterDateTime" ColumnName="MeterDateTime" />
+                <ScalarProperty Name="ServerDateTime" ColumnName="ServerDateTime" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TensReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TensReading">
+              <MappingFragment StoreEntitySet="TensReadings">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="PulseWidth" ColumnName="PulseWidth" />
+                <ScalarProperty Name="Aplitude" ColumnName="Aplitude" />
+                <ScalarProperty Name="DurationCompleted" ColumnName="DurationCompleted" />
+                <ScalarProperty Name="DurationScheduled" ColumnName="DurationScheduled" />
+                <ScalarProperty Name="TherapyType" ColumnName="TherapyType" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="ReadingDate" ColumnName="ReadingDate" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TotalDailyInsulinDeliveries">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TotalDailyInsulinDelivery">
+              <MappingFragment StoreEntitySet="TotalDailyInsulinDeliveries">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="BolusDelivered" ColumnName="BolusDelivered" />
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="TempActivated" ColumnName="TempActivated" />
+                <ScalarProperty Name="Suspended" ColumnName="Suspended" />
+                <ScalarProperty Name="BasalDelivered" ColumnName="BasalDelivered" />
+                <ScalarProperty Name="TotalDelivered" ColumnName="TotalDelivered" />
+                <ScalarProperty Name="DeliveryId" ColumnName="DeliveryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NutritionReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.NutritionReading">
+              <MappingFragment StoreEntitySet="NutritionReadings">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
+                <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pumps">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.Pump">
+              <MappingFragment StoreEntitySet="Pumps">
+                <ScalarProperty Name="PumpKeyId" ColumnName="PumpKeyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ReplacementDate" ColumnName="ReplacementDate" />
+                <ScalarProperty Name="Cannula" ColumnName="Cannula" />
+                <ScalarProperty Name="ActiveProgramId" ColumnName="ActiveProgramId" />
+                <ScalarProperty Name="PumpInfusionSet" ColumnName="PumpInfusionSet" />
+                <ScalarProperty Name="PumpStartDate" ColumnName="PumpStartDate" />
+                <ScalarProperty Name="PumpName" ColumnName="PumpName" />
+                <ScalarProperty Name="PumpType" ColumnName="PumpType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

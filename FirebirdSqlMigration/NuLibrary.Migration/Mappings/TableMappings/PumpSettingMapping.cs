@@ -44,16 +44,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 {
                     //var PatientId = (String)row["PATIENTID"];
                     var patientPump = mu.FindPatientPump(userId);
-                    var ppId = patientPump.PumpId;
-                    var ips = mu.CreatePumpSetting(row, ppId).ToList();
-                    foreach (var item in ips)
+                    if (patientPump != null)
                     {
-                        TransactionManager.DatabaseContext.PumpSettings.Add(item);
+                        var ips = mu.CreatePumpSetting(row, patientPump.PumpKeyId).ToList();
+                        foreach (var item in ips)
+                        {
+                            TransactionManager.DatabaseContext.PumpSettings.Add(item);
+                        }
                     }
+                    
 
                     //***************************************Notees********************************//
                     // commented out this section because data will be taken directly from bolus reading in MeterReadingTable
-                    //***************************************End Notees********************************//
+                    //***************************************End Notes********************************//
                     //for (int i = 1; i < 9; i++)
                     //{
                     //    DateTime ptstart = (DateTime)row[$"TARGETBGSTART_{i}"];

@@ -17,7 +17,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int ReadingId { get; set; }
         public double Carbohydrates { get; set; }
         public System.DateTime ReadingDateTime { get; set; }
-        public long DownloadKeyId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

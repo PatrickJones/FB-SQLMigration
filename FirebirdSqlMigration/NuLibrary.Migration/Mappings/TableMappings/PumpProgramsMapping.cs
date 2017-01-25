@@ -43,25 +43,27 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 {
                     //var pId = (String)row["PATIENTID"];
                     var patientPump = mu.FindPatientPump(userId);
-                    var patientPumpId = patientPump.PumpId;
-
-                    var CreationDate = (DateTime)row["CREATEDATE"];
-                    var Source = (String)row["SOURCE"];
-                    var Valid = (Boolean)row["ACTIVEPROGRAM"];
-
-
-                    for (int i = 1; i < 8; i++)
+                    if (patientPump != null)
                     {
-                        PumpProgram p = new PumpProgram();
+                        var CreationDate = (DateTime)row["CREATEDATE"];
+                        var Source = (String)row["SOURCE"];
+                        var Valid = (Boolean)row["ACTIVEPROGRAM"];
 
-                        p.CreationDate = CreationDate;
-                        p.Source = Source;
-                        p.Valid = Valid;
-                        p.PumpId = patientPumpId;
 
-                        p.ProgramKey = (Int32)row[$"PROG{i}KEYID"];
+                        for (int i = 1; i < 8; i++)
+                        {
+                            PumpProgram p = new PumpProgram();
 
-                        TransactionManager.DatabaseContext.PumpPrograms.Add(p);
+                            p.CreationDate = CreationDate;
+                            p.Source = Source;
+                            p.Valid = Valid;
+                            p.PumpkeyId = patientPump.PumpKeyId;
+                            //p.PumpId = patientPumpId;
+
+                            p.ProgramKey = (Int32)row[$"PROG{i}KEYID"];
+
+                            TransactionManager.DatabaseContext.PumpPrograms.Add(p);
+                        }
                     }
 
                     //Example Output:

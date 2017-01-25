@@ -21,7 +21,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public bool TempActivated { get; set; }
         public bool Valid { get; set; }
         public double BolusDelivered { get; set; }
-        public long DownloadKeyId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

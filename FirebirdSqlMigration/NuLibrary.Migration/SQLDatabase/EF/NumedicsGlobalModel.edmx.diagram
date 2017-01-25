@@ -85,7 +85,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCarbRatio" Width="1.5" PointX="14.25" PointY="60.75" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCorrection" Width="1.5" PointX="14.25" PointY="52.625" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PhysiologicalReading" Width="1.5" PointX="12" PointY="67" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpProgram" Width="1.5" PointX="14.625" PointY="5.625" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpSetting" Width="1.5" PointX="14.625" PointY="1.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingError" Width="1.5" PointX="12" PointY="70.75" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEvent" Width="1.5" PointX="12" PointY="39.375" />
@@ -95,7 +94,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12" PointY="46.75" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" />
@@ -103,7 +101,6 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1" />
@@ -114,8 +111,11 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Pump" Width="1.5" PointX="12.375" PointY="6.625" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CGMReminders_Pumps1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CGMSessions_Pumps" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpProgram" Width="1.5" PointX="14.625" PointY="5.875" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

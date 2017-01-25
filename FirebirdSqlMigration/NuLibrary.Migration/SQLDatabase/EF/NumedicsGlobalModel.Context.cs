@@ -77,7 +77,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
         public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
         public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
-        public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
         public virtual DbSet<PumpSetting> PumpSettings { get; set; }
         public virtual DbSet<ReadingError> ReadingErrors { get; set; }
         public virtual DbSet<ReadingEvent> ReadingEvents { get; set; }
@@ -86,5 +85,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<TotalDailyInsulinDelivery> TotalDailyInsulinDeliveries { get; set; }
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<Pump> Pumps { get; set; }
+        public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
     }
 }

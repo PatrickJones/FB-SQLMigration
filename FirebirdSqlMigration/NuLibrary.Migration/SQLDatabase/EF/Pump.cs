@@ -18,8 +18,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public Pump()
         {
             this.CGMReminders = new HashSet<CGMReminder>();
-            this.PumpPrograms = new HashSet<PumpProgram>();
             this.PumpSettings = new HashSet<PumpSetting>();
+            this.PumpPrograms = new HashSet<PumpProgram>();
         }
     
         public string PumpType { get; set; }
@@ -37,8 +37,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual ICollection<CGMReminder> CGMReminders { get; set; }
         public virtual CGMSession CGMSession { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PumpProgram> PumpPrograms { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PumpSetting> PumpSettings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PumpProgram> PumpPrograms { get; set; }
     }
 }

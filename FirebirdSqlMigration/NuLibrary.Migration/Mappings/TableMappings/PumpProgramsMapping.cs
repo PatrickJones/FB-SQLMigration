@@ -57,7 +57,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             p.CreationDate = CreationDate;
                             p.Source = Source;
                             p.Valid = Valid;
-                            p.PumpkeyId = patientPump.PumpKeyId;
+                            p.PumpKeyId = patientPump.PumpKeyId;
                             //p.PumpId = patientPumpId;
 
                             p.ProgramKey = (Int32)row[$"PROG{i}KEYID"];

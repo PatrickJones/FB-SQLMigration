@@ -319,7 +319,7 @@
     <Compile Include="FBDatabaseTest\FBDataAccessTest.cs" />
     <Compile Include="FBDatabaseTest\TableAgentCollectionTest.cs" />
     <Compile Include="FBDatabaseTest\TableAgentTest.cs" />
-    <Compile Include="Mappings\InMemoryMappings\MemoryPatientInfoTests.cs" />
+    <Compile Include="Mappings\InMemoryMappings\MemoryMappingsTests.cs" />
     <Compile Include="MigrationVariablesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlDatabaseTest\AspnetDbHelpersTest.cs" />

@@ -28,7 +28,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var dataSet = MemoryMappings.GetAllUserIdsFromPatientInfo(); // aHelper.GetAllPatientUsers();
+                var dataSet = MemoryMappings.GetAllUserIdsFromPatientInfo();
                 RecordCount = dataSet.Count;
 
                 foreach (var g in dataSet)
@@ -70,24 +70,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
                 {
                     TransactionManager.DatabaseContext.Subscriptions.Add(c);
-
-                    //if (c.Payment != null)
-                    //{
-                    //    TransactionManager.DatabaseContext.Payments.Add(c.Payment);
-
-                    //    if (c.Payment.Check != null)
-                    //    {
-                    //        TransactionManager.DatabaseContext.Checks.Add(c.Payment.Check);
-                    //    }
-
-                    //    if (c.Payment.PayPal != null)
-                    //    {
-                    //        TransactionManager.DatabaseContext.PayPals.Add(c.Payment.PayPal);
-                    //    }
-                    //}
                 }
             });
-            //TransactionManager.DatabaseContext.Subscriptions.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

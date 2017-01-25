@@ -82,10 +82,22 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
                 }
 
                 string queryStr = $"Select * from {TableName}";
+                var yearBack = DateTime.Now.Subtract(new TimeSpan(365, 0, 0, 0));
+
+                if (TableName == "METERREADING")
+                {
+                    queryStr = $"Select * from {TableName} where READINGDATETIME > {yearBack}";
+                }
+
+                if(TableName == "METERREADINGHEADER")
+                {
+                    queryStr = $"Select * from {TableName} where METERDATETIME > {yearBack}";
+                }
                 var adt = new FbDataAdapter(queryStr, cn);
 
                 adt.Fill(DataSet, TableName);
             }
+
             Console.WriteLine(RowCount);
         }
         /// <summary>

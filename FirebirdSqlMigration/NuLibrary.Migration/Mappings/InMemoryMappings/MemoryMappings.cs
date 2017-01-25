@@ -13,6 +13,10 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
 
         private static ICollection<Institution> InstitutionCollection = new List<Institution>();
 
+        // key = firebird downloadkeyid
+        // value = GUID for sql readingkeyid
+        private static Dictionary<string, Guid> ReadingHeaderKeyIds = new Dictionary<string, Guid>();
+
         // key = firebird keyid for company
         // value = company name
         private static Dictionary<string, string> Companies = new Dictionary<string, string>();
@@ -26,6 +30,26 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         // item2 = patient id
         // item3 = user id
         private static List<Tuple<int, string, Guid>> patientInfo = new List<Tuple<int, string, Guid>>();
+
+        public static void AddReadingHeaderkeyId(string downLoadKeyId, Guid readingKeyId)
+        {
+            if (!ReadingHeaderKeyIds.ContainsKey(downLoadKeyId))
+            {
+                ReadingHeaderKeyIds.Add(downLoadKeyId, readingKeyId);
+            }
+        }
+
+        public static Guid GetAllReadingHeaderKeyId(string downloadKeyId)
+        {
+            if (ReadingHeaderKeyIds.ContainsKey(downloadKeyId))
+            {
+                return ReadingHeaderKeyIds[downloadKeyId];
+            }
+            else
+            {
+                return Guid.Empty;
+            }
+        }
 
         public static void AddDiabetesManagementData(DiabetesManagementData dmData)
         {

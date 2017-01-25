@@ -76,8 +76,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                         var mrh = new ReadingHeader
                         {
+                            ReadingKeyId = Guid.NewGuid(),
                             UserId = userId,
-                            //DownloadKeyId = (row["DOWNLOADKEYID"] is DBNull) ? 0 : (Int32)row["DOWNLOADKEYID"],
+                            LegacyDownloadKeyId = (row["DOWNLOADKEYID"] is DBNull) ? String.Empty : row["DOWNLOADKEYID"].ToString(),
                             ServerDateTime = (row["SERVERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["SERVERDATETIME"].ToString()),
                             MeterDateTime = (row["METERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["METERDATETIME"].ToString()),
                             Readings = (row["READINGS"] is DBNull) ? 0 : (Int32)row["READINGS"],
@@ -85,6 +86,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             ReviewedOn = (row["REVIEWEDON"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["REVIEWEDON"].ToString())
                         };
 
+                        MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId, mrh.ReadingKeyId);
                         dev.ReadingHeaders.Add(mrh);
 
                         if (CanAddToContext(dev.UserId, dev.SerialNumber))

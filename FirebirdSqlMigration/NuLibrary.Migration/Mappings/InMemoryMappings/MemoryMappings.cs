@@ -39,7 +39,7 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
             }
         }
 
-        public static Guid GetAllReadingHeaderKeyId(string downloadKeyId)
+        public static Guid GetReadingHeaderKeyId(string downloadKeyId)
         {
             if (ReadingHeaderKeyIds.ContainsKey(downloadKeyId))
             {

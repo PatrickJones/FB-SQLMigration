@@ -38,7 +38,12 @@ namespace NuLibrary.Migration.SqlValidations
                 "Deactivate",
                 "Suspend",
                 "Resume",
-                "TimeChange"
+                "TimeChange",
+                "Download",
+                "AlarmHistory",
+                "Occlusion",
+                "PumpHazard",
+                "PumpAdvise"
             };
 
             Array.ForEach(typeArr, a => {

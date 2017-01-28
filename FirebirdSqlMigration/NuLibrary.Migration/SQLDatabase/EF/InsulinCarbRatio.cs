@@ -16,8 +16,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     {
         public int RatioId { get; set; }
         public int ICRatio { get; set; }
-        public System.TimeSpan StartTime { get; set; }
-        public System.TimeSpan StopTime { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual BolusDelivery BolusDelivery { get; set; }
     }

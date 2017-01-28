@@ -12,15 +12,12 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class CGMReminder
+    public partial class BolusCarb
     {
-        public int ReminderId { get; set; }
-        public string Type { get; set; }
-        public bool Enabled { get; set; }
-        public string Time { get; set; }
-        public System.Guid PumpKeyId { get; set; }
+        public int CarbId { get; set; }
+        public int CarbValue { get; set; }
         public System.DateTime Date { get; set; }
     
-        public virtual Pump Pump { get; set; }
+        public virtual BolusDelivery BolusDelivery { get; set; }
     }
 }

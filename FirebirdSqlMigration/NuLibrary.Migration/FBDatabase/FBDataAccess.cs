@@ -97,7 +97,7 @@ namespace NuLibrary.Migration.FBDatabase
         /// <summary>
         /// Gets the data.
         /// </summary>
-        public void GetData()
+        public DataTable GetData()
         {
             using (FbConnection cn = (FbConnection)GetConnnection())
             {
@@ -109,19 +109,23 @@ namespace NuLibrary.Migration.FBDatabase
                 DbCommand cmd = dp.CreateCommand();
                 Console.WriteLine("Creating Command object");
                 cmd.Connection = cn;
-                cmd.CommandText = "Select * from Patients";
+                cmd.CommandText = "SELECT FIRST 1 a.METERSENT FROM METERREADING a Where a.READINGTYPE = 'Pump Delivery' and a.EVENTSUBTYPE_1 = 'BOLUS' order BY a.READINGDATETIME desc";
 
                 using (DbDataReader dr = cmd.ExecuteReader())
                 {
-                    //Console.WriteLine("Creating data reader object");
-                    while (dr.Read())
-                    {
-                        //Console.WriteLine("Name: {0}", dr["FIRSTNAME"]);
-                    }
+                    Console.WriteLine("Creating data reader object");
+                    //while (dr.Read())
+                    //{
+                    //    Console.WriteLine("READINGNOTE: {0}", dr["READINGNOTE"]);
+                    //}
+
+                    DataTable dt = new DataTable();
+                    dt.Load(dr);
+                    return dt;
                 }
             }
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
         /// <summary>
         /// Gets the name of the tables within this database, excluding system tables ($).

@@ -74,16 +74,11 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDelivery" Width="1.5" PointX="12" PointY="43.125" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDeliveryData" Width="1.5" PointX="14.25" PointY="43.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalProgramTimeSlot" Width="1.5" PointX="16.875" PointY="4.625" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BGTarget" Width="1.5" PointX="14.25" PointY="49.625" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BloodGlucoseReading" Width="1.5" PointX="12" PointY="63.5" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDelivery" Width="1.5" PointX="12" PointY="54.125" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDeliveryData" Width="1.5" PointX="14.25" PointY="55.375" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" Width="1.5" PointX="16.875" PointY="7.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMReminder" Width="1.5" PointX="14.625" PointY="10.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMSession" Width="1.5" PointX="14.625" PointY="13.375" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.CorrectionFactor" Width="1.5" PointX="14.25" PointY="58.125" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCarbRatio" Width="1.5" PointX="14.25" PointY="60.75" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCorrection" Width="1.5" PointX="14.25" PointY="52.625" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PhysiologicalReading" Width="1.5" PointX="12" PointY="67" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpSetting" Width="1.5" PointX="14.625" PointY="1.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingError" Width="1.5" PointX="12" PointY="70.75" />
@@ -94,13 +89,7 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12" PointY="46.75" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1" />
@@ -116,6 +105,21 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DeviceSetting" Width="1.5" PointX="12" PointY="59.125" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_DeviceSettings_ReadingHeaders" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusCarb" Width="1.5" PointX="14.25" PointY="64.375" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BGTarget" Width="1.5" PointX="14.25" PointY="59" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.CorrectionFactor" Width="1.5" PointX="14.25" PointY="51.5" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCarbRatio" Width="1.5" PointX="14.25" PointY="61.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCorrection" Width="1.5" PointX="14.25" PointY="67.25" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDelivery" Width="1.5" PointX="12" PointY="53.125" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusCarbs_BolusDelivery" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -82,17 +82,17 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
                 }
 
                 string queryStr = $"Select * from {TableName}";
-                var yearBack = DateTime.Now.Subtract(new TimeSpan(365, 0, 0, 0));
+                var yearBack = DateTime.Now.Subtract(new TimeSpan(90, 0, 0, 0));
 
                 if (TableName == "METERREADING")
                 {
-                    queryStr = $"Select * from {TableName} where READINGDATETIME > {yearBack}";
+                    queryStr = $"Select * from {TableName} where READINGDATETIME > '{yearBack.Month}-{yearBack.Day}-{yearBack.Year}'";
                 }
 
-                if(TableName == "METERREADINGHEADER")
-                {
-                    queryStr = $"Select * from {TableName} where METERDATETIME > {yearBack}";
-                }
+                //if(TableName == "METERREADINGHEADER")
+                //{
+                //    queryStr = $"Select * from {TableName} where METERDATETIME > '{yearBack.Month}-{yearBack.Day}-{yearBack.Year}'";
+                //}
                 var adt = new FbDataAdapter(queryStr, cn);
 
                 adt.Fill(DataSet, TableName);

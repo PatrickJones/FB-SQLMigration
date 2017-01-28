@@ -17,8 +17,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int TargetId { get; set; }
         public int TargetBG { get; set; }
         public int TargetBGCorrect { get; set; }
-        public System.TimeSpan TargetBGStart { get; set; }
-        public System.TimeSpan TargetBGStop { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual BolusDelivery BolusDelivery { get; set; }
     }

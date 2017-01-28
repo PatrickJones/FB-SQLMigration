@@ -18,6 +18,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int TimeInSeconds { get; set; }
         public bool IsActive { get; set; }
         public System.Guid CGMId { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual Pump Pump { get; set; }
     }

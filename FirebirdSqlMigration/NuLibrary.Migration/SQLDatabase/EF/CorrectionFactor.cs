@@ -16,8 +16,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     {
         public int FactorId { get; set; }
         public int CorrectionFactorValue { get; set; }
-        public System.TimeSpan CorrectionFactorStart { get; set; }
-        public System.TimeSpan CorrectionFactorStop { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual BolusDelivery BolusDelivery { get; set; }
     }

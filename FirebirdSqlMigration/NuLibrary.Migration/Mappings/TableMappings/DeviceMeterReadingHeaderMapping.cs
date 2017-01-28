@@ -86,13 +86,13 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             ReviewedOn = (row["REVIEWEDON"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["REVIEWEDON"].ToString())
                         };
 
-                        MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId, mrh.ReadingKeyId);
                         dev.ReadingHeaders.Add(mrh);
 
                         if (CanAddToContext(dev.UserId, dev.SerialNumber))
                         {
                             if (!CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
                             {
+                                MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId, mrh.ReadingKeyId);
                                 CompletedMappings.Add(dev);
                             }
                         }

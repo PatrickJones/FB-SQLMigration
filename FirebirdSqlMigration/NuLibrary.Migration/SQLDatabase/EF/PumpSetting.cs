@@ -20,6 +20,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string SettingValue { get; set; }
         public string SettingValueType { get; set; }
         public System.Guid PumpKeyId { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual Pump Pump { get; set; }
     }

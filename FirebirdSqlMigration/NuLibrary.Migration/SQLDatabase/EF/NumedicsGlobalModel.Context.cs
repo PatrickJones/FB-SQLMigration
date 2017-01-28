@@ -66,16 +66,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<BasalDelivery> BasalDeliveries { get; set; }
         public virtual DbSet<BasalDeliveryData> BasalDeliveryDatas { get; set; }
         public virtual DbSet<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }
-        public virtual DbSet<BGTarget> BGTargets { get; set; }
         public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
-        public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
         public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
         public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
         public virtual DbSet<CGMReminder> CGMReminders { get; set; }
         public virtual DbSet<CGMSession> CGMSessions { get; set; }
-        public virtual DbSet<CorrectionFactor> CorrectionFactors { get; set; }
-        public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
-        public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
         public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
         public virtual DbSet<PumpSetting> PumpSettings { get; set; }
         public virtual DbSet<ReadingError> ReadingErrors { get; set; }
@@ -86,5 +81,12 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<Pump> Pumps { get; set; }
         public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
+        public virtual DbSet<DeviceSetting> DeviceSettings { get; set; }
+        public virtual DbSet<BolusCarb> BolusCarbs { get; set; }
+        public virtual DbSet<BGTarget> BGTargets { get; set; }
+        public virtual DbSet<CorrectionFactor> CorrectionFactors { get; set; }
+        public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
+        public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
+        public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
     }
 }

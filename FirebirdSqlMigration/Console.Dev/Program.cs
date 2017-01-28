@@ -37,15 +37,50 @@ namespace Console.Dev
             //var t = TableAgentCollection.TableAgents;
             //System.Console.ReadLine();
 
-
+            //TestMeterReadings();
             //TestTransaction();
             //TestValidation();
             //CreateEnums();
             //TestPatientTransaction();
             //TestInstitutionMapping();
             //TestClinicianMapping();
-            TestDmdataMapping();
+            //TestDmdataMapping();
+
+            double ans = (Double)9 / (Double)4;
+            System.Console.WriteLine(ans);
+            System.Console.ReadLine();
         }
+
+        private static void TestMeterReadings()
+        {
+            var fb = new FBDataAccess();
+            var table = fb.GetData();
+
+            var first = table.Rows[0];
+            var split = first["METERSENT"].ToString().Split('\t').ToList();
+
+            int total = (split.FindIndex(a => a == "Total")) + 1;
+            int carbs = (split.FindIndex(a => a == "Carbs")) + 1;
+            int icRatio = (split.FindIndex(a => a == "IC Ratio")) + 1;
+            int targetBg = (split.FindIndex(a => a == "Target BG")) + 1;
+            int actualBg = (split.FindIndex(a => a == "BG")) + 1;
+            int correctAbove = (split.FindIndex(a => a == "Correction Above")) + 1;
+            int correct = (split.FindIndex(a => a == "Correct")) + 1;
+            int volume = (split.FindIndex(a => a == "Volume")) + 1;
+            int imDuration = (split.FindIndex(a => a == "Immediate Duration")) + 1;
+            int exDuration = (split.FindIndex(a => a == "Extended Duration")) + 1;
+            int correction = (split.FindIndex(a => a == "Correction")) + 1;
+            int correctionIOB = (split.FindIndex(a => a == "Correction Insulin on Board")) + 1;
+            int mealIOB = (split.FindIndex(a => a == "Meal Insulin on Board")) + 1;
+            int revCorrection = (split.FindIndex(a => a == "Reverse Correction")) + 1;
+            int progCorrection = (split.FindIndex(a => a == "Programmed Correction")) + 1;
+            int progMeal = (split.FindIndex(a => a == "Programmed Meal")) + 1;
+
+            System.Console.WriteLine($"----------------------------------------------------");
+            System.Console.WriteLine(split[total]);
+            System.Console.ReadLine();
+        }
+
 
         private static void TestDmdataMapping()
         {

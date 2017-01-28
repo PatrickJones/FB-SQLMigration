@@ -16,8 +16,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     {
         public int CorrectionId { get; set; }
         public int InsulinCorrectionValue { get; set; }
-        public System.TimeSpan InsulinCorrectionStart { get; set; }
-        public System.TimeSpan InsulinCorrectionStop { get; set; }
+        public System.DateTime Date { get; set; }
+        public int InsulinCorrectionAbove { get; set; }
     
         public virtual BolusDelivery BolusDelivery { get; set; }
     }

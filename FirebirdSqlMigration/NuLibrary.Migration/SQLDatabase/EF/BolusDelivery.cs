@@ -22,8 +22,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
         public int BolusDeliveryId { get; set; }
         public System.DateTime StartDateTime { get; set; }
-        public int AmountDelivered { get; set; }
-        public int AmountSuggested { get; set; }
+        public double AmountDelivered { get; set; }
+        public double AmountSuggested { get; set; }
         public int Duration { get; set; }
         public string BolusTrigger { get; set; }
         public string Status { get; set; }
@@ -32,6 +32,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.Guid UserId { get; set; }
     
         public virtual BGTarget BGTarget { get; set; }
+        public virtual BolusCarb BolusCarb { get; set; }
         public virtual ReadingHeader ReadingHeader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BolusDeliveryData> BolusDeliveryDatas { get; set; }

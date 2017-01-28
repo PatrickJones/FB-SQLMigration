@@ -239,6 +239,22 @@ namespace NuLibrary.Migration.Mappings
             }
         }
 
+        public int ParseInt(string integer)
+        {
+            int result;
+            bool tp = Int32.TryParse(integer, out result);
+
+            return (tp) ? result : 0;
+        }
+
+        public double ParseDouble(string integer)
+        {
+            double result;
+            bool tp = Double.TryParse(integer, out result);
+
+            return (tp) ? result : 0.0;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

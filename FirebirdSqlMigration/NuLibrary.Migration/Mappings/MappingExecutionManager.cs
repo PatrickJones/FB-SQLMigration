@@ -45,6 +45,7 @@ namespace NuLibrary.Migration.Mappings
             mapInstances.Add(8, new KeyValuePair<Type, IContextHandler>(typeof(TimeSlotsMapping), new TimeSlotsMapping()));
             mapInstances.Add(9, new KeyValuePair<Type, IContextHandler>(typeof(DeviceMeterReadingHeaderMapping), new DeviceMeterReadingHeaderMapping()));
             mapInstances.Add(10, new KeyValuePair<Type, IContextHandler>(typeof(SubscriptionsMapping), new SubscriptionsMapping()));
+            mapInstances.Add(11, new KeyValuePair<Type, IContextHandler>(typeof(MeterReadingMapping), new MeterReadingMapping()));
         }
 
         /// <summary>
@@ -93,9 +94,6 @@ namespace NuLibrary.Migration.Mappings
                 })
             };
 
-
-            
-
             Task.WhenAll(taskSetA).ContinueWith(doneA => {
                 var taskSetB = new List<Task> {
                     Task.Run(() =>
@@ -140,13 +138,23 @@ namespace NuLibrary.Migration.Mappings
                     };
 
                     Task.WhenAll(taskSetC).ContinueWith(doneC => {
-                        UpdateContext();
+                        var taskSetD = new List<Task> {
+                            Task.Run(() =>
+                            {
+                                var instance = (MeterReadingMapping)mapInstances[11].Value;
+                                instance.CreateDeviceMeterReadingMapping();
+                            })
+                        };
+
+                        Task.WhenAll(taskSetD).ContinueWith(doneD => {
+                            UpdateContext();
+                        });
                     });
                 });
             });
         }
 
-        /// <summary>
+        /// <summary>C:\Users\pjones\Source\Repos\FirebirdSqlMigration\FirebirdSqlMigration\Console.Dev\Program.cs
         /// Updates the database context with in-memory entities and saves the changes.
         /// </summary>
         public void UpdateContext()

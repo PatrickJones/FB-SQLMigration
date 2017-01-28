@@ -12,15 +12,15 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class CGMReminder
+    public partial class DeviceSetting
     {
-        public int ReminderId { get; set; }
-        public string Type { get; set; }
-        public bool Enabled { get; set; }
-        public string Time { get; set; }
-        public System.Guid PumpKeyId { get; set; }
-        public System.DateTime Date { get; set; }
+        public int SettingId { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+        public string Description { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
     
-        public virtual Pump Pump { get; set; }
+        public virtual ReadingHeader ReadingHeader { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
 
         public static void AddReadingHeaderkeyId(string downLoadKeyId, Guid readingKeyId)
         {
-            if (!ReadingHeaderKeyIds.ContainsKey(downLoadKeyId))
+            if (!String.IsNullOrEmpty(downLoadKeyId) && !ReadingHeaderKeyIds.ContainsKey(downLoadKeyId))
             {
                 ReadingHeaderKeyIds.Add(downLoadKeyId, readingKeyId);
             }

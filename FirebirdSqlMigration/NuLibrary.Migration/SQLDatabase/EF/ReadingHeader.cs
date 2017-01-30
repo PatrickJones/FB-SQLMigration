@@ -61,5 +61,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual ICollection<DeviceSetting> DeviceSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BolusDelivery> BolusDeliveries { get; set; }
+        public virtual Pump Pump { get; set; }
     }
 }

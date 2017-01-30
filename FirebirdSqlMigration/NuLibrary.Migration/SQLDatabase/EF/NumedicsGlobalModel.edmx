@@ -1306,6 +1306,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Pumps_ReadingHeaders">
+          <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
+          <End Role="Pumps" Type="Self.Pumps" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeaders">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="Pumps">
+              <PropertyRef Name="PumpKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PumpSettings_Pumps1">
           <End Role="Pumps" Type="Self.Pumps" Multiplicity="1" />
           <End Role="PumpSettings" Type="Self.PumpSettings" Multiplicity="*" />
@@ -1476,6 +1488,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReadings" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistories" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppLoginHistories].[UserId] AS [UserId], 
@@ -1489,19 +1502,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
     [EndUserLicenseAgreements].[AgreementDate] AS [AgreementDate], 
     [EndUserLicenseAgreements].[ApplicationId] AS [ApplicationId]
     FROM [dbo].[EndUserLicenseAgreements] AS [EndUserLicenseAgreements]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReadings" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [NutritionReadings].[ReadingId] AS [ReadingId], 
-    [NutritionReadings].[Carbohydrates] AS [Carbohydrates], 
-    [NutritionReadings].[Calories] AS [Calories], 
-    [NutritionReadings].[Protien] AS [Protien], 
-    [NutritionReadings].[Fat] AS [Fat], 
-    [NutritionReadings].[ReadingDateTime] AS [ReadingDateTime], 
-    [NutritionReadings].[ReadingKeyId] AS [ReadingKeyId], 
-    [NutritionReadings].[UserId] AS [UserId], 
-    [NutritionReadings].[Date] AS [Date]
-    FROM [dbo].[NutritionReadings] AS [NutritionReadings]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistories" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1686,6 +1686,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_PumpProgramTimeSlots_PumpPrograms" Association="Self.FK_PumpProgramTimeSlots_PumpPrograms">
             <End Role="PumpPrograms" EntitySet="PumpPrograms" />
             <End Role="BasalProgramTimeSlots" EntitySet="BasalProgramTimeSlots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pumps_ReadingHeaders" Association="Self.FK_Pumps_ReadingHeaders">
+            <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
+            <End Role="Pumps" EntitySet="Pumps" />
           </AssociationSet>
           <AssociationSet Name="FK_PumpSettings_Pumps1" Association="Self.FK_PumpSettings_Pumps1">
             <End Role="Pumps" EntitySet="Pumps" />
@@ -2699,6 +2703,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
             <End Role="InsulinCorrection" EntitySet="InsulinCorrections" />
           </AssociationSet>
+          <AssociationSet Name="FK_Pumps_ReadingHeaders" Association="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="Pump" EntitySet="Pumps" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
           <Key>
@@ -2989,6 +2997,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="TotalDailyInsulinDeliveries" Relationship="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TotalDailyInsulinDelivery" />
           <NavigationProperty Name="DeviceSettings" Relationship="NuMedicsGlobalModel.FK_DeviceSettings_ReadingHeaders" FromRole="ReadingHeader" ToRole="DeviceSetting" />
           <NavigationProperty Name="BolusDeliveries" Relationship="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" FromRole="ReadingHeader" ToRole="BolusDelivery" />
+          <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" FromRole="ReadingHeader" ToRole="Pump" />
         </EntityType>
         <EntityType Name="TensReading">
           <Key>
@@ -3186,6 +3195,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="CGMSession" Relationship="NuMedicsGlobalModel.FK_CGMSessions_Pumps" FromRole="Pump" ToRole="CGMSession" />
           <NavigationProperty Name="PumpSettings" Relationship="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" FromRole="Pump" ToRole="PumpSetting" />
           <NavigationProperty Name="PumpPrograms" Relationship="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" FromRole="Pump" ToRole="PumpProgram" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" FromRole="Pump" ToRole="ReadingHeader" />
         </EntityType>
         <Association Name="FK_CGMReminders_Pumps1">
           <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
@@ -3455,6 +3465,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Principal>
             <Dependent Role="InsulinCorrection">
               <PropertyRef Name="CorrectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pumps_ReadingHeaders">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="Pump">
+              <PropertyRef Name="PumpKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

@@ -120,6 +120,7 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

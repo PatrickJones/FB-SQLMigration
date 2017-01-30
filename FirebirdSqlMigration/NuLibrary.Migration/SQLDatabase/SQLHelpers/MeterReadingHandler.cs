@@ -35,7 +35,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private void Extract()
         {
-            Parallel.ForEach(DataRows.Cast<DataRow>(), row => {
+            Parallel.ForEach(DataRows.Cast<DataRow>(), row =>
+            {
                 string readingType = (row["READINGTYPE"] is DBNull) ? String.Empty : row["READINGTYPE"].ToString();
 
                 switch (readingType.ToLower())
@@ -60,6 +61,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                         break;
                 }
             });
+
         }
 
         private void ExtractSettings(DataRow row)
@@ -98,11 +100,14 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
             if (!keyId.Equals(Guid.Empty))
             {
+                var date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+
                 var nt = new NutritionReading
                 {
-                    ReadingDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
+                    ReadingDateTime = date,
                     ReadingKeyId = keyId,
-                    UserId = userId
+                    UserId = userId,
+                    Date = date
                 };
 
                 bool canAdd = true;
@@ -415,7 +420,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 bd.ReadingKeyId = keyId;
                 bd.UserId = userId;
                 bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
-                bd.AmountDelivered = mu.ParseInt(bolusData["Total"]);
+                bd.AmountDelivered = mu.ParseDouble(bolusData["Total"]);
                 bd.AmountSuggested = (dCarbs == 0.0) ? 0.0 : (dCarbs / dIC);
                 bd.Duration = mu.ParseInt(bolusData["Extended Duration"]);
                 bd.Type = "BolusDeliveryData";

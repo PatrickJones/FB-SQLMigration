@@ -587,10 +587,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <PropertyRef Name="SettingId" />
           </Key>
           <Property Name="SettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SettingType" Type="int" Nullable="false" />
           <Property Name="SettingName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="SettingValue" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="SettingValueType" Type="nvarchar" MaxLength="150" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
           <Property Name="PumpKeyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
@@ -2579,7 +2578,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="CGMReminders" EntityType="NuMedicsGlobalModel.CGMReminder" />
           <EntitySet Name="CGMSessions" EntityType="NuMedicsGlobalModel.CGMSession" />
           <EntitySet Name="PhysiologicalReadings" EntityType="NuMedicsGlobalModel.PhysiologicalReading" />
-          <EntitySet Name="PumpSettings" EntityType="NuMedicsGlobalModel.PumpSetting" />
           <EntitySet Name="ReadingErrors" EntityType="NuMedicsGlobalModel.ReadingError" />
           <EntitySet Name="ReadingEvents" EntityType="NuMedicsGlobalModel.ReadingEvent" />
           <EntitySet Name="ReadingHeaders" EntityType="NuMedicsGlobalModel.ReadingHeader" />
@@ -2625,10 +2623,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_CGMSessions_Pumps" Association="NuMedicsGlobalModel.FK_CGMSessions_Pumps">
             <End Role="Pump" EntitySet="Pumps" />
             <End Role="CGMSession" EntitySet="CGMSessions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PumpSettings_Pumps1" Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1">
-            <End Role="Pump" EntitySet="Pumps" />
-            <End Role="PumpSetting" EntitySet="PumpSettings" />
           </AssociationSet>
           <EntitySet Name="PumpPrograms" EntityType="NuMedicsGlobalModel.PumpProgram" />
           <AssociationSet Name="FK_PumpProgramTimeSlots_PumpPrograms" Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms">
@@ -2695,6 +2689,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="NutritionReading" EntitySet="NutritionReadings" />
+          </AssociationSet>
+          <EntitySet Name="PumpSettings" EntityType="NuMedicsGlobalModel.PumpSetting" />
+          <AssociationSet Name="FK_PumpSettings_Pumps1" Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1">
+            <End Role="Pump" EntitySet="Pumps" />
+            <End Role="PumpSetting" EntitySet="PumpSettings" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
@@ -2906,19 +2905,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="PhysiologicalReading" ToRole="ReadingHeader" />
         </EntityType>
-        <EntityType Name="PumpSetting">
-          <Key>
-            <PropertyRef Name="SettingId" />
-          </Key>
-          <Property Name="SettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SettingType" Type="Int32" Nullable="false" />
-          <Property Name="SettingName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="SettingValue" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="SettingValueType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="PumpKeyId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" FromRole="PumpSetting" ToRole="Pump" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <EntityType Name="ReadingError">
           <Key>
             <PropertyRef Name="ErrorId" />
@@ -3121,9 +3107,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="PumpKeyId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="CGMReminders" Relationship="NuMedicsGlobalModel.FK_CGMReminders_Pumps1" FromRole="Pump" ToRole="CGMReminder" />
           <NavigationProperty Name="CGMSession" Relationship="NuMedicsGlobalModel.FK_CGMSessions_Pumps" FromRole="Pump" ToRole="CGMSession" />
-          <NavigationProperty Name="PumpSettings" Relationship="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" FromRole="Pump" ToRole="PumpSetting" />
           <NavigationProperty Name="PumpPrograms" Relationship="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" FromRole="Pump" ToRole="PumpProgram" />
           <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" FromRole="Pump" ToRole="ReadingHeader" />
+          <NavigationProperty Name="PumpSettings" Relationship="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" FromRole="Pump" ToRole="PumpSetting" />
         </EntityType>
         <Association Name="FK_CGMReminders_Pumps1">
           <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
@@ -3146,18 +3132,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Principal>
             <Dependent Role="CGMSession">
               <PropertyRef Name="CGMId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PumpSettings_Pumps1">
-          <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
-          <End Type="NuMedicsGlobalModel.PumpSetting" Role="PumpSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Pump">
-              <PropertyRef Name="PumpKeyId" />
-            </Principal>
-            <Dependent Role="PumpSetting">
-              <PropertyRef Name="PumpKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3457,6 +3431,30 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Principal>
             <Dependent Role="NutritionReading">
               <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PumpSetting">
+          <Key>
+            <PropertyRef Name="SettingId" />
+          </Key>
+          <Property Name="SettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SettingName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SettingValue" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PumpKeyId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" FromRole="PumpSetting" ToRole="Pump" />
+        </EntityType>
+        <Association Name="FK_PumpSettings_Pumps1">
+          <End Type="NuMedicsGlobalModel.Pump" Role="Pump" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.PumpSetting" Role="PumpSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pump">
+              <PropertyRef Name="PumpKeyId" />
+            </Principal>
+            <Dependent Role="PumpSetting">
+              <PropertyRef Name="PumpKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4029,19 +4027,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PumpSettings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpSetting">
-              <MappingFragment StoreEntitySet="PumpSettings">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="PumpKeyId" ColumnName="PumpKeyId" />
-                <ScalarProperty Name="SettingValueType" ColumnName="SettingValueType" />
-                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
-                <ScalarProperty Name="SettingName" ColumnName="SettingName" />
-                <ScalarProperty Name="SettingType" ColumnName="SettingType" />
-                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ReadingErrors">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingError">
               <MappingFragment StoreEntitySet="ReadingErrors">
@@ -4249,6 +4234,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="Calories" ColumnName="Calories" />
                 <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
                 <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PumpSettings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpSetting">
+              <MappingFragment StoreEntitySet="PumpSettings">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="PumpKeyId" ColumnName="PumpKeyId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
+                <ScalarProperty Name="SettingName" ColumnName="SettingName" />
+                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

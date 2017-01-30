@@ -79,7 +79,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMReminder" Width="1.5" PointX="14.625" PointY="10.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMSession" Width="1.5" PointX="14.625" PointY="13.375" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PhysiologicalReading" Width="1.5" PointX="12" PointY="67" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpSetting" Width="1.5" PointX="14.625" PointY="1.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingError" Width="1.5" PointX="12" PointY="70.75" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEvent" Width="1.5" PointX="12" PointY="39.375" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingHeader" Width="1.5" PointX="9.75" PointY="53.75" />
@@ -96,7 +95,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Pump" Width="1.5" PointX="12.375" PointY="6.625" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CGMReminders_Pumps1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CGMSessions_Pumps" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpProgram" Width="1.5" PointX="14.625" PointY="5.875" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" />
@@ -121,6 +119,8 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12" PointY="62.5" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpSetting" Width="1.5" PointX="14.625" PointY="2.375" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -529,7 +529,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 var bg = new BloodGlucoseReading
                 {
                     Active = true,
-                    DatetimeKey = (row["DATETIMEKEY"] is DBNull) ? 0 : mu.ParseInt(row["DATETIMEKEY"].ToString()),
                     ReadingDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
                     ReadingKeyId = keyId,
                     Units = (row["METERUNITS"] is DBNull) ? String.Empty : row["METERUNITS"].ToString(),

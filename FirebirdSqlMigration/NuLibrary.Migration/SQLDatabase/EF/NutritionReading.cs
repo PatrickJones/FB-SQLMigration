@@ -16,12 +16,12 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     {
         public int ReadingId { get; set; }
         public double Carbohydrates { get; set; }
-        public System.DateTime ReadingDateTime { get; set; }
-        public System.Guid ReadingKeyId { get; set; }
-        public System.Guid UserId { get; set; }
         public double Calories { get; set; }
         public double Protien { get; set; }
         public double Fat { get; set; }
+        public System.DateTime ReadingDateTime { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.Guid UserId { get; set; }
         public System.DateTime Date { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }

@@ -66,7 +66,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<BasalDelivery> BasalDeliveries { get; set; }
         public virtual DbSet<BasalDeliveryData> BasalDeliveryDatas { get; set; }
         public virtual DbSet<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }
-        public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
         public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
         public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
         public virtual DbSet<CGMReminder> CGMReminders { get; set; }
@@ -78,7 +77,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<ReadingHeader> ReadingHeaders { get; set; }
         public virtual DbSet<TensReading> TensReadings { get; set; }
         public virtual DbSet<TotalDailyInsulinDelivery> TotalDailyInsulinDeliveries { get; set; }
-        public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<Pump> Pumps { get; set; }
         public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
         public virtual DbSet<DeviceSetting> DeviceSettings { get; set; }
@@ -88,5 +86,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
         public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
         public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
+        public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
+        public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
     }
 }

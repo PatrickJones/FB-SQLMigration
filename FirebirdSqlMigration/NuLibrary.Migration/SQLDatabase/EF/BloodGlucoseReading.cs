@@ -15,7 +15,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     public partial class BloodGlucoseReading
     {
         public int ReadingId { get; set; }
-        public int DatetimeKey { get; set; }
         public System.DateTime ReadingDateTime { get; set; }
         public string Units { get; set; }
         public string Value { get; set; }

@@ -76,7 +76,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
             <PropertyRef Name="ReadingId" />
           </Key>
           <Property Name="ReadingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DatetimeKey" Type="int" Nullable="false" />
           <Property Name="ReadingDateTime" Type="datetime" Nullable="false" />
           <Property Name="Units" Type="nvarchar" MaxLength="50" />
           <Property Name="Value" Type="nvarchar" MaxLength="50" />
@@ -388,21 +387,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="IsActive" Type="bit" />
           <Property Name="InActiveDate" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NuMedicsGlobal.dbo.NutritionReadings' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="NutritionReadings">
           <Key>
             <PropertyRef Name="ReadingId" />
-            <PropertyRef Name="Carbohydrates" />
-            <PropertyRef Name="Calories" />
-            <PropertyRef Name="Protien" />
-            <PropertyRef Name="Fat" />
-            <PropertyRef Name="ReadingDateTime" />
-            <PropertyRef Name="ReadingKeyId" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="Date" />
           </Key>
-          <Property Name="ReadingId" Type="int" Nullable="false" />
+          <Property Name="ReadingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Carbohydrates" Type="float" Nullable="false" />
           <Property Name="Calories" Type="float" Nullable="false" />
           <Property Name="Protien" Type="float" Nullable="false" />
@@ -1461,6 +1450,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="InsuranceContacts" EntityType="Self.InsuranceContacts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsurancePlans" EntityType="Self.InsurancePlans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceProviders" EntityType="Self.InsuranceProviders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReadings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientAddresses" EntityType="Self.PatientAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientDevices" EntityType="Self.PatientDevices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientLinkLogs" EntityType="Self.PatientLinkLogs" Schema="dbo" store:Type="Tables" />
@@ -1488,7 +1478,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReadings" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistories" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppLoginHistories].[UserId] AS [UserId], 
@@ -2585,7 +2574,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="BasalDeliveries" EntityType="NuMedicsGlobalModel.BasalDelivery" />
           <EntitySet Name="BasalDeliveryDatas" EntityType="NuMedicsGlobalModel.BasalDeliveryData" />
           <EntitySet Name="BasalProgramTimeSlots" EntityType="NuMedicsGlobalModel.BasalProgramTimeSlot" />
-          <EntitySet Name="BloodGlucoseReadings" EntityType="NuMedicsGlobalModel.BloodGlucoseReading" />
           <EntitySet Name="BolusDeliveryDatas" EntityType="NuMedicsGlobalModel.BolusDeliveryData" />
           <EntitySet Name="BolusProgramTimeSlots" EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" />
           <EntitySet Name="CGMReminders" EntityType="NuMedicsGlobalModel.CGMReminder" />
@@ -2597,7 +2585,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="ReadingHeaders" EntityType="NuMedicsGlobalModel.ReadingHeader" />
           <EntitySet Name="TensReadings" EntityType="NuMedicsGlobalModel.TensReading" />
           <EntitySet Name="TotalDailyInsulinDeliveries" EntityType="NuMedicsGlobalModel.TotalDailyInsulinDelivery" />
-          <EntitySet Name="NutritionReadings" EntityType="NuMedicsGlobalModel.NutritionReading" />
           <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="BasalDelivery" EntitySet="BasalDeliveries" />
@@ -2605,10 +2592,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_BasalDeliveryData_BasalDeliveries" Association="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries">
             <End Role="BasalDelivery" EntitySet="BasalDeliveries" />
             <End Role="BasalDeliveryData" EntitySet="BasalDeliveryDatas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BloodGlucoseReadings_ReadingHeaders" Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders">
-            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
-            <End Role="BloodGlucoseReading" EntitySet="BloodGlucoseReadings" />
           </AssociationSet>
           <AssociationSet Name="FK_MeterReadingHeader_PatientDevices" Association="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices">
             <End Role="PatientDevice" EntitySet="PatientDevices" />
@@ -2625,10 +2608,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_ReadingEvents_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="ReadingEvent" EntitySet="ReadingEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1">
-            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
-            <End Role="NutritionReading" EntitySet="NutritionReadings" />
           </AssociationSet>
           <AssociationSet Name="FK_TensReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
@@ -2706,6 +2685,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_Pumps_ReadingHeaders" Association="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="Pump" EntitySet="Pumps" />
+          </AssociationSet>
+          <EntitySet Name="BloodGlucoseReadings" EntityType="NuMedicsGlobalModel.BloodGlucoseReading" />
+          <EntitySet Name="NutritionReadings" EntityType="NuMedicsGlobalModel.NutritionReading" />
+          <AssociationSet Name="FK_BloodGlucoseReadings_ReadingHeaders" Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="BloodGlucoseReading" EntitySet="BloodGlucoseReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="NutritionReading" EntitySet="NutritionReadings" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
@@ -2856,20 +2845,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PumpProgram" Relationship="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="BasalProgramTimeSlot" ToRole="PumpProgram" />
         </EntityType>
-        <EntityType Name="BloodGlucoseReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DatetimeKey" Type="Int32" Nullable="false" />
-          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Units" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="BloodGlucoseReading" ToRole="ReadingHeader" />
-        </EntityType>
         <EntityType Name="BolusDeliveryData">
           <Key>
             <PropertyRef Name="DataId" />
@@ -2987,17 +2962,17 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="LegacyDownloadKeyId" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="BasalDeliveries" Relationship="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" FromRole="ReadingHeader" ToRole="BasalDelivery" />
-          <NavigationProperty Name="BloodGlucoseReadings" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="ReadingHeader" ToRole="BloodGlucoseReading" />
           <NavigationProperty Name="PatientDevice" Relationship="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices" FromRole="ReadingHeader" ToRole="PatientDevice" />
           <NavigationProperty Name="PhysiologicalReadings" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="PhysiologicalReading" />
           <NavigationProperty Name="ReadingErrors" Relationship="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1" FromRole="ReadingHeader" ToRole="ReadingError" />
           <NavigationProperty Name="ReadingEvents" Relationship="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1" FromRole="ReadingHeader" ToRole="ReadingEvent" />
-          <NavigationProperty Name="NutritionReadings" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="NutritionReading" />
           <NavigationProperty Name="TensReadings" Relationship="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TensReading" />
           <NavigationProperty Name="TotalDailyInsulinDeliveries" Relationship="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TotalDailyInsulinDelivery" />
           <NavigationProperty Name="DeviceSettings" Relationship="NuMedicsGlobalModel.FK_DeviceSettings_ReadingHeaders" FromRole="ReadingHeader" ToRole="DeviceSetting" />
           <NavigationProperty Name="BolusDeliveries" Relationship="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" FromRole="ReadingHeader" ToRole="BolusDelivery" />
           <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" FromRole="ReadingHeader" ToRole="Pump" />
+          <NavigationProperty Name="BloodGlucoseReadings" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="ReadingHeader" ToRole="BloodGlucoseReading" />
+          <NavigationProperty Name="NutritionReadings" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="NutritionReading" />
         </EntityType>
         <EntityType Name="TensReading">
           <Key>
@@ -3032,29 +3007,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" FromRole="TotalDailyInsulinDelivery" ToRole="ReadingHeader" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <EntityType Name="NutritionReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-            <PropertyRef Name="Carbohydrates" />
-            <PropertyRef Name="ReadingDateTime" />
-            <PropertyRef Name="ReadingKeyId" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="Calories" />
-            <PropertyRef Name="Protien" />
-            <PropertyRef Name="Fat" />
-            <PropertyRef Name="Date" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" />
-          <Property Name="Carbohydrates" Type="Double" Nullable="false" />
-          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="NutritionReading" ToRole="ReadingHeader" />
-          <Property Name="Calories" Type="Double" Nullable="false" />
-          <Property Name="Protien" Type="Double" Nullable="false" />
-          <Property Name="Fat" Type="Double" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <Association Name="FK_BasalDeliveries_ReadingHeaders1">
           <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
           <End Type="NuMedicsGlobalModel.BasalDelivery" Role="BasalDelivery" Multiplicity="*" />
@@ -3076,18 +3028,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Principal>
             <Dependent Role="BasalDeliveryData">
               <PropertyRef Name="BasalDeliveryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BloodGlucoseReadings_ReadingHeaders">
-          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
-          <End Type="NuMedicsGlobalModel.BloodGlucoseReading" Role="BloodGlucoseReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeader">
-              <PropertyRef Name="ReadingKeyId" />
-            </Principal>
-            <Dependent Role="BloodGlucoseReading">
-              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3137,18 +3077,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="ReadingEvent">
-              <PropertyRef Name="ReadingKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NutritionReadings_ReadingHeaders1">
-          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
-          <End Type="NuMedicsGlobalModel.NutritionReading" Role="NutritionReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeader">
-              <PropertyRef Name="ReadingKeyId" />
-            </Principal>
-            <Dependent Role="NutritionReading">
               <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3477,6 +3405,58 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Principal>
             <Dependent Role="Pump">
               <PropertyRef Name="PumpKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BloodGlucoseReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Units" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="BloodGlucoseReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="NutritionReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Carbohydrates" Type="Double" Nullable="false" />
+          <Property Name="Calories" Type="Double" Nullable="false" />
+          <Property Name="Protien" Type="Double" Nullable="false" />
+          <Property Name="Fat" Type="Double" Nullable="false" />
+          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="NutritionReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <Association Name="FK_BloodGlucoseReadings_ReadingHeaders">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.BloodGlucoseReading" Role="BloodGlucoseReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="BloodGlucoseReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NutritionReadings_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.NutritionReading" Role="NutritionReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="NutritionReading">
+              <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3988,20 +3968,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BloodGlucoseReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BloodGlucoseReading">
-              <MappingFragment StoreEntitySet="BloodGlucoseReadings">
-                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Units" ColumnName="Units" />
-                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
-                <ScalarProperty Name="DatetimeKey" ColumnName="DatetimeKey" />
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BolusDeliveryDatas">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusDeliveryData">
               <MappingFragment StoreEntitySet="BolusDeliveryData">
@@ -4153,21 +4119,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="NutritionReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.NutritionReading">
-              <MappingFragment StoreEntitySet="NutritionReadings">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Fat" ColumnName="Fat" />
-                <ScalarProperty Name="Protien" ColumnName="Protien" />
-                <ScalarProperty Name="Calories" ColumnName="Calories" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
-                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
-                <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Pumps">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Pump">
               <MappingFragment StoreEntitySet="Pumps">
@@ -4270,6 +4221,34 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="AmountDelivered" ColumnName="AmountDelivered" />
                 <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
                 <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BloodGlucoseReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BloodGlucoseReading">
+              <MappingFragment StoreEntitySet="BloodGlucoseReadings">
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Units" ColumnName="Units" />
+                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NutritionReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.NutritionReading">
+              <MappingFragment StoreEntitySet="NutritionReadings">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
+                <ScalarProperty Name="Fat" ColumnName="Fat" />
+                <ScalarProperty Name="Protien" ColumnName="Protien" />
+                <ScalarProperty Name="Calories" ColumnName="Calories" />
+                <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

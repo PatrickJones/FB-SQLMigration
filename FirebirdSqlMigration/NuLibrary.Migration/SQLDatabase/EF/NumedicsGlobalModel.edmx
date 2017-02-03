@@ -28,6 +28,27 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="LoginDate" Type="datetime" Nullable="false" />
           <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="AppSettings">
+          <Key>
+            <PropertyRef Name="AppSettingId" />
+          </Key>
+          <Property Name="AppSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppUserSettings">
+          <Key>
+            <PropertyRef Name="AppUserSettingId" />
+          </Key>
+          <Property Name="AppUserSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="AppicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="BasalDeliveries">
           <Key>
             <PropertyRef Name="BasalDeliveryId" />
@@ -752,6 +773,30 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AppSettings_Applications">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="AppSettings" Type="Self.AppSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="AppSettings">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppUserSettings_Applications">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="AppUserSettings" Type="Self.AppUserSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="AppUserSettings">
+              <PropertyRef Name="AppicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_BasalDeliveries_ReadingHeaders1">
           <End Role="ReadingHeaders" Type="Self.ReadingHeaders" Multiplicity="1" />
           <End Role="BasalDeliveries" Type="Self.BasalDeliveries" Multiplicity="*" />
@@ -1416,6 +1461,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
         </Association>
         <EntityContainer Name="NuMedicsGlobalModelStoreContainer">
           <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppSettings" EntityType="Self.AppSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppUserSettings" EntityType="Self.AppUserSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalDeliveries" EntityType="Self.BasalDeliveries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalDeliveryData" EntityType="Self.BasalDeliveryData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalProgramTimeSlots" EntityType="Self.BasalProgramTimeSlots" Schema="dbo" store:Type="Tables" />
@@ -1502,6 +1549,14 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_AppLoginHistories_Applications" Association="Self.FK_AppLoginHistories_Applications">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="AppLoginHistories" EntitySet="AppLoginHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppSettings_Applications" Association="Self.FK_AppSettings_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="AppSettings" EntitySet="AppSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppUserSettings_Applications" Association="Self.FK_AppUserSettings_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="AppUserSettings" EntitySet="AppUserSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders1" Association="Self.FK_BasalDeliveries_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
@@ -1733,6 +1788,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <NavigationProperty Name="AppLoginHistories" Relationship="Self.FK_AppLoginHistories_Applications" FromRole="Applications" ToRole="AppLoginHistories" />
           <NavigationProperty Name="EndUserLicenseAgreements" Relationship="Self.FK_EndUserLicenseAgreements_Applications" FromRole="Applications" ToRole="EndUserLicenseAgreements" />
           <NavigationProperty Name="UserAuthentications" Relationship="Self.FK_UserAuthentications_Applications" FromRole="Applications" ToRole="UserAuthentications" />
+          <NavigationProperty Name="AppSettings" Relationship="NuMedicsGlobalModel.FK_AppSettings_Applications" FromRole="Application" ToRole="AppSetting" />
+          <NavigationProperty Name="AppUserSettings" Relationship="NuMedicsGlobalModel.FK_AppUserSettings_Applications" FromRole="Application" ToRole="AppUserSetting" />
         </EntityType>
         <EntityType Name="CareSetting">
           <Key>
@@ -2695,6 +2752,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             <End Role="Pump" EntitySet="Pumps" />
             <End Role="PumpSetting" EntitySet="PumpSettings" />
           </AssociationSet>
+          <EntitySet Name="AppSettings" EntityType="NuMedicsGlobalModel.AppSetting" />
+          <EntitySet Name="AppUserSettings" EntityType="NuMedicsGlobalModel.AppUserSetting" />
+          <AssociationSet Name="FK_AppSettings_Applications" Association="NuMedicsGlobalModel.FK_AppSettings_Applications">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="AppSetting" EntitySet="AppSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppUserSettings_Applications" Association="NuMedicsGlobalModel.FK_AppUserSettings_Applications">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="AppUserSetting" EntitySet="AppUserSettings" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
           <Key>
@@ -3455,6 +3522,53 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Principal>
             <Dependent Role="PumpSetting">
               <PropertyRef Name="PumpKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AppSetting">
+          <Key>
+            <PropertyRef Name="AppSettingId" />
+          </Key>
+          <Property Name="AppSettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="NuMedicsGlobalModel.FK_AppSettings_Applications" FromRole="AppSetting" ToRole="Application" />
+        </EntityType>
+        <EntityType Name="AppUserSetting">
+          <Key>
+            <PropertyRef Name="AppUserSettingId" />
+          </Key>
+          <Property Name="AppUserSettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AppicationId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="NuMedicsGlobalModel.FK_AppUserSettings_Applications" FromRole="AppUserSetting" ToRole="Application" />
+        </EntityType>
+        <Association Name="FK_AppSettings_Applications">
+          <End Type="NuMedicsGlobalModel.Application" Role="Application" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.AppSetting" Role="AppSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="AppSetting">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppUserSettings_Applications">
+          <End Type="NuMedicsGlobalModel.Application" Role="Application" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.AppUserSetting" Role="AppUserSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="AppUserSetting">
+              <PropertyRef Name="AppicationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4246,6 +4360,29 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
                 <ScalarProperty Name="SettingName" ColumnName="SettingName" />
                 <ScalarProperty Name="SettingId" ColumnName="SettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppSettings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.AppSetting">
+              <MappingFragment StoreEntitySet="AppSettings">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AppSettingId" ColumnName="AppSettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppUserSettings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.AppUserSetting">
+              <MappingFragment StoreEntitySet="AppUserSettings">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AppicationId" ColumnName="AppicationId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AppUserSettingId" ColumnName="AppUserSettingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

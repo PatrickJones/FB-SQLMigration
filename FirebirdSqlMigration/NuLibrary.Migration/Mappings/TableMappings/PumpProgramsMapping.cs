@@ -1,4 +1,6 @@
 ﻿using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
@@ -31,48 +33,53 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         MappingUtilities mu = new MappingUtilities();
 
+        public int RecordCount = 0;
+        public int FailedCount = 0;
+
         public void CreatePumpProgramssMapping()
         {
-            foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+
+            try
             {
-                // get userid from old aspnetdb matching on patientid #####.#####
-                var patId = (String)row["PATIENTID"];
-                var userId = aHelper.GetUserIdFromPatientId(patId);
+                var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
+                RecordCount = TableAgent.RowCount;
 
-                if (userId != Guid.Empty)
+                foreach (DataRow row in dataSet)
                 {
-                    //var pId = (String)row["PATIENTID"];
-                    var patientPump = mu.FindPatientPump(userId);
-                    if (patientPump != null)
-                    {
-                        var CreationDate = (DateTime)row["CREATEDATE"];
-                        var Source = (String)row["SOURCE"];
-                        var Valid = (Boolean)row["ACTIVEPROGRAM"];
+                    // get userid from old aspnetdb matching on patientid #####.#####
+                    var patId = row["PATIENTID"].ToString();
+                    var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
+                    if (userId != Guid.Empty)
+                    {
+                        var CreationDate = mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
+                        var Source = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString();
+                        var Valid = mu.ParseFirebirdBoolean(row["ACTIVEPROGRAM"].ToString());
 
                         for (int i = 1; i < 8; i++)
                         {
-                            PumpProgram p = new PumpProgram();
+                            var pKey = mu.ParseInt(row[$"PROG{i}KEYID"].ToString());
 
-                            p.CreationDate = CreationDate;
-                            p.Source = Source;
-                            p.Valid = Valid;
-                            p.PumpKeyId = patientPump.PumpKeyId;
-                            //p.PumpId = patientPumpId;
+                            if (pKey != 0)
+                            {
+                                PumpProgram p = new PumpProgram();
 
-                            p.ProgramKey = (Int32)row[$"PROG{i}KEYID"];
+                                p.CreationDate = CreationDate;
+                                p.Source = Source;
+                                p.Valid = Valid;
+                                p.ProgramKey = pKey;
+                                p.NumOfSegments = 7;
 
-                            TransactionManager.DatabaseContext.PumpPrograms.Add(p);
+                                MemoryMappings.AddPumpProgram(userId, pKey, p);
+                            }
                         }
                     }
-
-                    //Example Output:
-                    //ProgramKey = (Int32)row["PROG3KEYID"]
-                    //ProgramKey = (Int32)row["PROG4KEYID"]
-                    //ProgramKey = (Int32)row["PROG5KEYID"]
-                    //ProgramKey = (Int32)row["PROG6KEYID"]
-                    //ProgramKey = (Int32)row["PROG7KEYID"]
                 }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error creating PumpProgram mapping.", e);
             }
         }
     }

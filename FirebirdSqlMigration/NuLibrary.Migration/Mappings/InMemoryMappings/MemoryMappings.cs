@@ -13,6 +13,8 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
 
         private static ICollection<Institution> InstitutionCollection = new List<Institution>();
 
+        private static ICollection<Pump> PumpCollection = new List<Pump>();
+
         // key = firebird downloadkeyid
         // value = GUID for sql readingkeyid
         private static Dictionary<string, Guid> ReadingHeaderKeyIds = new Dictionary<string, Guid>();
@@ -30,6 +32,42 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         // item2 = patient id
         // item3 = user id
         private static List<Tuple<int, string, Guid>> patientInfo = new List<Tuple<int, string, Guid>>();
+
+        // key = user id
+        // Item1 = Firebird keyid
+        // Item2 = instnace
+        private static Dictionary<Guid, List<Tuple<int, PumpProgram>>> PumpPrograms = new Dictionary<Guid, List<Tuple<int, PumpProgram>>>();
+
+        public static void AddPumpProgram(Guid userId, int fbKeyId, PumpProgram instance)
+        {
+            if (PumpPrograms.ContainsKey(userId))
+            {
+                var coll = PumpPrograms[userId];
+                coll.Add(new Tuple<int, PumpProgram>(fbKeyId, instance));
+            }
+            else
+            {
+                PumpPrograms.Add(userId, new List<Tuple<int, PumpProgram>> { new Tuple<int, PumpProgram>(fbKeyId, instance) });
+            }
+        }
+
+        public static Dictionary<Guid, List<Tuple<int, PumpProgram>>> GetAllPumpPrograms()
+        {
+            return PumpPrograms;
+        }
+
+        public static void AddPump(Pump pump)
+        {
+            if (!PumpCollection.Contains(pump))
+            {
+                PumpCollection.Add(pump); 
+            }
+        }
+
+        public static ICollection<Pump> GetAllPump()
+        {
+            return PumpCollection;
+        }
 
         public static void AddReadingHeaderkeyId(string downLoadKeyId, Guid readingKeyId)
         {

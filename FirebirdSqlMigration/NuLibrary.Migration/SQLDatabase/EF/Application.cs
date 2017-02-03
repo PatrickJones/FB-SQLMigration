@@ -20,6 +20,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
             this.AppLoginHistories = new HashSet<AppLoginHistory>();
             this.EndUserLicenseAgreements = new HashSet<EndUserLicenseAgreement>();
             this.UserAuthentications = new HashSet<UserAuthentication>();
+            this.AppSettings = new HashSet<AppSetting>();
+            this.AppUserSettings = new HashSet<AppUserSetting>();
         }
     
         public string ApplicationName { get; set; }
@@ -35,5 +37,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual ICollection<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAuthentication> UserAuthentications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AppSetting> AppSettings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AppUserSetting> AppUserSettings { get; set; }
     }
 }

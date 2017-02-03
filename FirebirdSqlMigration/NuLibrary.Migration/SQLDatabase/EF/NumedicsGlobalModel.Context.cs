@@ -88,5 +88,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<PumpSetting> PumpSettings { get; set; }
+        public virtual DbSet<AppSetting> AppSettings { get; set; }
+        public virtual DbSet<AppUserSetting> AppUserSettings { get; set; }
     }
 }

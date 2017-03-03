@@ -34,9 +34,96 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         private static List<Tuple<int, string, Guid>> patientInfo = new List<Tuple<int, string, Guid>>();
 
         // key = user id
-        // Item1 = Firebird keyid
-        // Item2 = instnace
+        // Item1 = Firebird program keyid
+        // Item2 = instance
         private static Dictionary<Guid, List<Tuple<int, PumpProgram>>> PumpPrograms = new Dictionary<Guid, List<Tuple<int, PumpProgram>>>();
+
+        // key = user id
+        // value key = firebird creation date
+        // value value = List of BasalProgramTimeSlots
+        private static Dictionary<Guid, Dictionary<DateTime, List<BasalProgramTimeSlot>>> BasalPrgTimeSlots = new Dictionary<Guid, Dictionary<DateTime, List<BasalProgramTimeSlot>>>();
+
+        // key = user id
+        // value key = firebird creation date
+        // value value = List of BasalProgramTimeSlots
+        private static Dictionary<Guid, Dictionary<DateTime, List<BolusProgramTimeSlot>>> BolusPrgTimeSlots = new Dictionary<Guid, Dictionary<DateTime, List<BolusProgramTimeSlot>>>();
+
+        // key = user id
+        // value = List of pump settings for that user. should be single set for each firebird patient
+        private static Dictionary<Guid, List<PumpSetting>> PumpSettings = new Dictionary<Guid, List<PumpSetting>>();
+
+        public static void AddPumpSetting(Guid userId, List<PumpSetting> settings)
+        {
+            if (!PumpSettings.ContainsKey(userId))
+            {
+                PumpSettings.Add(userId, settings);
+            }
+        }
+
+        public static Dictionary<Guid, List<PumpSetting>> GetAllPumpSettings()
+        {
+            return PumpSettings;
+        }
+
+        public static void AddBolusPrgTimeSlot(Guid userId, DateTime creationDate, BolusProgramTimeSlot instance)
+        {
+            if (BolusPrgTimeSlots.ContainsKey(userId))
+            {
+                var innerDict = BolusPrgTimeSlots[userId];
+                if (innerDict.ContainsKey(creationDate))
+                {
+                    var coll = innerDict[creationDate];
+                    coll.Add(instance);
+                }
+                else
+                {
+                    innerDict.Add(creationDate, new List<BolusProgramTimeSlot> { instance });
+                }
+
+            }
+            else
+            {
+                var d = new Dictionary<DateTime, List<BolusProgramTimeSlot>>();
+                d.Add(creationDate, new List<BolusProgramTimeSlot> { instance });
+
+                BolusPrgTimeSlots.Add(userId, d);
+            }
+        }
+
+        public static Dictionary<Guid, Dictionary<DateTime, List<BolusProgramTimeSlot>>> GetAllBolusPrgTimeSlots()
+        {
+            return BolusPrgTimeSlots;
+        }
+
+        public static void AddBasalPrgTimeSlot(Guid userId, DateTime creationDate, BasalProgramTimeSlot instance)
+        {
+            if (BasalPrgTimeSlots.ContainsKey(userId))
+            {
+                var innerDict = BasalPrgTimeSlots[userId];
+                if (innerDict.ContainsKey(creationDate))
+                {
+                    var coll = innerDict[creationDate];
+                    coll.Add(instance);
+                }
+                else
+                {
+                    innerDict.Add(creationDate, new List<BasalProgramTimeSlot> { instance });
+                }
+                
+            }
+            else
+            {
+                var d = new Dictionary<DateTime, List<BasalProgramTimeSlot>>();
+                d.Add(creationDate, new List<BasalProgramTimeSlot> { instance });
+
+                BasalPrgTimeSlots.Add(userId, d);
+            }
+        }
+
+        public static Dictionary<Guid, Dictionary<DateTime, List<BasalProgramTimeSlot>>> GetAllBasalPrgTimeSlots()
+        {
+            return BasalPrgTimeSlots;
+        }
 
         public static void AddPumpProgram(Guid userId, int fbKeyId, PumpProgram instance)
         {

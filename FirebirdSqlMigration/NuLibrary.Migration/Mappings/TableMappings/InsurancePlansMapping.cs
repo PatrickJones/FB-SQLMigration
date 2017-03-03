@@ -109,17 +109,24 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void AddToContext()
         {
-            Array.ForEach(tempCompanyId.ToArray(), a => {
-                a.Item2.CompanyId = nHelper.GetInsuranceCompanyId(a.Item1);
-            });
+            //Array.ForEach(tempCompanyId.ToArray(), a =>
+            //{
+            //    a.Item2.CompanyId = nHelper.GetInsuranceCompanyId(a.Item1);
+            //});
 
-            TransactionManager.DatabaseContext.InsurancePlans.AddRange(CompletedMappings);
+            //TransactionManager.DatabaseContext.InsurancePlans.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()
         {
             try
             {
+                Array.ForEach(tempCompanyId.ToArray(), a =>
+                {
+                    a.Item2.CompanyId = nHelper.GetInsuranceCompanyId(a.Item1);
+                });
+
+                TransactionManager.DatabaseContext.InsurancePlans.AddRange(CompletedMappings);
                 TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (DbEntityValidationException e)

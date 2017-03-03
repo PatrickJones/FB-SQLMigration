@@ -1,9 +1,14 @@
-﻿using NuLibrary.Migration.FBDatabase.FBTables;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.FBDatabase.FBTables;
+using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Interfaces;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +18,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     /// <summary>
     /// Note: Has relationship with - 
     /// </summary>
-    public class PumpSettingMapping : BaseMapping
+    public class PumpSettingMapping : BaseMapping, IContextHandler
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
@@ -31,72 +36,103 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         MappingUtilities mu = new MappingUtilities();
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
 
+        public ICollection<PumpSetting> CompletedMappings = new List<PumpSetting>();
+
+        public int RecordCount = 0;
+        public int FailedCount = 0;
+
         public void CreatePumpSettingMapping()
         {
-            foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+            try
             {
-                // get userid from old aspnetdb matching on patientid #####.#####
-                var patId = (String)row["PATIENTID"];
-                var userId = aHelper.GetUserIdFromPatientId(patId);
+                var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
+                RecordCount = TableAgent.RowCount;
 
-
-                if (userId != Guid.Empty)
+                foreach (DataRow row in dataSet)
                 {
-                    //var PatientId = (String)row["PATIENTID"];
-                    var patientPump = mu.FindPatientPump(userId);
-                    if (patientPump != null)
+                    // get userid from old aspnetdb matching on patientid #####.#####
+                    var patId = row["PATIENTID"].ToString();
+                    var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
+
+                    if (userId != Guid.Empty)
                     {
-                        var ips = mu.CreatePumpSetting(row, patientPump.PumpKeyId).ToList();
-                        foreach (var item in ips)
+                        var tempList = new List<PumpSetting>();
+
+                        // iterate through table columns and only get columns that are NOT time slots
+                        // as these will be settings
+                        for (int i = 0; i < row.Table.Columns.Count; i++)
                         {
-                            TransactionManager.DatabaseContext.PumpSettings.Add(item);
+                            var column = row.Table.Columns[i].ColumnName.Trim();
+
+                            // don't want columns that start with these characters - these are timeslot values
+                            if ((column.ToLower().Substring(0,2) != "IC") || (column.ToLower().Substring(0, 2) != "CF") || (column.ToLower().Substring(0, 6) != "TARGET"))
+                            {
+                                PumpSetting ps = new PumpSetting();
+                                ps.SettingName = column;
+                                ps.SettingValue = (row[column] is DBNull) ? String.Empty : row[column].ToString();
+                                ps.Date = new DateTime(1800, 1, 1);
+
+                                tempList.Add(ps);
+
+                                if (CanAddToContext(ps.SettingValue))
+                                {
+                                    //TransactionManager.DatabaseContext.Patients.Add(pat);
+                                    CompletedMappings.Add(ps);
+                                }
+                                else
+                                {
+                                    TransactionManager.FailedMappingCollection
+                                        .Add(new FailedMappings
+                                        {
+                                            Tablename = "PumpSettings",
+                                            ObjectType = typeof(PumpSetting),
+                                            JsonSerializedObject = JsonConvert.SerializeObject(ps),
+                                            FailedReason = "Pump Setting has no value."
+                                        });
+
+                                    FailedCount++;
+                                }
+                            }
                         }
+
+                        // add to Memory Mappings so that Pump object and retieve
+                        // a single user should only have a single collections of PumpSettings in the FB database
+                        MemoryMappings.AddPumpSetting(userId, tempList);
                     }
-                    
-
-                    //***************************************Notees********************************//
-                    // commented out this section because data will be taken directly from bolus reading in MeterReadingTable
-                    //***************************************End Notes********************************//
-                    //for (int i = 1; i < 9; i++)
-                    //{
-                    //    DateTime ptstart = (DateTime)row[$"TARGETBGSTART_{i}"];
-                    //    DateTime ptstop = (DateTime)row[$"TARGETBGSTOP_{i}"];
-                    //    var pt = new BGTarget
-                    //    {
-                    //        PumpId = ppId,
-                    //        TargetBG = (int)row[$"TARGETBG_{i}"],
-                    //        TargetBGCorrect = (int)row[$"TARGETBGCORRECT_{i}"],
-                    //        TargetBGStart = new TimeSpan(ptstart.Ticks),
-                    //        TargetBGStop = new TimeSpan(ptstop.Ticks)
-                    //    };
-
-                    //    DateTime icstart = (DateTime)row[$"ICSTART_{i}"];
-                    //    DateTime icstop = (DateTime)row[$"ICSTOP_{i}"];
-                    //    var pic = new InsulinCorrection
-                    //    {
-                    //        PumpId = ppId,
-                    //        InsulinCorrectionStart = new TimeSpan(icstart.Ticks),
-                    //        InsulinCorrectionStop = new TimeSpan(icstop.Ticks),
-                    //        InsulinCorrectionValue = (int)row[$"ICVALUE_{i}"]
-                    //    };
-
-                    //    DateTime cfstart = (DateTime)row[$"CFSTART_{i}"];
-                    //    DateTime cfstop = (DateTime)row[$"CFSTOP_{i}"];
-                    //    var pcf = new CorrectionFactor
-                    //    {
-                    //        PumpId = ppId,
-                    //        CorrectionFactorStart = new TimeSpan(cfstart.Ticks),
-                    //        CorrectionFactorStop = new TimeSpan(cfstop.Ticks),
-                    //        CorrectionFactorValue = (int)row[$"CFVALUE_{i}"]
-                    //    };
-
-                    //    TransactionManager.DatabaseContext.BGTargets.Add(pt);
-                    //    TransactionManager.DatabaseContext.InsulinCorrections.Add(pic);
-                    //    TransactionManager.DatabaseContext.CorrectionFactors.Add(pcf);
-
-                    //}
                 }
             }
+            catch (Exception e)
+            {
+                throw new Exception("Error creating PumpSetting mapping.", e);
+            }
+        }
+
+        public void AddToContext()
+        {
+            //TransactionManager.DatabaseContext.PumpSettings.AddRange(CompletedMappings);
+        }
+
+        public void SaveChanges()
+        {
+            try
+            {
+                TransactionManager.DatabaseContext.PumpSettings.AddRange(CompletedMappings);
+                TransactionManager.DatabaseContext.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw new Exception("Error validating PumpSetting entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving PumpSetting entity", e);
+            }
+        }
+
+        private bool CanAddToContext(String value)
+        {
+            // don't add empty settings to database (context)
+            return (String.IsNullOrEmpty(value)) ? false : true;
         }
     }
 }

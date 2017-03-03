@@ -46,6 +46,7 @@ namespace NuLibrary.Migration.Mappings
             mapInstances.Add(9, new KeyValuePair<Type, IContextHandler>(typeof(DeviceMeterReadingHeaderMapping), new DeviceMeterReadingHeaderMapping()));
             mapInstances.Add(10, new KeyValuePair<Type, IContextHandler>(typeof(SubscriptionsMapping), new SubscriptionsMapping()));
             mapInstances.Add(11, new KeyValuePair<Type, IContextHandler>(typeof(MeterReadingMapping), new MeterReadingMapping()));
+            //mapInstances.Add(12, new KeyValuePair<Type, IContextHandler>(typeof(PumpSettingMapping), new PumpSettingMapping()));
         }
 
         /// <summary>
@@ -95,6 +96,7 @@ namespace NuLibrary.Migration.Mappings
             };
 
             Task.WhenAll(taskSetA).ContinueWith(doneA => {
+
                 var taskSetB = new List<Task> {
                     Task.Run(() =>
                     {
@@ -120,6 +122,16 @@ namespace NuLibrary.Migration.Mappings
                     {
                         var instance = (TimeSlotsMapping)mapInstances[8].Value;
                         instance.CreateTimeSlotsMapping();
+                    }),
+                    Task.Run(() =>
+                    {
+                        var instance = new PumpSettingMapping();
+                        instance.CreatePumpSettingMapping();
+                    }),
+                    Task.Run(() =>
+                    {
+                        var instance = new PumpTimeSlotsMapping();
+                        instance.CreatePumpTimeSlotsMapping();
                     })
                 };
 
@@ -127,13 +139,13 @@ namespace NuLibrary.Migration.Mappings
                     var taskSetC = new List<Task> {
                         Task.Run(() =>
                         {
-                            var instance = (DeviceMeterReadingHeaderMapping)mapInstances[9].Value;
-                            instance.CreateDeviceMeterReadingHeaderMapping();
+                            var instance = (SubscriptionsMapping)mapInstances[10].Value;
+                            instance.CreateSubscriptionMapping();
                         }),
                         Task.Run(() =>
                         {
-                            var instance = (SubscriptionsMapping)mapInstances[10].Value;
-                            instance.CreateSubscriptionMapping();
+                            var instance = new PumpProgramsMapping();
+                            instance.CreatePumpProgramsMapping();
                         })
                     };
 
@@ -141,13 +153,33 @@ namespace NuLibrary.Migration.Mappings
                         var taskSetD = new List<Task> {
                             Task.Run(() =>
                             {
-                                var instance = (MeterReadingMapping)mapInstances[11].Value;
-                                instance.CreateDeviceMeterReadingMapping();
+                                var instance = new PumpsMapping();
+                                instance.CreatePumpsMapping();
                             })
                         };
 
                         Task.WhenAll(taskSetD).ContinueWith(doneD => {
-                            UpdateContext();
+                            var taskSetE = new List<Task> {
+                                Task.Run(() =>
+                                {
+                                    var instance = (DeviceMeterReadingHeaderMapping)mapInstances[9].Value;
+                                    instance.CreateDeviceMeterReadingHeaderMapping();
+                                })
+                            };
+
+                            Task.WhenAll(taskSetE).ContinueWith(doneE => {
+                                var taskSetF = new List<Task> {
+                                    Task.Run(() =>
+                                    {
+                                        var instance = (MeterReadingMapping)mapInstances[11].Value;
+                                        instance.CreateDeviceMeterReadingMapping();
+                                    })
+                                };
+
+                                Task.WhenAll(taskSetF).ContinueWith(doneF => {
+                                    UpdateContext();
+                                });
+                            });
                         });
                     });
                 });
@@ -161,11 +193,63 @@ namespace NuLibrary.Migration.Mappings
         {
             for (int i = 0; i < mapInstances.Count; i++)
             {
+                //// remove from context to prevent "Out Of Memory" exception
+                //if (i == 4)
+                //{
+                //    TransactionManager.DatabaseContext.Users = null;
+                //    TransactionManager.DatabaseContext.Clinicians = null;
+                //    TransactionManager.DatabaseContext.PatientAddresses = null;
+                //}
+                //else if (i == 10)
+                //{
+                //    TransactionManager.DatabaseContext.PatientPhoneNumbers = null;
+                //    TransactionManager.DatabaseContext.InsuranceProviders = null;
+                //    TransactionManager.DatabaseContext.InsurancePlans = null;
+                //    TransactionManager.DatabaseContext.InsuranceAddresses = null;
+                //    TransactionManager.DatabaseContext.InsuranceContacts = null;
+                //}
+                //else if (i == 9)
+                //{
+                //    TransactionManager.DatabaseContext.Subscriptions = null;
+                //    TransactionManager.DatabaseContext.Payments = null;
+                //    TransactionManager.DatabaseContext.PayPals = null;
+                //    TransactionManager.DatabaseContext.Checks = null;
+                //    TransactionManager.DatabaseContext.Institutions = null;
+                //    //TransactionManager.DatabaseContext.Patients = null;
+                //}
+
                 mapInstances[i].Value.AddToContext();
                 mapInstances[i].Value.SaveChanges();
             }
 
+            //using (var ctx = new NuMedicsGlobalEntities())
+            //{
+            //    Array.ForEach(ctx.Pumps.ToArray(), p => {
+            //        p.PumpPrograms = new List<PumpProgram>();
+
+            //        var tupList = MemoryMappings.GetAllPumpPrograms().Where(w => w.Key == p.UserId).Select(s => s.Value).ToArray();
+            //        Array.ForEach(tupList, l => {
+            //            Array.ForEach(l.ToArray(), g => {
+            //                var prog = new PumpProgram {
+            //                    CreationDate = g.Item2.CreationDate,
+            //                    NumOfSegments = g.Item2.NumOfSegments,
+            //                    ProgramKey = g.Item2.ProgramKey,
+            //                    ProgramName = g.Item2.ProgramName,
+            //                    Source = g.Item2.Source,
+            //                    Valid = g.Item2.Valid
+            //                };
+
+            //                p.PumpPrograms.Add(prog);
+            //            });
+            //        });
+            //    });
+
+            //    var pmps = ctx.Pumps.FirstOrDefault();
+            //    ctx.SaveChanges();
+            //}
+
             //AddDmDataSet();
+
             CommitExecution();
         }
 
@@ -203,5 +287,6 @@ namespace NuLibrary.Migration.Mappings
                 throw;
             }
         }
+
     }
 }

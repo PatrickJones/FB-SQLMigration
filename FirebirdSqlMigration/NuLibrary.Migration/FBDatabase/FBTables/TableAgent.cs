@@ -93,6 +93,7 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
                 //{
                 //    queryStr = $"Select * from {TableName} where METERDATETIME > '{yearBack.Month}-{yearBack.Day}-{yearBack.Year}'";
                 //}
+
                 var adt = new FbDataAdapter(queryStr, cn);
 
                 adt.Fill(DataSet, TableName);

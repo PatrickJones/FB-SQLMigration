@@ -65,13 +65,13 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void AddToContext()
         {
-            TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
-            TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(CompletedBGMappings);
-            TransactionManager.DatabaseContext.NutritionReadings.AddRange(CompletedNutritionMappings);
-            TransactionManager.DatabaseContext.ReadingEvents.AddRange(CompletedReadingEventMappings);
-            TransactionManager.DatabaseContext.DeviceSettings.AddRange(CompletedDeviceSettingsMappings);
-            TransactionManager.DatabaseContext.BasalDeliveries.AddRange(CompletedBasalMappings);
-            TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(CompletedTDDMappings);
+            //TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
+            //TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(CompletedBGMappings);
+            //TransactionManager.DatabaseContext.NutritionReadings.AddRange(CompletedNutritionMappings);
+            //TransactionManager.DatabaseContext.ReadingEvents.AddRange(CompletedReadingEventMappings);
+            //TransactionManager.DatabaseContext.DeviceSettings.AddRange(CompletedDeviceSettingsMappings);
+            //TransactionManager.DatabaseContext.BasalDeliveries.AddRange(CompletedBasalMappings);
+            //TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(CompletedTDDMappings);
         }
         
 
@@ -79,6 +79,15 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
+                TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
+                TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(CompletedBGMappings);
+                TransactionManager.DatabaseContext.NutritionReadings.AddRange(CompletedNutritionMappings);
+                TransactionManager.DatabaseContext.ReadingEvents.AddRange(CompletedReadingEventMappings);
+                TransactionManager.DatabaseContext.DeviceSettings.AddRange(CompletedDeviceSettingsMappings);
+                TransactionManager.DatabaseContext.BasalDeliveries.AddRange(CompletedBasalMappings);
+                TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(CompletedTDDMappings);
+
+
                 TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException e)

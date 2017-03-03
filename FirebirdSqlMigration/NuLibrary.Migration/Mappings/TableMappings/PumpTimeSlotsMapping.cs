@@ -1,5 +1,7 @@
-﻿using NuLibrary.Migration.FBDatabase.FBTables;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
+using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
@@ -14,7 +16,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     /// <summary>
     /// Note: Has relationship with - 
     /// </summary>
-    public class PumpTimeSlotsMapping : BaseMapping
+    public class PumpTimeSlotsMapping : BaseMapping, IContextHandler
     {
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
@@ -56,6 +58,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var keyId = mu.ParseInt(row["KEYID"].ToString());
                     var programKey = mu.ParseInt(row["PROGRAMNUMBER"].ToString());
                     var programName = (row["PROGRAMNAME"] is DBNull) ? "Name" : row["PROGRAMNAME"].ToString();
+                    var createDate = (row["CREATEDATE"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
                     //var pp = mu.FindPumpProgram(programName, programKey);
                     //var ppId = pp.PumpProgramId;
 
@@ -74,10 +77,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 StopTime = new TimeSpan(bastop.Ticks)
                             };
 
-                            tempBasal.Add(bats);
+                            if (createDate != DateTime.MinValue)
+                            {
+                                tempBasal.Add(bats);
+                            }
+                            else
+                            {
+                                TransactionManager.FailedMappingCollection
+                                .Add(new FailedMappings
+                                {
+                                    Tablename = FbTableName,
+                                    ObjectType = typeof(BasalProgramTimeSlot),
+                                    JsonSerializedObject = JsonConvert.SerializeObject(bats),
+                                    FailedReason = "Unable to add BasalProgramTimeSlot to database because creation date was null."
+                                });
+                            }
                         }
-
-                        //TransactionManager.DatabaseContext.BasalProgramTimeSlots.Add(bats);
 
                         if (i < 13)
                         {
@@ -92,19 +107,53 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                     StartTime = new TimeSpan(botime.Ticks)
                                 };
 
-                                tempBolus.Add(bots);
+                                if (createDate != DateTime.MinValue)
+                                {
+                                    tempBolus.Add(bots);
+                                }
+                                else
+                                {
+                                    TransactionManager.FailedMappingCollection
+                                    .Add(new FailedMappings
+                                    {
+                                        Tablename = FbTableName,
+                                        ObjectType = typeof(BolusProgramTimeSlot),
+                                        JsonSerializedObject = JsonConvert.SerializeObject(bots),
+                                        FailedReason = "Unable to add BolusProgramTimeSlot to database because creation date was null."
+                                    });
+                                }
                             }
-
-                            //TransactionManager.DatabaseContext.BolusProgramTimeSlots.Add(bots);
                         }
                     }
-                }
 
+                    if (createDate == DateTime.MinValue)
+                    {
+                        FailedCount++;
+                    }
+
+                    Array.ForEach(tempBasal.ToArray(), a => {
+                        MemoryMappings.AddBasalPrgTimeSlot(userId, createDate, a);
+                    });
+
+                    Array.ForEach(tempBolus.ToArray(), a => {
+                        MemoryMappings.AddBolusPrgTimeSlot(userId, createDate, a);
+                    });
+                }
             }
             catch (Exception e)
             {
                 throw new Exception("Error creating Pump Program Time Slot mapping.", e);
             }
+        }
+
+        public void AddToContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
         }
     }
 }

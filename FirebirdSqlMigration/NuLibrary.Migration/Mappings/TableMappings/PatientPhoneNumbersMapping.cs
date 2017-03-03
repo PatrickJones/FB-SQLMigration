@@ -96,13 +96,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void AddToContext()
         {
-            TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(CompletedMappings);
+            //TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()
         {
             try
             {
+                TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(CompletedMappings);
                 TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (DbEntityValidationException e)

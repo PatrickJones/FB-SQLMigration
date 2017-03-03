@@ -136,7 +136,7 @@ namespace MigrationApp
                 "METERREADINGHEADER",
                 "NDCS",
                 "PATIENTPUMP",
-                "PATEINTPUMPPROGRAM",
+                "PATIENTPUMPPROGRAM",
                 "PATIENTS",
                 "PHONENUMBERS",
                 "PUMPTIMESLOTS",

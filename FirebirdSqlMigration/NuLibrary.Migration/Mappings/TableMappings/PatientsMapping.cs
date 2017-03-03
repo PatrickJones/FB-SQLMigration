@@ -126,7 +126,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                TransactionManager.DatabaseContext.SaveChanges();
+                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
@@ -136,14 +136,16 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void AddToContext()
         {
-            TransactionManager.DatabaseContext.Users.AddRange(newUsers);
-            TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
+            //TransactionManager.DatabaseContext.Users.AddRange(newUsers);
+            //TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()
         {
             try
             {
+                TransactionManager.DatabaseContext.Users.AddRange(newUsers);
+                TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
                 TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (DbEntityValidationException e)

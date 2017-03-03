@@ -54,15 +54,25 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (userId != Guid.Empty)
                     {
+                        List<PumpSetting> settings = null;
+
+                        if (MemoryMappings.GetAllPumpSettings().ContainsKey(userId))
+                        {
+                            var set = MemoryMappings.GetAllPumpSettings().Where(k => k.Key == userId).Single();
+                            settings = set.Value;
+                        }
+                        
                         var pum = new Pump
                         {
                             UserId = userId,
+                            PumpType = "Meter",
                             PumpName = (row["PUMPBRAND"] is DBNull) ? String.Empty : row["PUMPBRAND"].ToString(),
                             PumpStartDate = mu.ParseFirebirdDateTime(row["PUMPSTARTDATE"].ToString()),
                             PumpInfusionSet = (row["PUMPINFUSIONSET"] is DBNull) ? String.Empty : row["PUMPINFUSIONSET"].ToString(),
                             Cannula = mu.ParseDouble(row["CANNULA"].ToString()),
                             ReplacementDate = mu.ParseFirebirdDateTime(row["DATEREPLACED"].ToString()),
-                            Notes = (row["NOTES"] is DBNull) ? String.Empty : row["NOTES"].ToString()
+                            Notes = (row["NOTES"] is DBNull) ? String.Empty : row["NOTES"].ToString(),
+                            PumpSettings = settings
                         };
 
                         MemoryMappings.AddPump(pum);
@@ -121,7 +131,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 return (ctx.Pumps.Any(a => a.UserId == userId && a.PumpName == pumpName)) ? false : true;
             }
         }
-
-
     }
 }

@@ -1,9 +1,11 @@
-﻿using NuLibrary.Migration.FBDatabase.FBTables;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -36,7 +38,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public int RecordCount = 0;
         public int FailedCount = 0;
 
-        public void CreatePumpProgramssMapping()
+        public void CreatePumpProgramsMapping()
         {
 
             try
@@ -52,7 +54,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (userId != Guid.Empty)
                     {
-                        var CreationDate = mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
+                        var CreationDate = (row["CREATEDATE"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
                         var Source = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString();
                         var Valid = mu.ParseFirebirdBoolean(row["ACTIVEPROGRAM"].ToString());
 
@@ -69,8 +71,25 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 p.Valid = Valid;
                                 p.ProgramKey = pKey;
                                 p.NumOfSegments = 7;
+                                p.ProgramName = $"Prog {pKey}";
+                                p.BasalProgramTimeSlots = GetBasalPrgTimeSlots(userId, CreationDate);
+                                p.BolusProgramTimeSlots = GetBolusPrgTimeSlots(userId, CreationDate);
 
-                                MemoryMappings.AddPumpProgram(userId, pKey, p);
+                                if (CreationDate != DateTime.MinValue)
+                                {
+                                    MemoryMappings.AddPumpProgram(userId, pKey, p);
+                                }
+                                else
+                                {
+                                    TransactionManager.FailedMappingCollection
+                                    .Add(new FailedMappings
+                                    {
+                                        Tablename = FbTableName,
+                                        ObjectType = typeof(PumpProgram),
+                                        JsonSerializedObject = JsonConvert.SerializeObject(p),
+                                        FailedReason = "Unable to add PumpProgram to database because creation date was null."
+                                    });
+                                }
                             }
                         }
                     }
@@ -81,6 +100,50 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating PumpProgram mapping.", e);
             }
+        }
+
+        private ICollection<BolusProgramTimeSlot> GetBolusPrgTimeSlots(Guid userId, DateTime creationDate)
+        {
+            var slots = MemoryMappings.GetAllBolusPrgTimeSlots();
+            ConcurrentBag<BolusProgramTimeSlot> results = new ConcurrentBag<BolusProgramTimeSlot>();
+
+            if (slots.ContainsKey(userId))
+            {
+                var set = slots[userId];
+                Array.ForEach(set.ToArray(), s => {
+                    if (s.Key == creationDate)
+                    {
+                        Parallel.ForEach(s.Value.ToArray(), v => {
+                            results.Add(v);
+                    });
+                    }
+                });
+                //results = (set.ContainsKey(creationDate)) ? set[creationDate] : results;
+            }
+
+            return results.ToList();
+        }
+
+        private ICollection<BasalProgramTimeSlot> GetBasalPrgTimeSlots(Guid userId, DateTime creationDate)
+        {
+            var slots = MemoryMappings.GetAllBasalPrgTimeSlots();
+            ConcurrentBag<BasalProgramTimeSlot> results = new ConcurrentBag<BasalProgramTimeSlot>();
+
+            if (slots.ContainsKey(userId))
+            {
+                var set = slots[userId];
+                Array.ForEach(set.ToArray(), s => {
+                    if (s.Key == creationDate)
+                    {
+                        Parallel.ForEach(s.Value.ToArray(), v => {
+                            results.Add(v);
+                        });
+                    }
+                });
+                //results = (set.ContainsKey(creationDate)) ? set[creationDate] : results;
+            }
+
+            return results.ToList();
         }
     }
 }

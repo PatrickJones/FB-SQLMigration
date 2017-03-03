@@ -301,12 +301,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 CompletedPumpProgramMappings = ccPumpProg.ToList();
 
-                //using (var ctx = new NuMedicsGlobalEntities())
-                //{
-                //    ctx.PumpPrograms.AddRange(CompletedPumpProgramMappings);
-                //    ctx.SaveChanges();
-                //}
-
                 var pTaskList = new List<Task>();
 
                 int pSkip = 0;

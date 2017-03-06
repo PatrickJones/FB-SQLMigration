@@ -37,6 +37,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public ICollection<PatientDevice> CompletedMappings = new List<PatientDevice>();
         public ICollection<PumpSetting> CompletedPumpSettingMappings = new List<PumpSetting>();
         public ICollection<PumpProgram> CompletedPumpProgramMappings = new List<PumpProgram>();
+        public ICollection<BasalProgramTimeSlot> CompletedBasalProgramTimeSlots = new List<BasalProgramTimeSlot>();
+        public ICollection<BolusProgramTimeSlot> CompletedBolusProgramTimeSlots = new List<BolusProgramTimeSlot>();
 
         public int RecordCount = 0;
         public int FailedCount = 0;
@@ -102,26 +104,41 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 mrh.Pump.PumpKeyId = mrh.ReadingKeyId;
 
 
-                                //if (ePump.PumpPrograms != null)
-                                //{
-                                //    mrh.Pump.PumpPrograms = new List<PumpProgram>();
-                                //    Array.ForEach(ePump.PumpPrograms.ToArray(), p =>
-                                //    {
-                                //        var prog = new PumpProgram
-                                //        {
-                                //            CreationDate = p.CreationDate,
-                                //            NumOfSegments = p.NumOfSegments,
-                                //            ProgramKey = p.ProgramKey,
-                                //            ProgramName = p.ProgramName,
-                                //            Source = p.Source,
-                                //            Valid = p.Valid,
-                                //            PumpKeyId = mrh.Pump.PumpKeyId
-                                //        };
+                                if (ePump.PumpPrograms != null)
+                                {
+                                    mrh.Pump.PumpPrograms = new List<PumpProgram>();
+                                    Array.ForEach(ePump.PumpPrograms.ToArray(), p =>
+                                    {
+                                        var prog = new PumpProgram
+                                        {
+                                            CreationDate = p.CreationDate,
+                                            NumOfSegments = p.NumOfSegments,
+                                            ProgramKey = p.ProgramKey,
+                                            ProgramName = p.ProgramName,
+                                            Source = p.Source,
+                                            Valid = p.Valid,
+                                            PumpKeyId = mrh.Pump.PumpKeyId
+                                        };
 
-                                //        //mrh.Pump.PumpPrograms.Add(prog);
-                                //        CompletedPumpProgramMappings.Add(prog);
-                                //    });
-                                //}
+                                        CompletedPumpProgramMappings.Add(prog);
+
+                                        if (p.BasalProgramTimeSlots != null && p.BasalProgramTimeSlots.Count != 0)
+                                        {
+                                            Array.ForEach(p.BasalProgramTimeSlots.ToArray(), a => {
+                                                prog.BasalProgramTimeSlots.Add(a);
+                                                //CompletedBasalProgramTimeSlots.Add(a);
+                                            });
+                                        }
+
+                                        if (p.BolusProgramTimeSlots != null && p.BolusProgramTimeSlots.Count != 0)
+                                        {
+                                            Array.ForEach(p.BolusProgramTimeSlots.ToArray(), r => {
+                                                prog.BolusProgramTimeSlots.Add(r);
+                                                //CompletedBolusProgramTimeSlots.Add(r);
+                                            });
+                                        }
+                                    });
+                                }
 
                                 if (ePump.PumpSettings != null)
                                 {
@@ -226,6 +243,13 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 throw new Exception("Error saving PatientDevice entity", e);
             }
 
+            //var taskList = new List<Task> {
+            //    Task.Factory.StartNew(() => { SaveCompletedPumpSettingMappings(); }),
+            //    Task.Factory.StartNew(() => { SaveCompletedPumpProgramMappings(); })
+            //};
+
+            //Task.WaitAll(taskList.ToArray());
+
             SaveCompletedPumpSettingMappings();
         }
 
@@ -233,29 +257,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var taskList = new List<Task>();
-
-                int skip = 0;
-                int take = 10000;
-
-                while (skip < CompletedPumpSettingMappings.Count)
+                using (var ctx = new NuMedicsGlobalEntities())
                 {
-                    var task = Task.Factory.StartNew(() => {
-                        using (var ctx = new NuMedicsGlobalEntities())
-                        {
-                            var range = CompletedPumpSettingMappings.Skip(skip).Take(take).ToList();
-
-                            ctx.PumpSettings.AddRange(range);
-                            ctx.SaveChanges();
-                        }
-                    });
-
-                    taskList.Add(task);
-
-                    skip = skip + take;
+                    ctx.PumpSettings.AddRange(CompletedPumpSettingMappings);
+                    ctx.SaveChanges();
                 }
-
-                Task.WaitAll(taskList.ToArray());
             }
             catch (DbEntityValidationException e)
             {
@@ -273,57 +279,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var ccPumps = new ConcurrentBag<Pump>(TransactionManager.DatabaseContext.Pumps);
-                var ccPumpProg = new ConcurrentBag<PumpProgram>();
-                var ccTup = new ConcurrentDictionary<Guid, List<Tuple<int, PumpProgram>>>(MemoryMappings.GetAllPumpPrograms());
-
-                Parallel.ForEach(ccPumps.ToArray(), p =>
+                using (var ctx = new NuMedicsGlobalEntities())
                 {
-                    Parallel.ForEach(ccTup.Where(w => w.Key == p.UserId).Select(s => s.Value).ToArray(), l =>
-                    {
-                        Parallel.ForEach(l.ToArray(), g =>
-                        {
-                            var prog = new PumpProgram
-                            {
-                                CreationDate = g.Item2.CreationDate,
-                                NumOfSegments = g.Item2.NumOfSegments,
-                                ProgramKey = g.Item2.ProgramKey,
-                                ProgramName = g.Item2.ProgramName,
-                                Source = g.Item2.Source,
-                                Valid = g.Item2.Valid,
-                                PumpKeyId = p.PumpKeyId
-                            };
-
-                            ccPumpProg.Add(prog);
-                        });
-                    });
-                });
-
-                CompletedPumpProgramMappings = ccPumpProg.ToList();
-
-                var pTaskList = new List<Task>();
-
-                int pSkip = 0;
-                int pTake = 10000;
-
-                while (pSkip < CompletedPumpProgramMappings.Count)
-                {
-                    var task = Task.Factory.StartNew(() => {
-                        using (var ctx = new NuMedicsGlobalEntities())
-                        {
-                            var range = CompletedPumpProgramMappings.Skip(pSkip).Take(pTake).ToList();
-
-                            ctx.PumpPrograms.AddRange(range);
-                            ctx.SaveChanges();
-                        }
-                    });
-
-                    pTaskList.Add(task);
-
-                    pSkip = pSkip + pTake;
+                    ctx.PumpPrograms.AddRange(CompletedPumpProgramMappings);
+                    ctx.SaveChanges();
                 }
-
-                Task.WaitAll(pTaskList.ToArray());
             }
             catch (DbEntityValidationException e)
             {
@@ -333,7 +293,51 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error saving PumpProgram entity", e);
             }
+
+            //SaveCompletedBasalProgramTimeSlotMappings();
         }
+
+        //private void SaveCompletedBasalProgramTimeSlotMappings()
+        //{
+        //    try
+        //    {
+        //        using (var ctx = new NuMedicsGlobalEntities())
+        //        {
+        //            ctx.BasalProgramTimeSlots.AddRange(CompletedBasalProgramTimeSlots);
+        //            ctx.SaveChanges();
+        //        }
+        //    }
+        //    catch (DbEntityValidationException e)
+        //    {
+        //        throw new Exception("Error validating BasalProgramTimeSlot entity", e);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("Error saving BasalProgramTimeSlot entity", e);
+        //    }
+
+        //    SaveCompletedBolusProgramTimeSlotMappings();
+        //}
+
+        //private void SaveCompletedBolusProgramTimeSlotMappings()
+        //{
+        //    try
+        //    {
+        //        using (var ctx = new NuMedicsGlobalEntities())
+        //        {
+        //            ctx.BolusProgramTimeSlots.AddRange(CompletedBolusProgramTimeSlots);
+        //            ctx.SaveChanges();
+        //        }
+        //    }
+        //    catch (DbEntityValidationException e)
+        //    {
+        //        throw new Exception("Error validating BolusProgramTimeSlot entity", e);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("Error saving BolusProgramTimeSlot entity", e);
+        //    }
+        //}
 
         private bool CanAddToContext(Guid userId, string serialNumber)
         {

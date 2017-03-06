@@ -197,6 +197,35 @@ namespace NuLibrary.Migration.Mappings
                 mapInstances[i].Value.SaveChanges();
             }
 
+            //using (var ctx = new NuMedicsGlobalEntities())
+            //{
+            //    Array.ForEach(ctx.Pumps.ToArray(), p =>
+            //    {
+            //        p.PumpPrograms = new List<PumpProgram>();
+
+            //        var tupList = MemoryMappings.GetAllPumpPrograms().Where(w => w.Key == p.UserId).Select(s => s.Value).ToArray();
+            //        Array.ForEach(tupList, l =>
+            //        {
+            //            Array.ForEach(l.ToArray(), g =>
+            //            {
+            //                var prog = new PumpProgram
+            //                {
+            //                    CreationDate = g.Item2.CreationDate,
+            //                    NumOfSegments = g.Item2.NumOfSegments,
+            //                    ProgramKey = g.Item2.ProgramKey,
+            //                    ProgramName = g.Item2.ProgramName,
+            //                    Source = g.Item2.Source,
+            //                    Valid = g.Item2.Valid
+            //                };
+
+            //                p.PumpPrograms.Add(prog);
+            //            });
+            //        });
+            //    });
+
+            //    ctx.SaveChanges();
+            //}
+
             //AddDmDataSet();
 
             CommitExecution();

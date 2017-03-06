@@ -73,8 +73,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             {
                                 //PumpProgramId = ppId,
                                 BasalValue = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
-                                StartTime = new TimeSpan(bastart.Ticks),
-                                StopTime = new TimeSpan(bastop.Ticks)
+                                StartTime = bastart.TimeOfDay,
+                                StopTime = bastop.TimeOfDay
                             };
 
                             if (createDate != DateTime.MinValue)
@@ -104,7 +104,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 {
                                     //PumpProgramId = ppId,
                                     BolusValue = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
-                                    StartTime = new TimeSpan(botime.Ticks)
+                                    StartTime = botime.TimeOfDay
                                 };
 
                                 if (createDate != DateTime.MinValue)

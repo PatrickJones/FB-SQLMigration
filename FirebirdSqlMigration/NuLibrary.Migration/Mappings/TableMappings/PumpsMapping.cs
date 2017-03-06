@@ -55,13 +55,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     if (userId != Guid.Empty)
                     {
                         List<PumpSetting> settings = null;
+                        List<PumpProgram> programs = null;
 
                         if (MemoryMappings.GetAllPumpSettings().ContainsKey(userId))
                         {
                             var set = MemoryMappings.GetAllPumpSettings().Where(k => k.Key == userId).Single();
                             settings = set.Value;
                         }
-                        
+
+                        if (MemoryMappings.GetAllPumpPrograms().ContainsKey(userId))
+                        {
+                            var prog = MemoryMappings.GetAllPumpPrograms().Where(p => p.Key == userId).Single();
+                            var tl = prog.Value;
+                            programs = new List<PumpProgram>();
+                            Array.ForEach(tl.ToArray(), a => { programs.Add(a.Item2); });
+                        }
+
                         var pum = new Pump
                         {
                             UserId = userId,
@@ -72,7 +81,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             Cannula = mu.ParseDouble(row["CANNULA"].ToString()),
                             ReplacementDate = mu.ParseFirebirdDateTime(row["DATEREPLACED"].ToString()),
                             Notes = (row["NOTES"] is DBNull) ? String.Empty : row["NOTES"].ToString(),
-                            PumpSettings = settings
+                            PumpSettings = settings,
+                            PumpPrograms = programs
                         };
 
                         MemoryMappings.AddPump(pum);

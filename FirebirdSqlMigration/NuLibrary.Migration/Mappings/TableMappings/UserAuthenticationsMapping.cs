@@ -100,7 +100,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (CanAddToContext(user.UserId))
                     {
-                        //TransactionManager.DatabaseContext.Users.Add(user); 
                         CompletedMappings.Add(user);
                     }
                     else
@@ -116,8 +115,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         FailedCount++;
                     }
                 }
-
-                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {

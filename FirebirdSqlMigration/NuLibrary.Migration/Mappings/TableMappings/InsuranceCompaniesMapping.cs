@@ -84,7 +84,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                         if (CanAddToContext(ips.Name))
                         {
-                            //TransactionManager.DatabaseContext.InsuranceProviders.Add(ips);
                             CompletedMappings.Add(ips);
                         }
                         else
@@ -102,7 +101,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                     }
                 }
-                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
@@ -132,7 +130,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
-
         private bool CanAddToContext(string providerName)
         {
             if (String.IsNullOrEmpty(providerName))
@@ -145,6 +142,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 return (ctx.InsuranceProviders.Any(a => a.Name == providerName)) ? false : true;
             }
         }
-
     }
 }

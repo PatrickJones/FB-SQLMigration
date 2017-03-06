@@ -78,7 +78,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                         if (CanAddToContext(insp.UserId, insp.PlanType, insp.PolicyNumber))
                         {
-                            //TransactionManager.DatabaseContext.InsurancePlans.Add(insp);
                             tempCompanyId.Add(new Tuple<string, InsurancePlan>(row["INSCOID"].ToString(), insp));
                             CompletedMappings.Add(insp);
                         }
@@ -95,11 +94,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                             FailedCount++;
                         }
-                        
                     }
                 }
-
-                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
@@ -138,7 +134,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 throw new Exception("Error saving InsurancePlan entity", e);
             }
         }
-
 
         private bool CanAddToContext(Guid userId, string planType, string policyNumber)
         {

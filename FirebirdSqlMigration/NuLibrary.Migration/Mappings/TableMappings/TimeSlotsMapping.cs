@@ -67,16 +67,12 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             {
                                 d.TImeSlotBoundary = (row[$"SLOT{i}END"] is DBNull) ? new TimeSpan(12, 0, 0) : mu.ParseFirebirdTimespan(row[$"SLOT{i}END"].ToString());
                             }
-                            //d.CareSettingsId = caresetId;
 
-                            //TransactionManager.DatabaseContext.DailyTimeSlots.Add(d);
                             tempMappings.Add(new Tuple<Guid, DailyTimeSlot>(userId, d));
                             CompletedMappings.Add(d);
                         }
                     }
                 }
-
-                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
@@ -118,7 +114,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
-
         private bool CanAddToContext(string providerName)
         {
             if (String.IsNullOrEmpty(providerName))
@@ -131,6 +126,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 return (ctx.InsuranceProviders.Any(a => a.Name == providerName)) ? false : true;
             }
         }
-
     }
 }

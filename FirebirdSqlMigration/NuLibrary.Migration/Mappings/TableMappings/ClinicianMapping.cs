@@ -44,7 +44,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (CanAddToContext(clin.UserId) && instId != Guid.Empty)
                     {
-                        //TransactionManager.DatabaseContext.Clinicians.Add(clin);
                         CompletedMappings.Add(clin);
                     }
                     else
@@ -62,9 +61,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         FailedCount++;
                     }
                 }
-
-                //TransactionManager.DatabaseContext.SaveChanges();
-
             }
             catch (Exception e)
             {
@@ -95,7 +91,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
-
         private bool CanAddToContext(Guid userId)
         {
             using (var ctx = new NuMedicsGlobalEntities())
@@ -103,6 +98,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 return (ctx.Clinicians.Any(c => c.UserId == userId)) ? false : true;
             }
         }
-
     }
 }

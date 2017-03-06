@@ -72,8 +72,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         user.CreationDate = DateTime.Now;
 
                         newUsers.Add(user);
-                        //TransactionManager.DatabaseContext.Users.Add(user);
-                        //TransactionManager.DatabaseContext.SaveChanges();
                     }
 
                     var pat = new Patient
@@ -108,7 +106,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (CanAddToContext(user.UserId))
                     {
-                        //TransactionManager.DatabaseContext.Patients.Add(pat);
                         CompletedMappings.Add(pat);
                     }
                     else
@@ -125,8 +122,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         FailedCount++;
                     }
                 }
-
-                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {

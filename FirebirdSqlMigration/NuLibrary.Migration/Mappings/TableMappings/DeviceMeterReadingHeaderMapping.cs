@@ -243,13 +243,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 throw new Exception("Error saving PatientDevice entity", e);
             }
 
-            //var taskList = new List<Task> {
-            //    Task.Factory.StartNew(() => { SaveCompletedPumpSettingMappings(); }),
-            //    Task.Factory.StartNew(() => { SaveCompletedPumpProgramMappings(); })
-            //};
-
-            //Task.WaitAll(taskList.ToArray());
-
             SaveCompletedPumpSettingMappings();
         }
 
@@ -293,51 +286,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error saving PumpProgram entity", e);
             }
-
-            //SaveCompletedBasalProgramTimeSlotMappings();
         }
-
-        //private void SaveCompletedBasalProgramTimeSlotMappings()
-        //{
-        //    try
-        //    {
-        //        using (var ctx = new NuMedicsGlobalEntities())
-        //        {
-        //            ctx.BasalProgramTimeSlots.AddRange(CompletedBasalProgramTimeSlots);
-        //            ctx.SaveChanges();
-        //        }
-        //    }
-        //    catch (DbEntityValidationException e)
-        //    {
-        //        throw new Exception("Error validating BasalProgramTimeSlot entity", e);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception("Error saving BasalProgramTimeSlot entity", e);
-        //    }
-
-        //    SaveCompletedBolusProgramTimeSlotMappings();
-        //}
-
-        //private void SaveCompletedBolusProgramTimeSlotMappings()
-        //{
-        //    try
-        //    {
-        //        using (var ctx = new NuMedicsGlobalEntities())
-        //        {
-        //            ctx.BolusProgramTimeSlots.AddRange(CompletedBolusProgramTimeSlots);
-        //            ctx.SaveChanges();
-        //        }
-        //    }
-        //    catch (DbEntityValidationException e)
-        //    {
-        //        throw new Exception("Error validating BolusProgramTimeSlot entity", e);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception("Error saving BolusProgramTimeSlot entity", e);
-        //    }
-        //}
 
         private bool CanAddToContext(Guid userId, string serialNumber)
         {
@@ -351,6 +300,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 return (ctx.PatientDevices.Any(a => a.UserId == userId && a.SerialNumber == serialNumber)) ? false : true;
             }
         }
-
     }
 }

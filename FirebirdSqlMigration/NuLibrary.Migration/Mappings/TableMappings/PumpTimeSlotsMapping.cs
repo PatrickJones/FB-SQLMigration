@@ -59,8 +59,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var programKey = mu.ParseInt(row["PROGRAMNUMBER"].ToString());
                     var programName = (row["PROGRAMNAME"] is DBNull) ? "Name" : row["PROGRAMNAME"].ToString();
                     var createDate = (row["CREATEDATE"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
-                    //var pp = mu.FindPumpProgram(programName, programKey);
-                    //var ppId = pp.PumpProgramId;
 
                     for (int i = 1; i < 25; i++)
                     {
@@ -71,7 +69,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         {
                             BasalProgramTimeSlot bats = new BasalProgramTimeSlot
                             {
-                                //PumpProgramId = ppId,
                                 BasalValue = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
                                 StartTime = bastart.TimeOfDay,
                                 StopTime = bastop.TimeOfDay
@@ -102,7 +99,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             {
                                 BolusProgramTimeSlot bots = new BolusProgramTimeSlot
                                 {
-                                    //PumpProgramId = ppId,
                                     BolusValue = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
                                     StartTime = botime.TimeOfDay
                                 };

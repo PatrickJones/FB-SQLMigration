@@ -76,7 +76,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                                 if (CanAddToContext(ps.SettingValue))
                                 {
-                                    //TransactionManager.DatabaseContext.Patients.Add(pat);
                                     CompletedMappings.Add(ps);
                                 }
                                 else

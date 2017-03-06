@@ -78,27 +78,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                //do
-                //{
-                //    var range = CompletedMappings.Take(1000).ToList();
-
-                //    if (range.Count != 0)
-                //    {
-                //        Array.ForEach(range.ToArray(), c =>
-                //        {
-                //            if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
-                //            {
-                //                TransactionManager.DatabaseContext.Subscriptions.Add(c);
-                //                CompletedMappings.Remove(c);
-                //            }
-                //        });
-
-                //        TransactionManager.DatabaseContext.SaveChanges();
-                //        //TransactionManager.DatabaseContext.Subscriptions.RemoveRange(range); 
-                //    }
-
-                //} while (CompletedMappings.Count > 0);
-
                 Array.ForEach(CompletedMappings.ToArray(), c =>
                 {
                     if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))

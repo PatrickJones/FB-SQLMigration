@@ -91,7 +91,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         {
                             DiabetesControlType dct = new DiabetesControlType();
                             dct.ControlName = item.Key;
-                            //dct.CareSettingsId = careset.CareSettingsId;
                             dct.DMDataId = dm.DMDataId;
                             dct.IsEnabled = (item.Value) ? true : false;
 
@@ -145,7 +144,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 throw new Exception("Error saving CareSetting entity", e);
             }
         }
-
 
         private bool CanAddToContext(Guid userId, int hyperglycemicLevel, int hypoglycemicLevel)
         {

@@ -94,7 +94,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                     }
                 }
-
             }
             catch (Exception e)
             {
@@ -118,7 +117,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     });
                     }
                 });
-                //results = (set.ContainsKey(creationDate)) ? set[creationDate] : results;
             }
 
             return results.ToList();
@@ -140,7 +138,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         });
                     }
                 });
-                //results = (set.ContainsKey(creationDate)) ? set[creationDate] : results;
             }
 
             return results.ToList();

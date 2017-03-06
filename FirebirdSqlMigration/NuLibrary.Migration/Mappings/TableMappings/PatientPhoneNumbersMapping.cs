@@ -68,7 +68,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (userId != Guid.Empty && CanAddToContext(patNum.Number))
                     {
-                        //TransactionManager.DatabaseContext.PatientPhoneNumbers.Add(patNum);
                         CompletedMappings.Add(patNum);
                     }
                     else
@@ -85,8 +84,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         FailedCount++;
                     }
                 }
-
-                //TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (Exception e)
             {
@@ -115,7 +112,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 throw new Exception("Error saving PatientPhonenumber entity", e);
             }
         }
-
 
         private bool CanAddToContext(string phoneNumber)
         {

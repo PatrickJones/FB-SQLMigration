@@ -19,24 +19,27 @@ namespace NuLibrary.Migration.Mappings
         }
         public static bool ExecuteTransaction()
         {
-            bool result = false;
-            using (var trans = DatabaseContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    trans.Commit();
-                }
-                catch (Exception e)
-                {
-                    var msg = e.Message;
-                    trans.Rollback();
-                }
-                finally
-                {
-                    DatabaseContext.Dispose();
-                }
-            }
-            return result;
+            DatabaseContext.Dispose();
+            return true;
+
+            //bool result = false;
+            //using (var trans = DatabaseContext.Database.BeginTransaction())
+            //{
+            //    try
+            //    {
+            //        trans.Commit();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        var msg = e.Message;
+            //        trans.Rollback();
+            //    }
+            //    finally
+            //    {
+            //        DatabaseContext.Dispose();
+            //    }
+            //}
+            //return result;
         }
     }
 }

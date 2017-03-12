@@ -231,8 +231,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "PatientDevices",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.PatientDevices.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {
@@ -252,8 +263,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 using (var ctx = new NuMedicsGlobalEntities())
                 {
+                    var stats = new SqlTableStats
+                    {
+                        Tablename = "PumpSettings",
+                        PreSaveCount = CompletedPumpSettingMappings.Count()
+                    };
+
+                    stats.StartTimer();
                     ctx.PumpSettings.AddRange(CompletedPumpSettingMappings);
-                    ctx.SaveChanges();
+                    int saved = ctx.SaveChanges();
+                    stats.StopTimer();
+                    stats.PostSaveCount = saved;
+
+                    MappingStatistics.SqlTableStatistics.Add(stats);
                 }
             }
             catch (DbEntityValidationException e)
@@ -274,8 +296,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 using (var ctx = new NuMedicsGlobalEntities())
                 {
+                    var stats = new SqlTableStats
+                    {
+                        Tablename = "PumpPrograms",
+                        PreSaveCount = CompletedPumpProgramMappings.Count
+                    };
+
+                    stats.StartTimer();
                     ctx.PumpPrograms.AddRange(CompletedPumpProgramMappings);
-                    ctx.SaveChanges();
+                    int saved = ctx.SaveChanges();
+                    stats.StopTimer();
+                    stats.PostSaveCount = saved;
+
+                    MappingStatistics.SqlTableStatistics.Add(stats);
                 }
             }
             catch (DbEntityValidationException e)

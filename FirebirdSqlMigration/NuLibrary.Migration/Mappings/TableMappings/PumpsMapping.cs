@@ -115,13 +115,27 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void AddToContext()
         {
-            TransactionManager.DatabaseContext.Pumps.AddRange(CompletedMappings);
+            //TransactionManager.DatabaseContext.Pumps.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()
         {
             try
             {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "Pumps",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.Pumps.AddRange(CompletedMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+
                 TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (DbEntityValidationException e)

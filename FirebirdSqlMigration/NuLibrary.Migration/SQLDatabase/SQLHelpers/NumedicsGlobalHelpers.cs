@@ -76,6 +76,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.Users.Any(a => a.UserId == userId);
         }
 
+        public User GetUser(Guid userId)
+        {
+            return db.Users.Where(w => w.UserId == userId).FirstOrDefault();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

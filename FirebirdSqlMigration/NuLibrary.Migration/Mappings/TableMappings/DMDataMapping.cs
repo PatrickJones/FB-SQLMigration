@@ -132,8 +132,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "CareSettings",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.CareSettings.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {

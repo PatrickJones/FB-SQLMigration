@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NuLibrary.Migration.Interfaces;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
@@ -8,6 +9,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace NuLibrary.Migration.Mappings.TableMappings
 {
@@ -21,7 +23,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public int RecordCount = 0;
         public int FailedCount = 0;
 
-
         public void CreateClinicianMapping()
         {
             try
@@ -31,18 +32,16 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 foreach (var adUser in aHelper.GetAllAdminsUsers())
                 {
-                    var instId = nHelper.GetInstitutionId(adUser.CPSiteId);
 
                     var clin = new Clinician
                     {
                         UserId = adUser.UserId,
                         Firstname = "No Name",
                         Lastname = "No Name",
-                        StateLicenseNumber = "No License Number",
-                        InstitutionId = instId
+                        StateLicenseNumber = "No License Number"
                     };
 
-                    if (CanAddToContext(clin.UserId) && instId != Guid.Empty)
+                    if (CanAddToContext(clin.UserId))
                     {
                         CompletedMappings.Add(clin);
                     }
@@ -54,7 +53,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 Tablename = "Clinicians",
                                 ObjectType = typeof(Clinician),
                                 JsonSerializedObject = JsonConvert.SerializeObject(clin),
-                                FailedReason = (instId == Guid.Empty) ? "Clinician is not linked to institution." : "Clinician already exist in database."
+                                FailedReason = "Clinician already exist in database."
                                 
                             });
 
@@ -78,8 +77,35 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                TransactionManager.DatabaseContext.Clinicians.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                // loop through mappings to assign clinicians to saved users
+                Array.ForEach(CompletedMappings.ToArray(), c => {
+
+                    User user = nHelper.GetUser(c.UserId);
+                    var siteId = MemoryMappings.GetSiteIdFromPatientInfo(c.UserId);
+                    var instId = nHelper.GetInstitutionId(siteId);
+
+                    if (instId != Guid.Empty)
+                    {
+                        c.InstitutionId = instId;
+
+                        var usr = TransactionManager.DatabaseContext.Users.Where(u => u.UserId == c.UserId).FirstOrDefault();
+                        usr.Clinician = c;
+                    }
+                });
+
+                var stats = new SqlTableStats
+                {
+                    Tablename = "Clinicians",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
+                //TransactionManager.DatabaseContext.Clinicians.AddRange(CompletedMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {

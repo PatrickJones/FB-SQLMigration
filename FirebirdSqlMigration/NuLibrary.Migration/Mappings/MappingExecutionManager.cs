@@ -21,6 +21,8 @@ namespace NuLibrary.Migration.Mappings
         /// </summary>
         public Dictionary<int, KeyValuePair<Type, IContextHandler>> mapInstances = new Dictionary<int, KeyValuePair<Type, IContextHandler>>();
 
+        public bool MappingsCompleted = false;
+
         /// <summary>
         /// Constructor that initializes mapping instances.
         /// </summary>
@@ -177,7 +179,8 @@ namespace NuLibrary.Migration.Mappings
                                 };
 
                                 Task.WhenAll(taskSetF).ContinueWith(doneF => {
-                                    UpdateContext();
+                                    //UpdateContext();
+                                    MappingsCompleted = true;
                                 });
                             });
                         });
@@ -228,7 +231,7 @@ namespace NuLibrary.Migration.Mappings
 
             //AddDmDataSet();
 
-            CommitExecution();
+            //CommitExecution();
         }
 
         //private void AddDmDataSet()

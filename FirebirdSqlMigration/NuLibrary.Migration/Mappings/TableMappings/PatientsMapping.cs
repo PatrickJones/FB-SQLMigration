@@ -139,17 +139,56 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "Users",
+                    PreSaveCount = newUsers.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.Users.AddRange(newUsers);
-                TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+                SavePatients();
             }
             catch (DbEntityValidationException e)
             {
-                throw new Exception("Error validating Patient entity", e);
+                throw new Exception("Error validating Users entity", e);
             }
             catch (Exception e)
             {
-                throw new Exception("Error saving Patient entity", e);
+                throw new Exception("Error saving Users entity", e);
+            }
+        }
+
+        private void SavePatients()
+        {
+            try
+            {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "Patients",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Patients entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Patients entity", e);
             }
         }
 

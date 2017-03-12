@@ -115,16 +115,27 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "PumpSettings",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.PumpSettings.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {
-                throw new Exception("Error validating PumpSetting entity", e);
+                throw new Exception("Error validating PumpSettings entity", e);
             }
             catch (Exception e)
             {
-                throw new Exception("Error saving PumpSetting entity", e);
+                throw new Exception("Error saving PumpSettings entity", e);
             }
         }
 

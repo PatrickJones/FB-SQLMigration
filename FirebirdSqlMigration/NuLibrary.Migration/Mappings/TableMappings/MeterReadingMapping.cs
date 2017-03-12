@@ -79,24 +79,206 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
+                var stats = new SqlTableStats
+                {
+                    Tablename = "BloodGlucoseReadings",
+                    PreSaveCount = CompletedBGMappings.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(CompletedBGMappings);
-                TransactionManager.DatabaseContext.NutritionReadings.AddRange(CompletedNutritionMappings);
-                TransactionManager.DatabaseContext.ReadingEvents.AddRange(CompletedReadingEventMappings);
-                TransactionManager.DatabaseContext.DeviceSettings.AddRange(CompletedDeviceSettingsMappings);
-                TransactionManager.DatabaseContext.BasalDeliveries.AddRange(CompletedBasalMappings);
-                TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(CompletedTDDMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
 
+                MappingStatistics.SqlTableStatistics.Add(stats);
+                SaveTotalDailyInsulinDeliveries();
 
-                TransactionManager.DatabaseContext.SaveChanges();
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException e)
             {
-                throw new Exception("Error validating meter reading mapped entity", e);
+                throw new Exception("Error validating Blood Glucose Reading mapped entity", e);
             }
             catch (Exception e)
             {
-                throw new Exception("Error saving meter reading mapped entity", e);
+                throw new Exception("Error saving Blood Glucose Reading mapped entity", e);
+            }
+        }
+
+        private void SaveTotalDailyInsulinDeliveries()
+        {
+            try
+            {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "TotalDailyInsulinDeliveries",
+                    PreSaveCount = CompletedTDDMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(CompletedTDDMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+                SaveBasalDeliveries();
+
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Total Daily Insulin Deliveries entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Total Daily Insulin Deliveries mapped entity", e);
+            }
+        }
+
+        private void SaveBasalDeliveries()
+        {
+            try
+            {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "BasalDeliveries",
+                    PreSaveCount = CompletedBasalMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.BasalDeliveries.AddRange(CompletedBasalMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+                SaveDeviceSettings();
+
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Basal Deliveries mapped entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Basal Deliveries mapped entity", e);
+            }
+        }
+
+        private void SaveDeviceSettings()
+        {
+            try
+            {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "DeviceSettings",
+                    PreSaveCount = CompletedDeviceSettingsMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.DeviceSettings.AddRange(CompletedDeviceSettingsMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+                SaveReadingEvents();
+
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Device Settings mapped entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Device Settings mapped entity", e);
+            }
+        }
+
+        private void SaveReadingEvents()
+        {
+            try
+            {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "ReadingEvents",
+                    PreSaveCount = CompletedReadingEventMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.ReadingEvents.AddRange(CompletedReadingEventMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+                SaveNutritionReadings();
+
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Reading Events mapped entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Reading Events mapped entity", e);
+            }
+        }
+
+        private void SaveNutritionReadings()
+        {
+            try
+            {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "NutritionReadings",
+                    PreSaveCount = CompletedNutritionMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.NutritionReadings.AddRange(CompletedNutritionMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+                SaveBolusDeliveries();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Nutrition Reading mapped entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Nutrition Reading mapped entity", e);
+            }
+        }
+
+        private void SaveBolusDeliveries()
+        {
+            try
+            {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "BolusDeliveries",
+                    PreSaveCount = CompletedBolusMappings.Count()
+                };
+
+                stats.StartTimer();
+                TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                throw new Exception("Error validating Bolus Delivery mapped entity", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error saving Bolus Delivery mapped entity", e);
             }
         }
 
@@ -112,6 +294,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 return (ctx.PatientDevices.Any(a => a.UserId == userId && a.SerialNumber == serialNumber)) ? false : true;
             }
         }
-
     }
 }

@@ -31,6 +31,8 @@ namespace MigrationApp
         BackgroundWorker bWorker = new BackgroundWorker();
         BackgroundWorker bTrans = new BackgroundWorker();
 
+        MappingExecutionManager mm;
+
         int selectedSiteId = 0;
         List<string> tableNames = new List<string>();
 
@@ -72,6 +74,13 @@ namespace MigrationApp
 
         private void BTrans_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            foreach (var st in MappingStatistics.SqlTableStatistics)
+            {
+                listBox.Items.Add(st.ToString());
+            }
+
+            MappingStatistics.ExportToLog();
+
             lblStatusBar.Content = "Transaction Complete.";
         }
 
@@ -99,11 +108,17 @@ namespace MigrationApp
                 Array.ForEach(tableNames.ToArray(), a => {
                     DispatchLabel($"Populating table {a}...");
                 });
-            }    
+            }
 
             DispatchLabel("Mapping table...");
-            MappingExecutionManager mm = new MappingExecutionManager();
+
+            mm = new MappingExecutionManager();
             mm.BeginExecution();
+
+            while (!mm.MappingsCompleted)
+            {
+                
+            }
 
             DispatchLabel("Mapping Complete.");
         }
@@ -148,6 +163,9 @@ namespace MigrationApp
         private void btnExecute_Click(object sender, RoutedEventArgs e)
         {
             lblStatusBar.Content = "Executing transaction...";
+
+            mm.UpdateContext();
+
             bTrans.RunWorkerAsync();
 
             btnExecute.IsEnabled = false;

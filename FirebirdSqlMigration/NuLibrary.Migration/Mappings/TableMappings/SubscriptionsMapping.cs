@@ -78,6 +78,15 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
+
+                var stats = new SqlTableStats
+                {
+                    Tablename = "Subscriptions",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
+
                 Array.ForEach(CompletedMappings.ToArray(), c =>
                 {
                     if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
@@ -86,6 +95,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 });
 
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {

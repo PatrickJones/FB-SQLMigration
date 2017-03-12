@@ -240,6 +240,11 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
             return patientInfo.Where(w => w.Item1 == siteId && w.Item2 == patientId).Select(s => s.Item3).FirstOrDefault();
         }
 
+        public static int GetSiteIdFromPatientInfo(Guid userId)
+        {
+            return patientInfo.Where(w => w.Item3 == userId).Select(s => s.Item1).FirstOrDefault();
+        }
+
         public static void AddPatientInfo(int siteId, string patientId, Guid userId)
         {
             if (siteId != 0 && !String.IsNullOrEmpty(patientId) && userId != Guid.Empty)

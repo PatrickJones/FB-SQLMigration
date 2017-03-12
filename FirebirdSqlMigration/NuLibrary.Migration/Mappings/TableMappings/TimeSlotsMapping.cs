@@ -101,8 +101,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     a.Item2.CareSettingsId = careSetting.CareSettingsId;
                 });
 
+                var stats = new SqlTableStats
+                {
+                    Tablename = "DailyTimeSlots",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.DailyTimeSlots.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {

@@ -5,14 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MigrationApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="700">
+        Title="MainWindow" Height="500" Width="1017">
     <Grid>
         <TextBox x:Name="tbxSiteId" HorizontalAlignment="Left" Height="23" Margin="140,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="lblSiteId" Content="SiteId" HorizontalAlignment="Left" Margin="140,38,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" Margin="310,65,0,0" VerticalAlignment="Top" Width="75" Click="btnLoad_Click"/>
-        <Button x:Name="btnExecute" Content="Execute" HorizontalAlignment="Left" Margin="310,90,0,0" VerticalAlignment="Top" Width="75" Click="btnExecute_Click"/>
+        <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" Margin="270,65,0,0" VerticalAlignment="Top" Width="75" Click="btnLoad_Click"/>
+        <Button x:Name="btnExecute" Content="Execute" HorizontalAlignment="Left" Margin="270,90,0,0" VerticalAlignment="Top" Width="75" Click="btnExecute_Click"/>
         <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Margin="10,433,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.579,0.423" Width="672"/>
         <ComboBox x:Name="cbxSiteIds" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxSiteIds_SelectionChanged"/>
         <Label x:Name="lblSiteSelect" Content="Select Site Id" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="364" Margin="360,64,0,0" VerticalAlignment="Top" Width="639">
+            <StackPanel Orientation="Horizontal"></StackPanel>
+        </ListBox>
     </Grid>
 </Window>

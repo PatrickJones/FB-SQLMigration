@@ -122,8 +122,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     a.Item2.CompanyId = nHelper.GetInsuranceCompanyId(a.Item1);
                 });
 
+                var stats = new SqlTableStats
+                {
+                    Tablename = "InsurancePlans",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.InsurancePlans.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {

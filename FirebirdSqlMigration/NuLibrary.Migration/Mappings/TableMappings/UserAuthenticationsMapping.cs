@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
@@ -27,10 +28,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var dataSet = aHelper.GetAllUsers();
+                var dataSet = aHelper.GetAllUsers().Where(w => w.CPSiteId.Value == MigrationVariables.CurrentSiteId).ToList();
                 RecordCount = dataSet.Count;
 
-                foreach (var adUser in aHelper.GetAllUsers())
+                foreach (var adUser in dataSet)
                 {
                     aspnet_Membership member;
                     aspnet_Users aspUser;
@@ -38,7 +39,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     Guid appId = nHelper.GetApplicationId("Diabetes Partner");
                     bool isAdmin = (adUser.CliniProID.ToLower() == "admin") ? true : false;
                     bool isAdminSiteUser = false;
-
 
                     if (isAdmin)
                     {
@@ -118,7 +118,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
             catch (Exception e)
             {
-                throw new Exception("Error creating UserAuthentication mapping.", e);
+                throw new Exception("Error creating User mapping.", e);
             }
 
         }
@@ -131,16 +131,27 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
+                var stats = new SqlTableStats
+                {
+                    Tablename = "User",
+                    PreSaveCount = CompletedMappings.Count()
+                };
+
+                stats.StartTimer();
                 TransactionManager.DatabaseContext.Users.AddRange(CompletedMappings);
-                TransactionManager.DatabaseContext.SaveChanges();
+                int saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.StopTimer();
+                stats.PostSaveCount = saved;
+
+                MappingStatistics.SqlTableStatistics.Add(stats);
             }
             catch (DbEntityValidationException e)
             {
-                throw new Exception("Error validating UserAuthentication entity", e);
+                throw new Exception("Error validating User entity", e);
             }
             catch (Exception e)
             {
-                throw new Exception("Error saving UserAuthentication entity", e);
+                throw new Exception("Error saving User entity", e);
             }
         }
 

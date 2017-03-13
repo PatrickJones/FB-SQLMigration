@@ -19,7 +19,7 @@ namespace NuLibrary.Migration.SqlValidations
 
         public UserTypeValidation(DbContext context)
         {
-            db = (NuMedicsGlobalEntities)context;
+         var      db = (NuMedicsGlobalEntities)context;
             Init();
         }
 

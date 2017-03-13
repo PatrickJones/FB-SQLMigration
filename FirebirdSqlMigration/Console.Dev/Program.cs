@@ -33,22 +33,22 @@ namespace Console.Dev
 
 
 
-            MigrationVariables.CurrentSiteId = 20001;
+            //MigrationVariables.CurrentSiteId = 20001;
             //var t = TableAgentCollection.TableAgents;
             //System.Console.ReadLine();
 
             //TestMeterReadings();
             //TestTransaction();
             //TestValidation();
-            //CreateEnums();
+            CreateEnums();
             //TestPatientTransaction();
             //TestInstitutionMapping();
             //TestClinicianMapping();
             //TestDmdataMapping();
 
-            double ans = (Double)9 / (Double)4;
-            System.Console.WriteLine(ans);
-            System.Console.ReadLine();
+            //double ans = (Double)9 / (Double)4;
+            //System.Console.WriteLine(ans);
+            //System.Console.ReadLine();
         }
 
         private static void TestMeterReadings()

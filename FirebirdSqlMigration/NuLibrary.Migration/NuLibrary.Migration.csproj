@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AssemblyVersion>1.0.65.2</AssemblyVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,8 +52,9 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NuMedicsGlobalEnums">
-      <HintPath>..\Console.Dev\bin\Debug\NuMedicsGlobalEnums.dll</HintPath>
+    <Reference Include="NuMedicsGlobalEnums, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Console.Dev\bin\Localhost\NuMedicsGlobalEnums.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -376,15 +379,20 @@
     <Compile Include="SqlValidations\ValidateTables.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="App.Localhost.config">
       <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="packages.config" />
     <EntityDeploy Include="SQLDatabase\EF\AspnetDbModel.edmx">
@@ -455,5 +463,12 @@
     </PropertyGroup>
     <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
     <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
+  </Target>
+  <Import Project="..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets" Condition="Exists('..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets'))" />
   </Target>
 </Project>

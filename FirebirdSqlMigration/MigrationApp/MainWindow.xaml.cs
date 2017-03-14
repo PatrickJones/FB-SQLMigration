@@ -74,30 +74,36 @@ namespace MigrationApp
 
         private void BTrans_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            foreach (var st in MappingStatistics.SqlTableStatistics)
+            lblStatusBar.Content = "Transaction Complete.";
+
+            foreach (var st in MappingStatistics.SqlTableStatistics.OrderBy(o => o.Tablename))
             {
-                listBox.Items.Add(st.ToString());
+                lstbxStats.Items.Add(st.ToString());
             }
 
             MappingStatistics.ExportToLog();
-
-            lblStatusBar.Content = "Transaction Complete.";
         }
 
         private void BWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            foreach (var st in MappingStatistics.MappingStats.OrderBy(o => o.FBTablename).ThenBy(t => t.SQLTablename))
+            {
+                listBox.Items.Add(st.ToString());
+            }
+
             btnExecute.IsEnabled = true;
         }
 
         private void BTrans_DoWork(object sender, DoWorkEventArgs e)
         {
             DispatchLabel("Beginning transaction...");
+            
             TransactionManager.ExecuteTransaction();
         }
 
         private void BWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (tableNames.Count() == 0)
+            if (tableNames.Count == 0)
             {
                 DispatchLabel("Populating all tables...");
                 TableAgentCollection.Populate();
@@ -119,6 +125,8 @@ namespace MigrationApp
             {
                 
             }
+
+            
 
             DispatchLabel("Mapping Complete.");
         }

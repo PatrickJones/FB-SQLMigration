@@ -88,19 +88,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            TransactionManager.FailedMappingCollection
-                                .Add(new FailedMappings
-                                {
-                                    Tablename = FbTableName,
-                                    ObjectType = typeof(InsuranceProvider),
-                                    JsonSerializedObject = JsonConvert.SerializeObject(ips),
-                                    FailedReason = "Insurance Provider already exist in database."
-                                });
+                            //TransactionManager.FailedMappingCollection
+                            //    .Add(new FailedMappings
+                            //    {
+                            //        Tablename = FbTableName,
+                            //        ObjectType = typeof(InsuranceProvider),
+                            //        JsonSerializedObject = JsonConvert.SerializeObject(ips),
+                            //        FailedReason = "Insurance Provider already exist in database."
+                            //    });
 
+                            MappingStatistics.LogFailedMapping("InsuranceProviders", typeof(InsuranceProvider), JsonConvert.SerializeObject(ips), "Insurance Provider already exist in database.");
                             FailedCount++;
                         }
                     }
                 }
+
+                MappingStatistics.LogMappingStat("INSURANCECOS", RecordCount, "InsuranceProviders", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -123,10 +126,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.InsuranceProviders.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

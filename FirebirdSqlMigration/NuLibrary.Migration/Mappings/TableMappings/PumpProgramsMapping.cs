@@ -81,19 +81,24 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    TransactionManager.FailedMappingCollection
-                                    .Add(new FailedMappings
-                                    {
-                                        Tablename = FbTableName,
-                                        ObjectType = typeof(PumpProgram),
-                                        JsonSerializedObject = JsonConvert.SerializeObject(p),
-                                        FailedReason = "Unable to add PumpProgram to database because creation date was null."
-                                    });
+                                    //TransactionManager.FailedMappingCollection
+                                    //.Add(new FailedMappings
+                                    //{
+                                    //    Tablename = FbTableName,
+                                    //    ObjectType = typeof(PumpProgram),
+                                    //    JsonSerializedObject = JsonConvert.SerializeObject(p),
+                                    //    FailedReason = "Unable to add PumpProgram to database because creation date was null."
+                                    //});
+
+                                    MappingStatistics.LogFailedMapping("PumpPrograms", typeof(PumpProgram), JsonConvert.SerializeObject(p), "Unable to add PumpProgram to database because creation date was null.");
+                                    FailedCount++;
                                 }
                             }
                         }
                     }
+
                 }
+                MappingStatistics.LogMappingStat("PATIENTPUMPPROGRAM", RecordCount, "PumpPrograms", 0, MemoryMappings.GetAllPumpPrograms().Count, FailedCount);
             }
             catch (Exception e)
             {

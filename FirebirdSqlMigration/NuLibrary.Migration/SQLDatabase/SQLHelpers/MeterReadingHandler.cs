@@ -83,13 +83,13 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("DEVICESETTINGS", typeof(DeviceSetting), JsonConvert.SerializeObject(row), "Failed to map User Setting reading.");
+                MappingStatistics.LogFailedMapping("DEVICESETTINGS", typeof(DeviceSetting), JsonConvert.SerializeObject(row), "Failed to map User Setting reading.");
             }
         }
 
         private void NoReadingTypeMatch(DataRow row)
         {
-            FailedMappings("METERREADING", typeof(DataRow), JsonConvert.SerializeObject(row), "Failed to parse METERREADING row.");
+            MappingStatistics.LogFailedMapping("METERREADING", typeof(DataRow), JsonConvert.SerializeObject(row), "Failed to parse METERREADING row.");
         }
 
         private void ExtractNutrition(DataRow row)
@@ -140,7 +140,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("NUTRITIONREADINGS", typeof(NutritionReading), JsonConvert.SerializeObject(row), "Failed to map nutrition reading.");
+                MappingStatistics.LogFailedMapping("NUTRITIONREADINGS", typeof(NutritionReading), JsonConvert.SerializeObject(row), "Failed to map nutrition reading.");
             }
         }
 
@@ -211,7 +211,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("READINGEVENT", typeof(ReadingEvent), JsonConvert.SerializeObject(row), "Failed to map reading event.");
+                MappingStatistics.LogFailedMapping("READINGEVENT", typeof(ReadingEvent), JsonConvert.SerializeObject(row), "Failed to map reading event.");
             }
         }
 
@@ -268,7 +268,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BOLUS reading.");
+                MappingStatistics.LogFailedMapping("BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BOLUS reading.");
             }
         }
 
@@ -299,7 +299,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BASAL reading.");
+                MappingStatistics.LogFailedMapping("BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BASAL reading.");
             }
         }
 
@@ -341,7 +341,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("TOTALDAILYINSULINDELIVERY", typeof(TotalDailyInsulinDelivery), JsonConvert.SerializeObject(row), "Failed to map TotalDailyInsulinDelivery reading.");
+                MappingStatistics.LogFailedMapping("TOTALDAILYINSULINDELIVERY", typeof(TotalDailyInsulinDelivery), JsonConvert.SerializeObject(row), "Failed to map TotalDailyInsulinDelivery reading.");
             }
         }
 
@@ -371,7 +371,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map BASAL reading.");
+                MappingStatistics.LogFailedMapping("BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map BASAL reading.");
             }
         }
 
@@ -451,7 +451,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map BOLUS reading.");
+                MappingStatistics.LogFailedMapping("BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map BOLUS reading.");
             }
         }
 
@@ -540,20 +540,20 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
             else
             {
-                FailedMappings("BLOODGLUCOSEREADING", typeof(BloodGlucoseReading), JsonConvert.SerializeObject(row), "Failed to map BG reading.");
+                MappingStatistics.LogFailedMapping("BLOODGLUCOSEREADING", typeof(BloodGlucoseReading), JsonConvert.SerializeObject(row), "Failed to map BG reading.");
             }
         }
 
-        private void FailedMappings(string tableName, Type objectType, string json, string reason)
-        {
-            TransactionManager.FailedMappingCollection
-                    .Add(new FailedMappings
-                    {
-                        Tablename = tableName,
-                        ObjectType = objectType,
-                        JsonSerializedObject = json,
-                        FailedReason = reason
-                    });
-        }
+        //private void FailedMappings(string tableName, Type objectType, string json, string reason)
+        //{
+        //    TransactionManager.FailedMappingCollection
+        //            .Add(new FailedMappings
+        //            {
+        //                Tablename = tableName,
+        //                ObjectType = objectType,
+        //                JsonSerializedObject = json,
+        //                FailedReason = reason
+        //            });
+        //}
     }
 }

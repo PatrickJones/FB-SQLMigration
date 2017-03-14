@@ -85,10 +85,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedBGMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(CompletedBGMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -115,10 +113,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedTDDMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(CompletedTDDMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -145,10 +141,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedBasalMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.BasalDeliveries.AddRange(CompletedBasalMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -175,10 +169,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedDeviceSettingsMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.DeviceSettings.AddRange(CompletedDeviceSettingsMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -205,10 +197,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedReadingEventMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.ReadingEvents.AddRange(CompletedReadingEventMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -235,10 +225,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedNutritionMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.NutritionReadings.AddRange(CompletedNutritionMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -264,10 +252,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedBolusMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

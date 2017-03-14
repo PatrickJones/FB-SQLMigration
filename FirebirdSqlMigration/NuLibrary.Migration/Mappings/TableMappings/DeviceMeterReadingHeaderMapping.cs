@@ -56,8 +56,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTKEYID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-
-
                     if (userId != Guid.Empty)
                     {
                         var dmData = MemoryMappings.GetAllDiabetesManagementData().Where(w => w.UserId == userId).FirstOrDefault();
@@ -192,19 +190,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            TransactionManager.FailedMappingCollection
-                                .Add(new FailedMappings
-                                {
-                                    Tablename = FbTableName,
-                                    ObjectType = typeof(PatientDevice),
-                                    JsonSerializedObject = JsonConvert.SerializeObject(dev),
-                                    FailedReason = "Unable to add Patient Device to database."
-                                });
+                            //TransactionManager.FailedMappingCollection
+                            //    .Add(new FailedMappings
+                            //    {
+                            //        Tablename = FbTableName,
+                            //        ObjectType = typeof(PatientDevice),
+                            //        JsonSerializedObject = JsonConvert.SerializeObject(dev),
+                            //        FailedReason = "Unable to add Patient Device to database."
+                            //    });
 
+                            MappingStatistics.LogFailedMapping("PatientDevices", typeof(PatientDevice), JsonConvert.SerializeObject(dev), "Unable to add Patient Device to database.");
                             FailedCount++;
                         }
                     }
                 }
+
+                MappingStatistics.LogMappingStat("METERREADINGHEADER", RecordCount, "PatientDevices", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -237,10 +238,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.PatientDevices.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -269,10 +268,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         PreSaveCount = CompletedPumpSettingMappings.Count()
                     };
 
-                    stats.StartTimer();
                     ctx.PumpSettings.AddRange(CompletedPumpSettingMappings);
                     int saved = ctx.SaveChanges();
-                    stats.StopTimer();
                     stats.PostSaveCount = saved;
 
                     MappingStatistics.SqlTableStatistics.Add(stats);
@@ -302,10 +299,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         PreSaveCount = CompletedPumpProgramMappings.Count
                     };
 
-                    stats.StartTimer();
                     ctx.PumpPrograms.AddRange(CompletedPumpProgramMappings);
                     int saved = ctx.SaveChanges();
-                    stats.StopTimer();
                     stats.PostSaveCount = saved;
 
                     MappingStatistics.SqlTableStatistics.Add(stats);

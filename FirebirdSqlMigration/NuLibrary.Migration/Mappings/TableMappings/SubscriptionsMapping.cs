@@ -43,19 +43,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            TransactionManager.FailedMappingCollection
-                                .Add(new FailedMappings
-                                {
-                                    Tablename = "Subscriptions",
-                                    ObjectType = typeof(Subscription),
-                                    JsonSerializedObject = JsonConvert.SerializeObject(sub),
-                                    FailedReason = "Subscription already exist in database."
-                                });
+                            //TransactionManager.FailedMappingCollection
+                            //    .Add(new FailedMappings
+                            //    {
+                            //        Tablename = "Subscriptions",
+                            //        ObjectType = typeof(Subscription),
+                            //        JsonSerializedObject = JsonConvert.SerializeObject(sub),
+                            //        FailedReason = "Subscription already exist in database."
+                            //    });
 
+                            MappingStatistics.LogFailedMapping("Subscriptions", typeof(Subscription), JsonConvert.SerializeObject(sub), "Subscription already exist in database.");
                             FailedCount++;
                         }
                     }
                 }
+
+                MappingStatistics.LogMappingStat("None", 0, "Subscriptions", RecordCount, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -85,8 +88,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
-
                 Array.ForEach(CompletedMappings.ToArray(), c =>
                 {
                     if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
@@ -96,7 +97,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 });
 
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

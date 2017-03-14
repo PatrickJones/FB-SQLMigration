@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
@@ -27,10 +28,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var dataSet = aHelper.GetAllAdminsUsers();
+                var dataSet = aHelper.GetAllAdminsUsers().Where(w => w.CPSiteId == MigrationVariables.CurrentSiteId).ToList();
                 RecordCount = dataSet.Count;
 
-                foreach (var adUser in aHelper.GetAllAdminsUsers())
+                foreach (var adUser in dataSet)
                 {
 
                     var clin = new Clinician
@@ -47,19 +48,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        TransactionManager.FailedMappingCollection
-                            .Add(new FailedMappings
-                            {
-                                Tablename = "Clinicians",
-                                ObjectType = typeof(Clinician),
-                                JsonSerializedObject = JsonConvert.SerializeObject(clin),
-                                FailedReason = "Clinician already exist in database."
+                        //TransactionManager.FailedMappingCollection
+                        //    .Add(new FailedMappings
+                        //    {
+                        //        Tablename = "Clinicians",
+                        //        ObjectType = typeof(Clinician),
+                        //        JsonSerializedObject = JsonConvert.SerializeObject(clin),
+                        //        FailedReason = "Clinician already exist in database."
                                 
-                            });
+                        //    });
 
+                        MappingStatistics.LogFailedMapping("Clinicians", typeof(Clinician), JsonConvert.SerializeObject(clin), "Clinician already exist in database.");
                         FailedCount++;
                     }
                 }
+
+                MappingStatistics.LogMappingStat("None", 0, "Clinicians", RecordCount, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -99,10 +103,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 //TransactionManager.DatabaseContext.Clinicians.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

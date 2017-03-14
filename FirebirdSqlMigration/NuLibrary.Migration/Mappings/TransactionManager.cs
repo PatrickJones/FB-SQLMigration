@@ -11,7 +11,6 @@ namespace NuLibrary.Migration.Mappings
     public static class TransactionManager
     {
         public static NuMedicsGlobalEntities DatabaseContext;
-        public static ConcurrentBag<FailedMappings> FailedMappingCollection = new ConcurrentBag<FailedMappings>();
 
         static TransactionManager()
         {

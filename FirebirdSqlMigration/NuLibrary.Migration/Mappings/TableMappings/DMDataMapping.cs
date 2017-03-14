@@ -51,7 +51,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
                 RecordCount = TableAgent.RowCount;
 
-                foreach (DataRow row in TableAgent.DataSet.Tables[FbTableName].Rows)
+                foreach (DataRow row in dataSet)
                 {
                     // get userid from old aspnetdb matching on patientid #####.#####
                     var patId = row["PATIENTID"].ToString();
@@ -103,19 +103,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            TransactionManager.FailedMappingCollection
-                                .Add(new FailedMappings
-                                {
-                                    Tablename = FbTableName,
-                                    ObjectType = typeof(CareSetting),
-                                    JsonSerializedObject = JsonConvert.SerializeObject(careset),
-                                    FailedReason = "Unable to add Care Setting to database."
-                                });
+                            //TransactionManager.FailedMappingCollection
+                            //    .Add(new FailedMappings
+                            //    {
+                            //        Tablename = FbTableName,
+                            //        ObjectType = typeof(CareSetting),
+                            //        JsonSerializedObject = JsonConvert.SerializeObject(careset),
+                            //        FailedReason = "Unable to add Care Setting to database."
+                            //    });
 
+                            MappingStatistics.LogFailedMapping("CareSettings", typeof(CareSetting), JsonConvert.SerializeObject(careset), "Unable to add Care Setting to database.");
                             FailedCount++;
                         }
                     }
                 }
+
+                MappingStatistics.LogMappingStat("DMDATA", RecordCount, "CareSettings", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -138,10 +141,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.CareSettings.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

@@ -104,17 +104,20 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        TransactionManager.FailedMappingCollection
-                            .Add(new FailedMappings
-                            {
-                                Tablename = "Users",
-                                ObjectType = typeof(User),
-                                JsonSerializedObject = JsonConvert.SerializeObject(user),
-                                FailedReason = "User already exist in database."
-                            });
+                        //TransactionManager.FailedMappingCollection
+                        //    .Add(new FailedMappings
+                        //    {
+                        //        Tablename = "Users",
+                        //        ObjectType = typeof(User),
+                        //        JsonSerializedObject = JsonConvert.SerializeObject(user),
+                        //        FailedReason = "User already exist in database."
+                        //    });
+                        MappingStatistics.LogFailedMapping("Users", typeof(User), JsonConvert.SerializeObject(user), "User already exist in database.");
                         FailedCount++;
                     }
                 }
+
+                MappingStatistics.LogMappingStat("None", 0, "Users", RecordCount, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -137,10 +140,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.Users.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

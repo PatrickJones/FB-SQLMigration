@@ -93,19 +93,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            TransactionManager.FailedMappingCollection
-                                .Add(new FailedMappings
-                                {
-                                    Tablename = FbTableName,
-                                    ObjectType = typeof(Pump),
-                                    JsonSerializedObject = JsonConvert.SerializeObject(pum),
-                                    FailedReason = "Unable to add Pump to database."
-                                });
+                            //TransactionManager.FailedMappingCollection
+                            //    .Add(new FailedMappings
+                            //    {
+                            //        Tablename = FbTableName,
+                            //        ObjectType = typeof(Pump),
+                            //        JsonSerializedObject = JsonConvert.SerializeObject(pum),
+                            //        FailedReason = "Unable to add Pump to database."
+                            //    });
 
+                            MappingStatistics.LogFailedMapping("Pumps", typeof(Pump), JsonConvert.SerializeObject(pum), "Unable to add Pump to database.");
                             FailedCount++;
                         }
                     }
                 }
+
+                MappingStatistics.LogMappingStat("PATIENTPUMP", RecordCount, "Pumps", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -128,10 +131,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.Pumps.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

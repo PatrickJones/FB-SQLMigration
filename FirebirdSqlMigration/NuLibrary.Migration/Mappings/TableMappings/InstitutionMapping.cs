@@ -47,17 +47,20 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        TransactionManager.FailedMappingCollection
-                            .Add(new FailedMappings {
-                                Tablename = "Institutions",
-                                ObjectType = typeof(Institution),
-                                JsonSerializedObject = JsonConvert.SerializeObject(inst),
-                                FailedReason = "Instition already exist in database."
-                            });
+                        //TransactionManager.FailedMappingCollection
+                        //    .Add(new FailedMappings {
+                        //        Tablename = "Institutions",
+                        //        ObjectType = typeof(Institution),
+                        //        JsonSerializedObject = JsonConvert.SerializeObject(inst),
+                        //        FailedReason = "Instition already exist in database."
+                        //    });
 
+                        MappingStatistics.LogFailedMapping("Institutions", typeof(Institution), JsonConvert.SerializeObject(inst), "Instition already exist in database.");
                         FailedCount++;
                     }
                 }
+
+                MappingStatistics.LogMappingStat("None", 0, "Institutions", RecordCount, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -80,10 +83,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.Institutions.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

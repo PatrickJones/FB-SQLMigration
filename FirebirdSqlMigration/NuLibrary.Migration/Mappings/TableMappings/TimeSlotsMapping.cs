@@ -73,6 +73,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                     }
                 }
+
+                MappingStatistics.LogMappingStat("TIMESLOT", RecordCount, "DailyTimeSlots", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -107,10 +109,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.DailyTimeSlots.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

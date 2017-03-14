@@ -72,18 +72,21 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        TransactionManager.FailedMappingCollection
-                            .Add(new FailedMappings
-                            {
-                                Tablename = "PatientPhoneNumbers",
-                                ObjectType = typeof(PatientPhoneNumber),
-                                JsonSerializedObject = JsonConvert.SerializeObject(patNum),
-                                FailedReason = "Patient phone number already exist in database."
-                            });
+                        //TransactionManager.FailedMappingCollection
+                        //    .Add(new FailedMappings
+                        //    {
+                        //        Tablename = "PatientPhoneNumbers",
+                        //        ObjectType = typeof(PatientPhoneNumber),
+                        //        JsonSerializedObject = JsonConvert.SerializeObject(patNum),
+                        //        FailedReason = "Patient phone number already exist in database."
+                        //    });
 
+                        MappingStatistics.LogFailedMapping("PatientPhoneNumbers", typeof(PatientPhoneNumber), JsonConvert.SerializeObject(patNum), "Patient phone number already exist in database.");
                         FailedCount++;
                     }
                 }
+
+                MappingStatistics.LogMappingStat("PHONENUMBERS", RecordCount, "PatientPhoneNumbers", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -106,10 +109,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

@@ -80,14 +80,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             }
                             else
                             {
-                                TransactionManager.FailedMappingCollection
-                                .Add(new FailedMappings
-                                {
-                                    Tablename = FbTableName,
-                                    ObjectType = typeof(BasalProgramTimeSlot),
-                                    JsonSerializedObject = JsonConvert.SerializeObject(bats),
-                                    FailedReason = "Unable to add BasalProgramTimeSlot to database because creation date was null."
-                                });
+                                //TransactionManager.FailedMappingCollection
+                                //.Add(new FailedMappings
+                                //{
+                                //    Tablename = FbTableName,
+                                //    ObjectType = typeof(BasalProgramTimeSlot),
+                                //    JsonSerializedObject = JsonConvert.SerializeObject(bats),
+                                //    FailedReason = "Unable to add BasalProgramTimeSlot to database because creation date was null."
+                                //});
+
+                                MappingStatistics.LogFailedMapping("BasalProgramTimeSlots", typeof(BasalProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
+                                FailedCount++;
                             }
                         }
 
@@ -109,14 +112,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    TransactionManager.FailedMappingCollection
-                                    .Add(new FailedMappings
-                                    {
-                                        Tablename = FbTableName,
-                                        ObjectType = typeof(BolusProgramTimeSlot),
-                                        JsonSerializedObject = JsonConvert.SerializeObject(bots),
-                                        FailedReason = "Unable to add BolusProgramTimeSlot to database because creation date was null."
-                                    });
+                                    //TransactionManager.FailedMappingCollection
+                                    //.Add(new FailedMappings
+                                    //{
+                                    //    Tablename = FbTableName,
+                                    //    ObjectType = typeof(BolusProgramTimeSlot),
+                                    //    JsonSerializedObject = JsonConvert.SerializeObject(bots),
+                                    //    FailedReason = "Unable to add BolusProgramTimeSlot to database because creation date was null."
+                                    //});
+
+                                    MappingStatistics.LogFailedMapping("BolusProgramTimeSlots", typeof(BolusProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
+                                    FailedCount++;
                                 }
                             }
                         }
@@ -135,6 +141,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         MemoryMappings.AddBolusPrgTimeSlot(userId, createDate, a);
                     });
                 }
+
+                MappingStatistics.LogMappingStat("PUMPTIMESLOTS", RecordCount, "BasalProgramTimeSlots", 0, MemoryMappings.GetAllBasalPrgTimeSlots().Count, FailedCount);
+                MappingStatistics.LogMappingStat("PUMPTIMESLOTS", RecordCount, "BolusProgramTimeSlots", 0, MemoryMappings.GetAllBolusPrgTimeSlots().Count, FailedCount);
             }
             catch (Exception e)
             {

@@ -80,15 +80,16 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    TransactionManager.FailedMappingCollection
-                                        .Add(new FailedMappings
-                                        {
-                                            Tablename = "PumpSettings",
-                                            ObjectType = typeof(PumpSetting),
-                                            JsonSerializedObject = JsonConvert.SerializeObject(ps),
-                                            FailedReason = "Pump Setting has no value."
-                                        });
+                                    //TransactionManager.FailedMappingCollection
+                                    //    .Add(new FailedMappings
+                                    //    {
+                                    //        Tablename = "PumpSettings",
+                                    //        ObjectType = typeof(PumpSetting),
+                                    //        JsonSerializedObject = JsonConvert.SerializeObject(ps),
+                                    //        FailedReason = "Pump Setting has no value."
+                                    //    });
 
+                                    MappingStatistics.LogFailedMapping("PumpSettings", typeof(PumpSetting), JsonConvert.SerializeObject(ps), "Pump Setting has no value.");
                                     FailedCount++;
                                 }
                             }
@@ -99,6 +100,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         MemoryMappings.AddPumpSetting(userId, tempList);
                     }
                 }
+
+                MappingStatistics.LogMappingStat("INSULETPUMPSETTINGS", RecordCount, "PumpSettings", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -121,10 +124,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.PumpSettings.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

@@ -110,18 +110,21 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        TransactionManager.FailedMappingCollection
-                            .Add(new FailedMappings
-                            {
-                                Tablename = "Patients",
-                                ObjectType = typeof(Patient),
-                                JsonSerializedObject = JsonConvert.SerializeObject(user),
-                                FailedReason = "Patient already exist in database."
-                            });
+                        //TransactionManager.FailedMappingCollection
+                        //    .Add(new FailedMappings
+                        //    {
+                        //        Tablename = "Patients",
+                        //        ObjectType = typeof(Patient),
+                        //        JsonSerializedObject = JsonConvert.SerializeObject(user),
+                        //        FailedReason = "Patient already exist in database."
+                        //    });
 
+                        MappingStatistics.LogFailedMapping("Patients", typeof(Patient), JsonConvert.SerializeObject(user), "Patient already exist in database.");
                         FailedCount++;
                     }
                 }
+
+                MappingStatistics.LogMappingStat("PATIENTS", RecordCount, "Patients", 0, CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -145,10 +148,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = newUsers.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.Users.AddRange(newUsers);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
@@ -174,10 +175,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                stats.StartTimer();
                 TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.StopTimer();
                 stats.PostSaveCount = saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);

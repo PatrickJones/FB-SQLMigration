@@ -43,15 +43,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            //TransactionManager.FailedMappingCollection
-                            //    .Add(new FailedMappings
-                            //    {
-                            //        Tablename = "Subscriptions",
-                            //        ObjectType = typeof(Subscription),
-                            //        JsonSerializedObject = JsonConvert.SerializeObject(sub),
-                            //        FailedReason = "Subscription already exist in database."
-                            //    });
-
                             MappingStatistics.LogFailedMapping("Subscriptions", typeof(Subscription), JsonConvert.SerializeObject(sub), "Subscription already exist in database.");
                             FailedCount++;
                         }
@@ -64,17 +55,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating Subscription mapping.", e);
             }
-        }
-
-
-        public void AddToContext()
-        {
-            //Array.ForEach(CompletedMappings.ToArray(), c => {
-            //    if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
-            //    {
-            //        TransactionManager.DatabaseContext.Subscriptions.Add(c);
-            //    }
-            //});
         }
 
         public void SaveChanges()
@@ -120,9 +100,15 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.Subscriptions.Any(a => a.UserId == userid && a.SubscriptionType == subscriptionType && a.ExpirationDate == expiration)) ? false : true;
+                if (ctx.Institutions.Any(a => a.InstitutionId == institutionId))
+                {
+                    return (ctx.Subscriptions.Any(a => a.UserId == userid && a.SubscriptionType == subscriptionType && a.ExpirationDate == expiration)) ? false : true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
-
     }
 }

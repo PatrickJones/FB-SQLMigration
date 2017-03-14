@@ -47,14 +47,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        //TransactionManager.FailedMappingCollection
-                        //    .Add(new FailedMappings {
-                        //        Tablename = "Institutions",
-                        //        ObjectType = typeof(Institution),
-                        //        JsonSerializedObject = JsonConvert.SerializeObject(inst),
-                        //        FailedReason = "Instition already exist in database."
-                        //    });
-
                         MappingStatistics.LogFailedMapping("Institutions", typeof(Institution), JsonConvert.SerializeObject(inst), "Instition already exist in database.");
                         FailedCount++;
                     }
@@ -66,11 +58,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating Institution mapping.", e);
             }
-        }
-
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.Institutions.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

@@ -23,7 +23,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         /// <summary>
         /// Default constructor that passes Firebird Table name to base class
         /// </summary>
-
         public DMDataMapping() : base("DMDATA")
         {
 
@@ -103,15 +102,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            //TransactionManager.FailedMappingCollection
-                            //    .Add(new FailedMappings
-                            //    {
-                            //        Tablename = FbTableName,
-                            //        ObjectType = typeof(CareSetting),
-                            //        JsonSerializedObject = JsonConvert.SerializeObject(careset),
-                            //        FailedReason = "Unable to add Care Setting to database."
-                            //    });
-
                             MappingStatistics.LogFailedMapping("CareSettings", typeof(CareSetting), JsonConvert.SerializeObject(careset), "Unable to add Care Setting to database.");
                             FailedCount++;
                         }
@@ -124,11 +114,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating CareSetting mapping.", e);
             }
-        }
-
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.CareSettings.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

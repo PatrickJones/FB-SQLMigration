@@ -110,15 +110,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        //TransactionManager.FailedMappingCollection
-                        //    .Add(new FailedMappings
-                        //    {
-                        //        Tablename = "Patients",
-                        //        ObjectType = typeof(Patient),
-                        //        JsonSerializedObject = JsonConvert.SerializeObject(user),
-                        //        FailedReason = "Patient already exist in database."
-                        //    });
-
                         MappingStatistics.LogFailedMapping("Patients", typeof(Patient), JsonConvert.SerializeObject(user), "Patient already exist in database.");
                         FailedCount++;
                     }
@@ -132,12 +123,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.Users.AddRange(newUsers);
-            //TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
-        }
-
         public void SaveChanges()
         {
             try
@@ -149,8 +134,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 };
 
                 TransactionManager.DatabaseContext.Users.AddRange(newUsers);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.Users.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SavePatients();
@@ -165,6 +150,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
+
         private void SavePatients()
         {
             try
@@ -176,8 +162,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 };
 
                 TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.Patients.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }
@@ -195,7 +181,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.Patients.Any(a => a.UserId == userId)) ? false : true;
+                return ctx.Patients.Any(a => a.UserId == userId) ? false : true;
             }
         }
     }

@@ -104,14 +104,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        //TransactionManager.FailedMappingCollection
-                        //    .Add(new FailedMappings
-                        //    {
-                        //        Tablename = "Users",
-                        //        ObjectType = typeof(User),
-                        //        JsonSerializedObject = JsonConvert.SerializeObject(user),
-                        //        FailedReason = "User already exist in database."
-                        //    });
                         MappingStatistics.LogFailedMapping("Users", typeof(User), JsonConvert.SerializeObject(user), "User already exist in database.");
                         FailedCount++;
                     }
@@ -124,10 +116,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 throw new Exception("Error creating User mapping.", e);
             }
 
-        }
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.Users.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

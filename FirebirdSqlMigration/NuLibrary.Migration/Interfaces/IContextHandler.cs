@@ -8,7 +8,6 @@ namespace NuLibrary.Migration.Interfaces
 {
     public interface IContextHandler
     {
-        void AddToContext();
         void SaveChanges();
     }
 }

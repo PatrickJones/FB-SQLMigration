@@ -377,6 +377,7 @@
     <Compile Include="SQLDatabase\SQLHelpers\MeterReadingHandler.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\NumedicsGlobalHelpers.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\SubscriptionHandler.cs" />
+    <Compile Include="SQLDatabase\SqlPurge.cs" />
     <Compile Include="SqlValidations\ApplicationValidation.cs" />
     <Compile Include="SqlValidations\CheckStatusValidation.cs" />
     <Compile Include="SqlValidations\InsulinTypeValidation.cs" />

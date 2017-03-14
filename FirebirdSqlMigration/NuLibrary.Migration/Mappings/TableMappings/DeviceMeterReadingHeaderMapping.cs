@@ -190,15 +190,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            //TransactionManager.FailedMappingCollection
-                            //    .Add(new FailedMappings
-                            //    {
-                            //        Tablename = FbTableName,
-                            //        ObjectType = typeof(PatientDevice),
-                            //        JsonSerializedObject = JsonConvert.SerializeObject(dev),
-                            //        FailedReason = "Unable to add Patient Device to database."
-                            //    });
-
                             MappingStatistics.LogFailedMapping("PatientDevices", typeof(PatientDevice), JsonConvert.SerializeObject(dev), "Unable to add Patient Device to database.");
                             FailedCount++;
                         }
@@ -211,21 +202,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating Patient Device (MeterReadingHeader) mapping.", e);
             }
-        }
-
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.PatientDevices.AddRange(CompletedMappings);
-
-            //// Add pumps to context
-            //Array.ForEach(CompletedMappings.ToArray(), a => {
-            //    Array.ForEach(a.ReadingHeaders.ToArray(), r => {
-            //        if (r.Pump != null)
-            //        {
-            //            TransactionManager.DatabaseContext.Pumps.Add(r.Pump);
-            //        }
-            //    });
-            //});
         }
 
         public void SaveChanges()

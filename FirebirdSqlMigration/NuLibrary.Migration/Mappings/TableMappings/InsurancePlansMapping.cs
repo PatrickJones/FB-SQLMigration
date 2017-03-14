@@ -83,15 +83,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            //TransactionManager.FailedMappingCollection
-                            //    .Add(new FailedMappings
-                            //    {
-                            //        Tablename = "InsurancePlans",
-                            //        ObjectType = typeof(InsurancePlan),
-                            //        JsonSerializedObject = JsonConvert.SerializeObject(insp),
-                            //        FailedReason = "Insurance Plan already exist in database."
-                            //    });
-
                             MappingStatistics.LogFailedMapping("InsurancePlans", typeof(InsurancePlan), JsonConvert.SerializeObject(insp), "Insurance Plan already exist in database.");
                             FailedCount++;
                         }
@@ -104,16 +95,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating InsurancePlan mapping.", e);
             }
-        }
-
-        public void AddToContext()
-        {
-            //Array.ForEach(tempCompanyId.ToArray(), a =>
-            //{
-            //    a.Item2.CompanyId = nHelper.GetInsuranceCompanyId(a.Item1);
-            //});
-
-            //TransactionManager.DatabaseContext.InsurancePlans.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

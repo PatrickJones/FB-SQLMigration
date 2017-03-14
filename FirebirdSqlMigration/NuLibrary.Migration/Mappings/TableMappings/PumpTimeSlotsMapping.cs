@@ -49,8 +49,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    // get the PumpProgram instance
-
                     // temp collecions
                     var tempBasal = new List<BasalProgramTimeSlot>();
                     var tempBolus = new List<BolusProgramTimeSlot>();
@@ -80,15 +78,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             }
                             else
                             {
-                                //TransactionManager.FailedMappingCollection
-                                //.Add(new FailedMappings
-                                //{
-                                //    Tablename = FbTableName,
-                                //    ObjectType = typeof(BasalProgramTimeSlot),
-                                //    JsonSerializedObject = JsonConvert.SerializeObject(bats),
-                                //    FailedReason = "Unable to add BasalProgramTimeSlot to database because creation date was null."
-                                //});
-
                                 MappingStatistics.LogFailedMapping("BasalProgramTimeSlots", typeof(BasalProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
                                 FailedCount++;
                             }
@@ -112,15 +101,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    //TransactionManager.FailedMappingCollection
-                                    //.Add(new FailedMappings
-                                    //{
-                                    //    Tablename = FbTableName,
-                                    //    ObjectType = typeof(BolusProgramTimeSlot),
-                                    //    JsonSerializedObject = JsonConvert.SerializeObject(bots),
-                                    //    FailedReason = "Unable to add BolusProgramTimeSlot to database because creation date was null."
-                                    //});
-
                                     MappingStatistics.LogFailedMapping("BolusProgramTimeSlots", typeof(BolusProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
                                     FailedCount++;
                                 }
@@ -149,11 +129,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating Pump Program Time Slot mapping.", e);
             }
-        }
-
-        public void AddToContext()
-        {
-            throw new NotImplementedException();
         }
 
         public void SaveChanges()

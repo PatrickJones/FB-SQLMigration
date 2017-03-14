@@ -48,16 +48,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        //TransactionManager.FailedMappingCollection
-                        //    .Add(new FailedMappings
-                        //    {
-                        //        Tablename = "Clinicians",
-                        //        ObjectType = typeof(Clinician),
-                        //        JsonSerializedObject = JsonConvert.SerializeObject(clin),
-                        //        FailedReason = "Clinician already exist in database."
-                                
-                        //    });
-
                         MappingStatistics.LogFailedMapping("Clinicians", typeof(Clinician), JsonConvert.SerializeObject(clin), "Clinician already exist in database.");
                         FailedCount++;
                     }
@@ -69,12 +59,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating Clinician mapping.", e);
             }
-            
-        }
-
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.Clinicians.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

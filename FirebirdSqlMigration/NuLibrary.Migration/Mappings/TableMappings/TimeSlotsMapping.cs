@@ -82,17 +82,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
-        public void AddToContext()
-        {
-            //Array.ForEach(tempMappings.ToArray(), a =>
-            //{
-            //    var careSetting = mu.FindPatientCareSetting(a.Item1);
-            //    a.Item2.CareSettingsId = careSetting.CareSettingsId;
-            //});
-
-            //TransactionManager.DatabaseContext.DailyTimeSlots.AddRange(CompletedMappings);
-        }
-
         public void SaveChanges()
         {
             try

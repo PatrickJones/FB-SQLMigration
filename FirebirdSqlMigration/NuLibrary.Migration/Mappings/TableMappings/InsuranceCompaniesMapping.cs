@@ -88,15 +88,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            //TransactionManager.FailedMappingCollection
-                            //    .Add(new FailedMappings
-                            //    {
-                            //        Tablename = FbTableName,
-                            //        ObjectType = typeof(InsuranceProvider),
-                            //        JsonSerializedObject = JsonConvert.SerializeObject(ips),
-                            //        FailedReason = "Insurance Provider already exist in database."
-                            //    });
-
                             MappingStatistics.LogFailedMapping("InsuranceProviders", typeof(InsuranceProvider), JsonConvert.SerializeObject(ips), "Insurance Provider already exist in database.");
                             FailedCount++;
                         }
@@ -109,11 +100,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating InsuranceProvider mapping.", e);
             }
-        }
-
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.InsuranceProviders.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

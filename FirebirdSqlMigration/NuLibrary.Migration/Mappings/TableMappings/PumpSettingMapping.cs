@@ -80,15 +80,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    //TransactionManager.FailedMappingCollection
-                                    //    .Add(new FailedMappings
-                                    //    {
-                                    //        Tablename = "PumpSettings",
-                                    //        ObjectType = typeof(PumpSetting),
-                                    //        JsonSerializedObject = JsonConvert.SerializeObject(ps),
-                                    //        FailedReason = "Pump Setting has no value."
-                                    //    });
-
                                     MappingStatistics.LogFailedMapping("PumpSettings", typeof(PumpSetting), JsonConvert.SerializeObject(ps), "Pump Setting has no value.");
                                     FailedCount++;
                                 }
@@ -107,11 +98,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating PumpSetting mapping.", e);
             }
-        }
-
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.PumpSettings.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

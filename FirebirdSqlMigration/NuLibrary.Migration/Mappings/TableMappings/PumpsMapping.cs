@@ -42,7 +42,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
                 RecordCount = TableAgent.RowCount;
 
@@ -93,15 +92,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            //TransactionManager.FailedMappingCollection
-                            //    .Add(new FailedMappings
-                            //    {
-                            //        Tablename = FbTableName,
-                            //        ObjectType = typeof(Pump),
-                            //        JsonSerializedObject = JsonConvert.SerializeObject(pum),
-                            //        FailedReason = "Unable to add Pump to database."
-                            //    });
-
                             MappingStatistics.LogFailedMapping("Pumps", typeof(Pump), JsonConvert.SerializeObject(pum), "Unable to add Pump to database.");
                             FailedCount++;
                         }
@@ -114,11 +104,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating Pump mapping.");
             }
-        }
-
-        public void AddToContext()
-        {
-            //TransactionManager.DatabaseContext.Pumps.AddRange(CompletedMappings);
         }
 
         public void SaveChanges()

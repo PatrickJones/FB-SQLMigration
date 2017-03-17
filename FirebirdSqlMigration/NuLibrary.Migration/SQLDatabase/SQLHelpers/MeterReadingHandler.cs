@@ -64,7 +64,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private void ExtractSettings(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
+           Parallel.ForEach(rows, row => {
                 Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
                 Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
 

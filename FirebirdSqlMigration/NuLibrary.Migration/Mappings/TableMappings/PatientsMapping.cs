@@ -161,6 +161,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
+                //Set instition id for each patient
+                //Array.ForEach(CompletedMappings.ToArray(), c => c.InstitutionId = nHelper.GetInstitutionId(MigrationVariables.CurrentSiteId));
+                var institution = TransactionManager.DatabaseContext.Institutions.FirstOrDefault(f => f.LegacySiteId == MigrationVariables.CurrentSiteId);
+                Array.ForEach(CompletedMappings.ToArray(), c => c.Institutions.Add(institution));
+
                 TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
                 TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = TransactionManager.DatabaseContext.Patients.Count();

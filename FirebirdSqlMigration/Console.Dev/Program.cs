@@ -40,15 +40,30 @@ namespace Console.Dev
             //TestMeterReadings();
             //TestTransaction();
             //TestValidation();
-            CreateEnums();
+            //CreateEnums();
             //TestPatientTransaction();
             //TestInstitutionMapping();
             //TestClinicianMapping();
             //TestDmdataMapping();
 
+            PatientLinks();
+
             //double ans = (Double)9 / (Double)4;
             //System.Console.WriteLine(ans);
             //System.Console.ReadLine();
+        }
+
+        private static void PatientLinks()
+        {
+            using (var ctx = new NuMedicsGlobalEntities())
+            {
+                foreach (var item in ctx.Patients)
+                {
+                    System.Console.WriteLine(item.Institutions.Count);
+                }
+                
+                System.Console.ReadLine();
+            }
         }
 
         private static void TestMeterReadings()

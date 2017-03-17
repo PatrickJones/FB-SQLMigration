@@ -112,6 +112,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
+                Parallel.ForEach(CompletedMappings, c => {
+                    var patient = TransactionManager.DatabaseContext.Patients.FirstOrDefault(f => f.UserId == c.UserId);
+                    c.Patients.Add(patient);
+                });
+
                 TransactionManager.DatabaseContext.InsurancePlans.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = saved;

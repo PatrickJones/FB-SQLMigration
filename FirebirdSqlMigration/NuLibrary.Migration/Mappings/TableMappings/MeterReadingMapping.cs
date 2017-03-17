@@ -37,7 +37,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public List<BasalDelivery> CompletedBasalMappings = new List<BasalDelivery>();
         public List<TotalDailyInsulinDelivery> CompletedTDDMappings = new List<TotalDailyInsulinDelivery>();
 
-
         public int RecordCount = 0;
         public int FailedCount = 0;
 
@@ -50,30 +49,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 handler = new MeterReadingHandler(dataSet);
 
-                //while (!handler.ExtractionComplete) { }
-
                 handler.BGExtractionEvent += BGExtractionEventHandler;
                 handler.NutritionExtractionEvent += NutritionExtractionEventHandler;
                 handler.PumpDeliveryExtractionEvent += PumpDeliveryExtractionEventHandler;
                 handler.PumpEventsExtractionEvent += PumpEventsExtractionEventHandler;
                 handler.UserSettingsExtractionEvent += UserSettingsExtractionEventHandler;
-
-                //CompletedBGMappings.AddRange(handler.BloodGlucoseReadings);
-                //CompletedNutritionMappings.AddRange(handler.NutritionReadings);
-                //CompletedReadingEventMappings.AddRange(handler.ReadingEvents);
-                //CompletedDeviceSettingsMappings.AddRange(handler.DeviceSettings);
-                //CompletedBolusMappings.AddRange(handler.BolusDeliveries);
-                //CompletedBasalMappings.AddRange(handler.BasalDeliveries);
-                //CompletedTDDMappings.AddRange(handler.TotalDailyInsulinDeliveries);
-
-
-                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BloodGlucoseReadings", 0, CompletedBGMappings.Count, FailedCount);
-                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "NutritionReadings", 0, CompletedNutritionMappings.Count, FailedCount);
-                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "ReadingEvents", 0, CompletedReadingEventMappings.Count, FailedCount);
-                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "DeviceSettings", 0, CompletedDeviceSettingsMappings.Count, FailedCount);
-                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BolusDelivery", 0, CompletedBolusMappings.Count, FailedCount);
-                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BasalDelivery", 0, CompletedBasalMappings.Count, FailedCount);
-                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "TotalDailyInsulinDeliveries", 0, CompletedTDDMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -255,7 +235,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "BolusDeliveries",
-                    PreSaveCount = CompletedBolusMappings.Count()
+                    PreSaveCount = CompletedBolusMappings.Count
                 };
 
                 TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
@@ -356,6 +336,5 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 throw new Exception($"Extraction incomplete for {e.ExtractionName}");
             }
         }
-
     }
 }

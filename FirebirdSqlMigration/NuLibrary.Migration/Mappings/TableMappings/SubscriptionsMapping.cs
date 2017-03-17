@@ -61,7 +61,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-
                 var stats = new SqlTableStats
                 {
                     Tablename = "Subscriptions",
@@ -100,7 +99,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                if (ctx.Institutions.Any(a => a.InstitutionId == institutionId))
+                if (MemoryMappings.GetAllInstitutions().Any(a => a.InstitutionId == institutionId))
                 {
                     return (ctx.Subscriptions.Any(a => a.UserId == userid && a.SubscriptionType == subscriptionType && a.ExpirationDate == expiration)) ? false : true;
                 }

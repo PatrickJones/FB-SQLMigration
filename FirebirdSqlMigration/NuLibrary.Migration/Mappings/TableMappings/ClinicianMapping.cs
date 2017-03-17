@@ -36,7 +36,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     var clin = new Clinician
                     {
-                        UserId = adUser.UserId,
+                        UserId = nHelper.ValidGuid(adUser.UserId),
                         Firstname = "No Name",
                         Lastname = "No Name",
                         StateLicenseNumber = "No License Number"

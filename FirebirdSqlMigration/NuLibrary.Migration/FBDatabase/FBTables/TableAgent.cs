@@ -82,7 +82,7 @@ namespace NuLibrary.Migration.FBDatabase.FBTables
                 }
 
                 string queryStr = $"Select * from {TableName}";
-                var yearBack = DateTime.Now.Subtract(new TimeSpan(365, 0, 0, 0));
+                var yearBack = DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0));
 
                 if (TableName == "METERREADING")
                 {

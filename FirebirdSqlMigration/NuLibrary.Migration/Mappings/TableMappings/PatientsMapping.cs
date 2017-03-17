@@ -61,6 +61,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["KEYID"].ToString();
                     var uid = aHelper.GetUserIdFromPatientId(patId);
                     var userId = (uid != Guid.Empty) ? uid : Guid.NewGuid();
+                    userId = nHelper.ValidGuid(userId);
 
                     // must create clinipro user to store new userid for future usage
                     if (uid == Guid.Empty)

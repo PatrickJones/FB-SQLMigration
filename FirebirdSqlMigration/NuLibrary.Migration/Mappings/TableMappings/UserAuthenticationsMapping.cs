@@ -36,7 +36,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     aspnet_Users aspUser;
                     UserAuthentication uAuth = null;
                     Guid appId = nHelper.GetApplicationId("Diabetes Partner");
-                    bool isAdmin = (adUser.CliniProID.ToLower() == "admin") ? true : false;
+                    bool isAdmin = (string.Equals(adUser.CliniProID, "admin", StringComparison.CurrentCultureIgnoreCase)) ? true : false;
                     bool isAdminSiteUser = false;
 
                     if (isAdmin)
@@ -56,16 +56,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 appId = nHelper.GetApplicationId("Administration");
                                 isAdminSiteUser = true;
                                 break;
-                        } 
+                        }
                     }
 
                     member = aHelper.GetMembershipInfo(adUser.UserId);
                     aspUser = aHelper.GetAspUserInfo(adUser.UserId);
+                    var userId = nHelper.ValidGuid(adUser.UserId);
 
                     uAuth = new UserAuthentication
                     {
                         ApplicationId = appId,
-                        UserId = adUser.UserId,
+                        UserId = userId,
                         Username = aspUser.UserName,
                         Password = member.Password,
                         PasswordQuestion = member.PasswordQuestion,
@@ -82,7 +83,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     var user = new User
                     {
-                        UserId = adUser.UserId,
+                        UserId = userId,
                         UserType = (isAdmin) ? (int)UserType.Clinician : (int)UserType.Patient,
                         CreationDate = member.CreateDate
                     };
@@ -128,8 +129,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 };
 
                 TransactionManager.DatabaseContext.Users.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.Users.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

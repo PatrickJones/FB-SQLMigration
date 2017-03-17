@@ -76,6 +76,20 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.Users.Any(a => a.UserId == userId);
         }
 
+        public Guid ValidGuid(Guid guid)
+        {
+            if (UserIdExist(guid))
+            {
+                Guid newGuid = Guid.NewGuid();
+                this.ValidGuid(newGuid);
+                return newGuid;
+            }
+            else
+            {
+                return guid;
+            }
+        }
+
         public User GetUser(Guid userId)
         {
             return db.Users.Where(w => w.UserId == userId).FirstOrDefault();

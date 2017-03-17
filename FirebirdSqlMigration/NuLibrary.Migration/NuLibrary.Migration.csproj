@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppEnums\DynamicEnums.cs" />
+    <Compile Include="CustomEvents\MeterReadingHandlerEventArgs.cs" />
     <Compile Include="DatabaseUtilities\DatabaseAccessADO.cs" />
     <Compile Include="FBDatabase\FBDataAccess.cs" />
     <Compile Include="FBDatabase\FBTables\TableAgent.cs" />

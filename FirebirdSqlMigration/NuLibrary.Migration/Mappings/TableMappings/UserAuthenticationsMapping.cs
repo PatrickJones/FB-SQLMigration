@@ -23,7 +23,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public int RecordCount = 0;
         public int FailedCount = 0;
 
-
         public void CreateUserAuthenticationMapping()
         {
             try

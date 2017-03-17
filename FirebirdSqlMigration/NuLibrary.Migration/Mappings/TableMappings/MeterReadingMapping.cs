@@ -27,6 +27,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         MappingUtilities mu = new MappingUtilities();
+        MeterReadingHandler handler;
 
         public List<BloodGlucoseReading> CompletedBGMappings = new List<BloodGlucoseReading>();
         public List<NutritionReading> CompletedNutritionMappings = new List<NutritionReading>();
@@ -47,15 +48,32 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
                 RecordCount = TableAgent.RowCount;
 
-                MeterReadingHandler handler = new MeterReadingHandler(dataSet);
+                handler = new MeterReadingHandler(dataSet);
 
-                CompletedBGMappings.AddRange(handler.BloodGlucoseReadings);
-                CompletedNutritionMappings.AddRange(handler.NutritionReadings);
-                CompletedReadingEventMappings.AddRange(handler.ReadingEvents);
-                CompletedDeviceSettingsMappings.AddRange(handler.DeviceSettings);
-                CompletedBolusMappings.AddRange(handler.BolusDeliveries);
-                CompletedBasalMappings.AddRange(handler.BasalDeliveries);
-                CompletedTDDMappings.AddRange(handler.TotalDailyInsulinDeliveries);
+                //while (!handler.ExtractionComplete) { }
+
+                handler.BGExtractionEvent += BGExtractionEventHandler;
+                handler.NutritionExtractionEvent += NutritionExtractionEventHandler;
+                handler.PumpDeliveryExtractionEvent += PumpDeliveryExtractionEventHandler;
+                handler.PumpEventsExtractionEvent += PumpEventsExtractionEventHandler;
+                handler.UserSettingsExtractionEvent += UserSettingsExtractionEventHandler;
+
+                //CompletedBGMappings.AddRange(handler.BloodGlucoseReadings);
+                //CompletedNutritionMappings.AddRange(handler.NutritionReadings);
+                //CompletedReadingEventMappings.AddRange(handler.ReadingEvents);
+                //CompletedDeviceSettingsMappings.AddRange(handler.DeviceSettings);
+                //CompletedBolusMappings.AddRange(handler.BolusDeliveries);
+                //CompletedBasalMappings.AddRange(handler.BasalDeliveries);
+                //CompletedTDDMappings.AddRange(handler.TotalDailyInsulinDeliveries);
+
+
+                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BloodGlucoseReadings", 0, CompletedBGMappings.Count, FailedCount);
+                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "NutritionReadings", 0, CompletedNutritionMappings.Count, FailedCount);
+                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "ReadingEvents", 0, CompletedReadingEventMappings.Count, FailedCount);
+                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "DeviceSettings", 0, CompletedDeviceSettingsMappings.Count, FailedCount);
+                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BolusDelivery", 0, CompletedBolusMappings.Count, FailedCount);
+                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BasalDelivery", 0, CompletedBasalMappings.Count, FailedCount);
+                //MappingStatistics.LogMappingStat("METERREADING", RecordCount, "TotalDailyInsulinDeliveries", 0, CompletedTDDMappings.Count, FailedCount);
             }
             catch (Exception e)
             {
@@ -268,5 +286,76 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 return (ctx.PatientDevices.Any(a => a.UserId == userId && a.SerialNumber == serialNumber)) ? false : true;
             }
         }
+
+        private void UserSettingsExtractionEventHandler(object sender, CustomEvents.MeterReadingHandlerEventArgs e)
+        {
+            if (handler != null && e.ExtractionSuccessful)
+            {
+                CompletedDeviceSettingsMappings.AddRange(handler.DeviceSettings);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "DeviceSettings", 0, CompletedDeviceSettingsMappings.Count, FailedCount);
+            }
+            else
+            {
+                throw new Exception($"Extraction incomplete for {e.ExtractionName}");
+            }
+        }
+
+        private void PumpEventsExtractionEventHandler(object sender, CustomEvents.MeterReadingHandlerEventArgs e)
+        {
+            if (handler != null && e.ExtractionSuccessful)
+            {
+                CompletedReadingEventMappings.AddRange(handler.ReadingEvents);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "ReadingEvents", 0, CompletedReadingEventMappings.Count, FailedCount);
+            }
+            else
+            {
+                throw new Exception($"Extraction incomplete for {e.ExtractionName}");
+            }
+        }
+
+        private void PumpDeliveryExtractionEventHandler(object sender, CustomEvents.MeterReadingHandlerEventArgs e)
+        {
+            if (handler != null && e.ExtractionSuccessful)
+            {
+                CompletedBolusMappings.AddRange(handler.BolusDeliveries);
+                CompletedBasalMappings.AddRange(handler.BasalDeliveries);
+                CompletedTDDMappings.AddRange(handler.TotalDailyInsulinDeliveries);
+
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BolusDelivery", 0, CompletedBolusMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BasalDelivery", 0, CompletedBasalMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "TotalDailyInsulinDeliveries", 0, CompletedTDDMappings.Count, FailedCount);
+            }
+            else
+            {
+                throw new Exception($"Extraction incomplete for {e.ExtractionName}");
+            }
+        }
+
+        private void NutritionExtractionEventHandler(object sender, CustomEvents.MeterReadingHandlerEventArgs e)
+        {
+            if (handler != null && e.ExtractionSuccessful)
+            {
+                CompletedNutritionMappings.AddRange(handler.NutritionReadings);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "NutritionReadings", 0, CompletedNutritionMappings.Count, FailedCount);
+            }
+            else
+            {
+                throw new Exception($"Extraction incomplete for {e.ExtractionName}");
+            }
+        }
+
+        private void BGExtractionEventHandler(object sender, CustomEvents.MeterReadingHandlerEventArgs e)
+        {
+            if (handler != null && e.ExtractionSuccessful)
+            {
+                CompletedBGMappings.AddRange(handler.BloodGlucoseReadings);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BloodGlucoseReadings", 0, CompletedBGMappings.Count, FailedCount);
+            }
+            else
+            {
+                throw new Exception($"Extraction incomplete for {e.ExtractionName}");
+            }
+        }
+
     }
 }

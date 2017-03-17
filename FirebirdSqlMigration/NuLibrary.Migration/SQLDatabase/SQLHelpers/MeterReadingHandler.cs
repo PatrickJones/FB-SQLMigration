@@ -26,16 +26,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
         public event EventHandler<MeterReadingHandlerEventArgs> NutritionExtractionEvent;
         public event EventHandler<MeterReadingHandlerEventArgs> UserSettingsExtractionEvent;
 
-        //public bool ExtractionComplete { get {return ExtractStatus.Values.All(a => a.Equals(true));} }
-
-        //private Dictionary<string, bool> ExtractStatus = new Dictionary<string, bool> {
-        //    { "PumpDeliveryExtraction", false},
-        //    { "BGExtraction", false},
-        //    { "PumpEventsExtraction", false},
-        //    { "NutritionExtraction", false},
-        //    { "UserSettingsExtraction", false}
-        //};
-
         public ConcurrentBag<BloodGlucoseReading> BloodGlucoseReadings = new ConcurrentBag<BloodGlucoseReading>();
         public ConcurrentBag<NutritionReading> NutritionReadings = new ConcurrentBag<NutritionReading>();
         public ConcurrentBag<ReadingEvent> ReadingEvents = new ConcurrentBag<ReadingEvent>();
@@ -70,32 +60,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             };
 
             Task.WhenAll(taskList);
-            //Parallel.ForEach(DataRows.Cast<DataRow>(), row =>
-            //{
-            //    string readingType = (row["READINGTYPE"] is DBNull) ? String.Empty : row["READINGTYPE"].ToString();
-
-            //    switch (readingType.ToLower())
-            //    {
-            //        case "bg":
-            //            //ExtractBg(row);
-            //            break;
-            //        case "pump delivery":
-            //            //ExtractPumpDelivery(row);
-            //            break;
-            //        case "pump events":
-            //            //ExtractPumpEvents(row);
-            //            break;
-            //        case "nutrition":
-            //            //ExtractNutrition(row);
-            //            break;
-            //        case "user settings":
-            //            //ExtractSettings(row);
-            //            break;
-            //        default:
-            //            //NoReadingTypeMatch(row);
-            //            break;
-            //    }
-            //});
         }
 
         private void ExtractSettings(ICollection<DataRow> rows)
@@ -122,7 +86,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
             });
 
-            //ExtractStatus["UserSettingsExtraction"] = true;
             OnUserSettingsExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }
 
@@ -184,7 +147,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
             });
 
-            //ExtractStatus["NutritionExtraction"] = true;
             OnNutritionExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }
 
@@ -259,7 +221,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
             });
 
-            //ExtractStatus["PumpEventsExtraction"] = true;
             OnPumpEventsExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }
 
@@ -279,31 +240,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 Task.Run(() => ExtractTermBolus(termbo)),
             };
 
-            //Task.WhenAll(taskList).ContinueWith(done => ExtractStatus["PumpDeliveryExtraction"] = true);
             Task.WhenAll(taskList).ContinueWith(done => OnPumpDeliveryExtractionEvent(new MeterReadingHandlerEventArgs(true)));
-
-            //string eventSubType1 = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString();
-
-            //switch (eventSubType1.ToLower())
-            //{
-            //    case "bolus":
-            //        ExtractBolus(row);
-            //        break;
-            //    case "basal":
-            //        ExtractBasal(row);
-            //        break;
-            //    case "tdd":
-            //        ExtractTdd(row);
-            //        break;
-            //    case "term_basal":
-            //        ExtractTermBasal(row);
-            //        break;
-            //    case "term_bolus":
-            //        ExtractTermBolus(row);
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
 
         private void ExtractTermBolus(ICollection<DataRow> rows)
@@ -621,7 +558,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
             });
 
-            //ExtractStatus["BGExtraction"] = true;
             OnBGExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }
 

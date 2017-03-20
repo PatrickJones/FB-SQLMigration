@@ -78,16 +78,16 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         public Guid ValidGuid(Guid guid)
         {
-            if (UserIdExist(guid))
+            Guid result = guid;
+            bool exist = UserIdExist(result);
+
+            while (exist)
             {
-                Guid newGuid = Guid.NewGuid();
-                this.ValidGuid(newGuid);
-                return newGuid;
+                result = Guid.NewGuid();
+                exist = UserIdExist(result);
             }
-            else
-            {
-                return guid;
-            }
+
+            return result;
         }
 
         public User GetUser(Guid userId)

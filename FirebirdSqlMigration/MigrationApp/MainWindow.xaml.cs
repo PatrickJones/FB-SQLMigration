@@ -2,6 +2,7 @@
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.Mappings.TableMappings;
+using NuLibrary.Migration.SQLDatabase;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,9 @@ namespace MigrationApp
                 lstbxStats.Items.Add(st.ToString());
             }
 
+            SqlPurge sp = new SqlPurge();
+            sp.Purge();
+            
             MappingStatistics.ExportToLog();
         }
 

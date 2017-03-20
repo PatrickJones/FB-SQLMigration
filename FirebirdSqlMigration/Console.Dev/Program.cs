@@ -57,10 +57,7 @@ namespace Console.Dev
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                foreach (var item in ctx.Patients)
-                {
-                    System.Console.WriteLine(item.Institutions.Count);
-                }
+                System.Console.WriteLine(ctx.Users.Where(w => w.Patient == null && w.UserType == 2).Count());
                 
                 System.Console.ReadLine();
             }

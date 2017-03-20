@@ -12,7 +12,7 @@ namespace NuLibrary.Migration.SQLDatabase
     {
         private NuMedicsGlobalEntities db = new NuMedicsGlobalEntities();
 
-        public SqlPurge()
+        public void Purge()
         {
             PurgeUsers();
         }
@@ -22,7 +22,16 @@ namespace NuLibrary.Migration.SQLDatabase
         /// </summary>
         private void PurgeUsers()
         {
-            db.Users.RemoveRange(db.Users.Where(w => w.Clinician == null && w.Patient == null));
+            var remove = db.Users.Include("UserAuthentications").Where(w => w.Clinician == null && w.Patient == null);
+            Array.ForEach(remove.ToArray(), r => db.UserAuthentications.RemoveRange(r.UserAuthentications));
+            db.Users.RemoveRange(remove);
+
+            Save();
+        }
+
+        private int Save()
+        {
+            return db.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)

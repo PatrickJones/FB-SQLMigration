@@ -213,7 +213,7 @@ namespace NuLibrary.Migration.Mappings
             {
                 TransactionManager.ExecuteTransaction(); //TESTING ONLY
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

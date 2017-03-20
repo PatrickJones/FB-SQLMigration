@@ -89,7 +89,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     };
 
                     if (isAdminSiteUser)
-                    {
+                    { 
                         user.UserType = (int)UserType.Admin;
                     }
 

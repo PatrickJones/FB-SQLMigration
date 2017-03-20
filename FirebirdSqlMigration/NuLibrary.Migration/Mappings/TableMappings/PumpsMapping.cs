@@ -100,7 +100,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 MappingStatistics.LogMappingStat("PATIENTPUMP", RecordCount, "Pumps", 0, CompletedMappings.Count, FailedCount);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Error creating Pump mapping.");
             }

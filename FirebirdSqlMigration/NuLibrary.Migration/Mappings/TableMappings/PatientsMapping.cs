@@ -63,17 +63,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var userId = (uid != Guid.Empty) ? uid : Guid.NewGuid();
                     userId = nHelper.ValidGuid(userId);
 
-                    // must create clinipro user to store new userid for future usage
-                    if (uid == Guid.Empty)
-                    {
-                        aHelper.CreateCliniProUser(userId, patId);
-
-                        user.UserId = userId;
-                        user.UserType = (int)UserType.Patient;
-                        user.CreationDate = DateTime.Now;
-
-                        newUsers.Add(user);
-                    }
 
                     var pat = new Patient
                     {
@@ -102,6 +91,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     pat.PatientAddresses.Add(adr);
 
+                    // must create clinipro user to store new userid for future usage
+                    if (uid == Guid.Empty)
+                    {
+                        aHelper.CreateCliniProUser(userId, patId);
+
+                        user.UserId = userId;
+                        user.UserType = (int)UserType.Patient;
+                        user.CreationDate = DateTime.Now;
+
+                        //newUsers.Add(user);
+                        pat.User = user;
+                    }
+
                     // add patient info to in-memery collection for use throughout application
                     MemoryMappings.AddPatientInfo(MigrationVariables.CurrentSiteId, patId, pat.UserId);
 
@@ -128,17 +130,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "Users",
-                    PreSaveCount = newUsers.Count()
-                };
+                //var stats = new SqlTableStats
+                //{
+                //    Tablename = "Users",
+                //    PreSaveCount = newUsers.Count()
+                //};
 
-                TransactionManager.DatabaseContext.Users.AddRange(newUsers);
-                TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.Users.Count();
+                //TransactionManager.DatabaseContext.Users.AddRange(newUsers);
+                //TransactionManager.DatabaseContext.SaveChanges();
+                //stats.PostSaveCount = TransactionManager.DatabaseContext.Users.Count();
 
-                MappingStatistics.SqlTableStatistics.Add(stats);
+                //MappingStatistics.SqlTableStatistics.Add(stats);
                 SavePatients();
             }
             catch (DbEntityValidationException e)

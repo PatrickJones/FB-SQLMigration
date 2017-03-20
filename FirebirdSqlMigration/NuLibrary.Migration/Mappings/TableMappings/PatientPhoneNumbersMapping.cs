@@ -95,9 +95,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedMappings
+                        from ps in map.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.PatientPhoneNumbers.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }
@@ -120,7 +125,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.PatientPhoneNumbers.Any(a => a.Number == phoneNumber)) ? false : true;
+                return !ctx.PatientPhoneNumbers.Any(a => a.Number == phoneNumber);
             }
         }
     }

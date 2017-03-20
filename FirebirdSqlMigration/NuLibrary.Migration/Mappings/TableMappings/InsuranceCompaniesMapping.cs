@@ -113,8 +113,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 };
 
                 TransactionManager.DatabaseContext.InsuranceProviders.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.InsuranceProviders.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

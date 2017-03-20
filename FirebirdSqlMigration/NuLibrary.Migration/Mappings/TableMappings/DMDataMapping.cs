@@ -126,9 +126,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                TransactionManager.DatabaseContext.CareSettings.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                //Array.ForEach(CompletedMappings.ToArray(), c => {
+                //    var exist = TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId);
+                //    if (!exist)
+                //    {
+                //        CompletedMappings.Remove(c);
+                //    }
+                //});
+
+                var q = from cm in CompletedMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.CareSettings.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.CareSettings.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

@@ -112,17 +112,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                Array.ForEach(CompletedMappings.ToArray(), c => {
-                    var patient = TransactionManager.DatabaseContext.Patients.FirstOrDefault(f => f.UserId == c.UserId);
-                    if (patient != null)
-                    {
-                        c.Patients.Add(patient);
-                    }
-                });
+                //Array.ForEach(CompletedMappings.ToArray(), c => {
+                //    var patient = TransactionManager.DatabaseContext.Patients.FirstOrDefault(f => f.UserId == c.UserId);
+                //    if (patient != null)
+                //    {
+                //        c.Patients.Add(patient);
+                //    }
+                //});
 
-                TransactionManager.DatabaseContext.InsurancePlans.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedMappings
+                        from ps in map.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.InsurancePlans.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.InsurancePlans.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

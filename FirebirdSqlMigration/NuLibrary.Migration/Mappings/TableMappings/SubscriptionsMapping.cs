@@ -67,16 +67,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                Array.ForEach(CompletedMappings.ToArray(), c =>
-                {
-                    if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
-                    {
-                        TransactionManager.DatabaseContext.Subscriptions.Add(c);
-                    }
-                });
+                var q = from cm in CompletedMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
 
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                //Array.ForEach(CompletedMappings.ToArray(), c =>
+                //{
+                //    if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
+                //    {
+                //        TransactionManager.DatabaseContext.Subscriptions.Add(c);
+                //    }
+                //});
+                
+                TransactionManager.DatabaseContext.Subscriptions.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.Subscriptions.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }
@@ -101,7 +107,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 if (MemoryMappings.GetAllInstitutions().Any(a => a.InstitutionId == institutionId))
                 {
-                    return (ctx.Subscriptions.Any(a => a.UserId == userid && a.SubscriptionType == subscriptionType && a.ExpirationDate == expiration)) ? false : true;
+                    return !ctx.Subscriptions.Any(a => a.UserId == userid && a.SubscriptionType == subscriptionType && a.ExpirationDate == expiration);
                 }
                 else
                 {

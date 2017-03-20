@@ -92,7 +92,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     pat.PatientAddresses.Add(adr);
 
                     // must create clinipro user to store new userid for future usage
-                    if (uid == Guid.Empty)
+                    if (uid == Guid.Empty || uid != userId)
                     {
                         aHelper.CreateCliniProUser(userId, patId);
 
@@ -188,7 +188,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return ctx.Patients.Any(a => a.UserId == userId) ? false : true;
+                return !ctx.Patients.Any(a => a.UserId == userId);
             }
         }
     }

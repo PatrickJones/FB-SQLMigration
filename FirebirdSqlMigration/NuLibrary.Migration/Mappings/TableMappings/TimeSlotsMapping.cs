@@ -89,7 +89,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 Array.ForEach(tempMappings.ToArray(), a =>
                 {
                     var careSetting = mu.FindPatientCareSetting(a.Item1);
-                    a.Item2.CareSettingsId = careSetting.CareSettingsId;
+                    if (careSetting != null)
+                    {
+                        var careId = careSetting.CareSettingsId;
+                        a.Item2.CareSettingsId = careSetting.CareSettingsId;
+                    }
+                    else
+                    {
+                        tempMappings.Remove(a);
+                    }
+
+                    CompletedMappings = tempMappings.Select(s => s.Item2).ToList();
                 });
 
                 var stats = new SqlTableStats
@@ -99,8 +109,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 };
 
                 TransactionManager.DatabaseContext.DailyTimeSlots.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.DailyTimeSlots.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

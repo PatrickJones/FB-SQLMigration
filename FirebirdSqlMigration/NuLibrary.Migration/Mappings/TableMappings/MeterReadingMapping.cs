@@ -68,12 +68,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "BloodGlucoseReadings",
-                    PreSaveCount = CompletedBGMappings.Count()
+                    PreSaveCount = CompletedBGMappings.Count
                 };
 
-                TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(CompletedBGMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedBGMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.BloodGlucoseReadings.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveTotalDailyInsulinDeliveries();
@@ -96,12 +101,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "TotalDailyInsulinDeliveries",
-                    PreSaveCount = CompletedTDDMappings.Count()
+                    PreSaveCount = CompletedTDDMappings.Count
                 };
 
-                TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(CompletedTDDMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedTDDMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveBasalDeliveries();
@@ -124,12 +134,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "BasalDeliveries",
-                    PreSaveCount = CompletedBasalMappings.Count()
+                    PreSaveCount = CompletedBasalMappings.Count
                 };
 
-                TransactionManager.DatabaseContext.BasalDeliveries.AddRange(CompletedBasalMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedBasalMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.BasalDeliveries.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.BasalDeliveries.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveDeviceSettings();
@@ -152,12 +167,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "DeviceSettings",
-                    PreSaveCount = CompletedDeviceSettingsMappings.Count()
+                    PreSaveCount = CompletedDeviceSettingsMappings.Count
                 };
 
-                TransactionManager.DatabaseContext.DeviceSettings.AddRange(CompletedDeviceSettingsMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedDeviceSettingsMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.DeviceSettings.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.DeviceSettings.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveReadingEvents();
@@ -180,12 +200,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "ReadingEvents",
-                    PreSaveCount = CompletedReadingEventMappings.Count()
+                    PreSaveCount = CompletedReadingEventMappings.Count
                 };
 
-                TransactionManager.DatabaseContext.ReadingEvents.AddRange(CompletedReadingEventMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedReadingEventMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.ReadingEvents.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.ReadingEvents.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveNutritionReadings();
@@ -208,12 +233,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "NutritionReadings",
-                    PreSaveCount = CompletedNutritionMappings.Count()
+                    PreSaveCount = CompletedNutritionMappings.Count
                 };
 
-                TransactionManager.DatabaseContext.NutritionReadings.AddRange(CompletedNutritionMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedNutritionMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.NutritionReadings.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.NutritionReadings.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveBolusDeliveries();
@@ -238,9 +268,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedBolusMappings.Count
                 };
 
-                TransactionManager.DatabaseContext.BolusDeliveries.AddRange(CompletedBolusMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                var q = from cm in CompletedBolusMappings
+                        from ps in mu.GetPatients()
+                        where cm.UserId == ps.UserId
+                        select cm;
+
+                TransactionManager.DatabaseContext.BolusDeliveries.AddRange(q);
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.BolusDeliveries.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

@@ -111,8 +111,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 };
 
                 TransactionManager.DatabaseContext.PumpSettings.AddRange(CompletedMappings);
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.PumpSettings.Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

@@ -43,7 +43,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public int RecordCount = 0;
         public int FailedCount = 0;
 
-
         public void CreateInsurancePlansMapping()
         {
             try
@@ -73,7 +72,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             IsActive = (row["ISACTIVE"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISACTIVE"].ToString()),
                             InActiveDate = (row["INACTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString()),
                             EffectiveDate = (row["EFFECTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["EFFECTIVEDATE"].ToString()),
-                            //CompanyId = nHelper.GetInsuranceCompanyId(row["INSCOID"].ToString()) //(int)row["INSCOID"] //is a double precision in firebird, may need to convert
                         };
 
                         if (CanAddToContext(insp.UserId, insp.PlanType, insp.PolicyNumber))
@@ -101,10 +99,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                Array.ForEach(tempCompanyId.ToArray(), a =>
-                {
-                    a.Item2.CompanyId = nHelper.GetInsuranceCompanyId(a.Item1);
-                });
+                Array.ForEach(tempCompanyId.ToArray(), a => a.Item2.CompanyId = nHelper.GetInsuranceCompanyId(a.Item1));
 
                 var stats = new SqlTableStats
                 {
@@ -112,14 +107,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                //Array.ForEach(CompletedMappings.ToArray(), c => {
-                //    var patient = TransactionManager.DatabaseContext.Patients.FirstOrDefault(f => f.UserId == c.UserId);
-                //    if (patient != null)
-                //    {
-                //        c.Patients.Add(patient);
-                //    }
-                //});
-
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
                         from ps in map.GetPatients()
                         where cm.UserId == ps.UserId
@@ -145,7 +133,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.InsurancePlans.Any(a => a.UserId == userId && a.PlanType == planType && a.PolicyNumber == policyNumber)) ? false : true;
+                return !ctx.InsurancePlans.Any(a => a.UserId == userId && a.PlanType == planType && a.PolicyNumber == policyNumber);
             }
         }
     }

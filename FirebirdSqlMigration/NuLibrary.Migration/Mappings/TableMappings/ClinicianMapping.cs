@@ -87,7 +87,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                //TransactionManager.DatabaseContext.Clinicians.AddRange(CompletedMappings);
                 int saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = saved;
 
@@ -107,7 +106,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.Clinicians.Any(c => c.UserId == userId)) ? false : true;
+                return !ctx.Clinicians.Any(c => c.UserId == userId);
             }
         }
     }

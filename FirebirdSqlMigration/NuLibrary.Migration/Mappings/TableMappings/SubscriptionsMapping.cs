@@ -67,23 +67,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
+
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId
                         select cm;
-
+                // Ensure subscription has a matching institution id associated
                 var r = from m in q
                         from i in TransactionManager.DatabaseContext.Institutions
                         where m.InstitutionId == i.InstitutionId
                         select m;
-
-                //Array.ForEach(CompletedMappings.ToArray(), c =>
-                //{
-                //    if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
-                //    {
-                //        TransactionManager.DatabaseContext.Subscriptions.Add(c);
-                //    }
-                //});
 
                 TransactionManager.DatabaseContext.Subscriptions.AddRange(r);
                 TransactionManager.DatabaseContext.SaveChanges();

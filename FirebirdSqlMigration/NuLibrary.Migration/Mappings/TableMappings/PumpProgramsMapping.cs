@@ -107,9 +107,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 Array.ForEach(set.ToArray(), s => {
                     if (s.Key == creationDate)
                     {
-                        Parallel.ForEach(s.Value.ToArray(), v => {
-                            results.Add(v);
-                    });
+                        Parallel.ForEach(s.Value.ToArray(), v => results.Add(v));
                     }
                 });
             }
@@ -128,9 +126,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 Array.ForEach(set.ToArray(), s => {
                     if (s.Key == creationDate)
                     {
-                        Parallel.ForEach(s.Value.ToArray(), v => {
-                            results.Add(v);
-                        });
+                        Parallel.ForEach(s.Value.ToArray(), v => results.Add(v));
                     }
                 });
             }

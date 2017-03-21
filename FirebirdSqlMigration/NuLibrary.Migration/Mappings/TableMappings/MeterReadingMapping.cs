@@ -71,6 +71,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedBGMappings.Count
                 };
 
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedBGMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId
@@ -82,7 +83,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveTotalDailyInsulinDeliveries();
-
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException e)
             {
@@ -104,7 +104,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedTDDMappings.Count
                 };
 
-                var q = from cm in CompletedTDDMappings
+                                var q = from cm in CompletedTDDMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId
                         select cm;
@@ -115,7 +115,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveBasalDeliveries();
-
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException e)
             {
@@ -203,6 +202,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedReadingEventMappings.Count
                 };
 
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedReadingEventMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId
@@ -236,6 +236,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedNutritionMappings.Count
                 };
 
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedNutritionMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId
@@ -268,6 +269,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedBolusMappings.Count
                 };
 
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedBolusMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId

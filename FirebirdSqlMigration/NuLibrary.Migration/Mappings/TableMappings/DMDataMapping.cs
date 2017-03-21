@@ -40,11 +40,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public int RecordCount = 0;
         public int FailedCount = 0;
-
-
+        
         public void CreateDMDataMapping()
         {
-
             try
             {
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
@@ -126,14 +124,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                //Array.ForEach(CompletedMappings.ToArray(), c => {
-                //    var exist = TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId);
-                //    if (!exist)
-                //    {
-                //        CompletedMappings.Remove(c);
-                //    }
-                //});
-
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId

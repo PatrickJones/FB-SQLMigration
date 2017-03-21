@@ -88,7 +88,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             Readings = (row["READINGS"] is DBNull) ? 0 : (Int32)row["READINGS"],
                             SiteSource = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString(),
                             ReviewedOn = (row["REVIEWEDON"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["REVIEWEDON"].ToString()),
-                            //Pump = (meterName.ToLower().Contains("omnipod")) ? MemoryMappings.GetAllPump().Where(w => w.UserId == userId).FirstOrDefault() : null
                         };
 
                         if (meterName.ToLower().Contains("omnipod"))
@@ -98,9 +97,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             if (ePump != null)
                             {
                                 mrh.Pump = new Pump();
-
                                 mrh.Pump.PumpKeyId = mrh.ReadingKeyId;
-
 
                                 if (ePump.PumpPrograms != null)
                                 {
@@ -124,7 +121,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                         {
                                             Array.ForEach(p.BasalProgramTimeSlots.ToArray(), a => {
                                                 prog.BasalProgramTimeSlots.Add(a);
-                                                //CompletedBasalProgramTimeSlots.Add(a);
                                             });
                                         }
 
@@ -132,7 +128,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                         {
                                             Array.ForEach(p.BolusProgramTimeSlots.ToArray(), r => {
                                                 prog.BolusProgramTimeSlots.Add(r);
-                                                //CompletedBolusProgramTimeSlots.Add(r);
                                             });
                                         }
                                     });
@@ -152,7 +147,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                             PumpKeyId = mrh.Pump.PumpKeyId
                                         };
 
-                                        //mrh.Pump.PumpSettings.Add(ps);
                                         CompletedPumpSettingMappings.Add(ps);
                                     });
                                 }
@@ -214,6 +208,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId

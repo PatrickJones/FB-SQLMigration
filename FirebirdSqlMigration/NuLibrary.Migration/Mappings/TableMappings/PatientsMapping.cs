@@ -42,8 +42,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public int RecordCount = 0;
         public int FailedCount = 0;
-
-
+        
         public void CreatePatientMapping()
         {
             try
@@ -62,8 +61,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var uid = aHelper.GetUserIdFromPatientId(patId);
                     var userId = (uid != Guid.Empty) ? uid : Guid.NewGuid();
                     userId = nHelper.ValidGuid(userId);
-
-
+                    
                     var pat = new Patient
                     {
                         UserId = userId,
@@ -100,7 +98,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         user.UserType = (int)UserType.Patient;
                         user.CreationDate = DateTime.Now;
 
-                        //newUsers.Add(user);
                         pat.User = user;
                     }
 
@@ -127,34 +124,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         }
 
         public void SaveChanges()
-        {
-            try
-            {
-                //var stats = new SqlTableStats
-                //{
-                //    Tablename = "Users",
-                //    PreSaveCount = newUsers.Count()
-                //};
-
-                //TransactionManager.DatabaseContext.Users.AddRange(newUsers);
-                //TransactionManager.DatabaseContext.SaveChanges();
-                //stats.PostSaveCount = TransactionManager.DatabaseContext.Users.Count();
-
-                //MappingStatistics.SqlTableStatistics.Add(stats);
-                SavePatients();
-            }
-            catch (DbEntityValidationException e)
-            {
-                throw new Exception("Error validating Users entity", e);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error saving Users entity", e);
-            }
-        }
-
-
-        private void SavePatients()
         {
             try
             {

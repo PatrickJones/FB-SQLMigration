@@ -145,7 +145,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.Users.Any(a => a.UserId == userId)) ? false : true;
+                return !ctx.Users.Any(a => a.UserId == userId);
             }
         }
     }

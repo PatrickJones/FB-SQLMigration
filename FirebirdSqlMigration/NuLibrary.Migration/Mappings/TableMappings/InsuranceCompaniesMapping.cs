@@ -67,7 +67,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             Street2 = (row["STREET2"] is DBNull) ? String.Empty : row["STREET2"].ToString(),
                             Street3 = (row["STREET3"] is DBNull) ? String.Empty : row["STREET3"].ToString(),
                             City = (row["CITY"] is DBNull) ? String.Empty : row["CITY"].ToString(),
-                            //County = (row["COUNTY"] is DBNull) ? String.Empty : row["COUNTY"].ToString(),
                             State = (row["STATE"] is DBNull) ? String.Empty : row["STATE"].ToString(),
                             Zip = (row["ZIP"] is DBNull) ? String.Empty : row["ZIP"].ToString(),
                             Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString()
@@ -137,7 +136,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.InsuranceProviders.Any(a => a.Name == providerName)) ? false : true;
+                return !ctx.InsuranceProviders.Any(a => a.Name == providerName);
             }
         }
     }

@@ -41,8 +41,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public int RecordCount = 0;
         public int FailedCount = 0;
-
-
+        
         public void CreatePatientPhoneNumbersMapping()
         {
             try
@@ -95,6 +94,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
                         from ps in map.GetPatients()
                         where cm.UserId == ps.UserId

@@ -116,6 +116,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
+                // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId
@@ -143,7 +144,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             using (var ctx = new NuMedicsGlobalEntities())
             {
-                return (ctx.Pumps.Any(a => a.UserId == userId && a.PumpName == pumpName)) ? false : true;
+                return !ctx.Pumps.Any(a => a.UserId == userId && a.PumpName == pumpName);
             }
         }
     }

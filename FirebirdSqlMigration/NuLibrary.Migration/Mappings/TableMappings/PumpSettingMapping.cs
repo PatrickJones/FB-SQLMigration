@@ -63,9 +63,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         for (int i = 0; i < row.Table.Columns.Count; i++)
                         {
                             var column = row.Table.Columns[i].ColumnName.Trim();
-
                             // don't want columns that start with these characters - these are timeslot values
-                            if ((column.ToLower().Substring(0,2) != "IC") || (column.ToLower().Substring(0, 2) != "CF") || (column.ToLower().Substring(0, 6) != "TARGET"))
+                            var exclude = new List<bool> {
+                                column.ToLower().StartsWith("ic"),
+                                column.ToLower().StartsWith("cf"),
+                                column.ToLower().StartsWith("target")
+                            };
+                            
+                            if (exclude.All(a => !a))
                             {
                                 PumpSetting ps = new PumpSetting();
                                 ps.SettingName = column;

@@ -16,7 +16,7 @@ namespace NuLibrary.Migration.FBDatabase
 {
     public class FBDataAccess : DatabaseAccessADO
     {
-        public string DatabaseProvider { get { return "FirebirdSql.Data.FirebirdClient"; } }
+        public string DatabaseProvider => "FirebirdSql.Data.FirebirdClient";
 
         /// <summary>
         /// Gets or sets the site identifier.

@@ -5,20 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MigrationApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="1225.6">
+        Title="Firebird To Sql Server Database Migration" Height="667" Width="1225.6" Foreground="OrangeRed">
     <Grid>
-        <TextBox x:Name="tbxSiteId" HorizontalAlignment="Left" Height="23" Margin="140,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="lblSiteId" Content="SiteId" HorizontalAlignment="Left" Margin="140,38,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" Margin="270,65,0,0" VerticalAlignment="Top" Width="75" Click="btnLoad_Click"/>
-        <Button x:Name="btnExecute" Content="Execute" HorizontalAlignment="Left" Margin="270,90,0,0" VerticalAlignment="Top" Width="75" Click="btnExecute_Click"/>
-        <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Margin="10,433,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.579,0.423" Width="672"/>
-        <ComboBox x:Name="cbxSiteIds" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxSiteIds_SelectionChanged"/>
-        <Label x:Name="lblSiteSelect" Content="Select Site Id" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="364" Margin="360,64,0,0" VerticalAlignment="Top" Width="420">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFFFBA42" Offset="0"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" Margin="991,67,0,0" VerticalAlignment="Top" Width="103" Click="btnLoad_Click" Height="22"/>
+        <Button x:Name="btnExecute" Content="Execute" HorizontalAlignment="Left" Margin="1102,67,0,0" VerticalAlignment="Top" Width="103" Click="btnExecute_Click" Height="22"/>
+        <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Margin="10,600,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.579,0.423" Width="1195" Height="26"/>
+        <ComboBox x:Name="cbxSiteIds" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="103" SelectionChanged="cbxSiteIds_SelectionChanged" Height="22"/>
+        <Label x:Name="lblSiteSelect" Content="Select Site Id" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="26" Width="78"/>
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="427" Margin="10,98,0,0" VerticalAlignment="Top" Width="587">
             <StackPanel Orientation="Horizontal"></StackPanel>
         </ListBox>
-        <ListBox x:Name="lstbxStats" HorizontalAlignment="Left" Height="363" Margin="785,64,0,0" VerticalAlignment="Top" Width="420">
+        <ListBox x:Name="lstbxStats" HorizontalAlignment="Left" Height="427" Margin="602,98,0,0" VerticalAlignment="Top" Width="603">
             <StackPanel Orientation="Horizontal"></StackPanel>
         </ListBox>
+        <Label Content="SQL Connection String:" HorizontalAlignment="Left" Margin="10,543,0,0" VerticalAlignment="Top" Width="139" Height="26"/>
+        <Label x:Name="lblSqlConnStr" Content="" HorizontalAlignment="Left" Margin="10,569,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.184,-0.308" Width="1195" Height="26"/>
+        <Label Content="Firebird Connection String:" HorizontalAlignment="Left" Margin="124,41,0,0" VerticalAlignment="Top" Width="155" Height="26"/>
+        <Label x:Name="lblFbConnStr" Content="" HorizontalAlignment="Left" Margin="124,67,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.184,-0.308" Width="639" Height="26"/>
     </Grid>
 </Window>

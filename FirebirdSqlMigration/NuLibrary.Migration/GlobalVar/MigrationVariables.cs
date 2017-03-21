@@ -4,6 +4,7 @@ using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace NuLibrary.Migration.GlobalVar
 
         public static ICollection<int> SiteIds = new List<int>();
         public static ICollection<string> FirebirdTableNames = new List<string>();
-
+        public static string FbConnectionString = String.Empty;
         public static void Init()
         {
             if (SiteIds.Count == 0)
@@ -43,6 +44,9 @@ namespace NuLibrary.Migration.GlobalVar
             if (CurrentSiteId != 0)
             {
                 FBDataAccess fba = new FBDataAccess();
+                var dbConn = fba.GetConnnection();
+
+                FbConnectionString = dbConn.ConnectionString;
                 FirebirdTableNames = fba.GetTableNames();
             }
             else

@@ -159,7 +159,8 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>call “C:\ProgramFiles (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat” x64
-“C:\ProgramFiles (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX64\x64\EditBin.exe” “$(TargetPath)”  /LARGEADDRESSAWARE</PostBuildEvent>
+“C:\ProgramFiles (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX64\x64\EditBin.exe” “$(TargetPath)”  /LARGEADDRESSAWARE
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

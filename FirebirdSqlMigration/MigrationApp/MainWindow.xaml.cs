@@ -59,6 +59,7 @@ namespace MigrationApp
             }
 
             cbxSiteIds.SelectedIndex = 0;
+            lblSqlConnStr.Content = TransactionManager.DatabaseContext.Database.Connection.ConnectionString;
         }
 
         delegate void UpdateLabelDelegate(string text);
@@ -130,8 +131,6 @@ namespace MigrationApp
                 
             }
 
-            
-
             DispatchLabel("Mapping Complete.");
         }
 
@@ -150,6 +149,7 @@ namespace MigrationApp
 
             btnLoad.IsEnabled = false;
             lblStatusBar.Content = "Schemas loaded.";
+            
         }
 
         private List<string> GetFilteredTableNames()
@@ -192,11 +192,11 @@ namespace MigrationApp
             {
                 selectedSiteId = id;
                 UpdateLabel($"Current SiteId: {id}");
+                lblFbConnStr.Content = aHelpers.GetAllFirebirdConnections().Where(s => s.SiteId == selectedSiteId).Select(s => s.DatabaseLocation).FirstOrDefault();
                 return;
             }
-
+            
             UpdateLabel($"Unable to parse Site Id: {cbxSiteIds.SelectedItem.ToString()} into type Int32.");
         }
-
     }
 }

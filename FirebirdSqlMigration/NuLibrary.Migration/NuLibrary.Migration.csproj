@@ -355,6 +355,9 @@
     <Compile Include="SQLDatabase\EF\subs_Trials.cs">
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\TableRowCount.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\TensReading.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>

@@ -67,7 +67,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             var exclude = new List<bool> {
                                 column.ToLower().StartsWith("ic"),
                                 column.ToLower().StartsWith("cf"),
-                                column.ToLower().StartsWith("target")
+                                column.ToLower().StartsWith("target"),
+                                column.ToLower().StartsWith("patientid")
                             };
                             
                             if (exclude.All(a => !a))

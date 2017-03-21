@@ -550,11 +550,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           </Key>
           <Property Name="PayPalId" Type="int" Nullable="false" />
           <Property Name="txn_id" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="parent_txN_id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="parent_txn_id" Type="nvarchar" MaxLength="50" />
           <Property Name="payment_date" Type="datetime" Nullable="false" />
-          <Property Name="payment_status" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="pending_reason" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="reason_code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="payment_status" Type="nvarchar" MaxLength="50" />
+          <Property Name="pending_reason" Type="nvarchar" MaxLength="50" />
+          <Property Name="reason_code" Type="nvarchar" MaxLength="50" />
           <Property Name="mc_gross" Type="money" Nullable="false" />
           <Property Name="mc_fee" Type="money" Nullable="false" />
           <Property Name="PayPal_post_vars" Type="nvarchar(max)" Nullable="false" />
@@ -760,6 +760,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           </Key>
           <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TableRowCount">
+          <Key>
+            <PropertyRef Name="TableName" />
+          </Key>
+          <Property Name="TableName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RowCnt" Type="bigint" />
         </EntityType>
         <Association Name="FK_AppLoginHistories_Applications">
           <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
@@ -1546,6 +1555,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
     [PasswordHistories].[AuthenticationId] AS [AuthenticationId]
     FROM [dbo].[PasswordHistories] AS [PasswordHistories]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="TableRowCount" EntityType="Self.TableRowCount" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TableRowCount].[TableName] AS [TableName], 
+    [TableRowCount].[RowCnt] AS [RowCnt]
+    FROM [dbo].[TableRowCount] AS [TableRowCount]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_AppLoginHistories_Applications" Association="Self.FK_AppLoginHistories_Applications">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="AppLoginHistories" EntitySet="AppLoginHistories" />
@@ -2083,26 +2098,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="PaymentMethod" Type="Int32" Nullable="false" />
           <Property Name="PaymentApproved" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Check" Relationship="Self.FK_Checks_Payments" FromRole="Payments" ToRole="Checks" />
-          <NavigationProperty Name="PayPal" Relationship="Self.FK_PayPal_Payments" FromRole="Payments" ToRole="PayPal" />
           <NavigationProperty Name="Subscription" Relationship="NuMedicsGlobalModel.FK_Payments_Subscriptions" FromRole="Payment" ToRole="Subscription" />
-        </EntityType>
-        <EntityType Name="PayPal">
-          <Key>
-            <PropertyRef Name="PayPalId" />
-          </Key>
-          <Property Name="PayPalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="txn_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="parent_txN_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="payment_date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="payment_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="pending_reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="reason_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="mc_gross" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="mc_fee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="PayPal_post_vars" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SourceIP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PaymentId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Payment" Relationship="Self.FK_PayPal_Payments" FromRole="PayPal" ToRole="Payments" />
+          <NavigationProperty Name="PayPal" Relationship="NuMedicsGlobalModel.FK_PayPal_Payments" FromRole="Payment" ToRole="PayPal" />
         </EntityType>
         <EntityType Name="ReadingEventType">
           <Key>
@@ -2436,18 +2433,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PayPal_Payments">
-          <End Role="Payments" Type="Self.Payment" Multiplicity="1" />
-          <End Role="PayPal" Type="Self.PayPal" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Payments">
-              <PropertyRef Name="PaymentId" />
-            </Principal>
-            <Dependent Role="PayPal">
-              <PropertyRef Name="PayPalId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PasswordHistories_UserAuthentications">
           <End Role="UserAuthentications" Type="Self.UserAuthentication" Multiplicity="1" />
           <End Role="PasswordHistories" Type="Self.PasswordHistory" Multiplicity="*" />
@@ -2502,7 +2487,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <EntitySet Name="Patients" EntityType="Self.Patient" />
           <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethod" />
           <EntitySet Name="Payments" EntityType="Self.Payment" />
-          <EntitySet Name="PayPals" EntityType="Self.PayPal" />
           <EntitySet Name="ReadingEventTypes" EntityType="Self.ReadingEventType" />
           <EntitySet Name="SubscriptionTypes" EntityType="Self.SubscriptionType" />
           <EntitySet Name="TherapyTypes" EntityType="Self.TherapyType" />
@@ -2583,10 +2567,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_Patients_Users" Association="Self.FK_Patients_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Patients" EntitySet="Patients" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PayPal_Payments" Association="Self.FK_PayPal_Payments">
-            <End Role="Payments" EntitySet="Payments" />
-            <End Role="PayPal" EntitySet="PayPals" />
           </AssociationSet>
           <AssociationSet Name="FK_PasswordHistories_UserAuthentications" Association="Self.FK_PasswordHistories_UserAuthentications">
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
@@ -2761,6 +2741,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <AssociationSet Name="FK_AppUserSettings_Applications" Association="NuMedicsGlobalModel.FK_AppUserSettings_Applications">
             <End Role="Application" EntitySet="Applications" />
             <End Role="AppUserSetting" EntitySet="AppUserSettings" />
+          </AssociationSet>
+          <EntitySet Name="TableRowCounts" EntityType="NuMedicsGlobalModel.TableRowCount" />
+          <EntitySet Name="PayPals" EntityType="NuMedicsGlobalModel.PayPal" />
+          <AssociationSet Name="FK_PayPal_Payments" Association="NuMedicsGlobalModel.FK_PayPal_Payments">
+            <End Role="Payment" EntitySet="Payments" />
+            <End Role="PayPal" EntitySet="PayPals" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
@@ -3572,6 +3558,43 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TableRowCount">
+          <Key>
+            <PropertyRef Name="TableName" />
+          </Key>
+          <Property Name="TableName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RowCnt" Type="Int64" />
+        </EntityType>
+        <EntityType Name="PayPal">
+          <Key>
+            <PropertyRef Name="PayPalId" />
+          </Key>
+          <Property Name="PayPalId" Type="Int32" Nullable="false" />
+          <Property Name="txn_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="parent_txn_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="payment_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="payment_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pending_reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="reason_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="mc_gross" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="mc_fee" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="PayPal_post_vars" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SourceIP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Payment" Relationship="NuMedicsGlobalModel.FK_PayPal_Payments" FromRole="PayPal" ToRole="Payment" />
+        </EntityType>
+        <Association Name="FK_PayPal_Payments">
+          <End Type="NuMedicsGlobalModel.Payment" Role="Payment" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.PayPal" Role="PayPal" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="PaymentId" />
+            </Principal>
+            <Dependent Role="PayPal">
+              <PropertyRef Name="PayPalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3869,24 +3892,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
                 <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
                 <ScalarProperty Name="PaymentApproved" ColumnName="PaymentApproved" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PayPals">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PayPal">
-              <MappingFragment StoreEntitySet="PayPal">
-                <ScalarProperty Name="PayPalId" ColumnName="PayPalId" />
-                <ScalarProperty Name="txn_id" ColumnName="txn_id" />
-                <ScalarProperty Name="parent_txN_id" ColumnName="parent_txN_id" />
-                <ScalarProperty Name="payment_date" ColumnName="payment_date" />
-                <ScalarProperty Name="payment_status" ColumnName="payment_status" />
-                <ScalarProperty Name="pending_reason" ColumnName="pending_reason" />
-                <ScalarProperty Name="reason_code" ColumnName="reason_code" />
-                <ScalarProperty Name="mc_gross" ColumnName="mc_gross" />
-                <ScalarProperty Name="mc_fee" ColumnName="mc_fee" />
-                <ScalarProperty Name="PayPal_post_vars" ColumnName="PayPal_post_vars" />
-                <ScalarProperty Name="SourceIP" ColumnName="SourceIP" />
-                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4383,6 +4388,32 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="AppUserSettingId" ColumnName="AppUserSettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableRowCounts">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TableRowCount">
+              <MappingFragment StoreEntitySet="TableRowCount">
+                <ScalarProperty Name="RowCnt" ColumnName="RowCnt" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PayPals">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PayPal">
+              <MappingFragment StoreEntitySet="PayPal">
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="SourceIP" ColumnName="SourceIP" />
+                <ScalarProperty Name="PayPal_post_vars" ColumnName="PayPal_post_vars" />
+                <ScalarProperty Name="mc_fee" ColumnName="mc_fee" />
+                <ScalarProperty Name="mc_gross" ColumnName="mc_gross" />
+                <ScalarProperty Name="reason_code" ColumnName="reason_code" />
+                <ScalarProperty Name="pending_reason" ColumnName="pending_reason" />
+                <ScalarProperty Name="payment_status" ColumnName="payment_status" />
+                <ScalarProperty Name="payment_date" ColumnName="payment_date" />
+                <ScalarProperty Name="parent_txn_id" ColumnName="parent_txn_id" />
+                <ScalarProperty Name="txn_id" ColumnName="txn_id" />
+                <ScalarProperty Name="PayPalId" ColumnName="PayPalId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

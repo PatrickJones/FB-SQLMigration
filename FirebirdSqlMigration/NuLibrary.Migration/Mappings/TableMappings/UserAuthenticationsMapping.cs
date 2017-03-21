@@ -41,9 +41,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     if (isAdmin)
                     {
-                        string corp = aHelper.GetCorporationName(adUser.CPSiteId);
-
-                        switch (corp)
+                        switch (aHelper.GetCorporationName(adUser.CPSiteId))
                         {
                             case "Insulet":
                                 appId = nHelper.GetApplicationId("OmniPod Partner");
@@ -89,7 +87,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     };
 
                     if (isAdminSiteUser)
-                    { 
+                    {
                         user.UserType = (int)UserType.Admin;
                     }
 
@@ -115,7 +113,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating User mapping.", e);
             }
-
         }
 
         public void SaveChanges()

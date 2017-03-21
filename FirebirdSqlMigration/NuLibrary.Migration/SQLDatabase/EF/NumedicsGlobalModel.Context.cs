@@ -50,7 +50,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
-        public virtual DbSet<PayPal> PayPals { get; set; }
         public virtual DbSet<ReadingEventType> ReadingEventTypes { get; set; }
         public virtual DbSet<SubscriptionType> SubscriptionTypes { get; set; }
         public virtual DbSet<TherapyType> TherapyTypes { get; set; }
@@ -90,5 +89,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<PumpSetting> PumpSettings { get; set; }
         public virtual DbSet<AppSetting> AppSettings { get; set; }
         public virtual DbSet<AppUserSetting> AppUserSettings { get; set; }
+        public virtual DbSet<TableRowCount> TableRowCounts { get; set; }
+        public virtual DbSet<PayPal> PayPals { get; set; }
     }
 }

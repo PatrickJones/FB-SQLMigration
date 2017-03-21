@@ -30,7 +30,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Patient" Width="1.5" PointX="5.25" PointY="51.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PaymentMethod" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Payment" Width="1.5" PointX="9.75" PointY="90.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PayPal" Width="1.5" PointX="12" PointY="91.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEventType" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.SubscriptionType" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.TherapyType" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
@@ -58,7 +57,6 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientPhoneNumbers_Patients" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientPhotos_Patients" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_Patients_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PayPal_Payments" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Users" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_InsurancePlans" ManuallyRouted="false" />
@@ -125,6 +123,9 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppUserSetting" Width="1.5" PointX="3" PointY="17.625" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppSettings_Applications" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppUserSettings_Applications" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.TableRowCount" Width="1.5" PointX="5.375" PointY="9.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PayPal" Width="1.5" PointX="12" PointY="91.625" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_PayPal_Payments" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -93,7 +93,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                         {
                             mc_fee = pp.mc_fee,
                             mc_gross = pp.mc_gross,
-                            parent_txN_id = pp.parent_txn_id,
+                            parent_txn_id = pp.parent_txn_id,
                             payment_date = pp.payment_date,
                             payment_status = pp.payment_status,
                             PayPal_post_vars = pp.PayPal_post_vars,

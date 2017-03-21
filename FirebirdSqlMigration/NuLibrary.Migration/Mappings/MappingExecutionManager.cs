@@ -69,7 +69,7 @@ namespace NuLibrary.Migration.Mappings
         private void CreateMappings()
         {
             // this set of task must execute first to populate in-memory objects used by subsequent task list.
-            var taskSetA = new List<Task> { 
+            var taskSet = new List<Task> {
                 Task.Run(() =>
                 {
                     var instance = (InstitutionMapping)mapInstances[0].Value;
@@ -97,62 +97,73 @@ namespace NuLibrary.Migration.Mappings
                 })
             };
 
-            Task.WhenAll(taskSetA).ContinueWith(doneA => {
+            Task.WhenAll(taskSet).ContinueWith(done => MapPatientDataPumps());
+        }
 
-                var taskSetB = new List<Task> {
-                    Task.Run(() =>
-                    {
-                        var instance = (PatientPhoneNumbersMapping)mapInstances[4].Value;
-                        instance.CreatePatientPhoneNumbersMapping();
-                    }),
-                    Task.Run(() =>
-                    {
-                        var instance = (InsuranceCompaniesMapping)mapInstances[5].Value;
-                        instance.CreateInsuranceCompanyMapping();
-                    }),
-                    Task.Run(() =>
-                    {
-                        var instance = (InsurancePlansMapping)mapInstances[6].Value;
-                        instance.CreateInsurancePlansMapping();
-                    }),
-                    Task.Run(() =>
-                    {
-                        var instance = (DMDataMapping)mapInstances[7].Value;
-                        instance.CreateDMDataMapping();
-                    }),
-                    Task.Run(() =>
-                    {
-                        var instance = (TimeSlotsMapping)mapInstances[8].Value;
-                        instance.CreateTimeSlotsMapping();
-                    }),
-                    Task.Run(() =>
-                    {
-                        var instance = new PumpSettingMapping();
-                        instance.CreatePumpSettingMapping();
-                    }),
-                    Task.Run(() =>
-                    {
-                        var instance = new PumpTimeSlotsMapping();
-                        instance.CreatePumpTimeSlotsMapping();
-                    })
-                };
+        private void MapPatientDataPumps()
+        {
+            var taskSet = new List<Task> {
+                Task.Run(() =>
+                {
+                    var instance = (PatientPhoneNumbersMapping)mapInstances[4].Value;
+                    instance.CreatePatientPhoneNumbersMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = (InsuranceCompaniesMapping)mapInstances[5].Value;
+                    instance.CreateInsuranceCompanyMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = (InsurancePlansMapping)mapInstances[6].Value;
+                    instance.CreateInsurancePlansMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = (DMDataMapping)mapInstances[7].Value;
+                    instance.CreateDMDataMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = (TimeSlotsMapping)mapInstances[8].Value;
+                    instance.CreateTimeSlotsMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = new PumpSettingMapping();
+                    instance.CreatePumpSettingMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = new PumpTimeSlotsMapping();
+                    instance.CreatePumpTimeSlotsMapping();
+                })
+            };
 
-                Task.WhenAll(taskSetB).ContinueWith(doneB => {
-                    var taskSetC = new List<Task> {
-                        Task.Run(() =>
-                        {
-                            var instance = (SubscriptionsMapping)mapInstances[10].Value;
-                            instance.CreateSubscriptionMapping();
-                        }),
-                        Task.Run(() =>
-                        {
-                            var instance = new PumpProgramsMapping();
-                            instance.CreatePumpProgramsMapping();
-                        })
-                    };
+            Task.WhenAll(taskSet).ContinueWith(done => MapSubscriptions());
+        }
 
-                    Task.WhenAll(taskSetC).ContinueWith(doneC => {
-                        var taskSetD = new List<Task> {
+        private void MapSubscriptions()
+        {
+            var taskSet = new List<Task> {
+                Task.Run(() =>
+                {
+                    var instance = (SubscriptionsMapping)mapInstances[10].Value;
+                    instance.CreateSubscriptionMapping();
+                }),
+                Task.Run(() =>
+                {
+                    var instance = new PumpProgramsMapping();
+                    instance.CreatePumpProgramsMapping();
+                })
+            };
+
+            Task.WhenAll(taskSet).ContinueWith(done => MapPumps());
+        }
+
+        private void MapPumps()
+        {
+            var taskSet = new List<Task> {
                             Task.Run(() =>
                             {
                                 var instance = new PumpsMapping();
@@ -160,32 +171,36 @@ namespace NuLibrary.Migration.Mappings
                             })
                         };
 
-                        Task.WhenAll(taskSetD).ContinueWith(doneD => {
-                            var taskSetE = new List<Task> {
-                                Task.Run(() =>
-                                {
-                                    var instance = (DeviceMeterReadingHeaderMapping)mapInstances[9].Value;
-                                    instance.CreateDeviceMeterReadingHeaderMapping();
-                                })
-                            };
+            Task.WhenAll(taskSet).ContinueWith(done => MapReadingHeaders());
+        }
 
-                            Task.WhenAll(taskSetE).ContinueWith(doneE => {
-                                var taskSetF = new List<Task> {
-                                    Task.Run(() =>
-                                    {
-                                        var instance = (MeterReadingMapping)mapInstances[11].Value;
-                                        instance.CreateDeviceMeterReadingMapping();
-                                    })
-                                };
+        private void MapReadingHeaders()
+        {
+            var taskSet = new List<Task> {
+                Task.Run(() =>
+                {
+                    var instance = (DeviceMeterReadingHeaderMapping)mapInstances[9].Value;
+                    instance.CreateDeviceMeterReadingHeaderMapping();
+                })
+            };
 
-                                Task.WhenAll(taskSetF).ContinueWith(doneF => {
-                                    //UpdateContext();
-                                    MappingsCompleted = true;
-                                });
-                            });
-                        });
-                    });
-                });
+            Task.WhenAll(taskSet).ContinueWith(done => MapMeterReadings());
+        }
+
+        private void MapMeterReadings()
+        {
+            var taskSet = new List<Task> {
+                Task.Run(() =>
+                {
+                    var instance = (MeterReadingMapping)mapInstances[11].Value;
+                    instance.CreateDeviceMeterReadingMapping();
+                })
+            };
+
+            Task.WhenAll(taskSet).ContinueWith(done =>
+            {
+                //UpdateContext();
+                MappingsCompleted = true;
             });
         }
 

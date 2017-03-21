@@ -16,7 +16,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     {
         public int PayPalId { get; set; }
         public string txn_id { get; set; }
-        public string parent_txN_id { get; set; }
+        public string parent_txn_id { get; set; }
         public System.DateTime payment_date { get; set; }
         public string payment_status { get; set; }
         public string pending_reason { get; set; }

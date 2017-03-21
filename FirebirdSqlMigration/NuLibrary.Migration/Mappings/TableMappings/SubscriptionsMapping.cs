@@ -72,6 +72,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         where cm.UserId == ps.UserId
                         select cm;
 
+                var r = from m in q
+                        from i in TransactionManager.DatabaseContext.Institutions
+                        where m.InstitutionId == i.InstitutionId
+                        select m;
+
                 //Array.ForEach(CompletedMappings.ToArray(), c =>
                 //{
                 //    if (TransactionManager.DatabaseContext.Patients.Any(a => a.UserId == c.UserId))
@@ -79,8 +84,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 //        TransactionManager.DatabaseContext.Subscriptions.Add(c);
                 //    }
                 //});
-                
-                TransactionManager.DatabaseContext.Subscriptions.AddRange(q);
+
+                TransactionManager.DatabaseContext.Subscriptions.AddRange(r);
                 TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = TransactionManager.DatabaseContext.Subscriptions.Count();
 

@@ -25,14 +25,14 @@
         <DataGrid x:Name="listBox" HorizontalAlignment="Left" Height="440" Margin="10,98,0,0" VerticalAlignment="Top" Width="587">
             <!--<StackPanel Orientation="Horizontal"></StackPanel>-->
         </DataGrid>
-        <ListBox x:Name="lstbxStats" HorizontalAlignment="Left" Height="242" Margin="602,98,0,0" VerticalAlignment="Top" Width="603">
+        <ListBox x:Name="lstbxStats" HorizontalAlignment="Left" Height="242" Margin="880,98,0,0" VerticalAlignment="Top" Width="325">
             <StackPanel Orientation="Horizontal"></StackPanel>
         </ListBox>
         <Label Content="SQL Connection String:" HorizontalAlignment="Left" Margin="10,543,0,0" VerticalAlignment="Top" Width="139" Height="26"/>
         <Label x:Name="lblSqlConnStr" Content="" HorizontalAlignment="Left" Margin="10,569,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.184,-0.308" Width="1195" Height="26"/>
         <Label Content="Firebird Connection String:" HorizontalAlignment="Left" Margin="124,41,0,0" VerticalAlignment="Top" Width="155" Height="26"/>
         <Label x:Name="lblFbConnStr" Content="" HorizontalAlignment="Left" Margin="124,67,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.184,-0.308" Width="639" Height="26"/>
-        <DataGrid x:Name="dgSqlTables" HorizontalAlignment="Left" Height="193" Margin="602,345,0,0" VerticalAlignment="Top" Width="584">
+        <DataGrid x:Name="dgSqlTables" HorizontalAlignment="Left" Height="242" Margin="602,98,0,0" VerticalAlignment="Top" Width="273">
             <DataGrid.Columns>
                 <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
                 <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>

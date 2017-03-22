@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
+using NuLibrary.Migration.SQLDatabase.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,12 @@ namespace NuLibrary.Migration.Test
         [TestMethod()]
         public void AddDiabetesManagementDataTest()
         {
+            //Arrange
+            var dm = new DiabetesManagementData();
+
+            //Act
+            //Assert
+
             Assert.Fail();
         }
 

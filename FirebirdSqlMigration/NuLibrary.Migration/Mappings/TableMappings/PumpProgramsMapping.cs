@@ -88,7 +88,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("PATIENTPUMPPROGRAM", RecordCount, "PumpPrograms", 0, MemoryMappings.GetAllPumpPrograms().Count, FailedCount);
+                MappingStatistics.LogMappingStat("PATIENTPUMPPROGRAM", RecordCount, "PumpPrograms", MemoryMappings.GetAllPumpPrograms().Count, FailedCount);
             }
             catch (Exception e)
             {

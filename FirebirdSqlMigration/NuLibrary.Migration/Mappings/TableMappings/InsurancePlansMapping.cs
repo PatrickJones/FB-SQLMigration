@@ -87,7 +87,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("INSURANCEPLANS2", RecordCount, "InsurancePlans", 0, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("INSURANCEPLANS2", RecordCount, "InsurancePlans", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

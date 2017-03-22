@@ -72,7 +72,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("TIMESLOT", RecordCount, "DailyTimeSlots", 0, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("TIMESLOT", RecordCount, "DailyTimeSlots", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

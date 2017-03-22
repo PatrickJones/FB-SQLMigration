@@ -53,7 +53,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("None", 0, "Clinicians", RecordCount, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("None", 0, "Clinicians", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

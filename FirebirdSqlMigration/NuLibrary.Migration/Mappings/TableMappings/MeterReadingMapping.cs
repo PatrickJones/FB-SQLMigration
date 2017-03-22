@@ -309,7 +309,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedDeviceSettingsMappings.AddRange(handler.DeviceSettings);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "DeviceSettings", 0, CompletedDeviceSettingsMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "DeviceSettings", CompletedDeviceSettingsMappings.Count, FailedCount);
             }
             else
             {
@@ -322,7 +322,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedReadingEventMappings.AddRange(handler.ReadingEvents);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "ReadingEvents", 0, CompletedReadingEventMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "ReadingEvents", CompletedReadingEventMappings.Count, FailedCount);
             }
             else
             {
@@ -338,9 +338,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 CompletedBasalMappings.AddRange(handler.BasalDeliveries);
                 CompletedTDDMappings.AddRange(handler.TotalDailyInsulinDeliveries);
 
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BolusDelivery", 0, CompletedBolusMappings.Count, FailedCount);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BasalDelivery", 0, CompletedBasalMappings.Count, FailedCount);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "TotalDailyInsulinDeliveries", 0, CompletedTDDMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BolusDelivery", CompletedBolusMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BasalDelivery", CompletedBasalMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "TotalDailyInsulinDeliveries", CompletedTDDMappings.Count, FailedCount);
             }
             else
             {
@@ -353,7 +353,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedNutritionMappings.AddRange(handler.NutritionReadings);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "NutritionReadings", 0, CompletedNutritionMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "NutritionReadings", CompletedNutritionMappings.Count, FailedCount);
             }
             else
             {
@@ -366,7 +366,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedBGMappings.AddRange(handler.BloodGlucoseReadings);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BloodGlucoseReadings", 0, CompletedBGMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BloodGlucoseReadings", CompletedBGMappings.Count, FailedCount);
             }
             else
             {

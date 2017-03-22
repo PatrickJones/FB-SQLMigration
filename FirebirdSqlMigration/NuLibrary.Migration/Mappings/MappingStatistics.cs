@@ -24,13 +24,12 @@ namespace NuLibrary.Migration.Mappings
             fm.FailedReason = failedReason;
         }
 
-        public static void LogMappingStat(string fbTablename, int fbRecordCount, string sqlTablename, int sqlRecordCount, int completedMappings, int failedMappings)
+        public static void LogMappingStat(string fbTablename, int fbRecordCount, string sqlTablename, int completedMappings, int failedMappings)
         {
             var ms = new MappingStats();
-            ms.FBTablename = fbTablename;
+            ms.FBTableName = fbTablename;
             ms.FBRecordCount = fbRecordCount;
-            ms.SQLTablename = sqlTablename;
-            ms.SQLRecordCount = sqlRecordCount;
+            ms.SQLMappedTable = sqlTablename;
             ms.CompletedMappingsCount = completedMappings;
             ms.FailedMappingsCount = failedMappings;
 

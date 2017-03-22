@@ -98,7 +98,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("INSULETPUMPSETTINGS", RecordCount, "PumpSettings", 0, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("INSULETPUMPSETTINGS", RecordCount, "PumpSettings", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

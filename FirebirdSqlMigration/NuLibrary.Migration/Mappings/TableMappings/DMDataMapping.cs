@@ -106,7 +106,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("DMDATA", RecordCount, "CareSettings", 0, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("DMDATA", RecordCount, "CareSettings", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

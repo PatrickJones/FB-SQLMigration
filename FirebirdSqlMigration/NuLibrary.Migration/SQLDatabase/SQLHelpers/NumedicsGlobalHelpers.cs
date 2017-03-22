@@ -95,6 +95,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.Users.Where(w => w.UserId == userId).FirstOrDefault();
         }
 
+        public ICollection<TableRowCount> GetTableRowCount()
+        {
+            return db.TableRowCounts.OrderBy(o => o.TableName).ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

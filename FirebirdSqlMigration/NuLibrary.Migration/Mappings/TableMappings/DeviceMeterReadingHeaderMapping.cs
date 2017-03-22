@@ -190,7 +190,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("METERREADINGHEADER", RecordCount, "PatientDevices", 0, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("METERREADINGHEADER", RecordCount, "PatientDevices", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

@@ -122,8 +122,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     });
                 }
 
-                MappingStatistics.LogMappingStat("PUMPTIMESLOTS", RecordCount, "BasalProgramTimeSlots", 0, MemoryMappings.GetAllBasalPrgTimeSlots().Count, FailedCount);
-                MappingStatistics.LogMappingStat("PUMPTIMESLOTS", RecordCount, "BolusProgramTimeSlots", 0, MemoryMappings.GetAllBolusPrgTimeSlots().Count, FailedCount);
+                MappingStatistics.LogMappingStat("PUMPTIMESLOTS", RecordCount, "BasalProgramTimeSlots", MemoryMappings.GetAllBasalPrgTimeSlots().Count, FailedCount);
+                MappingStatistics.LogMappingStat("PUMPTIMESLOTS", RecordCount, "BolusProgramTimeSlots", MemoryMappings.GetAllBolusPrgTimeSlots().Count, FailedCount);
             }
             catch (Exception e)
             {

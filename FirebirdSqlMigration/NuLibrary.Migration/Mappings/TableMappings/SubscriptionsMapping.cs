@@ -49,7 +49,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("None", 0, "Subscriptions", RecordCount, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("None", 0, "Subscriptions", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

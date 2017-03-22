@@ -28,6 +28,7 @@ namespace MigrationApp
     public partial class MainWindow : Window
     {
         AspnetDbHelpers aHelpers = new AspnetDbHelpers();
+        NumedicsGlobalHelpers nHelpers = new NumedicsGlobalHelpers();
 
         BackgroundWorker bWorker = new BackgroundWorker();
         BackgroundWorker bTrans = new BackgroundWorker();
@@ -41,6 +42,7 @@ namespace MigrationApp
         {
             InitializeComponent();
             SetCombo();
+            SetSqlDataGrid();
 
             btnExecute.IsEnabled = false;
             lblStatusBar.Content = "Ready";
@@ -49,6 +51,11 @@ namespace MigrationApp
             bWorker.RunWorkerCompleted += BWorker_RunWorkerCompleted;
             bTrans.DoWork += BTrans_DoWork;
             bTrans.RunWorkerCompleted += BTrans_RunWorkerCompleted;
+        }
+
+        private void SetSqlDataGrid()
+        {
+            dgSqlTables.ItemsSource = nHelpers.GetTableRowCount();
         }
 
         private void SetCombo()
@@ -91,18 +98,18 @@ namespace MigrationApp
 
         private void BWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            foreach (var st in MappingStatistics.MappingStats.OrderBy(o => o.FBTablename).ThenBy(t => t.SQLTablename))
-            {
-                listBox.Items.Add(st.ToString());
-            }
+            //foreach (var st in MappingStatistics.MappingStats.OrderBy(o => o.FBTablename).ThenBy(t => t.SQLTablename))
+            //{
+            //    listBox.Items.Add(st.ToString());
+            //}
 
+            listBox.ItemsSource = MappingStatistics.MappingStats.OrderBy(o => o.FBTableName).ThenBy(t => t.SQLMappedTable).Where(w => !string.Equals(w.FBTableName, "none", StringComparison.CurrentCultureIgnoreCase));
             btnExecute.IsEnabled = true;
         }
 
         private void BTrans_DoWork(object sender, DoWorkEventArgs e)
         {
             DispatchLabel("Beginning transaction...");
-            
             TransactionManager.ExecuteTransaction();
         }
 

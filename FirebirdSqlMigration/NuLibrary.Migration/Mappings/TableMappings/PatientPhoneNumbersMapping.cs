@@ -76,7 +76,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                 }
 
-                MappingStatistics.LogMappingStat("PHONENUMBERS", RecordCount, "PatientPhoneNumbers", 0, CompletedMappings.Count, FailedCount);
+                MappingStatistics.LogMappingStat("PHONENUMBERS", RecordCount, "PatientPhoneNumbers", CompletedMappings.Count, FailedCount);
             }
             catch (Exception e)
             {

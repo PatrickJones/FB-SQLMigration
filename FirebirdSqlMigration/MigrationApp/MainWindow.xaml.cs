@@ -62,7 +62,7 @@ namespace MigrationApp
 
             lstbxStats.ItemsSource = null;
             listBox.ItemsSource = null;
-            lstbxStats.ItemsSource = null;
+            lstbxStats.Items.Clear();
 
             cbxSiteIds.IsEnabled = true;
             btnLoad.IsEnabled = true;

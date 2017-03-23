@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -203,6 +204,9 @@
     <Compile Include="SQLDatabase\EF\DailyTimeSlot.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\DatabaseHistory.cs">
+      <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\DatabaseInfo.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -257,6 +261,21 @@
     <Compile Include="SQLDatabase\EF\InsuranceProvider.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\MigrationHistoryModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MigrationHistoryModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\MigrationHistoryModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\MigrationHistoryModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\NumedicsGlobalModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -286,6 +305,9 @@
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientDevice.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientHistory.cs">
+      <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientLinkLog.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
@@ -353,6 +375,9 @@
     <Compile Include="SQLDatabase\EF\subs_Trials.cs">
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\TableHistory.cs">
+      <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\TableRowCount.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -377,6 +402,7 @@
     <Compile Include="SQLDatabase\SQLHelpers\AspnetDbHelpers.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\DatabaseContextDisposal.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\MeterReadingHandler.cs" />
+    <Compile Include="SQLDatabase\SQLHelpers\MigrationHistoryHelpers.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\NumedicsGlobalHelpers.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\SubscriptionHandler.cs" />
     <Compile Include="SQLDatabase\SqlPurge.cs" />
@@ -423,17 +449,18 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>NumedicsGlobalModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="SQLDatabase\EF\MigrationHistoryModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MigrationHistoryModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="SQLDatabase\EF\MigrationHistoryModel.edmx.diagram">
+      <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
+    </None>
     <None Include="SQLDatabase\EF\NumedicsGlobalModel.edmx.diagram">
       <DependentUpon>NumedicsGlobalModel.edmx</DependentUpon>
     </None>
-    <None Include="vcvarsall.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="editbin.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="SQLDatabase\EF\AspnetDbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AspnetDbModel.edmx</DependentUpon>
@@ -443,6 +470,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AspnetDbModel.edmx</DependentUpon>
       <LastGenOutput>AspnetDbModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="SQLDatabase\EF\MigrationHistoryModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
+      <LastGenOutput>MigrationHistoryModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="SQLDatabase\EF\MigrationHistoryModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
+      <LastGenOutput>MigrationHistoryModel.cs</LastGenOutput>
     </Content>
     <Content Include="SQLDatabase\EF\NumedicsGlobalModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

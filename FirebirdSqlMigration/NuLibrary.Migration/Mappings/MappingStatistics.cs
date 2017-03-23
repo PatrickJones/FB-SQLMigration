@@ -36,7 +36,7 @@ namespace NuLibrary.Migration.Mappings
             MappingStats.Add(ms);
         }
 
-        public static void ExportToLog()
+        public static string ExportToLog()
         {
             var ss = JsonConvert.SerializeObject(SqlTableStatistics, Formatting.Indented);
             var ms = JsonConvert.SerializeObject(MappingStats, Formatting.Indented);
@@ -48,6 +48,15 @@ namespace NuLibrary.Migration.Mappings
             sb.AppendLine(ms);
 
             File.WriteAllText(@"C:\Users\pjones\Documents\FbMigrationLog.json", sb.ToString());
+
+            return sb.ToString();
+        }
+
+        public static void ClearAll()
+        {
+            SqlTableStatistics.Clear();
+            MappingStats.Clear();
+            FailedMappingCollection = new ConcurrentBag<FailedMappings>();
         }
     }
 }

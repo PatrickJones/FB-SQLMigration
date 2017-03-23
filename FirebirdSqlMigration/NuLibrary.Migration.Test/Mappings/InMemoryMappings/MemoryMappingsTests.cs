@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FizzWare.NBuilder;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
 using System;
@@ -16,18 +17,30 @@ namespace NuLibrary.Migration.Test
         public void AddDiabetesManagementDataTest()
         {
             //Arrange
-            var dm = new DiabetesManagementData();
+            var dm = Builder<DiabetesManagementData>.CreateNew().Build();
 
             //Act
-            //Assert
+            MemoryMappings.AddDiabetesManagementData(dm);
+            var getDm = MemoryMappings.GetAllDiabetesManagementData().FirstOrDefault(f => f.DMDataId == dm.DMDataId);
 
-            Assert.Fail();
+            //Assert
+            Assert.IsNotNull(getDm);
         }
 
         [TestMethod()]
         public void GetAllDiabetesManagementDataTest()
         {
-            Assert.Fail();
+            //Arrange
+            var dm = Builder<DiabetesManagementData>.CreateListOfSize(10).Build();
+
+            //Act
+            foreach (var d in dm)
+            {
+                MemoryMappings.AddDiabetesManagementData(d);
+            }
+            
+            //Assert
+            Assert.AreEqual(10, dm.Count);
         }
 
         [TestMethod()]

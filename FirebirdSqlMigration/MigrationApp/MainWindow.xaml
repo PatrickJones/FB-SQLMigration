@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" Margin="991,67,0,0" VerticalAlignment="Top" Width="103" Click="btnLoad_Click" Height="22"/>
         <Button x:Name="btnExecute" Content="Execute" HorizontalAlignment="Left" Margin="1102,67,0,0" VerticalAlignment="Top" Width="103" Click="btnExecute_Click" Height="22"/>
-        <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Margin="10,600,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.579,0.423" Width="1195" Height="26" Background="#FFFFBB44"/>
+        <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Margin="10,600,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.579,0.423" Width="976" Height="26" Background="#FFFFBB44"/>
         <ComboBox x:Name="cbxSiteIds" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="103" SelectionChanged="cbxSiteIds_SelectionChanged" Height="22"/>
         <Label x:Name="lblSiteSelect" Content="Select Site Id" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="26" Width="78"/>
         <DataGrid x:Name="listBox" HorizontalAlignment="Left" Height="440" Margin="10,98,0,0" VerticalAlignment="Top" Width="587">
@@ -40,5 +40,6 @@
                 <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
             </DataGrid.Columns>
         </DataGrid>
+        <Button x:Name="btnNewMigration" Content="New Migration" HorizontalAlignment="Left" Margin="991,600,0,0" VerticalAlignment="Top" Width="217" RenderTransformOrigin="1.2,4.8" Height="26" Click="btnNewMigration_Click"/>
     </Grid>
 </Window>

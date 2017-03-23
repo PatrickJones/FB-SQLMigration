@@ -7,9 +7,9 @@
       <Diagram DiagramId="c77641d1c8944b1e806cf4cbf6965d13" Name="Diagram1">
         <EntityTypeShape EntityType="MigrationHistoryModel.DatabaseHistory" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MigrationHistoryModel.TableHistory" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MigrationHistoryModel.PatientHistory" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
-        <AssociationConnector Association="MigrationHistoryModel.FK_PatientHistory_DatabaseHistory" ManuallyRouted="false" />
         <AssociationConnector Association="MigrationHistoryModel.FK_TableHistory_DatabaseHistory" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MigrationHistoryModel.PatientHistory" Width="1.5" PointX="3" PointY="4.75" />
+        <AssociationConnector Association="MigrationHistoryModel.FK_PatientHistory_DatabaseHistory" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

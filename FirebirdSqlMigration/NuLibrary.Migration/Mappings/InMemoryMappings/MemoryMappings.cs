@@ -31,7 +31,8 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         // item1 = site id
         // item2 = patient id
         // item3 = user id
-        private static List<Tuple<int, string, Guid>> patientInfo = new List<Tuple<int, string, Guid>>();
+        // item4 = saved to database
+        private static List<Tuple<int, string, Guid, bool>> patientInfo = new List<Tuple<int, string, Guid, bool>>();
 
         // key = user id
         // Item1 = Firebird program keyid
@@ -249,12 +250,17 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         {
             if (siteId != 0 && !String.IsNullOrEmpty(patientId) && userId != Guid.Empty)
             {
-                var tup = new Tuple<int, string, Guid>(siteId, patientId, userId);
+                var tup = new Tuple<int, string, Guid, bool>(siteId, patientId, userId, false);
                 if (!patientInfo.Contains(tup))
                 {
                     patientInfo.Add(tup);
                 }
             }
+        }
+
+        public static ICollection<Tuple<int, string, Guid, bool>> GetAllPatientInfo()
+        {
+            return patientInfo;
         }
 
         public static ICollection<Guid> GetAllUserIdsFromPatientInfo()
@@ -285,6 +291,21 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         public static int DMDataCount()
         {
             return DMDataCollection.Count;
+        }
+
+        public static void ClearAll()
+        {
+            DMDataCollection.Clear();
+            InstitutionCollection.Clear();
+            Companies.Clear();
+            NuLicenses.Clear();
+            patientInfo.Clear();
+            PumpCollection.Clear();
+            PumpPrograms.Clear();
+            BasalPrgTimeSlots.Clear();
+            BolusPrgTimeSlots.Clear();
+            PumpSettings.Clear();
+            ReadingHeaderKeyIds.Clear();
         }
     }
 }

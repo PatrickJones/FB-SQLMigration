@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MigrationHistoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MigrationHistoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DatabaseHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -14,24 +14,14 @@
           <Property Name="SiteId" Type="int" Nullable="false" />
           <Property Name="LastMigrationDate" Type="datetime" Nullable="false" />
           <Property Name="PreviousMigrationDate" Type="datetime" Nullable="false" />
-          <Property Name="FbConnectionStringUsed" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="FbConnectionStringUsed" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="MigrationLog" Type="nvarchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PatientHistory">
           <Key>
             <PropertyRef Name="PatientHistoryId" />
-            <PropertyRef Name="Firstname" />
-            <PropertyRef Name="Lastname" />
-            <PropertyRef Name="BirthDate" />
-            <PropertyRef Name="FirebirdPatientId" />
-            <PropertyRef Name="SqlUserId" />
-            <PropertyRef Name="LastMigrationDate" />
-            <PropertyRef Name="PreviousMigrationDate" />
-            <PropertyRef Name="MigrationId" />
           </Key>
-          <Property Name="PatientHistoryId" Type="int" Nullable="false" />
+          <Property Name="PatientHistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Firstname" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Lastname" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="BirthDate" Type="datetime" Nullable="false" />
@@ -79,20 +69,8 @@ warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have
         </Association>
         <EntityContainer Name="MigrationHistoryModelStoreContainer">
           <EntitySet Name="DatabaseHistory" EntityType="Self.DatabaseHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientHistory" EntityType="Self.PatientHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TableHistory" EntityType="Self.TableHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PatientHistory" EntityType="Self.PatientHistory" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PatientHistory].[PatientHistoryId] AS [PatientHistoryId], 
-    [PatientHistory].[Firstname] AS [Firstname], 
-    [PatientHistory].[Lastname] AS [Lastname], 
-    [PatientHistory].[BirthDate] AS [BirthDate], 
-    [PatientHistory].[FirebirdPatientId] AS [FirebirdPatientId], 
-    [PatientHistory].[SqlUserId] AS [SqlUserId], 
-    [PatientHistory].[LastMigrationDate] AS [LastMigrationDate], 
-    [PatientHistory].[PreviousMigrationDate] AS [PreviousMigrationDate], 
-    [PatientHistory].[MigrationId] AS [MigrationId]
-    FROM [dbo].[PatientHistory] AS [PatientHistory]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_PatientHistory_DatabaseHistory" Association="Self.FK_PatientHistory_DatabaseHistory">
             <End Role="DatabaseHistory" EntitySet="DatabaseHistory" />
             <End Role="PatientHistory" EntitySet="PatientHistory" />
@@ -102,8 +80,7 @@ warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have
             <End Role="TableHistory" EntitySet="TableHistory" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MigrationHistoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -116,10 +93,10 @@ warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have
           <Property Name="SiteId" Type="Int32" Nullable="false" />
           <Property Name="LastMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PreviousMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FbConnectionStringUsed" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FbConnectionStringUsed" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MigrationLog" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="PatientHistories" Relationship="Self.FK_PatientHistory_DatabaseHistory" FromRole="DatabaseHistory" ToRole="PatientHistory" />
           <NavigationProperty Name="TableHistories" Relationship="Self.FK_TableHistory_DatabaseHistory" FromRole="DatabaseHistory" ToRole="TableHistory" />
+          <NavigationProperty Name="PatientHistories" Relationship="MigrationHistoryModel.FK_PatientHistory_DatabaseHistory" FromRole="DatabaseHistory" ToRole="PatientHistory" />
         </EntityType>
         <EntityType Name="TableHistory">
           <Key>
@@ -134,41 +111,6 @@ warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have
           <Property Name="MigrationId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DatabaseHistory" Relationship="Self.FK_TableHistory_DatabaseHistory" FromRole="TableHistory" ToRole="DatabaseHistory" />
         </EntityType>
-        <EntityType Name="PatientHistory">
-          <Key>
-            <PropertyRef Name="PatientHistoryId" />
-            <PropertyRef Name="Firstname" />
-            <PropertyRef Name="Lastname" />
-            <PropertyRef Name="BirthDate" />
-            <PropertyRef Name="FirebirdPatientId" />
-            <PropertyRef Name="SqlUserId" />
-            <PropertyRef Name="LastMigrationDate" />
-            <PropertyRef Name="PreviousMigrationDate" />
-            <PropertyRef Name="MigrationId" />
-          </Key>
-          <Property Name="PatientHistoryId" Type="Int32" Nullable="false" />
-          <Property Name="Firstname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Lastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FirebirdPatientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SqlUserId" Type="Guid" Nullable="false" />
-          <Property Name="LastMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PreviousMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MigrationId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="DatabaseHistory" Relationship="Self.FK_PatientHistory_DatabaseHistory" FromRole="PatientHistory" ToRole="DatabaseHistory" />
-        </EntityType>
-        <Association Name="FK_PatientHistory_DatabaseHistory">
-          <End Role="DatabaseHistory" Type="Self.DatabaseHistory" Multiplicity="1" />
-          <End Role="PatientHistory" Type="Self.PatientHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DatabaseHistory">
-              <PropertyRef Name="MigrationId" />
-            </Principal>
-            <Dependent Role="PatientHistory">
-              <PropertyRef Name="MigrationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TableHistory_DatabaseHistory">
           <End Role="DatabaseHistory" Type="Self.DatabaseHistory" Multiplicity="1" />
           <End Role="TableHistory" Type="Self.TableHistory" Multiplicity="*" />
@@ -184,16 +126,43 @@ warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have
         <EntityContainer Name="MigrationHistoryEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DatabaseHistories" EntityType="Self.DatabaseHistory" />
           <EntitySet Name="TableHistories" EntityType="Self.TableHistory" />
-          <EntitySet Name="PatientHistories" EntityType="Self.PatientHistory" />
-          <AssociationSet Name="FK_PatientHistory_DatabaseHistory" Association="Self.FK_PatientHistory_DatabaseHistory">
-            <End Role="DatabaseHistory" EntitySet="DatabaseHistories" />
-            <End Role="PatientHistory" EntitySet="PatientHistories" />
-          </AssociationSet>
           <AssociationSet Name="FK_TableHistory_DatabaseHistory" Association="Self.FK_TableHistory_DatabaseHistory">
             <End Role="DatabaseHistory" EntitySet="DatabaseHistories" />
             <End Role="TableHistory" EntitySet="TableHistories" />
           </AssociationSet>
+          <EntitySet Name="PatientHistories" EntityType="MigrationHistoryModel.PatientHistory" />
+          <AssociationSet Name="FK_PatientHistory_DatabaseHistory" Association="MigrationHistoryModel.FK_PatientHistory_DatabaseHistory">
+            <End Role="DatabaseHistory" EntitySet="DatabaseHistories" />
+            <End Role="PatientHistory" EntitySet="PatientHistories" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="PatientHistory">
+          <Key>
+            <PropertyRef Name="PatientHistoryId" />
+          </Key>
+          <Property Name="PatientHistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FirebirdPatientId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SqlUserId" Type="Guid" Nullable="false" />
+          <Property Name="LastMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PreviousMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MigrationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DatabaseHistory" Relationship="MigrationHistoryModel.FK_PatientHistory_DatabaseHistory" FromRole="PatientHistory" ToRole="DatabaseHistory" />
+        </EntityType>
+        <Association Name="FK_PatientHistory_DatabaseHistory">
+          <End Type="MigrationHistoryModel.DatabaseHistory" Role="DatabaseHistory" Multiplicity="1" />
+          <End Type="MigrationHistoryModel.PatientHistory" Role="PatientHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DatabaseHistory">
+              <PropertyRef Name="MigrationId" />
+            </Principal>
+            <Dependent Role="PatientHistory">
+              <PropertyRef Name="MigrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -229,15 +198,15 @@ warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have
           <EntitySetMapping Name="PatientHistories">
             <EntityTypeMapping TypeName="MigrationHistoryModel.PatientHistory">
               <MappingFragment StoreEntitySet="PatientHistory">
-                <ScalarProperty Name="PatientHistoryId" ColumnName="PatientHistoryId" />
-                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="FirebirdPatientId" ColumnName="FirebirdPatientId" />
-                <ScalarProperty Name="SqlUserId" ColumnName="SqlUserId" />
-                <ScalarProperty Name="LastMigrationDate" ColumnName="LastMigrationDate" />
-                <ScalarProperty Name="PreviousMigrationDate" ColumnName="PreviousMigrationDate" />
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="PreviousMigrationDate" ColumnName="PreviousMigrationDate" />
+                <ScalarProperty Name="LastMigrationDate" ColumnName="LastMigrationDate" />
+                <ScalarProperty Name="SqlUserId" ColumnName="SqlUserId" />
+                <ScalarProperty Name="FirebirdPatientId" ColumnName="FirebirdPatientId" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="PatientHistoryId" ColumnName="PatientHistoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

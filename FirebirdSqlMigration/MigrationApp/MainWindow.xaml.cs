@@ -1,8 +1,10 @@
 ﻿using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
+using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.Mappings.TableMappings;
 using NuLibrary.Migration.SQLDatabase;
+using NuLibrary.Migration.SQLDatabase.EF;
 using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
@@ -53,6 +55,21 @@ namespace MigrationApp
             bTrans.RunWorkerCompleted += BTrans_RunWorkerCompleted;
         }
 
+        private void Reset()
+        {
+            //SetCombo();
+            SetSqlDataGrid();
+
+            lstbxStats.ItemsSource = null;
+            listBox.ItemsSource = null;
+            lstbxStats.ItemsSource = null;
+
+            cbxSiteIds.IsEnabled = true;
+            btnLoad.IsEnabled = true;
+            btnExecute.IsEnabled = false;
+            lblStatusBar.Content = "Ready";
+        }
+
         private void SetSqlDataGrid()
         {
             dgSqlTables.ItemsSource = nHelpers.GetTableRowCount();
@@ -83,7 +100,7 @@ namespace MigrationApp
 
         private void BTrans_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            lblStatusBar.Content = "Transaction Complete.";
+            DispatchLabel("Creating statistics.");
 
             foreach (var st in MappingStatistics.SqlTableStatistics.OrderBy(o => o.Tablename))
             {
@@ -92,8 +109,14 @@ namespace MigrationApp
 
             SqlPurge sp = new SqlPurge();
             sp.Purge();
-            
-            MappingStatistics.ExportToLog();
+
+            DispatchLabel("Logging Transaction.");
+
+            MigrationHistoryHelpers mig = new MigrationHistoryHelpers();
+            mig.LogMigration();
+            TransactionManager.ExecuteTransaction();
+
+            DispatchLabel("Transaction Complete.");
         }
 
         private void BWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -105,12 +128,13 @@ namespace MigrationApp
 
             listBox.ItemsSource = MappingStatistics.MappingStats.OrderBy(o => o.FBTableName).ThenBy(t => t.SQLMappedTable).Where(w => !string.Equals(w.FBTableName, "none", StringComparison.CurrentCultureIgnoreCase));
             btnExecute.IsEnabled = true;
+            btnNewMigration.IsEnabled = true;
         }
 
         private void BTrans_DoWork(object sender, DoWorkEventArgs e)
         {
             DispatchLabel("Beginning transaction...");
-            TransactionManager.ExecuteTransaction();
+            
         }
 
         private void BWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -128,7 +152,7 @@ namespace MigrationApp
                 });
             }
 
-            DispatchLabel("Mapping table...");
+            //DispatchLabel("Mapping tables...");
 
             mm = new MappingExecutionManager();
             mm.BeginExecution();
@@ -150,11 +174,15 @@ namespace MigrationApp
 
             //*TESTING
             tableNames = GetFilteredTableNames();
+            MigrationVariables.FirebirdTableNames.Clear();
+            MigrationVariables.FirebirdTableNames = tableNames;
             //*TESTING
 
             bWorker.RunWorkerAsync();
 
             btnLoad.IsEnabled = false;
+            cbxSiteIds.IsEnabled = false;
+            btnNewMigration.IsEnabled = false;
             lblStatusBar.Content = "Schemas loaded.";
             
         }
@@ -188,6 +216,7 @@ namespace MigrationApp
             bTrans.RunWorkerAsync();
 
             btnExecute.IsEnabled = false;
+            lblStatusBar.Focus();
         }
 
         private void cbxSiteIds_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -202,8 +231,17 @@ namespace MigrationApp
                 lblFbConnStr.Content = aHelpers.GetAllFirebirdConnections().Where(s => s.SiteId == selectedSiteId).Select(s => s.DatabaseLocation).FirstOrDefault();
                 return;
             }
-            
+
             UpdateLabel($"Unable to parse Site Id: {cbxSiteIds.SelectedItem.ToString()} into type Int32.");
+        }
+
+        private void btnNewMigration_Click(object sender, RoutedEventArgs e)
+        {
+            MappingStatistics.ClearAll();
+            MemoryMappings.ClearAll();
+            TableAgentCollection.TableAgents.Clear();
+
+            Reset();
         }
     }
 }

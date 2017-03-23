@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MigrationHistoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DatabaseHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstitutionName" Type="nvarchar" MaxLength="150" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="LastMigrationDate" Type="datetime" Nullable="false" />
+          <Property Name="PreviousMigrationDate" Type="datetime" Nullable="false" />
+          <Property Name="FbConnectionStringUsed" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="MigrationLog" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MigrationHistory.dbo.PatientHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PatientHistory">
+          <Key>
+            <PropertyRef Name="PatientHistoryId" />
+            <PropertyRef Name="Firstname" />
+            <PropertyRef Name="Lastname" />
+            <PropertyRef Name="BirthDate" />
+            <PropertyRef Name="FirebirdPatientId" />
+            <PropertyRef Name="SqlUserId" />
+            <PropertyRef Name="LastMigrationDate" />
+            <PropertyRef Name="PreviousMigrationDate" />
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="PatientHistoryId" Type="int" Nullable="false" />
+          <Property Name="Firstname" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+          <Property Name="FirebirdPatientId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SqlUserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastMigrationDate" Type="datetime" Nullable="false" />
+          <Property Name="PreviousMigrationDate" Type="datetime" Nullable="false" />
+          <Property Name="MigrationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TableHistory">
+          <Key>
+            <PropertyRef Name="TableMigrationId" />
+          </Key>
+          <Property Name="TableMigrationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="FirebirdRecordCount" Type="bigint" Nullable="false" />
+          <Property Name="MigratedRecordCount" Type="bigint" Nullable="false" />
+          <Property Name="LastMigrationDate" Type="datetime" Nullable="false" />
+          <Property Name="PreviousMigrationDate" Type="datetime" Nullable="false" />
+          <Property Name="MigrationId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_PatientHistory_DatabaseHistory">
+          <End Role="DatabaseHistory" Type="Self.DatabaseHistory" Multiplicity="1" />
+          <End Role="PatientHistory" Type="Self.PatientHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DatabaseHistory">
+              <PropertyRef Name="MigrationId" />
+            </Principal>
+            <Dependent Role="PatientHistory">
+              <PropertyRef Name="MigrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TableHistory_DatabaseHistory">
+          <End Role="DatabaseHistory" Type="Self.DatabaseHistory" Multiplicity="1" />
+          <End Role="TableHistory" Type="Self.TableHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DatabaseHistory">
+              <PropertyRef Name="MigrationId" />
+            </Principal>
+            <Dependent Role="TableHistory">
+              <PropertyRef Name="MigrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MigrationHistoryModelStoreContainer">
+          <EntitySet Name="DatabaseHistory" EntityType="Self.DatabaseHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableHistory" EntityType="Self.TableHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientHistory" EntityType="Self.PatientHistory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PatientHistory].[PatientHistoryId] AS [PatientHistoryId], 
+    [PatientHistory].[Firstname] AS [Firstname], 
+    [PatientHistory].[Lastname] AS [Lastname], 
+    [PatientHistory].[BirthDate] AS [BirthDate], 
+    [PatientHistory].[FirebirdPatientId] AS [FirebirdPatientId], 
+    [PatientHistory].[SqlUserId] AS [SqlUserId], 
+    [PatientHistory].[LastMigrationDate] AS [LastMigrationDate], 
+    [PatientHistory].[PreviousMigrationDate] AS [PreviousMigrationDate], 
+    [PatientHistory].[MigrationId] AS [MigrationId]
+    FROM [dbo].[PatientHistory] AS [PatientHistory]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_PatientHistory_DatabaseHistory" Association="Self.FK_PatientHistory_DatabaseHistory">
+            <End Role="DatabaseHistory" EntitySet="DatabaseHistory" />
+            <End Role="PatientHistory" EntitySet="PatientHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TableHistory_DatabaseHistory" Association="Self.FK_TableHistory_DatabaseHistory">
+            <End Role="DatabaseHistory" EntitySet="DatabaseHistory" />
+            <End Role="TableHistory" EntitySet="TableHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MigrationHistoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DatabaseHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstitutionName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="LastMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PreviousMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FbConnectionStringUsed" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MigrationLog" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PatientHistories" Relationship="Self.FK_PatientHistory_DatabaseHistory" FromRole="DatabaseHistory" ToRole="PatientHistory" />
+          <NavigationProperty Name="TableHistories" Relationship="Self.FK_TableHistory_DatabaseHistory" FromRole="DatabaseHistory" ToRole="TableHistory" />
+        </EntityType>
+        <EntityType Name="TableHistory">
+          <Key>
+            <PropertyRef Name="TableMigrationId" />
+          </Key>
+          <Property Name="TableMigrationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TableName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirebirdRecordCount" Type="Int64" Nullable="false" />
+          <Property Name="MigratedRecordCount" Type="Int64" Nullable="false" />
+          <Property Name="LastMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PreviousMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MigrationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DatabaseHistory" Relationship="Self.FK_TableHistory_DatabaseHistory" FromRole="TableHistory" ToRole="DatabaseHistory" />
+        </EntityType>
+        <EntityType Name="PatientHistory">
+          <Key>
+            <PropertyRef Name="PatientHistoryId" />
+            <PropertyRef Name="Firstname" />
+            <PropertyRef Name="Lastname" />
+            <PropertyRef Name="BirthDate" />
+            <PropertyRef Name="FirebirdPatientId" />
+            <PropertyRef Name="SqlUserId" />
+            <PropertyRef Name="LastMigrationDate" />
+            <PropertyRef Name="PreviousMigrationDate" />
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="PatientHistoryId" Type="Int32" Nullable="false" />
+          <Property Name="Firstname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FirebirdPatientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SqlUserId" Type="Guid" Nullable="false" />
+          <Property Name="LastMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PreviousMigrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MigrationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DatabaseHistory" Relationship="Self.FK_PatientHistory_DatabaseHistory" FromRole="PatientHistory" ToRole="DatabaseHistory" />
+        </EntityType>
+        <Association Name="FK_PatientHistory_DatabaseHistory">
+          <End Role="DatabaseHistory" Type="Self.DatabaseHistory" Multiplicity="1" />
+          <End Role="PatientHistory" Type="Self.PatientHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DatabaseHistory">
+              <PropertyRef Name="MigrationId" />
+            </Principal>
+            <Dependent Role="PatientHistory">
+              <PropertyRef Name="MigrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TableHistory_DatabaseHistory">
+          <End Role="DatabaseHistory" Type="Self.DatabaseHistory" Multiplicity="1" />
+          <End Role="TableHistory" Type="Self.TableHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DatabaseHistory">
+              <PropertyRef Name="MigrationId" />
+            </Principal>
+            <Dependent Role="TableHistory">
+              <PropertyRef Name="MigrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MigrationHistoryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DatabaseHistories" EntityType="Self.DatabaseHistory" />
+          <EntitySet Name="TableHistories" EntityType="Self.TableHistory" />
+          <EntitySet Name="PatientHistories" EntityType="Self.PatientHistory" />
+          <AssociationSet Name="FK_PatientHistory_DatabaseHistory" Association="Self.FK_PatientHistory_DatabaseHistory">
+            <End Role="DatabaseHistory" EntitySet="DatabaseHistories" />
+            <End Role="PatientHistory" EntitySet="PatientHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TableHistory_DatabaseHistory" Association="Self.FK_TableHistory_DatabaseHistory">
+            <End Role="DatabaseHistory" EntitySet="DatabaseHistories" />
+            <End Role="TableHistory" EntitySet="TableHistories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MigrationHistoryModelStoreContainer" CdmEntityContainer="MigrationHistoryEntities">
+          <EntitySetMapping Name="DatabaseHistories">
+            <EntityTypeMapping TypeName="MigrationHistoryModel.DatabaseHistory">
+              <MappingFragment StoreEntitySet="DatabaseHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="InstitutionName" ColumnName="InstitutionName" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="LastMigrationDate" ColumnName="LastMigrationDate" />
+                <ScalarProperty Name="PreviousMigrationDate" ColumnName="PreviousMigrationDate" />
+                <ScalarProperty Name="FbConnectionStringUsed" ColumnName="FbConnectionStringUsed" />
+                <ScalarProperty Name="MigrationLog" ColumnName="MigrationLog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableHistories">
+            <EntityTypeMapping TypeName="MigrationHistoryModel.TableHistory">
+              <MappingFragment StoreEntitySet="TableHistory">
+                <ScalarProperty Name="TableMigrationId" ColumnName="TableMigrationId" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="FirebirdRecordCount" ColumnName="FirebirdRecordCount" />
+                <ScalarProperty Name="MigratedRecordCount" ColumnName="MigratedRecordCount" />
+                <ScalarProperty Name="LastMigrationDate" ColumnName="LastMigrationDate" />
+                <ScalarProperty Name="PreviousMigrationDate" ColumnName="PreviousMigrationDate" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientHistories">
+            <EntityTypeMapping TypeName="MigrationHistoryModel.PatientHistory">
+              <MappingFragment StoreEntitySet="PatientHistory">
+                <ScalarProperty Name="PatientHistoryId" ColumnName="PatientHistoryId" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="FirebirdPatientId" ColumnName="FirebirdPatientId" />
+                <ScalarProperty Name="SqlUserId" ColumnName="SqlUserId" />
+                <ScalarProperty Name="LastMigrationDate" ColumnName="LastMigrationDate" />
+                <ScalarProperty Name="PreviousMigrationDate" ColumnName="PreviousMigrationDate" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

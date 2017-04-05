@@ -17,6 +17,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int PaymentId { get; set; }
         public int PaymentMethod { get; set; }
         public bool PaymentApproved { get; set; }
+        public System.DateTime ApprovalDate { get; set; }
     
         public virtual Check Check { get; set; }
         public virtual Subscription Subscription { get; set; }

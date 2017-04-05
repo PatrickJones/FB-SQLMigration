@@ -22,7 +22,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.DateTime ReadingDateTime { get; set; }
         public System.Guid ReadingKeyId { get; set; }
         public System.Guid UserId { get; set; }
-        public System.DateTime Date { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

@@ -5,6 +5,376 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="NuMedicsGlobalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_Applications_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_Applications_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="ApplicationName" Type="nvarchar" MaxLength="256" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="BannerEnable" Type="bit" />
+          <Property Name="BannerMessage" Type="nvarchar(max)" />
+          <Property Name="LicneseAgreement" Type="text" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_AppSettings_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_AppSettings_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="AppSettingId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Value" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_AppUserSettings_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_AppUserSettings_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="AppUserSettingId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Value" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="AppicationId" Type="uniqueidentifier" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_CareSettings_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_CareSettings_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="CareSettingsId" Type="int" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="HyperglycemicLevel" Type="int" />
+          <Property Name="HypoglycemicLevel" Type="int" />
+          <Property Name="InsulinMethod" Type="int" />
+          <Property Name="DiabetesManagementType" Type="int" />
+          <Property Name="InsulinBrand" Type="int" />
+          <Property Name="DateModified" Type="datetime" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_Clinicians_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_Clinicians_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="Firstname" Type="nvarchar" MaxLength="150" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="150" />
+          <Property Name="StateLicenseNumber" Type="nvarchar" MaxLength="150" />
+          <Property Name="InstitutionId" Type="uniqueidentifier" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_DailyTimeSlots_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_DailyTimeSlots_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="TimeSlotId" Type="int" />
+          <Property Name="TimeSlotDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="TImeSlotBoundary" Type="time" Precision="2" />
+          <Property Name="CareSettingsId" Type="int" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_DiabetesControlTypes_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_DiabetesControlTypes_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="ControlName" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsEnabled" Type="bit" />
+          <Property Name="DMDataId" Type="int" />
+          <Property Name="CareSettingsId" Type="int" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_Institutions_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_Institutions_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="InstitutionId" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="Street" Type="nvarchar" MaxLength="250" />
+          <Property Name="City" Type="nvarchar" MaxLength="250" />
+          <Property Name="State" Type="nvarchar" MaxLength="250" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="250" />
+          <Property Name="ContactFirstname" Type="nvarchar" MaxLength="150" />
+          <Property Name="ContactLastname" Type="nvarchar" MaxLength="150" />
+          <Property Name="ContactEmail" Type="nvarchar" MaxLength="150" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="LegacySiteId" Type="int" />
+          <Property Name="Licenses" Type="int" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_InsuranceAddresses_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_InsuranceAddresses_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="AddressId" Type="int" />
+          <Property Name="Street1" Type="nvarchar" MaxLength="250" />
+          <Property Name="Street2" Type="nvarchar" MaxLength="250" />
+          <Property Name="Street3" Type="nvarchar" MaxLength="250" />
+          <Property Name="City" Type="nvarchar" MaxLength="250" />
+          <Property Name="County" Type="nvarchar" MaxLength="250" />
+          <Property Name="State" Type="nvarchar" MaxLength="250" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="250" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_InsuranceContacts_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_InsuranceContacts_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="ContactId" Type="int" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="80" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_InsurancePlans_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_InsurancePlans_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="PlanId" Type="int" />
+          <Property Name="PlanType" Type="nvarchar" MaxLength="150" />
+          <Property Name="PlanIdentifier" Type="nvarchar" MaxLength="150" />
+          <Property Name="PolicyNumber" Type="nvarchar" MaxLength="150" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="150" />
+          <Property Name="GroupIdentifier" Type="nvarchar" MaxLength="150" />
+          <Property Name="CoPay" Type="money" />
+          <Property Name="Purchaser" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="InActiveDate" Type="datetime" />
+          <Property Name="EffectiveDate" Type="datetime" />
+          <Property Name="PlanName" Type="nvarchar" MaxLength="150" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_InsuranceProviders_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_InsuranceProviders_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="InActiveDate" Type="datetime" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_PatientAddresses_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_PatientAddresses_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="AddressId" Type="int" />
+          <Property Name="Street1" Type="nvarchar" MaxLength="250" />
+          <Property Name="Street2" Type="nvarchar" MaxLength="250" />
+          <Property Name="Street3" Type="nvarchar" MaxLength="250" />
+          <Property Name="City" Type="nvarchar" MaxLength="250" />
+          <Property Name="County" Type="nvarchar" MaxLength="250" />
+          <Property Name="State" Type="nvarchar" MaxLength="250" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="250" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_PatientPhoneNumbers_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_PatientPhoneNumbers_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="PhoneId" Type="int" />
+          <Property Name="Number" Type="nvarchar" MaxLength="50" />
+          <Property Name="Extension" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="int" />
+          <Property Name="IsPrimary" Type="bit" />
+          <Property Name="RecieveText" Type="bit" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_Patients_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_Patients_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="MRID" Type="nvarchar" MaxLength="150" />
+          <Property Name="Firstname" Type="nvarchar" MaxLength="80" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="80" />
+          <Property Name="Middlename" Type="nvarchar" MaxLength="80" />
+          <Property Name="Gender" Type="int" />
+          <Property Name="DateofBirth" Type="datetime" />
+          <Property Name="Race" Type="nvarchar" MaxLength="20" />
+          <Property Name="PlanId" Type="int" />
+          <Property Name="Email" Type="nvarchar" MaxLength="150" />
+          <Property Name="InstitutionId" Type="uniqueidentifier" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="dbo_UserAuthentications_CT">
+          <Key>
+            <PropertyRef Name="__$start_lsn" />
+            <PropertyRef Name="__$seqval" />
+            <PropertyRef Name="__$operation" />
+          </Key>
+          <Property Name="__$start_lsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$end_lsn" Type="binary" MaxLength="10" />
+          <Property Name="__$seqval" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="__$operation" Type="int" Nullable="false" />
+          <Property Name="__$update_mask" Type="varbinary" MaxLength="128" />
+          <Property Name="AuthenticationId" Type="int" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="Username" Type="nvarchar" MaxLength="250" />
+          <Property Name="Password" Type="nvarchar" MaxLength="150" />
+          <Property Name="PasswordQuestion" Type="nvarchar" MaxLength="250" />
+          <Property Name="PasswordAnswer" Type="nvarchar" MaxLength="250" />
+          <Property Name="PasswordFailureCount" Type="int" />
+          <Property Name="PasswordAnswerFailureCount" Type="int" />
+          <Property Name="LastActivityDate" Type="datetime" />
+          <Property Name="LastLockOutDate" Type="datetime" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="IsLockedOut" Type="bit" />
+          <Property Name="IsTempPassword" Type="bit" />
+          <Property Name="IsloggedIn" Type="bit" />
+          <Property Name="NotApprovedReason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" />
+        </EntityType>
         <EntityType Name="Applications">
           <Key>
             <PropertyRef Name="ApplicationId" />
@@ -15,6 +385,7 @@
           <Property Name="BannerEnable" Type="bit" Nullable="false" />
           <Property Name="BannerMessage" Type="nvarchar(max)" />
           <Property Name="LicneseAgreement" Type="text" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -37,6 +408,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="AppUserSettings">
           <Key>
@@ -48,6 +420,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="AppicationId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="BasalDeliveries">
           <Key>
@@ -82,6 +455,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
           <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
           <Property Name="PumpProgramId" Type="int" Nullable="false" />
+          <Property Name="DateSet" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="BGTargets">
           <Key>
@@ -147,6 +521,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
           <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
           <Property Name="PumpProgramId" Type="int" Nullable="false" />
+          <Property Name="DateSet" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CareSettings">
           <Key>
@@ -160,6 +535,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="DiabetesManagementType" Type="int" Nullable="false" />
           <Property Name="InsulinBrand" Type="int" Nullable="false" />
           <Property Name="DateModified" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="CGMReminders">
           <Key>
@@ -209,6 +585,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="Lastname" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="StateLicenseNumber" Type="nvarchar" MaxLength="150" />
           <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="CorrectionFactors">
           <Key>
@@ -226,6 +603,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="TimeSlotDescription" Type="nvarchar" MaxLength="50" />
           <Property Name="TImeSlotBoundary" Type="time" Precision="2" Nullable="false" />
           <Property Name="CareSettingsId" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="DatabaseInfo">
           <Key>
@@ -252,6 +630,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DateSet" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="DiabetesControlTypes">
           <Key>
@@ -262,6 +641,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="IsEnabled" Type="bit" Nullable="false" />
           <Property Name="DMDataId" Type="int" Nullable="false" />
           <Property Name="CareSettingsId" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="DiabetesManagementData">
           <Key>
@@ -312,6 +692,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LegacySiteId" Type="int" Nullable="false" />
           <Property Name="Licenses" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="InsulinBrands">
           <Key>
@@ -368,6 +749,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="Zip" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Country" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="InsuranceContacts">
           <Key>
@@ -379,6 +761,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="Email" Type="nvarchar" MaxLength="80" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="InsurancePlans">
           <Key>
@@ -398,6 +781,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="PlanName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="InsuranceProviders">
           <Key>
@@ -407,6 +791,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="Name" Type="nvarchar" MaxLength="250" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="InActiveDate" Type="datetime" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="NutritionReadings">
           <Key>
@@ -420,7 +805,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="ReadingDateTime" Type="datetime" Nullable="false" />
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -450,6 +834,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="Zip" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Country" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientDevices">
           <Key>
@@ -487,6 +872,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="IsPrimary" Type="bit" Nullable="false" />
           <Property Name="RecieveText" Type="bit" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientPhotos">
           <Key>
@@ -512,6 +898,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="PlanId" Type="int" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Patients_Institutions">
           <Key>
@@ -543,6 +930,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="PaymentId" Type="int" Nullable="false" />
           <Property Name="PaymentMethod" Type="int" Nullable="false" />
           <Property Name="PaymentApproved" Type="bit" Nullable="false" />
+          <Property Name="ApprovalDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="PayPal">
           <Key>
@@ -745,6 +1133,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="IsTempPassword" Type="bit" Nullable="false" />
           <Property Name="IsloggedIn" Type="bit" Nullable="false" />
           <Property Name="NotApprovedReason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -1533,6 +1922,296 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dbo_Applications_CT" EntityType="Self.dbo_Applications_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_Applications_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_Applications_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_Applications_CT].[__$seqval] AS [__$seqval], 
+    [dbo_Applications_CT].[__$operation] AS [__$operation], 
+    [dbo_Applications_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_Applications_CT].[ApplicationName] AS [ApplicationName], 
+    [dbo_Applications_CT].[ApplicationId] AS [ApplicationId], 
+    [dbo_Applications_CT].[Description] AS [Description], 
+    [dbo_Applications_CT].[BannerEnable] AS [BannerEnable], 
+    [dbo_Applications_CT].[BannerMessage] AS [BannerMessage], 
+    [dbo_Applications_CT].[LicneseAgreement] AS [LicneseAgreement], 
+    [dbo_Applications_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_Applications_CT] AS [dbo_Applications_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_AppSettings_CT" EntityType="Self.dbo_AppSettings_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_AppSettings_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_AppSettings_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_AppSettings_CT].[__$seqval] AS [__$seqval], 
+    [dbo_AppSettings_CT].[__$operation] AS [__$operation], 
+    [dbo_AppSettings_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_AppSettings_CT].[AppSettingId] AS [AppSettingId], 
+    [dbo_AppSettings_CT].[Name] AS [Name], 
+    [dbo_AppSettings_CT].[Value] AS [Value], 
+    [dbo_AppSettings_CT].[Description] AS [Description], 
+    [dbo_AppSettings_CT].[ApplicationId] AS [ApplicationId], 
+    [dbo_AppSettings_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_AppSettings_CT] AS [dbo_AppSettings_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_AppUserSettings_CT" EntityType="Self.dbo_AppUserSettings_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_AppUserSettings_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_AppUserSettings_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_AppUserSettings_CT].[__$seqval] AS [__$seqval], 
+    [dbo_AppUserSettings_CT].[__$operation] AS [__$operation], 
+    [dbo_AppUserSettings_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_AppUserSettings_CT].[AppUserSettingId] AS [AppUserSettingId], 
+    [dbo_AppUserSettings_CT].[Name] AS [Name], 
+    [dbo_AppUserSettings_CT].[Value] AS [Value], 
+    [dbo_AppUserSettings_CT].[Description] AS [Description], 
+    [dbo_AppUserSettings_CT].[AppicationId] AS [AppicationId], 
+    [dbo_AppUserSettings_CT].[UserId] AS [UserId], 
+    [dbo_AppUserSettings_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_AppUserSettings_CT] AS [dbo_AppUserSettings_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_CareSettings_CT" EntityType="Self.dbo_CareSettings_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_CareSettings_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_CareSettings_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_CareSettings_CT].[__$seqval] AS [__$seqval], 
+    [dbo_CareSettings_CT].[__$operation] AS [__$operation], 
+    [dbo_CareSettings_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_CareSettings_CT].[CareSettingsId] AS [CareSettingsId], 
+    [dbo_CareSettings_CT].[UserId] AS [UserId], 
+    [dbo_CareSettings_CT].[HyperglycemicLevel] AS [HyperglycemicLevel], 
+    [dbo_CareSettings_CT].[HypoglycemicLevel] AS [HypoglycemicLevel], 
+    [dbo_CareSettings_CT].[InsulinMethod] AS [InsulinMethod], 
+    [dbo_CareSettings_CT].[DiabetesManagementType] AS [DiabetesManagementType], 
+    [dbo_CareSettings_CT].[InsulinBrand] AS [InsulinBrand], 
+    [dbo_CareSettings_CT].[DateModified] AS [DateModified], 
+    [dbo_CareSettings_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_CareSettings_CT] AS [dbo_CareSettings_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_Clinicians_CT" EntityType="Self.dbo_Clinicians_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_Clinicians_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_Clinicians_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_Clinicians_CT].[__$seqval] AS [__$seqval], 
+    [dbo_Clinicians_CT].[__$operation] AS [__$operation], 
+    [dbo_Clinicians_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_Clinicians_CT].[UserId] AS [UserId], 
+    [dbo_Clinicians_CT].[Firstname] AS [Firstname], 
+    [dbo_Clinicians_CT].[Lastname] AS [Lastname], 
+    [dbo_Clinicians_CT].[StateLicenseNumber] AS [StateLicenseNumber], 
+    [dbo_Clinicians_CT].[InstitutionId] AS [InstitutionId], 
+    [dbo_Clinicians_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_Clinicians_CT] AS [dbo_Clinicians_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_DailyTimeSlots_CT" EntityType="Self.dbo_DailyTimeSlots_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_DailyTimeSlots_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_DailyTimeSlots_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_DailyTimeSlots_CT].[__$seqval] AS [__$seqval], 
+    [dbo_DailyTimeSlots_CT].[__$operation] AS [__$operation], 
+    [dbo_DailyTimeSlots_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_DailyTimeSlots_CT].[TimeSlotId] AS [TimeSlotId], 
+    [dbo_DailyTimeSlots_CT].[TimeSlotDescription] AS [TimeSlotDescription], 
+    [dbo_DailyTimeSlots_CT].[TImeSlotBoundary] AS [TImeSlotBoundary], 
+    [dbo_DailyTimeSlots_CT].[CareSettingsId] AS [CareSettingsId], 
+    [dbo_DailyTimeSlots_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_DailyTimeSlots_CT] AS [dbo_DailyTimeSlots_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_DiabetesControlTypes_CT" EntityType="Self.dbo_DiabetesControlTypes_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_DiabetesControlTypes_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_DiabetesControlTypes_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_DiabetesControlTypes_CT].[__$seqval] AS [__$seqval], 
+    [dbo_DiabetesControlTypes_CT].[__$operation] AS [__$operation], 
+    [dbo_DiabetesControlTypes_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_DiabetesControlTypes_CT].[TypeId] AS [TypeId], 
+    [dbo_DiabetesControlTypes_CT].[ControlName] AS [ControlName], 
+    [dbo_DiabetesControlTypes_CT].[IsEnabled] AS [IsEnabled], 
+    [dbo_DiabetesControlTypes_CT].[DMDataId] AS [DMDataId], 
+    [dbo_DiabetesControlTypes_CT].[CareSettingsId] AS [CareSettingsId], 
+    [dbo_DiabetesControlTypes_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_DiabetesControlTypes_CT] AS [dbo_DiabetesControlTypes_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_Institutions_CT" EntityType="Self.dbo_Institutions_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_Institutions_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_Institutions_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_Institutions_CT].[__$seqval] AS [__$seqval], 
+    [dbo_Institutions_CT].[__$operation] AS [__$operation], 
+    [dbo_Institutions_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_Institutions_CT].[InstitutionId] AS [InstitutionId], 
+    [dbo_Institutions_CT].[Name] AS [Name], 
+    [dbo_Institutions_CT].[Street] AS [Street], 
+    [dbo_Institutions_CT].[City] AS [City], 
+    [dbo_Institutions_CT].[State] AS [State], 
+    [dbo_Institutions_CT].[Zip] AS [Zip], 
+    [dbo_Institutions_CT].[Country] AS [Country], 
+    [dbo_Institutions_CT].[ContactFirstname] AS [ContactFirstname], 
+    [dbo_Institutions_CT].[ContactLastname] AS [ContactLastname], 
+    [dbo_Institutions_CT].[ContactEmail] AS [ContactEmail], 
+    [dbo_Institutions_CT].[UserId] AS [UserId], 
+    [dbo_Institutions_CT].[LegacySiteId] AS [LegacySiteId], 
+    [dbo_Institutions_CT].[Licenses] AS [Licenses], 
+    [dbo_Institutions_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_Institutions_CT] AS [dbo_Institutions_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_InsuranceAddresses_CT" EntityType="Self.dbo_InsuranceAddresses_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_InsuranceAddresses_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_InsuranceAddresses_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_InsuranceAddresses_CT].[__$seqval] AS [__$seqval], 
+    [dbo_InsuranceAddresses_CT].[__$operation] AS [__$operation], 
+    [dbo_InsuranceAddresses_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_InsuranceAddresses_CT].[AddressId] AS [AddressId], 
+    [dbo_InsuranceAddresses_CT].[Street1] AS [Street1], 
+    [dbo_InsuranceAddresses_CT].[Street2] AS [Street2], 
+    [dbo_InsuranceAddresses_CT].[Street3] AS [Street3], 
+    [dbo_InsuranceAddresses_CT].[City] AS [City], 
+    [dbo_InsuranceAddresses_CT].[County] AS [County], 
+    [dbo_InsuranceAddresses_CT].[State] AS [State], 
+    [dbo_InsuranceAddresses_CT].[Zip] AS [Zip], 
+    [dbo_InsuranceAddresses_CT].[Country] AS [Country], 
+    [dbo_InsuranceAddresses_CT].[CompanyId] AS [CompanyId], 
+    [dbo_InsuranceAddresses_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_InsuranceAddresses_CT] AS [dbo_InsuranceAddresses_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_InsuranceContacts_CT" EntityType="Self.dbo_InsuranceContacts_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_InsuranceContacts_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_InsuranceContacts_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_InsuranceContacts_CT].[__$seqval] AS [__$seqval], 
+    [dbo_InsuranceContacts_CT].[__$operation] AS [__$operation], 
+    [dbo_InsuranceContacts_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_InsuranceContacts_CT].[ContactId] AS [ContactId], 
+    [dbo_InsuranceContacts_CT].[FullName] AS [FullName], 
+    [dbo_InsuranceContacts_CT].[Title] AS [Title], 
+    [dbo_InsuranceContacts_CT].[Email] AS [Email], 
+    [dbo_InsuranceContacts_CT].[Phone] AS [Phone], 
+    [dbo_InsuranceContacts_CT].[CompanyId] AS [CompanyId], 
+    [dbo_InsuranceContacts_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_InsuranceContacts_CT] AS [dbo_InsuranceContacts_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_InsurancePlans_CT" EntityType="Self.dbo_InsurancePlans_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_InsurancePlans_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_InsurancePlans_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_InsurancePlans_CT].[__$seqval] AS [__$seqval], 
+    [dbo_InsurancePlans_CT].[__$operation] AS [__$operation], 
+    [dbo_InsurancePlans_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_InsurancePlans_CT].[PlanId] AS [PlanId], 
+    [dbo_InsurancePlans_CT].[PlanType] AS [PlanType], 
+    [dbo_InsurancePlans_CT].[PlanIdentifier] AS [PlanIdentifier], 
+    [dbo_InsurancePlans_CT].[PolicyNumber] AS [PolicyNumber], 
+    [dbo_InsurancePlans_CT].[GroupName] AS [GroupName], 
+    [dbo_InsurancePlans_CT].[GroupIdentifier] AS [GroupIdentifier], 
+    [dbo_InsurancePlans_CT].[CoPay] AS [CoPay], 
+    [dbo_InsurancePlans_CT].[Purchaser] AS [Purchaser], 
+    [dbo_InsurancePlans_CT].[IsActive] AS [IsActive], 
+    [dbo_InsurancePlans_CT].[InActiveDate] AS [InActiveDate], 
+    [dbo_InsurancePlans_CT].[EffectiveDate] AS [EffectiveDate], 
+    [dbo_InsurancePlans_CT].[PlanName] AS [PlanName], 
+    [dbo_InsurancePlans_CT].[CompanyId] AS [CompanyId], 
+    [dbo_InsurancePlans_CT].[UserId] AS [UserId], 
+    [dbo_InsurancePlans_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_InsurancePlans_CT] AS [dbo_InsurancePlans_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_InsuranceProviders_CT" EntityType="Self.dbo_InsuranceProviders_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_InsuranceProviders_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_InsuranceProviders_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_InsuranceProviders_CT].[__$seqval] AS [__$seqval], 
+    [dbo_InsuranceProviders_CT].[__$operation] AS [__$operation], 
+    [dbo_InsuranceProviders_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_InsuranceProviders_CT].[CompanyId] AS [CompanyId], 
+    [dbo_InsuranceProviders_CT].[Name] AS [Name], 
+    [dbo_InsuranceProviders_CT].[IsActive] AS [IsActive], 
+    [dbo_InsuranceProviders_CT].[InActiveDate] AS [InActiveDate], 
+    [dbo_InsuranceProviders_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_InsuranceProviders_CT] AS [dbo_InsuranceProviders_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_PatientAddresses_CT" EntityType="Self.dbo_PatientAddresses_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_PatientAddresses_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_PatientAddresses_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_PatientAddresses_CT].[__$seqval] AS [__$seqval], 
+    [dbo_PatientAddresses_CT].[__$operation] AS [__$operation], 
+    [dbo_PatientAddresses_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_PatientAddresses_CT].[AddressId] AS [AddressId], 
+    [dbo_PatientAddresses_CT].[Street1] AS [Street1], 
+    [dbo_PatientAddresses_CT].[Street2] AS [Street2], 
+    [dbo_PatientAddresses_CT].[Street3] AS [Street3], 
+    [dbo_PatientAddresses_CT].[City] AS [City], 
+    [dbo_PatientAddresses_CT].[County] AS [County], 
+    [dbo_PatientAddresses_CT].[State] AS [State], 
+    [dbo_PatientAddresses_CT].[Zip] AS [Zip], 
+    [dbo_PatientAddresses_CT].[Country] AS [Country], 
+    [dbo_PatientAddresses_CT].[UserId] AS [UserId], 
+    [dbo_PatientAddresses_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_PatientAddresses_CT] AS [dbo_PatientAddresses_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_PatientPhoneNumbers_CT" EntityType="Self.dbo_PatientPhoneNumbers_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_PatientPhoneNumbers_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_PatientPhoneNumbers_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_PatientPhoneNumbers_CT].[__$seqval] AS [__$seqval], 
+    [dbo_PatientPhoneNumbers_CT].[__$operation] AS [__$operation], 
+    [dbo_PatientPhoneNumbers_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_PatientPhoneNumbers_CT].[PhoneId] AS [PhoneId], 
+    [dbo_PatientPhoneNumbers_CT].[Number] AS [Number], 
+    [dbo_PatientPhoneNumbers_CT].[Extension] AS [Extension], 
+    [dbo_PatientPhoneNumbers_CT].[Type] AS [Type], 
+    [dbo_PatientPhoneNumbers_CT].[IsPrimary] AS [IsPrimary], 
+    [dbo_PatientPhoneNumbers_CT].[RecieveText] AS [RecieveText], 
+    [dbo_PatientPhoneNumbers_CT].[UserId] AS [UserId], 
+    [dbo_PatientPhoneNumbers_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_PatientPhoneNumbers_CT] AS [dbo_PatientPhoneNumbers_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_Patients_CT" EntityType="Self.dbo_Patients_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_Patients_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_Patients_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_Patients_CT].[__$seqval] AS [__$seqval], 
+    [dbo_Patients_CT].[__$operation] AS [__$operation], 
+    [dbo_Patients_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_Patients_CT].[UserId] AS [UserId], 
+    [dbo_Patients_CT].[MRID] AS [MRID], 
+    [dbo_Patients_CT].[Firstname] AS [Firstname], 
+    [dbo_Patients_CT].[Lastname] AS [Lastname], 
+    [dbo_Patients_CT].[Middlename] AS [Middlename], 
+    [dbo_Patients_CT].[Gender] AS [Gender], 
+    [dbo_Patients_CT].[DateofBirth] AS [DateofBirth], 
+    [dbo_Patients_CT].[Race] AS [Race], 
+    [dbo_Patients_CT].[PlanId] AS [PlanId], 
+    [dbo_Patients_CT].[Email] AS [Email], 
+    [dbo_Patients_CT].[InstitutionId] AS [InstitutionId], 
+    [dbo_Patients_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_Patients_CT] AS [dbo_Patients_CT]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="dbo_UserAuthentications_CT" EntityType="Self.dbo_UserAuthentications_CT" store:Type="Tables" store:Schema="cdc">
+            <DefiningQuery>SELECT 
+    [dbo_UserAuthentications_CT].[__$start_lsn] AS [__$start_lsn], 
+    [dbo_UserAuthentications_CT].[__$end_lsn] AS [__$end_lsn], 
+    [dbo_UserAuthentications_CT].[__$seqval] AS [__$seqval], 
+    [dbo_UserAuthentications_CT].[__$operation] AS [__$operation], 
+    [dbo_UserAuthentications_CT].[__$update_mask] AS [__$update_mask], 
+    [dbo_UserAuthentications_CT].[AuthenticationId] AS [AuthenticationId], 
+    [dbo_UserAuthentications_CT].[ApplicationId] AS [ApplicationId], 
+    [dbo_UserAuthentications_CT].[UserId] AS [UserId], 
+    [dbo_UserAuthentications_CT].[Username] AS [Username], 
+    [dbo_UserAuthentications_CT].[Password] AS [Password], 
+    [dbo_UserAuthentications_CT].[PasswordQuestion] AS [PasswordQuestion], 
+    [dbo_UserAuthentications_CT].[PasswordAnswer] AS [PasswordAnswer], 
+    [dbo_UserAuthentications_CT].[PasswordFailureCount] AS [PasswordFailureCount], 
+    [dbo_UserAuthentications_CT].[PasswordAnswerFailureCount] AS [PasswordAnswerFailureCount], 
+    [dbo_UserAuthentications_CT].[LastActivityDate] AS [LastActivityDate], 
+    [dbo_UserAuthentications_CT].[LastLockOutDate] AS [LastLockOutDate], 
+    [dbo_UserAuthentications_CT].[IsApproved] AS [IsApproved], 
+    [dbo_UserAuthentications_CT].[IsLockedOut] AS [IsLockedOut], 
+    [dbo_UserAuthentications_CT].[IsTempPassword] AS [IsTempPassword], 
+    [dbo_UserAuthentications_CT].[IsloggedIn] AS [IsloggedIn], 
+    [dbo_UserAuthentications_CT].[NotApprovedReason] AS [NotApprovedReason], 
+    [dbo_UserAuthentications_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
+    FROM [cdc].[dbo_UserAuthentications_CT] AS [dbo_UserAuthentications_CT]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistories" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [AppLoginHistories].[UserId] AS [UserId], 
@@ -1805,6 +2484,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="UserAuthentications" Relationship="Self.FK_UserAuthentications_Applications" FromRole="Applications" ToRole="UserAuthentications" />
           <NavigationProperty Name="AppSettings" Relationship="NuMedicsGlobalModel.FK_AppSettings_Applications" FromRole="Application" ToRole="AppSetting" />
           <NavigationProperty Name="AppUserSettings" Relationship="NuMedicsGlobalModel.FK_AppUserSettings_Applications" FromRole="Application" ToRole="AppUserSetting" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="CareSetting">
           <Key>
@@ -1821,6 +2501,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="Patient" Relationship="Self.FK_CareSettings_Patients1" FromRole="CareSettings" ToRole="Patients" />
           <NavigationProperty Name="DailyTimeSlots" Relationship="Self.FK_DailyTimeSlots_CareSettings" FromRole="CareSettings" ToRole="DailyTimeSlots" />
           <NavigationProperty Name="DiabetesControlTypes" Relationship="Self.FK_DiabetesControlTypes_CareSettings" FromRole="CareSettings" ToRole="DiabetesControlTypes" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="Check">
           <Key>
@@ -1853,6 +2534,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="User" Relationship="Self.FK_Clinicians_Users" FromRole="Clinicians" ToRole="Users" />
           <NavigationProperty Name="Institution" Relationship="NuMedicsGlobalModel.FK_Clinicians_Institution" FromRole="Clinician" ToRole="Institution" />
           <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Clinicians" FromRole="Clinician" ToRole="Subscription" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyTimeSlot">
           <Key>
@@ -1863,6 +2545,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="TImeSlotBoundary" Type="Time" Nullable="false" Precision="2" />
           <Property Name="CareSettingsId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CareSetting" Relationship="Self.FK_DailyTimeSlots_CareSettings" FromRole="DailyTimeSlots" ToRole="CareSettings" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="DatabaseInfo">
           <Key>
@@ -1890,6 +2573,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="DMDataId" Type="Int32" Nullable="false" />
           <Property Name="CareSettingsId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CareSetting" Relationship="Self.FK_DiabetesControlTypes_CareSettings" FromRole="DiabetesControlTypes" ToRole="CareSettings" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="DiabetesManagementData">
           <Key>
@@ -1944,6 +2628,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="InsuranceProvider" Relationship="Self.FK_InsuranceAddresses_InsuranceProviders" FromRole="InsuranceAddresses" ToRole="InsuranceProviders" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="InsuranceContact">
           <Key>
@@ -1956,6 +2641,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="InsuranceProvider" Relationship="Self.FK_InsuranceContacts_InsuranceProviders" FromRole="InsuranceContacts" ToRole="InsuranceProviders" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="InsurancePlan">
           <Key>
@@ -1977,6 +2663,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="InsuranceProvider" Relationship="Self.FK_InsurancePlans_InsuranceProviders" FromRole="InsurancePlans" ToRole="InsuranceProviders" />
           <NavigationProperty Name="Patients" Relationship="Self.Patients_InsurancePlans" FromRole="InsurancePlans" ToRole="Patients" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="InsuranceProvider">
           <Key>
@@ -1989,6 +2676,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="InsuranceAddresses" Relationship="Self.FK_InsuranceAddresses_InsuranceProviders" FromRole="InsuranceProviders" ToRole="InsuranceAddresses" />
           <NavigationProperty Name="InsuranceContacts" Relationship="Self.FK_InsuranceContacts_InsuranceProviders" FromRole="InsuranceProviders" ToRole="InsuranceContacts" />
           <NavigationProperty Name="InsurancePlans" Relationship="Self.FK_InsurancePlans_InsuranceProviders" FromRole="InsuranceProviders" ToRole="InsurancePlans" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientAddress">
           <Key>
@@ -2005,6 +2693,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientAddresses_Patients" FromRole="PatientAddresses" ToRole="Patients" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientDevice">
           <Key>
@@ -2047,6 +2736,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="RecieveText" Type="Boolean" Nullable="false" />
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientPhoneNumbers_Patients" FromRole="PatientPhoneNumbers" ToRole="Patients" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientPhoto">
           <Key>
@@ -2082,6 +2772,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="InsurancePlans" Relationship="Self.Patients_InsurancePlans" FromRole="Patients" ToRole="InsurancePlans" />
           <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Patients" FromRole="Patient" ToRole="Subscription" />
           <NavigationProperty Name="Institutions" Relationship="NuMedicsGlobalModel.Patients_Institutions" FromRole="Patient" ToRole="Institution" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="PaymentMethod">
           <Key>
@@ -2100,6 +2791,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="Check" Relationship="Self.FK_Checks_Payments" FromRole="Payments" ToRole="Checks" />
           <NavigationProperty Name="Subscription" Relationship="NuMedicsGlobalModel.FK_Payments_Subscriptions" FromRole="Payment" ToRole="Subscription" />
           <NavigationProperty Name="PayPal" Relationship="NuMedicsGlobalModel.FK_PayPal_Payments" FromRole="Payment" ToRole="PayPal" />
+          <Property Name="ApprovalDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="ReadingEventType">
           <Key>
@@ -2149,6 +2841,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="Application" Relationship="Self.FK_UserAuthentications_Applications" FromRole="UserAuthentications" ToRole="Applications" />
           <NavigationProperty Name="PasswordHistories" Relationship="Self.FK_PasswordHistories_UserAuthentications" FromRole="UserAuthentications" ToRole="PasswordHistories" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserAuthentications_Users" FromRole="UserAuthentications" ToRole="Users" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -2718,14 +3411,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="Pump" EntitySet="Pumps" />
           </AssociationSet>
           <EntitySet Name="BloodGlucoseReadings" EntityType="NuMedicsGlobalModel.BloodGlucoseReading" />
-          <EntitySet Name="NutritionReadings" EntityType="NuMedicsGlobalModel.NutritionReading" />
           <AssociationSet Name="FK_BloodGlucoseReadings_ReadingHeaders" Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="BloodGlucoseReading" EntitySet="BloodGlucoseReadings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1">
-            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
-            <End Role="NutritionReading" EntitySet="NutritionReadings" />
           </AssociationSet>
           <EntitySet Name="PumpSettings" EntityType="NuMedicsGlobalModel.PumpSetting" />
           <AssociationSet Name="FK_PumpSettings_Pumps1" Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1">
@@ -2747,6 +3435,27 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_PayPal_Payments" Association="NuMedicsGlobalModel.FK_PayPal_Payments">
             <End Role="Payment" EntitySet="Payments" />
             <End Role="PayPal" EntitySet="PayPals" />
+          </AssociationSet>
+          <EntitySet Name="dbo_Applications_CT" EntityType="NuMedicsGlobalModel.dbo_Applications_CT" />
+          <EntitySet Name="dbo_AppSettings_CT" EntityType="NuMedicsGlobalModel.dbo_AppSettings_CT" />
+          <EntitySet Name="dbo_AppUserSettings_CT" EntityType="NuMedicsGlobalModel.dbo_AppUserSettings_CT" />
+          <EntitySet Name="dbo_CareSettings_CT" EntityType="NuMedicsGlobalModel.dbo_CareSettings_CT" />
+          <EntitySet Name="dbo_Clinicians_CT" EntityType="NuMedicsGlobalModel.dbo_Clinicians_CT" />
+          <EntitySet Name="dbo_DailyTimeSlots_CT" EntityType="NuMedicsGlobalModel.dbo_DailyTimeSlots_CT" />
+          <EntitySet Name="dbo_DiabetesControlTypes_CT" EntityType="NuMedicsGlobalModel.dbo_DiabetesControlTypes_CT" />
+          <EntitySet Name="dbo_Institutions_CT" EntityType="NuMedicsGlobalModel.dbo_Institutions_CT" />
+          <EntitySet Name="dbo_InsuranceAddresses_CT" EntityType="NuMedicsGlobalModel.dbo_InsuranceAddresses_CT" />
+          <EntitySet Name="dbo_InsuranceContacts_CT" EntityType="NuMedicsGlobalModel.dbo_InsuranceContacts_CT" />
+          <EntitySet Name="dbo_InsurancePlans_CT" EntityType="NuMedicsGlobalModel.dbo_InsurancePlans_CT" />
+          <EntitySet Name="dbo_InsuranceProviders_CT" EntityType="NuMedicsGlobalModel.dbo_InsuranceProviders_CT" />
+          <EntitySet Name="dbo_PatientAddresses_CT" EntityType="NuMedicsGlobalModel.dbo_PatientAddresses_CT" />
+          <EntitySet Name="dbo_PatientPhoneNumbers_CT" EntityType="NuMedicsGlobalModel.dbo_PatientPhoneNumbers_CT" />
+          <EntitySet Name="dbo_Patients_CT" EntityType="NuMedicsGlobalModel.dbo_Patients_CT" />
+          <EntitySet Name="dbo_UserAuthentications_CT" EntityType="NuMedicsGlobalModel.dbo_UserAuthentications_CT" />
+          <EntitySet Name="NutritionReadings" EntityType="NuMedicsGlobalModel.NutritionReading" />
+          <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="NutritionReading" EntitySet="NutritionReadings" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
@@ -2776,6 +3485,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="Clinicians" Relationship="NuMedicsGlobalModel.FK_Clinicians_Institution" FromRole="Institution" ToRole="Clinician" />
           <NavigationProperty Name="Patients" Relationship="NuMedicsGlobalModel.Patients_Institutions" FromRole="Institution" ToRole="Patient" />
           <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Institutions" FromRole="Institution" ToRole="Subscription" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="Subscription">
           <Key>
@@ -2896,6 +3606,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
           <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PumpProgram" Relationship="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="BasalProgramTimeSlot" ToRole="PumpProgram" />
+          <Property Name="DateSet" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="BolusDeliveryData">
           <Key>
@@ -2919,6 +3630,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
           <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PumpProgram" Relationship="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="BolusProgramTimeSlot" ToRole="PumpProgram" />
+          <Property Name="DateSet" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="CGMReminder">
           <Key>
@@ -3255,6 +3967,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_DeviceSettings_ReadingHeaders" FromRole="DeviceSetting" ToRole="ReadingHeader" />
+          <Property Name="DateSet" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="FK_DeviceSettings_ReadingHeaders">
           <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
@@ -3448,21 +4161,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="BloodGlucoseReading" ToRole="ReadingHeader" />
         </EntityType>
-        <EntityType Name="NutritionReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Carbohydrates" Type="Double" Nullable="false" />
-          <Property Name="Calories" Type="Double" Nullable="false" />
-          <Property Name="Protien" Type="Double" Nullable="false" />
-          <Property Name="Fat" Type="Double" Nullable="false" />
-          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="NutritionReading" ToRole="ReadingHeader" />
-        </EntityType>
         <Association Name="FK_BloodGlucoseReadings_ReadingHeaders">
           <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
           <End Type="NuMedicsGlobalModel.BloodGlucoseReading" Role="BloodGlucoseReading" Multiplicity="*" />
@@ -3471,18 +4169,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="BloodGlucoseReading">
-              <PropertyRef Name="ReadingKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NutritionReadings_ReadingHeaders1">
-          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
-          <End Type="NuMedicsGlobalModel.NutritionReading" Role="NutritionReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeader">
-              <PropertyRef Name="ReadingKeyId" />
-            </Principal>
-            <Dependent Role="NutritionReading">
               <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3521,6 +4207,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ApplicationId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Application" Relationship="NuMedicsGlobalModel.FK_AppSettings_Applications" FromRole="AppSetting" ToRole="Application" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="AppUserSetting">
           <Key>
@@ -3533,6 +4220,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="AppicationId" Type="Guid" Nullable="false" />
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Application" Relationship="NuMedicsGlobalModel.FK_AppUserSettings_Applications" FromRole="AppUserSetting" ToRole="Application" />
+          <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
         <Association Name="FK_AppSettings_Applications">
           <End Type="NuMedicsGlobalModel.Application" Role="Application" Multiplicity="1" />
@@ -3595,6 +4283,370 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="dbo_Applications_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationId" Type="Guid" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="BannerEnable" Type="Boolean" />
+          <Property Name="BannerMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LicneseAgreement" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_AppSettings_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="AppSettingId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationId" Type="Guid" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_AppUserSettings_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="AppUserSettingId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AppicationId" Type="Guid" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_CareSettings_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="CareSettingsId" Type="Int32" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="HyperglycemicLevel" Type="Int32" />
+          <Property Name="HypoglycemicLevel" Type="Int32" />
+          <Property Name="InsulinMethod" Type="Int32" />
+          <Property Name="DiabetesManagementType" Type="Int32" />
+          <Property Name="InsulinBrand" Type="Int32" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_Clinicians_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="Firstname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="StateLicenseNumber" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="InstitutionId" Type="Guid" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_DailyTimeSlots_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="TimeSlotId" Type="Int32" />
+          <Property Name="TimeSlotDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TImeSlotBoundary" Type="Time" Precision="2" />
+          <Property Name="CareSettingsId" Type="Int32" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_DiabetesControlTypes_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="ControlName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IsEnabled" Type="Boolean" />
+          <Property Name="DMDataId" Type="Int32" />
+          <Property Name="CareSettingsId" Type="Int32" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_Institutions_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="InstitutionId" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ContactFirstname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContactLastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContactEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="LegacySiteId" Type="Int32" />
+          <Property Name="Licenses" Type="Int32" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_InsuranceAddresses_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="AddressId" Type="Int32" />
+          <Property Name="Street1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Street2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Street3" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="County" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_InsuranceContacts_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="ContactId" Type="Int32" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_InsurancePlans_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="PlanId" Type="Int32" />
+          <Property Name="PlanType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PlanIdentifier" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PolicyNumber" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="GroupName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="GroupIdentifier" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CoPay" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Purchaser" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="InActiveDate" Type="DateTime" Precision="3" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="3" />
+          <Property Name="PlanName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_InsuranceProviders_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="InActiveDate" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_PatientAddresses_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="AddressId" Type="Int32" />
+          <Property Name="Street1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Street2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Street3" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="County" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_PatientPhoneNumbers_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="PhoneId" Type="Int32" />
+          <Property Name="Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Extension" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="IsPrimary" Type="Boolean" />
+          <Property Name="RecieveText" Type="Boolean" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_Patients_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Firstname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Middlename" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" />
+          <Property Name="DateofBirth" Type="DateTime" Precision="3" />
+          <Property Name="Race" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PlanId" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="InstitutionId" Type="Guid" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="dbo_UserAuthentications_CT">
+          <Key>
+            <PropertyRef Name="C___start_lsn" />
+            <PropertyRef Name="C___seqval" />
+            <PropertyRef Name="C___operation" />
+          </Key>
+          <Property Name="C___start_lsn" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___end_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="C___seqval" Type="Binary" Nullable="false" MaxLength="10" FixedLength="true" />
+          <Property Name="C___operation" Type="Int32" Nullable="false" />
+          <Property Name="C___update_mask" Type="Binary" MaxLength="128" FixedLength="false" />
+          <Property Name="AuthenticationId" Type="Int32" />
+          <Property Name="ApplicationId" Type="Guid" />
+          <Property Name="UserId" Type="Guid" />
+          <Property Name="Username" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordQuestion" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordAnswer" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordFailureCount" Type="Int32" />
+          <Property Name="PasswordAnswerFailureCount" Type="Int32" />
+          <Property Name="LastActivityDate" Type="DateTime" Precision="3" />
+          <Property Name="LastLockOutDate" Type="DateTime" Precision="3" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <Property Name="IsLockedOut" Type="Boolean" />
+          <Property Name="IsTempPassword" Type="Boolean" />
+          <Property Name="IsloggedIn" Type="Boolean" />
+          <Property Name="NotApprovedReason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdatedByUser" Type="Guid" />
+        </EntityType>
+        <EntityType Name="NutritionReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Carbohydrates" Type="Double" Nullable="false" />
+          <Property Name="Calories" Type="Double" Nullable="false" />
+          <Property Name="Protien" Type="Double" Nullable="false" />
+          <Property Name="Fat" Type="Double" Nullable="false" />
+          <Property Name="ReadingDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="NutritionReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <Association Name="FK_NutritionReadings_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.NutritionReading" Role="NutritionReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="NutritionReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3604,6 +4656,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="Applications">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Application">
               <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -3616,6 +4669,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="CareSettings">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.CareSetting">
               <MappingFragment StoreEntitySet="CareSettings">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="CareSettingsId" ColumnName="CareSettingsId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="HyperglycemicLevel" ColumnName="HyperglycemicLevel" />
@@ -3650,6 +4704,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="Clinicians">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Clinician">
               <MappingFragment StoreEntitySet="Clinicians">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Firstname" ColumnName="Firstname" />
                 <ScalarProperty Name="Lastname" ColumnName="Lastname" />
@@ -3661,6 +4716,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="DailyTimeSlots">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.DailyTimeSlot">
               <MappingFragment StoreEntitySet="DailyTimeSlots">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="TimeSlotId" ColumnName="TimeSlotId" />
                 <ScalarProperty Name="TimeSlotDescription" ColumnName="TimeSlotDescription" />
                 <ScalarProperty Name="TImeSlotBoundary" ColumnName="TImeSlotBoundary" />
@@ -3688,6 +4744,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="DiabetesControlTypes">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.DiabetesControlType">
               <MappingFragment StoreEntitySet="DiabetesControlTypes">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="ControlName" ColumnName="ControlName" />
                 <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
@@ -3740,6 +4797,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="InsuranceAddresses">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsuranceAddress">
               <MappingFragment StoreEntitySet="InsuranceAddresses">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />
                 <ScalarProperty Name="Street1" ColumnName="Street1" />
                 <ScalarProperty Name="Street2" ColumnName="Street2" />
@@ -3756,6 +4814,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="InsuranceContacts">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsuranceContact">
               <MappingFragment StoreEntitySet="InsuranceContacts">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="ContactId" ColumnName="ContactId" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -3768,6 +4827,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="InsurancePlans">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsurancePlan">
               <MappingFragment StoreEntitySet="InsurancePlans">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="PlanId" ColumnName="PlanId" />
                 <ScalarProperty Name="PlanType" ColumnName="PlanType" />
                 <ScalarProperty Name="PlanIdentifier" ColumnName="PlanIdentifier" />
@@ -3788,6 +4848,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="InsuranceProviders">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.InsuranceProvider">
               <MappingFragment StoreEntitySet="InsuranceProviders">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -3798,6 +4859,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="PatientAddresses">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.PatientAddress">
               <MappingFragment StoreEntitySet="PatientAddresses">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />
                 <ScalarProperty Name="Street1" ColumnName="Street1" />
                 <ScalarProperty Name="Street2" ColumnName="Street2" />
@@ -3841,6 +4903,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="PatientPhoneNumbers">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.PatientPhoneNumber">
               <MappingFragment StoreEntitySet="PatientPhoneNumbers">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="PhoneId" ColumnName="PhoneId" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Extension" ColumnName="Extension" />
@@ -3864,6 +4927,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="Patients">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Patient">
               <MappingFragment StoreEntitySet="Patients">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="MRID" ColumnName="MRID" />
                 <ScalarProperty Name="Firstname" ColumnName="Firstname" />
@@ -3889,6 +4953,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
                 <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
                 <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
                 <ScalarProperty Name="PaymentApproved" ColumnName="PaymentApproved" />
@@ -3926,6 +4991,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="UserAuthentications">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.UserAuthentication">
               <MappingFragment StoreEntitySet="UserAuthentications">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="AuthenticationId" ColumnName="AuthenticationId" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -4009,6 +5075,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="Institutions">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Institution">
               <MappingFragment StoreEntitySet="Institutions">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="Licenses" ColumnName="Licenses" />
                 <ScalarProperty Name="LegacySiteId" ColumnName="LegacySiteId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -4077,6 +5144,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="BasalProgramTimeSlots">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalProgramTimeSlot">
               <MappingFragment StoreEntitySet="BasalProgramTimeSlots">
+                <ScalarProperty Name="DateSet" ColumnName="DateSet" />
                 <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
                 <ScalarProperty Name="StopTime" ColumnName="StopTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
@@ -4100,6 +5168,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="BolusProgramTimeSlots">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusProgramTimeSlot">
               <MappingFragment StoreEntitySet="BolusProgramTimeSlots">
+                <ScalarProperty Name="DateSet" ColumnName="DateSet" />
                 <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
                 <ScalarProperty Name="StopTime" ColumnName="StopTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
@@ -4256,6 +5325,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="DeviceSettings">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.DeviceSetting">
               <MappingFragment StoreEntitySet="DeviceSettings">
+                <ScalarProperty Name="DateSet" ColumnName="DateSet" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -4341,21 +5411,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="NutritionReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.NutritionReading">
-              <MappingFragment StoreEntitySet="NutritionReadings">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
-                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
-                <ScalarProperty Name="Fat" ColumnName="Fat" />
-                <ScalarProperty Name="Protien" ColumnName="Protien" />
-                <ScalarProperty Name="Calories" ColumnName="Calories" />
-                <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PumpSettings">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpSetting">
               <MappingFragment StoreEntitySet="PumpSettings">
@@ -4371,6 +5426,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="AppSettings">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.AppSetting">
               <MappingFragment StoreEntitySet="AppSettings">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
@@ -4382,6 +5438,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="AppUserSettings">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.AppUserSetting">
               <MappingFragment StoreEntitySet="AppUserSettings">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="AppicationId" ColumnName="AppicationId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -4414,6 +5471,342 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="parent_txn_id" ColumnName="parent_txn_id" />
                 <ScalarProperty Name="txn_id" ColumnName="txn_id" />
                 <ScalarProperty Name="PayPalId" ColumnName="PayPalId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_Applications_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_Applications_CT">
+              <MappingFragment StoreEntitySet="dbo_Applications_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="LicneseAgreement" ColumnName="LicneseAgreement" />
+                <ScalarProperty Name="BannerMessage" ColumnName="BannerMessage" />
+                <ScalarProperty Name="BannerEnable" ColumnName="BannerEnable" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_AppSettings_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_AppSettings_CT">
+              <MappingFragment StoreEntitySet="dbo_AppSettings_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AppSettingId" ColumnName="AppSettingId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_AppUserSettings_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_AppUserSettings_CT">
+              <MappingFragment StoreEntitySet="dbo_AppUserSettings_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AppicationId" ColumnName="AppicationId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AppUserSettingId" ColumnName="AppUserSettingId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_CareSettings_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_CareSettings_CT">
+              <MappingFragment StoreEntitySet="dbo_CareSettings_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="InsulinBrand" ColumnName="InsulinBrand" />
+                <ScalarProperty Name="DiabetesManagementType" ColumnName="DiabetesManagementType" />
+                <ScalarProperty Name="InsulinMethod" ColumnName="InsulinMethod" />
+                <ScalarProperty Name="HypoglycemicLevel" ColumnName="HypoglycemicLevel" />
+                <ScalarProperty Name="HyperglycemicLevel" ColumnName="HyperglycemicLevel" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CareSettingsId" ColumnName="CareSettingsId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_Clinicians_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_Clinicians_CT">
+              <MappingFragment StoreEntitySet="dbo_Clinicians_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="StateLicenseNumber" ColumnName="StateLicenseNumber" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_DailyTimeSlots_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_DailyTimeSlots_CT">
+              <MappingFragment StoreEntitySet="dbo_DailyTimeSlots_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="CareSettingsId" ColumnName="CareSettingsId" />
+                <ScalarProperty Name="TImeSlotBoundary" ColumnName="TImeSlotBoundary" />
+                <ScalarProperty Name="TimeSlotDescription" ColumnName="TimeSlotDescription" />
+                <ScalarProperty Name="TimeSlotId" ColumnName="TimeSlotId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_DiabetesControlTypes_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_DiabetesControlTypes_CT">
+              <MappingFragment StoreEntitySet="dbo_DiabetesControlTypes_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="CareSettingsId" ColumnName="CareSettingsId" />
+                <ScalarProperty Name="DMDataId" ColumnName="DMDataId" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_Institutions_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_Institutions_CT">
+              <MappingFragment StoreEntitySet="dbo_Institutions_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="Licenses" ColumnName="Licenses" />
+                <ScalarProperty Name="LegacySiteId" ColumnName="LegacySiteId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+                <ScalarProperty Name="ContactLastname" ColumnName="ContactLastname" />
+                <ScalarProperty Name="ContactFirstname" ColumnName="ContactFirstname" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_InsuranceAddresses_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_InsuranceAddresses_CT">
+              <MappingFragment StoreEntitySet="dbo_InsuranceAddresses_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street3" ColumnName="Street3" />
+                <ScalarProperty Name="Street2" ColumnName="Street2" />
+                <ScalarProperty Name="Street1" ColumnName="Street1" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_InsuranceContacts_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_InsuranceContacts_CT">
+              <MappingFragment StoreEntitySet="dbo_InsuranceContacts_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_InsurancePlans_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_InsurancePlans_CT">
+              <MappingFragment StoreEntitySet="dbo_InsurancePlans_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="PlanName" ColumnName="PlanName" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Purchaser" ColumnName="Purchaser" />
+                <ScalarProperty Name="CoPay" ColumnName="CoPay" />
+                <ScalarProperty Name="GroupIdentifier" ColumnName="GroupIdentifier" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="PolicyNumber" ColumnName="PolicyNumber" />
+                <ScalarProperty Name="PlanIdentifier" ColumnName="PlanIdentifier" />
+                <ScalarProperty Name="PlanType" ColumnName="PlanType" />
+                <ScalarProperty Name="PlanId" ColumnName="PlanId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_InsuranceProviders_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_InsuranceProviders_CT">
+              <MappingFragment StoreEntitySet="dbo_InsuranceProviders_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="InActiveDate" ColumnName="InActiveDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_PatientAddresses_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_PatientAddresses_CT">
+              <MappingFragment StoreEntitySet="dbo_PatientAddresses_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street3" ColumnName="Street3" />
+                <ScalarProperty Name="Street2" ColumnName="Street2" />
+                <ScalarProperty Name="Street1" ColumnName="Street1" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_PatientPhoneNumbers_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_PatientPhoneNumbers_CT">
+              <MappingFragment StoreEntitySet="dbo_PatientPhoneNumbers_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RecieveText" ColumnName="RecieveText" />
+                <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="PhoneId" ColumnName="PhoneId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_Patients_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_Patients_CT">
+              <MappingFragment StoreEntitySet="dbo_Patients_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PlanId" ColumnName="PlanId" />
+                <ScalarProperty Name="Race" ColumnName="Race" />
+                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Middlename" ColumnName="Middlename" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="MRID" ColumnName="MRID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dbo_UserAuthentications_CT">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.dbo_UserAuthentications_CT">
+              <MappingFragment StoreEntitySet="dbo_UserAuthentications_CT">
+                <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="NotApprovedReason" ColumnName="NotApprovedReason" />
+                <ScalarProperty Name="IsloggedIn" ColumnName="IsloggedIn" />
+                <ScalarProperty Name="IsTempPassword" ColumnName="IsTempPassword" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="LastLockOutDate" ColumnName="LastLockOutDate" />
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="PasswordAnswerFailureCount" ColumnName="PasswordAnswerFailureCount" />
+                <ScalarProperty Name="PasswordFailureCount" ColumnName="PasswordFailureCount" />
+                <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
+                <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="AuthenticationId" ColumnName="AuthenticationId" />
+                <ScalarProperty Name="C___update_mask" ColumnName="__$update_mask" />
+                <ScalarProperty Name="C___operation" ColumnName="__$operation" />
+                <ScalarProperty Name="C___seqval" ColumnName="__$seqval" />
+                <ScalarProperty Name="C___end_lsn" ColumnName="__$end_lsn" />
+                <ScalarProperty Name="C___start_lsn" ColumnName="__$start_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NutritionReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.NutritionReading">
+              <MappingFragment StoreEntitySet="NutritionReadings">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="ReadingDateTime" ColumnName="ReadingDateTime" />
+                <ScalarProperty Name="Fat" ColumnName="Fat" />
+                <ScalarProperty Name="Protien" ColumnName="Protien" />
+                <ScalarProperty Name="Calories" ColumnName="Calories" />
+                <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

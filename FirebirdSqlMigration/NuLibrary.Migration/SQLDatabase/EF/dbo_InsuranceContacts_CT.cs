@@ -12,16 +12,19 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class InsuranceContact
+    public partial class dbo_InsuranceContacts_CT
     {
-        public int ContactId { get; set; }
+        public byte[] C___start_lsn { get; set; }
+        public byte[] C___end_lsn { get; set; }
+        public byte[] C___seqval { get; set; }
+        public int C___operation { get; set; }
+        public byte[] C___update_mask { get; set; }
+        public Nullable<int> ContactId { get; set; }
         public string FullName { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public int CompanyId { get; set; }
-        public System.Guid LastUpdatedByUser { get; set; }
-    
-        public virtual InsuranceProvider InsuranceProvider { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
     }
 }

@@ -12,15 +12,18 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class DiabetesControlType
+    public partial class dbo_DiabetesControlTypes_CT
     {
-        public int TypeId { get; set; }
+        public byte[] C___start_lsn { get; set; }
+        public byte[] C___end_lsn { get; set; }
+        public byte[] C___seqval { get; set; }
+        public int C___operation { get; set; }
+        public byte[] C___update_mask { get; set; }
+        public Nullable<int> TypeId { get; set; }
         public string ControlName { get; set; }
-        public bool IsEnabled { get; set; }
-        public int DMDataId { get; set; }
-        public int CareSettingsId { get; set; }
-        public System.Guid LastUpdatedByUser { get; set; }
-    
-        public virtual CareSetting CareSetting { get; set; }
+        public Nullable<bool> IsEnabled { get; set; }
+        public Nullable<int> DMDataId { get; set; }
+        public Nullable<int> CareSettingsId { get; set; }
+        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
     }
 }

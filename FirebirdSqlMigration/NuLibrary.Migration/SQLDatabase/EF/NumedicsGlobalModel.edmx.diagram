@@ -114,9 +114,7 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BloodGlucoseReading" Width="1.5" PointX="12" PointY="49.25" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12" PointY="62.5" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpSetting" Width="1.5" PointX="14.625" PointY="2.375" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppSetting" Width="1.5" PointX="3" PointY="14.625" />
@@ -126,6 +124,24 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.TableRowCount" Width="1.5" PointX="5.375" PointY="9.75" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PayPal" Width="1.5" PointX="12" PointY="91.625" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PayPal_Payments" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_Applications_CT" Width="1.5" PointX="7.375" PointY="9.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_AppSettings_CT" Width="1.5" PointX="9.375" PointY="9.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_AppUserSettings_CT" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_CareSettings_CT" Width="1.5" PointX="12.375" PointY="16.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_Clinicians_CT" Width="1.5" PointX="11.375" PointY="11.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_DailyTimeSlots_CT" Width="1.5" PointX="14.375" PointY="16.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_DiabetesControlTypes_CT" Width="1.5" PointX="16.375" PointY="16.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_Institutions_CT" Width="1.5" PointX="17.375" PointY="10.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_InsuranceAddresses_CT" Width="1.5" PointX="18.375" PointY="16.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_InsuranceContacts_CT" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_InsurancePlans_CT" Width="1.5" PointX="19.375" PointY="5.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_InsuranceProviders_CT" Width="1.5" PointX="19.375" PointY="11.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_PatientAddresses_CT" Width="1.5" PointX="14.375" PointY="20.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_PatientPhoneNumbers_CT" Width="1.5" PointX="20.375" PointY="15.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_Patients_CT" Width="1.5" PointX="20.375" PointY="20.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_UserAuthentications_CT" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12" PointY="63" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

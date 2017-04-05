@@ -12,9 +12,14 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientAddress
+    public partial class dbo_InsuranceAddresses_CT
     {
-        public int AddressId { get; set; }
+        public byte[] C___start_lsn { get; set; }
+        public byte[] C___end_lsn { get; set; }
+        public byte[] C___seqval { get; set; }
+        public int C___operation { get; set; }
+        public byte[] C___update_mask { get; set; }
+        public Nullable<int> AddressId { get; set; }
         public string Street1 { get; set; }
         public string Street2 { get; set; }
         public string Street3 { get; set; }
@@ -23,9 +28,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string State { get; set; }
         public string Zip { get; set; }
         public string Country { get; set; }
-        public System.Guid UserId { get; set; }
-        public System.Guid LastUpdatedByUser { get; set; }
-    
-        public virtual Patient Patient { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
     }
 }

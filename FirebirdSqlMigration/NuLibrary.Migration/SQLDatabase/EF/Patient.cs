@@ -38,6 +38,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int PlanId { get; set; }
         public string Email { get; set; }
         public System.Guid InstitutionId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CareSetting> CareSettings { get; set; }

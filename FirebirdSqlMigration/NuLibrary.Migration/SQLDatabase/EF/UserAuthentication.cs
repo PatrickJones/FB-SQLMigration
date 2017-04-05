@@ -36,6 +36,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public bool IsTempPassword { get; set; }
         public bool IsloggedIn { get; set; }
         public string NotApprovedReason { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual Application Application { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

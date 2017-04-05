@@ -58,7 +58,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         {
                             Name = name,
                             IsActive = map.ParseFirebirdBoolean(row["ISACTIVE"].ToString()),
-                            InActiveDate = map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString())
+                            InActiveDate = map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString()),
+                            LastUpdatedByUser = Guid.Empty
                         };
 
                         var adr = new InsuranceAddress
@@ -69,13 +70,15 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             City = (row["CITY"] is DBNull) ? String.Empty : row["CITY"].ToString(),
                             State = (row["STATE"] is DBNull) ? String.Empty : row["STATE"].ToString(),
                             Zip = (row["ZIP"] is DBNull) ? String.Empty : row["ZIP"].ToString(),
-                            Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString()
+                            Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString(),
+                            LastUpdatedByUser = Guid.Empty
                         };
 
                         var cont = new InsuranceContact
                         {
                             FullName = (row["CONTACTNAME"] is DBNull) ? String.Empty : row["CONTACTNAME"].ToString(),
-                            Email = (row["EMAIL"] is DBNull) ? String.Empty : row["EMAIL"].ToString()
+                            Email = (row["EMAIL"] is DBNull) ? String.Empty : row["EMAIL"].ToString(),
+                            LastUpdatedByUser = Guid.Empty
                         };
 
                         ips.InsuranceAddresses.Add(adr);

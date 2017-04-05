@@ -12,17 +12,20 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientPhoneNumber
+    public partial class dbo_PatientPhoneNumbers_CT
     {
-        public int PhoneId { get; set; }
+        public byte[] C___start_lsn { get; set; }
+        public byte[] C___end_lsn { get; set; }
+        public byte[] C___seqval { get; set; }
+        public int C___operation { get; set; }
+        public byte[] C___update_mask { get; set; }
+        public Nullable<int> PhoneId { get; set; }
         public string Number { get; set; }
         public string Extension { get; set; }
-        public int Type { get; set; }
-        public bool IsPrimary { get; set; }
-        public bool RecieveText { get; set; }
-        public System.Guid UserId { get; set; }
-        public System.Guid LastUpdatedByUser { get; set; }
-    
-        public virtual Patient Patient { get; set; }
+        public Nullable<int> Type { get; set; }
+        public Nullable<bool> IsPrimary { get; set; }
+        public Nullable<bool> RecieveText { get; set; }
+        public Nullable<System.Guid> UserId { get; set; }
+        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
     }
 }

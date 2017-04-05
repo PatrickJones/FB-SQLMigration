@@ -29,6 +29,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int DiabetesManagementType { get; set; }
         public int InsulinBrand { get; set; }
         public System.DateTime DateModified { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual Patient Patient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

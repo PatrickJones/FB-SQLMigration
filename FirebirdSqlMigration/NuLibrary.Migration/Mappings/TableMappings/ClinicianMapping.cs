@@ -42,6 +42,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         StateLicenseNumber = "No License Number"
                     };
 
+                    clin.LastUpdatedByUser = clin.UserId;
+
                     if (CanAddToContext(clin.UserId))
                     {
                         CompletedMappings.Add(clin);

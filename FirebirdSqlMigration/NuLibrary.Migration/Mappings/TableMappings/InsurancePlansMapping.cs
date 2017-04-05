@@ -72,6 +72,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             IsActive = (row["ISACTIVE"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISACTIVE"].ToString()),
                             InActiveDate = (row["INACTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["INACTIVEDATE"].ToString()),
                             EffectiveDate = (row["EFFECTIVEDATE"] is DBNull) ? new DateTime(1800, 1, 1) : map.ParseFirebirdDateTime(row["EFFECTIVEDATE"].ToString()),
+                            LastUpdatedByUser = userId
                         };
 
                         if (CanAddToContext(insp.UserId, insp.PlanType, insp.PolicyNumber))

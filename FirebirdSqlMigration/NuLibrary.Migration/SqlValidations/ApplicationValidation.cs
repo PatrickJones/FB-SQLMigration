@@ -34,7 +34,8 @@ namespace NuLibrary.Migration.SqlValidations
                 new Application {
                     ApplicationId = Guid.Parse("DFE4EB52-401E-42DA-B7A0-D801749446A0"),
                     ApplicationName = "Administration",
-                    Description = "Administration website"
+                    Description = "Administration website",
+                    LastUpdatedByUser = Guid.Empty
                 });
 
             DefaultApps.Add(
@@ -42,7 +43,8 @@ namespace NuLibrary.Migration.SqlValidations
                 {
                     ApplicationId = Guid.Parse("4AE4C176-C4A2-4C36-9866-FCDE16FF3AFA"),
                     ApplicationName = "CliniPro-Web",
-                    Description = "CliniPro-Web site"
+                    Description = "CliniPro-Web site",
+                    LastUpdatedByUser = Guid.Empty
                 });
 
             DefaultApps.Add(
@@ -50,7 +52,8 @@ namespace NuLibrary.Migration.SqlValidations
                 {
                     ApplicationId = Guid.Parse("5E1A0790-68AA-405D-908A-4AB578832EFE"),
                     ApplicationName = "Diabetes Partner",
-                    Description = "Diabetes Partner site"
+                    Description = "Diabetes Partner site",
+                    LastUpdatedByUser = Guid.Empty
                 });
 
             DefaultApps.Add(
@@ -58,7 +61,8 @@ namespace NuLibrary.Migration.SqlValidations
                 {
                     ApplicationId = Guid.Parse("05475E32-875A-4FED-B33F-34A1E6FE660F"),
                     ApplicationName = "OmniPod Partner",
-                    Description = "OmniPod Partner site"
+                    Description = "OmniPod Partner site",
+                    LastUpdatedByUser = Guid.Empty
                 });
         }
 

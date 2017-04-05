@@ -75,8 +75,9 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                         ReadingKeyId = keyId,
                         Name = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString(),
                         Value = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString(),
-                        UserId = userId
-                    };
+                        UserId = userId,
+                        DateSet = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString())
+               };
 
                     DeviceSettings.Add(ds);
                 }
@@ -109,8 +110,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                     {
                         ReadingDateTime = date,
                         ReadingKeyId = keyId,
-                        UserId = userId,
-                        Date = date
+                        UserId = userId
                     };
 
                     bool canAdd = true;

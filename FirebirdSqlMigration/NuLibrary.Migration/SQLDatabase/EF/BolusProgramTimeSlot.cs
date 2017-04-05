@@ -19,6 +19,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.TimeSpan StartTime { get; set; }
         public System.TimeSpan StopTime { get; set; }
         public int PumpProgramId { get; set; }
+        public System.DateTime DateSet { get; set; }
     
         public virtual PumpProgram PumpProgram { get; set; }
     }

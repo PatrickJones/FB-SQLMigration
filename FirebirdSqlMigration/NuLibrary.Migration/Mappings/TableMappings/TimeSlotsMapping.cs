@@ -59,7 +59,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         for (int i = 1; i < 9; i++)
                         {
                             DailyTimeSlot d = new DailyTimeSlot();
-
+                            d.LastUpdatedByUser = userId;
                             d.TimeSlotDescription = (row[$"SLOT{i}DESC"] is DBNull) ? String.Empty : row[$"SLOT{i}DESC"].ToString();
                             if (i < 8)
                             {

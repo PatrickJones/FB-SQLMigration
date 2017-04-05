@@ -19,6 +19,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Value { get; set; }
         public string Description { get; set; }
         public System.Guid ApplicationId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual Application Application { get; set; }
     }

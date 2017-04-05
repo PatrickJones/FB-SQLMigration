@@ -82,6 +82,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         careset.InsulinBrand = ibId;
                         careset.DiabetesManagementType = typeId;
                         careset.DateModified = (row["LASTMODIFIEDDATE"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["LASTMODIFIEDDATE"].ToString());
+                        careset.LastUpdatedByUser = (row["LASTMODIFIEDBYUSER"] is DBNull) ? Guid.Empty : mu.ParseGUID(row["LASTMODIFIEDBYUSER"].ToString());
 
                         var ct = (row["DMCONTROLTYPE"] is DBNull) ? mu.ParseDMControlTypes(0) : mu.ParseDMControlTypes((Int32)row["DMCONTROLTYPE"]);
                         foreach (var item in ct)
@@ -90,6 +91,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             dct.ControlName = item.Key;
                             dct.DMDataId = dm.DMDataId;
                             dct.IsEnabled = (item.Value) ? true : false;
+                            dct.LastUpdatedByUser = userId;
 
                             careset.DiabetesControlTypes.Add(dct);
                         }

@@ -69,7 +69,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             {
                                 BasalValue = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
                                 StartTime = bastart.TimeOfDay,
-                                StopTime = bastop.TimeOfDay
+                                StopTime = bastop.TimeOfDay,
+                                DateSet = createDate
                             };
 
                             if (createDate != DateTime.MinValue)
@@ -92,7 +93,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 BolusProgramTimeSlot bots = new BolusProgramTimeSlot
                                 {
                                     BolusValue = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
-                                    StartTime = botime.TimeOfDay
+                                    StartTime = botime.TimeOfDay,
+                                    DateSet = createDate
                                 };
 
                                 if (createDate != DateTime.MinValue)

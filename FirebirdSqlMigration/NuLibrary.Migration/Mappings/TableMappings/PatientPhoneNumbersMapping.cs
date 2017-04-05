@@ -62,7 +62,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         Extension = (row["EXTENSION"] is DBNull) ? String.Empty : row["EXTENSION"].ToString(),
                         Type = (row["ATYPE"] is DBNull) ? 0 : map.ParseFirebirdPhoneTypes(row["ATYPE"].ToString()),
                         IsPrimary = (row["ISPRIMARY"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISPRIMARY"].ToString()),
-                        RecieveText = (row["RECEIVETEXT"] is DBNull) ? false : map.ParseFirebirdBoolean(row["RECEIVETEXT"].ToString())
+                        RecieveText = (row["RECEIVETEXT"] is DBNull) ? false : map.ParseFirebirdBoolean(row["RECEIVETEXT"].ToString()),
+                        LastUpdatedByUser = userId
                     };
 
                     if (userId != Guid.Empty && CanAddToContext(patNum.Number))

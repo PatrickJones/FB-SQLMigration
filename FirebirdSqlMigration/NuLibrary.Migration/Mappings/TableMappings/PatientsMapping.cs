@@ -72,7 +72,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         Gender = (row["GENDER"] is DBNull) ? 1 : (row["GENDER"].ToString().ToLower().StartsWith("m", StringComparison.CurrentCulture)) ? 2 : 3, //From the GlobalStandards database, 'Gender' table
                         DateofBirth = (row["DOB"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["DOB"].ToString()),
                         Email = (row["EMAIL"] is DBNull) ? String.Empty : row["EMAIL"].ToString(),
-                        InstitutionId = instId
+                        InstitutionId = instId,
+                        LastUpdatedByUser = userId
                     };
 
                     var adr = new PatientAddress
@@ -84,7 +85,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         County = (row["COUNTY"] is DBNull) ? String.Empty : row["COUNTY"].ToString(),
                         State = (row["STATE"] is DBNull) ? String.Empty : row["STATE"].ToString(),
                         Zip = (row["ZIP"] is DBNull) ? String.Empty : row["ZIP"].ToString(),
-                        Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString()
+                        Country = (row["COUNTRY"] is DBNull) ? String.Empty : row["COUNTRY"].ToString(),
+                        LastUpdatedByUser = userId
                     };
 
                     pat.PatientAddresses.Add(adr);

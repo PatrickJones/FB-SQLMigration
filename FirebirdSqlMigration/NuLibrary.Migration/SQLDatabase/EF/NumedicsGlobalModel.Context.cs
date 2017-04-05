@@ -85,11 +85,27 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
         public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
         public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
-        public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<PumpSetting> PumpSettings { get; set; }
         public virtual DbSet<AppSetting> AppSettings { get; set; }
         public virtual DbSet<AppUserSetting> AppUserSettings { get; set; }
         public virtual DbSet<TableRowCount> TableRowCounts { get; set; }
         public virtual DbSet<PayPal> PayPals { get; set; }
+        public virtual DbSet<dbo_Applications_CT> dbo_Applications_CT { get; set; }
+        public virtual DbSet<dbo_AppSettings_CT> dbo_AppSettings_CT { get; set; }
+        public virtual DbSet<dbo_AppUserSettings_CT> dbo_AppUserSettings_CT { get; set; }
+        public virtual DbSet<dbo_CareSettings_CT> dbo_CareSettings_CT { get; set; }
+        public virtual DbSet<dbo_Clinicians_CT> dbo_Clinicians_CT { get; set; }
+        public virtual DbSet<dbo_DailyTimeSlots_CT> dbo_DailyTimeSlots_CT { get; set; }
+        public virtual DbSet<dbo_DiabetesControlTypes_CT> dbo_DiabetesControlTypes_CT { get; set; }
+        public virtual DbSet<dbo_Institutions_CT> dbo_Institutions_CT { get; set; }
+        public virtual DbSet<dbo_InsuranceAddresses_CT> dbo_InsuranceAddresses_CT { get; set; }
+        public virtual DbSet<dbo_InsuranceContacts_CT> dbo_InsuranceContacts_CT { get; set; }
+        public virtual DbSet<dbo_InsurancePlans_CT> dbo_InsurancePlans_CT { get; set; }
+        public virtual DbSet<dbo_InsuranceProviders_CT> dbo_InsuranceProviders_CT { get; set; }
+        public virtual DbSet<dbo_PatientAddresses_CT> dbo_PatientAddresses_CT { get; set; }
+        public virtual DbSet<dbo_PatientPhoneNumbers_CT> dbo_PatientPhoneNumbers_CT { get; set; }
+        public virtual DbSet<dbo_Patients_CT> dbo_Patients_CT { get; set; }
+        public virtual DbSet<dbo_UserAuthentications_CT> dbo_UserAuthentications_CT { get; set; }
+        public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
     }
 }

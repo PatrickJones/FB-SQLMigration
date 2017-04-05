@@ -334,7 +334,8 @@ namespace NuLibrary.Migration.Test.SqlDatabaseTest
                 Street = "123 Street",
                 Zip = "12345",
                 InstitutionId = Guid.NewGuid(),
-                UserId = Guid.NewGuid()
+                UserId = Guid.NewGuid(),
+                LastUpdatedByUser = Guid.NewGuid()
             };
 
             moq_Inst.Object.Add(nInst);

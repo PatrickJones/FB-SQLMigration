@@ -12,14 +12,17 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class DailyTimeSlot
+    public partial class dbo_DailyTimeSlots_CT
     {
-        public int TimeSlotId { get; set; }
+        public byte[] C___start_lsn { get; set; }
+        public byte[] C___end_lsn { get; set; }
+        public byte[] C___seqval { get; set; }
+        public int C___operation { get; set; }
+        public byte[] C___update_mask { get; set; }
+        public Nullable<int> TimeSlotId { get; set; }
         public string TimeSlotDescription { get; set; }
-        public System.TimeSpan TImeSlotBoundary { get; set; }
-        public int CareSettingsId { get; set; }
-        public System.Guid LastUpdatedByUser { get; set; }
-    
-        public virtual CareSetting CareSetting { get; set; }
+        public Nullable<System.TimeSpan> TImeSlotBoundary { get; set; }
+        public Nullable<int> CareSettingsId { get; set; }
+        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
     }
 }

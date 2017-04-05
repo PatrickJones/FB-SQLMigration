@@ -25,6 +25,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Lastname { get; set; }
         public string StateLicenseNumber { get; set; }
         public System.Guid InstitutionId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual User User { get; set; }
         public virtual Institution Institution { get; set; }

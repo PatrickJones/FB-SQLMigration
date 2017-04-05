@@ -76,7 +76,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         IsApproved = member.IsApproved,
                         IsLockedOut = member.IsLockedOut,
                         IsTempPassword = member.IsTemp,
-                        IsloggedIn = false
+                        IsloggedIn = false,
+                        LastUpdatedByUser = userId
                     };
 
                     var user = new User

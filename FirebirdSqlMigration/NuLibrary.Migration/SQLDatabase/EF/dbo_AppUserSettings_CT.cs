@@ -12,16 +12,19 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class AppUserSetting
+    public partial class dbo_AppUserSettings_CT
     {
-        public int AppUserSettingId { get; set; }
+        public byte[] C___start_lsn { get; set; }
+        public byte[] C___end_lsn { get; set; }
+        public byte[] C___seqval { get; set; }
+        public int C___operation { get; set; }
+        public byte[] C___update_mask { get; set; }
+        public Nullable<int> AppUserSettingId { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
         public string Description { get; set; }
-        public System.Guid AppicationId { get; set; }
-        public System.Guid UserId { get; set; }
-        public System.Guid LastUpdatedByUser { get; set; }
-    
-        public virtual Application Application { get; set; }
+        public Nullable<System.Guid> AppicationId { get; set; }
+        public Nullable<System.Guid> UserId { get; set; }
+        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
     }
 }

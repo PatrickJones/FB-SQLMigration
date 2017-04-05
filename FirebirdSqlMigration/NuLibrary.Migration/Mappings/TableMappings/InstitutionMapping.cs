@@ -36,7 +36,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     {
                         InstitutionId = Guid.NewGuid(),
                         Name = ins.Site_Name,
-                        LegacySiteId = (ins.SiteId.HasValue) ? ins.SiteId.Value : 0
+                        LegacySiteId = (ins.SiteId.HasValue) ? ins.SiteId.Value : 0,
+                        LastUpdatedByUser = Guid.Empty
                     };
 
                     MemoryMappings.AddInstitution(inst);

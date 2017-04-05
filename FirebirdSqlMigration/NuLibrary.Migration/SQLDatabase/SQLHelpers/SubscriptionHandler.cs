@@ -86,7 +86,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                         var nPayment = new Payment
                         {
                             PaymentMethod = 1,
-                            PaymentApproved = true
+                            PaymentApproved = true,
+                            ApprovalDate = DateTime.Now
                         };
 
                         var nPay = new PayPal()
@@ -139,7 +140,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                         var nPayment = new Payment
                         {
                             PaymentMethod = 4,
-                            PaymentApproved = true
+                            PaymentApproved = true,
+                            ApprovalDate = DateTime.Now
                         };
 
                         var sub = new Subscription
@@ -176,7 +178,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                         var nPayment = new Payment
                         {
                             PaymentMethod = 2,
-                            PaymentApproved = (cp.Status.ToLower() == "completed") ? true : false
+                            PaymentApproved = (cp.Status.ToLower() == "completed") ? true : false,
+                            ApprovalDate = (cp.Status.ToLower() == "completed") ? DateTime.Now : new DateTime(1800,1,1)
                         };
 
                         var nCheck = new Check

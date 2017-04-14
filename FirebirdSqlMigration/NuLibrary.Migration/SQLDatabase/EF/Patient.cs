@@ -21,7 +21,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
             this.PatientAddresses = new HashSet<PatientAddress>();
             this.PatientDevices = new HashSet<PatientDevice>();
             this.PatientPhoneNumbers = new HashSet<PatientPhoneNumber>();
-            this.PatientPhotos = new HashSet<PatientPhoto>();
             this.InsurancePlans = new HashSet<InsurancePlan>();
             this.Subscriptions = new HashSet<Subscription>();
             this.Institutions = new HashSet<Institution>();
@@ -48,8 +47,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual ICollection<PatientDevice> PatientDevices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientPhoneNumber> PatientPhoneNumbers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientPhoto> PatientPhotos { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InsurancePlan> InsurancePlans { get; set; }

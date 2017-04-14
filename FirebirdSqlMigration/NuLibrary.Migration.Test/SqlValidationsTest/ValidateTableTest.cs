@@ -46,7 +46,7 @@ namespace NuLibrary.Migration.Test.SqlValidationsTest
         public void ValidateTableTestInitialize()
         {
             dict = vt.ValidateAll();
-            list = vt.GetReadonlyValidations();
+            list = vt.GetReadOnlyValidations();
         }
 
         [TestMethod]

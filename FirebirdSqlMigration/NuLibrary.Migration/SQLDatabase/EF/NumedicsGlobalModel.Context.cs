@@ -46,7 +46,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<PatientDevice> PatientDevices { get; set; }
         public virtual DbSet<PatientLinkLog> PatientLinkLogs { get; set; }
         public virtual DbSet<PatientPhoneNumber> PatientPhoneNumbers { get; set; }
-        public virtual DbSet<PatientPhoto> PatientPhotos { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
@@ -107,5 +106,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<dbo_Patients_CT> dbo_Patients_CT { get; set; }
         public virtual DbSet<dbo_UserAuthentications_CT> dbo_UserAuthentications_CT { get; set; }
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
+        public virtual DbSet<DataLinkLog> DataLinkLogs { get; set; }
+        public virtual DbSet<DataShareCategory> DataShareCategories { get; set; }
+        public virtual DbSet<DataShareRequestLog> DataShareRequestLogs { get; set; }
+        public virtual DbSet<UserPhoto> UserPhotos { get; set; }
+        public virtual DbSet<SharedArea> SharedAreas { get; set; }
     }
 }

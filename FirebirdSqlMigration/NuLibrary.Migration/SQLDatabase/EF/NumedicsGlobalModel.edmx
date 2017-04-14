@@ -386,6 +386,9 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Property Name="BannerMessage" Type="nvarchar(max)" />
           <Property Name="LicneseAgreement" Type="text" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SupportNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="SupportEmail" Type="nvarchar" MaxLength="150" />
+          <Property Name="SupportAvailability" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -611,6 +614,33 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SiteId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DataLinkLog">
+          <Key>
+            <PropertyRef Name="LinkId" />
+          </Key>
+          <Property Name="LinkId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PatientId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="LinkingAction" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DataShareCategories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DataShareRequestLog">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PatientId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="DeviceData">
           <Key>
@@ -874,15 +904,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <EntityType Name="PatientPhotos">
-          <Key>
-            <PropertyRef Name="PhotoId" />
-          </Key>
-          <Property Name="PhotoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
-          <Property Name="Photo" Type="image" Nullable="false" />
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
         <EntityType Name="Patients">
           <Key>
             <PropertyRef Name="UserId" />
@@ -1050,6 +1071,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="LegacyDownloadKeyId" Type="nvarchar" MaxLength="80" />
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.dbo.SharedAreas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SharedAreas">
+          <Key>
+            <PropertyRef Name="SharedCategoryId" />
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="SharedCategoryId" Type="int" Nullable="false" />
+          <Property Name="RequestId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Subscriptions">
           <Key>
             <PropertyRef Name="SubscriptionId" />
@@ -1134,6 +1165,13 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="IsloggedIn" Type="bit" Nullable="false" />
           <Property Name="NotApprovedReason" Type="nvarchar" MaxLength="1000" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPhotos">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="Photo" Type="image" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -1597,20 +1635,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PatientPhotos_Patients">
-          <End Role="Patients" Type="Self.Patients" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PatientPhotos" Type="Self.PatientPhotos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patients">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="PatientPhotos">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Patients_Institutions_Institutions">
           <End Role="Institutions" Type="Self.Institutions" Multiplicity="1" />
           <End Role="Patients_Institutions" Type="Self.Patients_Institutions" Multiplicity="*" />
@@ -1785,6 +1809,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SharedAreas_DataShareRequestLog">
+          <End Role="DataShareRequestLog" Type="Self.DataShareRequestLog" Multiplicity="1" />
+          <End Role="SharedAreas" Type="Self.SharedAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataShareRequestLog">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="SharedAreas">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Subscriptions_Institutions">
           <End Role="Institutions" Type="Self.Institutions" Multiplicity="1" />
           <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
@@ -1879,6 +1915,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="CorrectionFactors" EntityType="Self.CorrectionFactors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyTimeSlots" EntityType="Self.DailyTimeSlots" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DatabaseInfo" EntityType="Self.DatabaseInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataLinkLog" EntityType="Self.DataLinkLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataShareCategories" EntityType="Self.DataShareCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataShareRequestLog" EntityType="Self.DataShareRequestLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeviceData" EntityType="Self.DeviceData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeviceSettings" EntityType="Self.DeviceSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiabetesControlTypes" EntityType="Self.DiabetesControlTypes" Schema="dbo" store:Type="Tables" />
@@ -1899,7 +1938,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="PatientDevices" EntityType="Self.PatientDevices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientLinkLogs" EntityType="Self.PatientLinkLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientPhoneNumbers" EntityType="Self.PatientPhoneNumbers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PatientPhotos" EntityType="Self.PatientPhotos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patients" EntityType="Self.Patients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patients_Institutions" EntityType="Self.Patients_Institutions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patients_InsurancePlans" EntityType="Self.Patients_InsurancePlans" Schema="dbo" store:Type="Tables" />
@@ -1920,6 +1958,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="TherapyTypes" EntityType="Self.TherapyTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TotalDailyInsulinDeliveries" EntityType="Self.TotalDailyInsulinDeliveries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPhotos" EntityType="Self.UserPhotos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="dbo_Applications_CT" EntityType="Self.dbo_Applications_CT" store:Type="Tables" store:Schema="cdc">
@@ -2234,6 +2273,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
     [PasswordHistories].[AuthenticationId] AS [AuthenticationId]
     FROM [dbo].[PasswordHistories] AS [PasswordHistories]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="SharedAreas" EntityType="Self.SharedAreas" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SharedAreas].[SharedCategoryId] AS [SharedCategoryId], 
+    [SharedAreas].[RequestId] AS [RequestId]
+    FROM [dbo].[SharedAreas] AS [SharedAreas]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="TableRowCount" EntityType="Self.TableRowCount" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TableRowCount].[TableName] AS [TableName], 
@@ -2380,10 +2425,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientPhoneNumbers" EntitySet="PatientPhoneNumbers" />
           </AssociationSet>
-          <AssociationSet Name="FK_PatientPhotos_Patients" Association="Self.FK_PatientPhotos_Patients">
-            <End Role="Patients" EntitySet="Patients" />
-            <End Role="PatientPhotos" EntitySet="PatientPhotos" />
-          </AssociationSet>
           <AssociationSet Name="FK_Patients_Institutions_Institutions" Association="Self.FK_Patients_Institutions_Institutions">
             <End Role="Institutions" EntitySet="Institutions" />
             <End Role="Patients_Institutions" EntitySet="Patients_Institutions" />
@@ -2440,6 +2481,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="ReadingEvents" EntitySet="ReadingEvents" />
           </AssociationSet>
+          <AssociationSet Name="FK_SharedAreas_DataShareRequestLog" Association="Self.FK_SharedAreas_DataShareRequestLog">
+            <End Role="DataShareRequestLog" EntitySet="DataShareRequestLog" />
+            <End Role="SharedAreas" EntitySet="SharedAreas" />
+          </AssociationSet>
           <AssociationSet Name="FK_Subscriptions_Institutions" Association="Self.FK_Subscriptions_Institutions">
             <End Role="Institutions" EntitySet="Institutions" />
             <End Role="Subscriptions" EntitySet="Subscriptions" />
@@ -2485,6 +2530,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="AppSettings" Relationship="NuMedicsGlobalModel.FK_AppSettings_Applications" FromRole="Application" ToRole="AppSetting" />
           <NavigationProperty Name="AppUserSettings" Relationship="NuMedicsGlobalModel.FK_AppUserSettings_Applications" FromRole="Application" ToRole="AppUserSetting" />
           <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
+          <Property Name="SupportNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SupportEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SupportAvailability" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CareSetting">
           <Key>
@@ -2738,16 +2786,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientPhoneNumbers_Patients" FromRole="PatientPhoneNumbers" ToRole="Patients" />
           <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
         </EntityType>
-        <EntityType Name="PatientPhoto">
-          <Key>
-            <PropertyRef Name="PhotoId" />
-          </Key>
-          <Property Name="PhotoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Patient" Relationship="Self.FK_PatientPhotos_Patients" FromRole="PatientPhotos" ToRole="Patients" />
-        </EntityType>
         <EntityType Name="Patient">
           <Key>
             <PropertyRef Name="UserId" />
@@ -2767,7 +2805,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="PatientAddresses" Relationship="Self.FK_PatientAddresses_Patients" FromRole="Patients" ToRole="PatientAddresses" />
           <NavigationProperty Name="PatientDevices" Relationship="Self.FK_PatientDevices_Patients" FromRole="Patients" ToRole="PatientDevices" />
           <NavigationProperty Name="PatientPhoneNumbers" Relationship="Self.FK_PatientPhoneNumbers_Patients" FromRole="Patients" ToRole="PatientPhoneNumbers" />
-          <NavigationProperty Name="PatientPhotos" Relationship="Self.FK_PatientPhotos_Patients" FromRole="Patients" ToRole="PatientPhotos" />
           <NavigationProperty Name="User" Relationship="Self.FK_Patients_Users" FromRole="Patients" ToRole="Users" />
           <NavigationProperty Name="InsurancePlans" Relationship="Self.Patients_InsurancePlans" FromRole="Patients" ToRole="InsurancePlans" />
           <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Patients" FromRole="Patient" ToRole="Subscription" />
@@ -3100,20 +3137,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PatientPhotos_Patients">
-          <End Role="Patients" Type="Self.Patient" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PatientPhotos" Type="Self.PatientPhoto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patients">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="PatientPhotos">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Patients_Users">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Patients" Type="Self.Patient" Multiplicity="0..1" />
@@ -3176,7 +3199,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="PatientDevices" EntityType="Self.PatientDevice" />
           <EntitySet Name="PatientLinkLogs" EntityType="Self.PatientLinkLog" />
           <EntitySet Name="PatientPhoneNumbers" EntityType="Self.PatientPhoneNumber" />
-          <EntitySet Name="PatientPhotos" EntityType="Self.PatientPhoto" />
           <EntitySet Name="Patients" EntityType="Self.Patient" />
           <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethod" />
           <EntitySet Name="Payments" EntityType="Self.Payment" />
@@ -3252,10 +3274,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_PatientPhoneNumbers_Patients" Association="Self.FK_PatientPhoneNumbers_Patients">
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientPhoneNumbers" EntitySet="PatientPhoneNumbers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PatientPhotos_Patients" Association="Self.FK_PatientPhotos_Patients">
-            <End Role="Patients" EntitySet="Patients" />
-            <End Role="PatientPhotos" EntitySet="PatientPhotos" />
           </AssociationSet>
           <AssociationSet Name="FK_Patients_Users" Association="Self.FK_Patients_Users">
             <End Role="Users" EntitySet="Users" />
@@ -3456,6 +3474,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_NutritionReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="NutritionReading" EntitySet="NutritionReadings" />
+          </AssociationSet>
+          <EntitySet Name="DataLinkLogs" EntityType="NuMedicsGlobalModel.DataLinkLog" />
+          <EntitySet Name="DataShareCategories" EntityType="NuMedicsGlobalModel.DataShareCategory" />
+          <EntitySet Name="DataShareRequestLogs" EntityType="NuMedicsGlobalModel.DataShareRequestLog" />
+          <EntitySet Name="UserPhotos" EntityType="NuMedicsGlobalModel.UserPhoto" />
+          <EntitySet Name="SharedAreas" EntityType="NuMedicsGlobalModel.SharedArea" />
+          <AssociationSet Name="FK_SharedAreas_DataShareRequestLog" Association="NuMedicsGlobalModel.FK_SharedAreas_DataShareRequestLog">
+            <End Role="DataShareRequestLog" EntitySet="DataShareRequestLogs" />
+            <End Role="SharedArea" EntitySet="SharedAreas" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
@@ -4647,6 +4674,62 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DataLinkLog">
+          <Key>
+            <PropertyRef Name="LinkId" />
+          </Key>
+          <Property Name="LinkId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <Property Name="PatientId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LinkingAction" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DataShareCategory">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DataShareRequestLog">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="PatientId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="SharedAreas" Relationship="NuMedicsGlobalModel.FK_SharedAreas_DataShareRequestLog" FromRole="DataShareRequestLog" ToRole="SharedArea" />
+        </EntityType>
+        <EntityType Name="UserPhoto">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="Photo" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SharedArea">
+          <Key>
+            <PropertyRef Name="SharedCategoryId" />
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="SharedCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="RequestId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DataShareRequestLog" Relationship="NuMedicsGlobalModel.FK_SharedAreas_DataShareRequestLog" FromRole="SharedArea" ToRole="DataShareRequestLog" />
+        </EntityType>
+        <Association Name="FK_SharedAreas_DataShareRequestLog">
+          <End Type="NuMedicsGlobalModel.DataShareRequestLog" Role="DataShareRequestLog" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.SharedArea" Role="SharedArea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataShareRequestLog">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="SharedArea">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4656,6 +4739,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="Applications">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Application">
               <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="SupportAvailability" ColumnName="SupportAvailability" />
+                <ScalarProperty Name="SupportEmail" ColumnName="SupportEmail" />
+                <ScalarProperty Name="SupportNumber" ColumnName="SupportNumber" />
                 <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
                 <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
@@ -4910,16 +4996,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
                 <ScalarProperty Name="RecieveText" ColumnName="RecieveText" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PatientPhotos">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PatientPhoto">
-              <MappingFragment StoreEntitySet="PatientPhotos">
-                <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -5807,6 +5883,52 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="Calories" ColumnName="Calories" />
                 <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
                 <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataLinkLogs">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.DataLinkLog">
+              <MappingFragment StoreEntitySet="DataLinkLog">
+                <ScalarProperty Name="LinkingAction" ColumnName="LinkingAction" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="LinkId" ColumnName="LinkId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataShareCategories">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.DataShareCategory">
+              <MappingFragment StoreEntitySet="DataShareCategories">
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataShareRequestLogs">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.DataShareRequestLog">
+              <MappingFragment StoreEntitySet="DataShareRequestLog">
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPhotos">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.UserPhoto">
+              <MappingFragment StoreEntitySet="UserPhotos">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SharedAreas">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.SharedArea">
+              <MappingFragment StoreEntitySet="SharedAreas">
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="SharedCategoryId" ColumnName="SharedCategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -58,7 +58,7 @@ namespace NuLibrary.Migration.Mappings
         public void BeginExecution()
         {
             var vt = new ValidateTables();
-            var validDict = vt.ValidateAll();
+            var validDict = vt.ValidateAndSync();
 
             CreateMappings();
         }

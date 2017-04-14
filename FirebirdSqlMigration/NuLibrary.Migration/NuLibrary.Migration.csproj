@@ -219,6 +219,15 @@
     <Compile Include="SQLDatabase\EF\DatabaseInfo.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\DataLinkLog.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\DataShareCategory.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\DataShareRequestLog.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\dbo_Applications_CT.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -372,9 +381,6 @@
     <Compile Include="SQLDatabase\EF\PatientPhoneNumber.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SQLDatabase\EF\PatientPhoto.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="SQLDatabase\EF\Payment.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -406,6 +412,9 @@
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\ReadingHeader.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\SharedArea.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Subscription.cs">
@@ -451,6 +460,9 @@
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\UserAuthentication.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\UserPhoto.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\UserType.cs">

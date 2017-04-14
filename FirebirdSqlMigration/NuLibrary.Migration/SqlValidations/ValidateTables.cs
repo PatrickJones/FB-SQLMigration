@@ -30,7 +30,7 @@ namespace NuLibrary.Migration.SqlValidations
             valTables.Add(new SubscriptionTypeVaidation());
         }
 
-        public IList<ITableValidate> GetReadonlyValidations()
+        public IList<ITableValidate> GetReadOnlyValidations()
         {
             return valTables.AsReadOnly();
         }
@@ -40,6 +40,21 @@ namespace NuLibrary.Migration.SqlValidations
             foreach (var tb in valTables)
             {
                 tableValidations.Add(tb.TableName, tb.ValidateTable());
+            }
+
+            return tableValidations;
+        }
+
+        public IReadOnlyDictionary<string, bool> ValidateAndSync()
+        {
+            foreach (var tb in valTables)
+            {
+                if (!tb.ValidateTable())
+                {
+                    tb.SyncTable();
+                }
+
+                tableValidations.Add(tb.TableName, true);
             }
 
             return tableValidations;

@@ -31,6 +31,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string BannerMessage { get; set; }
         public string LicneseAgreement { get; set; }
         public System.Guid LastUpdatedByUser { get; set; }
+        public string SupportNumber { get; set; }
+        public string SupportEmail { get; set; }
+        public string SupportAvailability { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AppLoginHistory> AppLoginHistories { get; set; }

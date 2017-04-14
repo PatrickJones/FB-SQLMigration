@@ -76,7 +76,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                         var cont = new InsuranceContact
                         {
-                            FullName = (row["CONTACTNAME"] is DBNull) ? String.Empty : row["CONTACTNAME"].ToString(),
+                            FullName = (row["CONTACTNAME"] is DBNull) ? "No Name" : row["CONTACTNAME"].ToString(),
                             Email = (row["EMAIL"] is DBNull) ? String.Empty : row["EMAIL"].ToString(),
                             LastUpdatedByUser = Guid.Empty
                         };

@@ -26,7 +26,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientDevice" Width="1.5" PointX="7.5" PointY="54.375" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientLinkLog" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientPhoneNumber" Width="1.5" PointX="7.5" PointY="87.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientPhoto" Width="1.5" PointX="7.5" PointY="90.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Patient" Width="1.5" PointX="5.25" PointY="51.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PaymentMethod" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Payment" Width="1.5" PointX="9.75" PointY="90.25" IsExpanded="true" />
@@ -55,7 +54,6 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientAddresses_Patients" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientDevices_Patients" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientPhoneNumbers_Patients" ManuallyRouted="false" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientPhotos_Patients" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_Patients_Users" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Users" ManuallyRouted="false" />
@@ -142,6 +140,12 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.dbo_UserAuthentications_CT" Width="1.5" PointX="21.375" PointY="0.75" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12" PointY="63" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DataLinkLog" Width="1.5" PointX="21.75" PointY="6.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DataShareCategory" Width="1.5" PointX="5.75" PointY="14.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DataShareRequestLog" Width="1.5" PointX="0.75" PointY="21.875" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.UserPhoto" Width="1.5" PointX="21.75" PointY="9.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.SharedArea" Width="1.5" PointX="3" PointY="22.25" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_SharedAreas_DataShareRequestLog" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

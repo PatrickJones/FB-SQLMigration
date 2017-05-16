@@ -55,16 +55,12 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<UserAuthentication> UserAuthentications { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<AppLoginHistory> AppLoginHistories { get; set; }
-        public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
-        public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
         public virtual DbSet<InsulinType> InsulinTypes { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
         public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<BasalDelivery> BasalDeliveries { get; set; }
         public virtual DbSet<BasalDeliveryData> BasalDeliveryDatas { get; set; }
         public virtual DbSet<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }
-        public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
         public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
         public virtual DbSet<CGMReminder> CGMReminders { get; set; }
         public virtual DbSet<CGMSession> CGMSessions { get; set; }
@@ -110,6 +106,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<DataShareCategory> DataShareCategories { get; set; }
         public virtual DbSet<DataShareRequestLog> DataShareRequestLogs { get; set; }
         public virtual DbSet<UserPhoto> UserPhotos { get; set; }
+        public virtual DbSet<AppLoginHistory> AppLoginHistories { get; set; }
+        public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
+        public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
         public virtual DbSet<SharedArea> SharedAreas { get; set; }
+        public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
     }
 }

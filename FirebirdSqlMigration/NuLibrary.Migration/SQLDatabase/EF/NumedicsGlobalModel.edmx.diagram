@@ -35,11 +35,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.UserAuthentication" Width="1.5" PointX="5.25" PointY="32.375" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.User" Width="1.5" PointX="3" PointY="62.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.UserType" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.AppLoginHistory" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.EndUserLicenseAgreement" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PasswordHistory" Width="1.5" PointX="7.5" PointY="33.75" IsExpanded="true" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_AppLoginHistories_Applications" ManuallyRouted="false" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CareSettings_Patients1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_DailyTimeSlots_CareSettings" ManuallyRouted="false" />
@@ -55,7 +50,6 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientDevices_Patients" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PatientPhoneNumbers_Patients" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_Patients_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Users" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_InsurancePlans" ManuallyRouted="false" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinType" Width="1.5" PointX="9.375" PointY="3.75" />
@@ -70,7 +64,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDelivery" Width="1.5" PointX="12" PointY="43.125" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDeliveryData" Width="1.5" PointX="14.25" PointY="43.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalProgramTimeSlot" Width="1.5" PointX="16.875" PointY="4.625" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDeliveryData" Width="1.5" PointX="14.25" PointY="55.375" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" Width="1.5" PointX="16.875" PointY="7.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMReminder" Width="1.5" PointX="14.625" PointY="10.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMSession" Width="1.5" PointX="14.625" PointY="13.375" />
@@ -106,7 +99,6 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusCarbs_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" />
@@ -144,8 +136,16 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.DataShareCategory" Width="1.5" PointX="5.75" PointY="14.75" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.DataShareRequestLog" Width="1.5" PointX="0.75" PointY="21.875" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.UserPhoto" Width="1.5" PointX="21.75" PointY="9.75" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.SharedArea" Width="1.5" PointX="3" PointY="22.25" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.AppLoginHistory" Width="1.5" PointX="3" PointY="24.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDeliveryData" Width="1.5" PointX="14.25" PointY="54.125" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PasswordHistory" Width="1.5" PointX="7.5" PointY="33.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.SharedArea" Width="1.5" PointX="3" PointY="22.125" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_AppLoginHistories_Applications" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_SharedAreas_DataShareRequestLog" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.EndUserLicenseAgreement" Width="1.5" PointX="3" PointY="9.75" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

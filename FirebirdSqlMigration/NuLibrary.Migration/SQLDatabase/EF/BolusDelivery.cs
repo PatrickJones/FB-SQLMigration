@@ -34,10 +34,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual BGTarget BGTarget { get; set; }
         public virtual BolusCarb BolusCarb { get; set; }
         public virtual ReadingHeader ReadingHeader { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BolusDeliveryData> BolusDeliveryDatas { get; set; }
         public virtual CorrectionFactor CorrectionFactor { get; set; }
         public virtual InsulinCarbRatio InsulinCarbRatio { get; set; }
         public virtual InsulinCorrection InsulinCorrection { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BolusDeliveryData> BolusDeliveryDatas { get; set; }
     }
 }

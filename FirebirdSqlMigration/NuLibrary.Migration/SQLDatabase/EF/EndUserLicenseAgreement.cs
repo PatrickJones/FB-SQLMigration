@@ -14,6 +14,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
     public partial class EndUserLicenseAgreement
     {
+        public int AgreementId { get; set; }
         public System.Guid UserId { get; set; }
         public System.DateTime AgreementDate { get; set; }
         public System.Guid ApplicationId { get; set; }

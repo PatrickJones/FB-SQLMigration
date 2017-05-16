@@ -36,6 +36,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int LegacySiteId { get; set; }
         public int Licenses { get; set; }
         public System.Guid LastUpdatedByUser { get; set; }
+        public string ContactPhoneNumber { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Clinician> Clinicians { get; set; }

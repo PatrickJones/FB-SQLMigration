@@ -390,14 +390,11 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Property Name="SupportEmail" Type="nvarchar" MaxLength="150" />
           <Property Name="SupportAvailability" Type="nvarchar" MaxLength="250" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppLoginHistories">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="LoginDate" />
-            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="HistoryId" />
           </Key>
+          <Property Name="HistoryId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LoginDate" Type="datetime" Nullable="false" />
           <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
@@ -693,14 +690,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.AppLoginHistories' does not hav
           <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="EndUserLicenseAgreements">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="AgreementDate" />
-            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="AgreementId" />
           </Key>
+          <Property Name="AgreementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AgreementDate" Type="datetime" Nullable="false" />
           <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
@@ -723,6 +717,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="LegacySiteId" Type="int" Nullable="false" />
           <Property Name="Licenses" Type="int" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContactPhoneNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="InsulinBrands">
           <Key>
@@ -836,15 +831,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.EndUserLicenseAgreements' does 
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PasswordHistories">
           <Key>
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="LastDateUsed" />
-            <PropertyRef Name="AuthenticationId" />
+            <PropertyRef Name="HistoryId" />
           </Key>
+          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LastDateUsed" Type="datetime" Nullable="false" />
@@ -1071,13 +1062,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PasswordHistories' does not hav
           <Property Name="LegacyDownloadKeyId" Type="nvarchar" MaxLength="80" />
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NuMedicsGlobal.dbo.SharedAreas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SharedAreas">
           <Key>
-            <PropertyRef Name="SharedCategoryId" />
-            <PropertyRef Name="RequestId" />
+            <PropertyRef Name="ShareId" />
           </Key>
+          <Property Name="ShareId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SharedCategoryId" Type="int" Nullable="false" />
           <Property Name="RequestId" Type="int" Nullable="false" />
         </EntityType>
@@ -1895,6 +1884,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
         </Association>
         <EntityContainer Name="NuMedicsGlobalModelStoreContainer">
           <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppSettings" EntityType="Self.AppSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppUserSettings" EntityType="Self.AppUserSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalDeliveries" EntityType="Self.BasalDeliveries" Schema="dbo" store:Type="Tables" />
@@ -1923,6 +1913,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="DiabetesControlTypes" EntityType="Self.DiabetesControlTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiabetesManagementData" EntityType="Self.DiabetesManagementData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiabetesManagementTypes" EntityType="Self.DiabetesManagementTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EndUserLicenseAgreements" EntityType="Self.EndUserLicenseAgreements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Institutions" EntityType="Self.Institutions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsulinBrands" EntityType="Self.InsulinBrands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsulinCarbRatio" EntityType="Self.InsulinCarbRatio" Schema="dbo" store:Type="Tables" />
@@ -1934,6 +1925,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="InsurancePlans" EntityType="Self.InsurancePlans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceProviders" EntityType="Self.InsuranceProviders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReadings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientAddresses" EntityType="Self.PatientAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientDevices" EntityType="Self.PatientDevices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientLinkLogs" EntityType="Self.PatientLinkLogs" Schema="dbo" store:Type="Tables" />
@@ -1952,6 +1944,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="ReadingEvents" EntityType="Self.ReadingEvents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReadingEventTypes" EntityType="Self.ReadingEventTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReadingHeaders" EntityType="Self.ReadingHeaders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SharedAreas" EntityType="Self.SharedAreas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subscriptions" EntityType="Self.Subscriptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionType" EntityType="Self.SubscriptionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TensReadings" EntityType="Self.TensReadings" Schema="dbo" store:Type="Tables" />
@@ -2251,34 +2244,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
     [dbo_UserAuthentications_CT].[LastUpdatedByUser] AS [LastUpdatedByUser]
     FROM [cdc].[dbo_UserAuthentications_CT] AS [dbo_UserAuthentications_CT]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistories" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [AppLoginHistories].[UserId] AS [UserId], 
-    [AppLoginHistories].[LoginDate] AS [LoginDate], 
-    [AppLoginHistories].[ApplicationId] AS [ApplicationId]
-    FROM [dbo].[AppLoginHistories] AS [AppLoginHistories]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="EndUserLicenseAgreements" EntityType="Self.EndUserLicenseAgreements" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [EndUserLicenseAgreements].[UserId] AS [UserId], 
-    [EndUserLicenseAgreements].[AgreementDate] AS [AgreementDate], 
-    [EndUserLicenseAgreements].[ApplicationId] AS [ApplicationId]
-    FROM [dbo].[EndUserLicenseAgreements] AS [EndUserLicenseAgreements]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistories" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PasswordHistories].[Password] AS [Password], 
-    [PasswordHistories].[UserId] AS [UserId], 
-    [PasswordHistories].[LastDateUsed] AS [LastDateUsed], 
-    [PasswordHistories].[AuthenticationId] AS [AuthenticationId]
-    FROM [dbo].[PasswordHistories] AS [PasswordHistories]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="SharedAreas" EntityType="Self.SharedAreas" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [SharedAreas].[SharedCategoryId] AS [SharedCategoryId], 
-    [SharedAreas].[RequestId] AS [RequestId]
-    FROM [dbo].[SharedAreas] AS [SharedAreas]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="TableRowCount" EntityType="Self.TableRowCount" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TableRowCount].[TableName] AS [TableName], 
@@ -2524,8 +2489,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="BannerEnable" Type="Boolean" Nullable="false" />
           <Property Name="BannerMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LicneseAgreement" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="AppLoginHistories" Relationship="Self.FK_AppLoginHistories_Applications" FromRole="Applications" ToRole="AppLoginHistories" />
-          <NavigationProperty Name="EndUserLicenseAgreements" Relationship="Self.FK_EndUserLicenseAgreements_Applications" FromRole="Applications" ToRole="EndUserLicenseAgreements" />
           <NavigationProperty Name="UserAuthentications" Relationship="Self.FK_UserAuthentications_Applications" FromRole="Applications" ToRole="UserAuthentications" />
           <NavigationProperty Name="AppSettings" Relationship="NuMedicsGlobalModel.FK_AppSettings_Applications" FromRole="Application" ToRole="AppSetting" />
           <NavigationProperty Name="AppUserSettings" Relationship="NuMedicsGlobalModel.FK_AppUserSettings_Applications" FromRole="Application" ToRole="AppUserSetting" />
@@ -2533,6 +2496,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="SupportNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SupportEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="SupportAvailability" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AppLoginHistories" Relationship="NuMedicsGlobalModel.FK_AppLoginHistories_Applications" FromRole="Application" ToRole="AppLoginHistory" />
+          <NavigationProperty Name="EndUserLicenseAgreements" Relationship="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications" FromRole="Application" ToRole="EndUserLicenseAgreement" />
         </EntityType>
         <EntityType Name="CareSetting">
           <Key>
@@ -2876,9 +2841,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="IsloggedIn" Type="Boolean" Nullable="false" />
           <Property Name="NotApprovedReason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Application" Relationship="Self.FK_UserAuthentications_Applications" FromRole="UserAuthentications" ToRole="Applications" />
-          <NavigationProperty Name="PasswordHistories" Relationship="Self.FK_PasswordHistories_UserAuthentications" FromRole="UserAuthentications" ToRole="PasswordHistories" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserAuthentications_Users" FromRole="UserAuthentications" ToRole="Users" />
           <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="PasswordHistories" Relationship="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications" FromRole="UserAuthentication" ToRole="PasswordHistory" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -2898,65 +2863,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TypeName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
         </EntityType>
-        <EntityType Name="AppLoginHistory">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="LoginDate" />
-            <PropertyRef Name="ApplicationId" />
-          </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Application" Relationship="Self.FK_AppLoginHistories_Applications" FromRole="AppLoginHistories" ToRole="Applications" />
-        </EntityType>
-        <EntityType Name="EndUserLicenseAgreement">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="AgreementDate" />
-            <PropertyRef Name="ApplicationId" />
-          </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="AgreementDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Application" Relationship="Self.FK_EndUserLicenseAgreements_Applications" FromRole="EndUserLicenseAgreements" ToRole="Applications" />
-        </EntityType>
-        <EntityType Name="PasswordHistory">
-          <Key>
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="LastDateUsed" />
-            <PropertyRef Name="AuthenticationId" />
-          </Key>
-          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="LastDateUsed" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AuthenticationId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="UserAuthentication" Relationship="Self.FK_PasswordHistories_UserAuthentications" FromRole="PasswordHistories" ToRole="UserAuthentications" />
-        </EntityType>
-        <Association Name="FK_AppLoginHistories_Applications">
-          <End Role="Applications" Type="Self.Application" Multiplicity="1" />
-          <End Role="AppLoginHistories" Type="Self.AppLoginHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Applications">
-              <PropertyRef Name="ApplicationId" />
-            </Principal>
-            <Dependent Role="AppLoginHistories">
-              <PropertyRef Name="ApplicationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EndUserLicenseAgreements_Applications">
-          <End Role="Applications" Type="Self.Application" Multiplicity="1" />
-          <End Role="EndUserLicenseAgreements" Type="Self.EndUserLicenseAgreement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Applications">
-              <PropertyRef Name="ApplicationId" />
-            </Principal>
-            <Dependent Role="EndUserLicenseAgreements">
-              <PropertyRef Name="ApplicationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserAuthentications_Applications">
           <End Role="Applications" Type="Self.Application" Multiplicity="1" />
           <End Role="UserAuthentications" Type="Self.UserAuthentication" Multiplicity="*" />
@@ -3149,18 +3055,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PasswordHistories_UserAuthentications">
-          <End Role="UserAuthentications" Type="Self.UserAuthentication" Multiplicity="1" />
-          <End Role="PasswordHistories" Type="Self.PasswordHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserAuthentications">
-              <PropertyRef Name="AuthenticationId" />
-            </Principal>
-            <Dependent Role="PasswordHistories">
-              <PropertyRef Name="AuthenticationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserAuthentications_Users">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="UserAuthentications" Type="Self.UserAuthentication" Multiplicity="*" />
@@ -3208,17 +3102,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentication" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
-          <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistory" />
-          <EntitySet Name="EndUserLicenseAgreements" EntityType="Self.EndUserLicenseAgreement" />
-          <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistory" />
-          <AssociationSet Name="FK_AppLoginHistories_Applications" Association="Self.FK_AppLoginHistories_Applications">
-            <End Role="Applications" EntitySet="Applications" />
-            <End Role="AppLoginHistories" EntitySet="AppLoginHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EndUserLicenseAgreements_Applications" Association="Self.FK_EndUserLicenseAgreements_Applications">
-            <End Role="Applications" EntitySet="Applications" />
-            <End Role="EndUserLicenseAgreements" EntitySet="EndUserLicenseAgreements" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserAuthentications_Applications" Association="Self.FK_UserAuthentications_Applications">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
@@ -3279,10 +3162,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="Users" EntitySet="Users" />
             <End Role="Patients" EntitySet="Patients" />
           </AssociationSet>
-          <AssociationSet Name="FK_PasswordHistories_UserAuthentications" Association="Self.FK_PasswordHistories_UserAuthentications">
-            <End Role="UserAuthentications" EntitySet="UserAuthentications" />
-            <End Role="PasswordHistories" EntitySet="PasswordHistories" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserAuthentications_Users" Association="Self.FK_UserAuthentications_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
@@ -3321,7 +3200,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="BasalDeliveries" EntityType="NuMedicsGlobalModel.BasalDelivery" />
           <EntitySet Name="BasalDeliveryDatas" EntityType="NuMedicsGlobalModel.BasalDeliveryData" />
           <EntitySet Name="BasalProgramTimeSlots" EntityType="NuMedicsGlobalModel.BasalProgramTimeSlot" />
-          <EntitySet Name="BolusDeliveryDatas" EntityType="NuMedicsGlobalModel.BolusDeliveryData" />
           <EntitySet Name="BolusProgramTimeSlots" EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" />
           <EntitySet Name="CGMReminders" EntityType="NuMedicsGlobalModel.CGMReminder" />
           <EntitySet Name="CGMSessions" EntityType="NuMedicsGlobalModel.CGMSession" />
@@ -3408,10 +3286,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
           </AssociationSet>
-          <AssociationSet Name="FK_BolusDeliveryData_BolusDelivery" Association="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery">
-            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
-            <End Role="BolusDeliveryData" EntitySet="BolusDeliveryDatas" />
-          </AssociationSet>
           <AssociationSet Name="FK_CorrectionFactors_BolusDelivery" Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery">
             <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
             <End Role="CorrectionFactor" EntitySet="CorrectionFactors" />
@@ -3479,10 +3353,30 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="DataShareCategories" EntityType="NuMedicsGlobalModel.DataShareCategory" />
           <EntitySet Name="DataShareRequestLogs" EntityType="NuMedicsGlobalModel.DataShareRequestLog" />
           <EntitySet Name="UserPhotos" EntityType="NuMedicsGlobalModel.UserPhoto" />
+          <EntitySet Name="AppLoginHistories" EntityType="NuMedicsGlobalModel.AppLoginHistory" />
+          <EntitySet Name="BolusDeliveryDatas" EntityType="NuMedicsGlobalModel.BolusDeliveryData" />
+          <EntitySet Name="PasswordHistories" EntityType="NuMedicsGlobalModel.PasswordHistory" />
           <EntitySet Name="SharedAreas" EntityType="NuMedicsGlobalModel.SharedArea" />
+          <AssociationSet Name="FK_AppLoginHistories_Applications" Association="NuMedicsGlobalModel.FK_AppLoginHistories_Applications">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="AppLoginHistory" EntitySet="AppLoginHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BolusDeliveryData_BolusDelivery" Association="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery">
+            <End Role="BolusDelivery" EntitySet="BolusDeliveries" />
+            <End Role="BolusDeliveryData" EntitySet="BolusDeliveryDatas" />
+          </AssociationSet>
           <AssociationSet Name="FK_SharedAreas_DataShareRequestLog" Association="NuMedicsGlobalModel.FK_SharedAreas_DataShareRequestLog">
             <End Role="DataShareRequestLog" EntitySet="DataShareRequestLogs" />
             <End Role="SharedArea" EntitySet="SharedAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PasswordHistories_UserAuthentications" Association="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications">
+            <End Role="UserAuthentication" EntitySet="UserAuthentications" />
+            <End Role="PasswordHistory" EntitySet="PasswordHistories" />
+          </AssociationSet>
+          <EntitySet Name="EndUserLicenseAgreements" EntityType="NuMedicsGlobalModel.EndUserLicenseAgreement" />
+          <AssociationSet Name="FK_EndUserLicenseAgreements_Applications" Association="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="EndUserLicenseAgreement" EntitySet="EndUserLicenseAgreements" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
@@ -3513,6 +3407,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="Patients" Relationship="NuMedicsGlobalModel.Patients_Institutions" FromRole="Institution" ToRole="Patient" />
           <NavigationProperty Name="Subscriptions" Relationship="NuMedicsGlobalModel.FK_Subscriptions_Institutions" FromRole="Institution" ToRole="Subscription" />
           <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
+          <Property Name="ContactPhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Subscription">
           <Key>
@@ -3634,18 +3529,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PumpProgram" Relationship="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="BasalProgramTimeSlot" ToRole="PumpProgram" />
           <Property Name="DateSet" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="BolusDeliveryData">
-          <Key>
-            <PropertyRef Name="DataId" />
-          </Key>
-          <Property Name="DataId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="BolusDeliveryId" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="BolusDelivery" Relationship="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDeliveryData" ToRole="BolusDelivery" />
         </EntityType>
         <EntityType Name="BolusProgramTimeSlot">
           <Key>
@@ -4072,10 +3955,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="BGTarget" Relationship="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" FromRole="BolusDelivery" ToRole="BGTarget" />
           <NavigationProperty Name="BolusCarb" Relationship="NuMedicsGlobalModel.FK_BolusCarbs_BolusDelivery" FromRole="BolusDelivery" ToRole="BolusCarb" />
           <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" FromRole="BolusDelivery" ToRole="ReadingHeader" />
-          <NavigationProperty Name="BolusDeliveryDatas" Relationship="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDelivery" ToRole="BolusDeliveryData" />
           <NavigationProperty Name="CorrectionFactor" Relationship="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" FromRole="BolusDelivery" ToRole="CorrectionFactor" />
           <NavigationProperty Name="InsulinCarbRatio" Relationship="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" FromRole="BolusDelivery" ToRole="InsulinCarbRatio" />
           <NavigationProperty Name="InsulinCorrection" Relationship="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" FromRole="BolusDelivery" ToRole="InsulinCorrection" />
+          <NavigationProperty Name="BolusDeliveryDatas" Relationship="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDelivery" ToRole="BolusDeliveryData" />
         </EntityType>
         <Association Name="FK_BGTargets_BolusDelivery">
           <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1" />
@@ -4110,20 +3993,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Principal>
             <Dependent Role="BolusDelivery">
               <PropertyRef Name="ReadingKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BolusDeliveryData_BolusDelivery">
-          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NuMedicsGlobalModel.BolusDeliveryData" Role="BolusDeliveryData" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BolusDelivery">
-              <PropertyRef Name="BolusDeliveryId" />
-            </Principal>
-            <Dependent Role="BolusDeliveryData">
-              <PropertyRef Name="BolusDeliveryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4709,15 +4578,74 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Photo" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="UserId" Type="Guid" Nullable="false" />
         </EntityType>
+        <EntityType Name="AppLoginHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="NuMedicsGlobalModel.FK_AppLoginHistories_Applications" FromRole="AppLoginHistory" ToRole="Application" />
+        </EntityType>
+        <EntityType Name="BolusDeliveryData">
+          <Key>
+            <PropertyRef Name="DataId" />
+          </Key>
+          <Property Name="DataId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="BolusDeliveryId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="BolusDelivery" Relationship="NuMedicsGlobalModel.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDeliveryData" ToRole="BolusDelivery" />
+        </EntityType>
+        <EntityType Name="PasswordHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="LastDateUsed" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AuthenticationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserAuthentication" Relationship="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications" FromRole="PasswordHistory" ToRole="UserAuthentication" />
+        </EntityType>
         <EntityType Name="SharedArea">
           <Key>
-            <PropertyRef Name="SharedCategoryId" />
-            <PropertyRef Name="RequestId" />
+            <PropertyRef Name="ShareId" />
           </Key>
+          <Property Name="ShareId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SharedCategoryId" Type="Int32" Nullable="false" />
           <Property Name="RequestId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DataShareRequestLog" Relationship="NuMedicsGlobalModel.FK_SharedAreas_DataShareRequestLog" FromRole="SharedArea" ToRole="DataShareRequestLog" />
         </EntityType>
+        <Association Name="FK_AppLoginHistories_Applications">
+          <End Type="NuMedicsGlobalModel.Application" Role="Application" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.AppLoginHistory" Role="AppLoginHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="AppLoginHistory">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BolusDeliveryData_BolusDelivery">
+          <End Type="NuMedicsGlobalModel.BolusDelivery" Role="BolusDelivery" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NuMedicsGlobalModel.BolusDeliveryData" Role="BolusDeliveryData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BolusDelivery">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Principal>
+            <Dependent Role="BolusDeliveryData">
+              <PropertyRef Name="BolusDeliveryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SharedAreas_DataShareRequestLog">
           <End Type="NuMedicsGlobalModel.DataShareRequestLog" Role="DataShareRequestLog" Multiplicity="1" />
           <End Type="NuMedicsGlobalModel.SharedArea" Role="SharedArea" Multiplicity="*" />
@@ -4727,6 +4655,40 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Principal>
             <Dependent Role="SharedArea">
               <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PasswordHistories_UserAuthentications">
+          <End Type="NuMedicsGlobalModel.UserAuthentication" Role="UserAuthentication" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.PasswordHistory" Role="PasswordHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAuthentication">
+              <PropertyRef Name="AuthenticationId" />
+            </Principal>
+            <Dependent Role="PasswordHistory">
+              <PropertyRef Name="AuthenticationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EndUserLicenseAgreement">
+          <Key>
+            <PropertyRef Name="AgreementId" />
+          </Key>
+          <Property Name="AgreementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="AgreementDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications" FromRole="EndUserLicenseAgreement" ToRole="Application" />
+        </EntityType>
+        <Association Name="FK_EndUserLicenseAgreements_Applications">
+          <End Type="NuMedicsGlobalModel.Application" Role="Application" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.EndUserLicenseAgreement" Role="EndUserLicenseAgreement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="EndUserLicenseAgreement">
+              <PropertyRef Name="ApplicationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5104,34 +5066,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AppLoginHistories">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.AppLoginHistory">
-              <MappingFragment StoreEntitySet="AppLoginHistories">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
-                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EndUserLicenseAgreements">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.EndUserLicenseAgreement">
-              <MappingFragment StoreEntitySet="EndUserLicenseAgreements">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="AgreementDate" ColumnName="AgreementDate" />
-                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PasswordHistories">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PasswordHistory">
-              <MappingFragment StoreEntitySet="PasswordHistories">
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="LastDateUsed" ColumnName="LastDateUsed" />
-                <ScalarProperty Name="AuthenticationId" ColumnName="AuthenticationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="Patients_InsurancePlans" TypeName="NuMedicsGlobalModel.Patients_InsurancePlans" StoreEntitySet="Patients_InsurancePlans">
             <EndProperty Name="InsurancePlans">
               <ScalarProperty Name="PlanId" ColumnName="PlanId" />
@@ -5151,6 +5085,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySetMapping Name="Institutions">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Institution">
               <MappingFragment StoreEntitySet="Institutions">
+                <ScalarProperty Name="ContactPhoneNumber" ColumnName="ContactPhoneNumber" />
                 <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
                 <ScalarProperty Name="Licenses" ColumnName="Licenses" />
                 <ScalarProperty Name="LegacySiteId" ColumnName="LegacySiteId" />
@@ -5226,18 +5161,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="BasalValue" ColumnName="BasalValue" />
                 <ScalarProperty Name="BasalSlotId" ColumnName="BasalSlotId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BolusDeliveryDatas">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusDeliveryData">
-              <MappingFragment StoreEntitySet="BolusDeliveryData">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DataId" ColumnName="DataId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5924,11 +5847,55 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AppLoginHistories">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.AppLoginHistory">
+              <MappingFragment StoreEntitySet="AppLoginHistories">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BolusDeliveryDatas">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusDeliveryData">
+              <MappingFragment StoreEntitySet="BolusDeliveryData">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DataId" ColumnName="DataId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PasswordHistories">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PasswordHistory">
+              <MappingFragment StoreEntitySet="PasswordHistories">
+                <ScalarProperty Name="AuthenticationId" ColumnName="AuthenticationId" />
+                <ScalarProperty Name="LastDateUsed" ColumnName="LastDateUsed" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SharedAreas">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.SharedArea">
               <MappingFragment StoreEntitySet="SharedAreas">
                 <ScalarProperty Name="RequestId" ColumnName="RequestId" />
                 <ScalarProperty Name="SharedCategoryId" ColumnName="SharedCategoryId" />
+                <ScalarProperty Name="ShareId" ColumnName="ShareId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EndUserLicenseAgreements">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.EndUserLicenseAgreement">
+              <MappingFragment StoreEntitySet="EndUserLicenseAgreements">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="AgreementDate" ColumnName="AgreementDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AgreementId" ColumnName="AgreementId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

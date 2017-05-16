@@ -17,11 +17,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Application()
         {
-            this.AppLoginHistories = new HashSet<AppLoginHistory>();
-            this.EndUserLicenseAgreements = new HashSet<EndUserLicenseAgreement>();
             this.UserAuthentications = new HashSet<UserAuthentication>();
             this.AppSettings = new HashSet<AppSetting>();
             this.AppUserSettings = new HashSet<AppUserSetting>();
+            this.AppLoginHistories = new HashSet<AppLoginHistory>();
+            this.EndUserLicenseAgreements = new HashSet<EndUserLicenseAgreement>();
         }
     
         public string ApplicationName { get; set; }
@@ -36,14 +36,14 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string SupportAvailability { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AppLoginHistory> AppLoginHistories { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAuthentication> UserAuthentications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AppSetting> AppSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AppUserSetting> AppUserSettings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AppLoginHistory> AppLoginHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        MappingStatistics.LogFailedMapping("Clinicians", typeof(Clinician), JsonConvert.SerializeObject(clin), "Clinician already exist in database.");
+                        MappingStatistics.LogFailedMapping("None", "None", "Clinicians", typeof(Clinician), JsonConvert.SerializeObject(clin), "Clinician already exist in database.");
                         FailedCount++;
                     }
                 }

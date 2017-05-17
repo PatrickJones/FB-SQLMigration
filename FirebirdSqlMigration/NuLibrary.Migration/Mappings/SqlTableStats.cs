@@ -16,11 +16,11 @@ namespace NuLibrary.Migration.Mappings
         public string Tablename { get; set; }
         public int PreSaveCount { get; set; }
         public int PostSaveCount { get; set; }
-
+        public int Difference => PostSaveCount - PreSaveCount;
 
         public override string ToString()
         {
-            return $"{Tablename} Presave={PreSaveCount} - Postsave={PostSaveCount} Difference={PostSaveCount - PreSaveCount}";
+            return $"{Tablename} Presave={PreSaveCount} - Postsave={PostSaveCount} Difference={Difference}";
         }
     }
 }

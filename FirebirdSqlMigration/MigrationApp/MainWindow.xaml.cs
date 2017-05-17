@@ -60,9 +60,7 @@ namespace MigrationApp
             //SetCombo();
             SetSqlDataGrid();
 
-            lstbxStats.ItemsSource = null;
             listBox.ItemsSource = null;
-            lstbxStats.Items.Clear();
 
             cbxSiteIds.IsEnabled = true;
             btnLoad.IsEnabled = true;
@@ -72,7 +70,7 @@ namespace MigrationApp
 
         private void SetSqlDataGrid()
         {
-            dgSqlTables.ItemsSource = nHelpers.GetTableRowCount();
+            dgSqlTables.ItemsSource = nHelpers.GetTableRowCount().Select(s => new { TableName = s.TableName, Rows = s.RowCnt });
         }
 
         private void SetCombo()
@@ -102,10 +100,7 @@ namespace MigrationApp
         {
             DispatchLabel("Creating statistics.");
 
-            foreach (var st in MappingStatistics.SqlTableStatistics.OrderBy(o => o.Tablename))
-            {
-                lstbxStats.Items.Add(st.ToString());
-            }
+            dgMigResults.ItemsSource = MappingStatistics.SqlTableStatistics.OrderBy(o => o.Tablename);
 
             SqlPurge sp = new SqlPurge();
             sp.Purge();
@@ -121,12 +116,22 @@ namespace MigrationApp
 
         private void BWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //foreach (var st in MappingStatistics.MappingStats.OrderBy(o => o.FBTablename).ThenBy(t => t.SQLTablename))
-            //{
-            //    listBox.Items.Add(st.ToString());
-            //}
+            listBox.ItemsSource = MappingStatistics.MappingStats
+                .OrderBy(o => o.FBTableName)
+                .ThenBy(t => t.SQLMappedTable)
+                .Where(w => !string.Equals(w.FBTableName, "none", StringComparison.CurrentCultureIgnoreCase))
+                .Select(s => new { FbTable = s.FBTableName, FbRows = s.FBRecordCount, SqlTable = s.SQLMappedTable, Completed = s.CompletedMappingsCount, Failed = s.FailedMappingsCount });
 
-            listBox.ItemsSource = MappingStatistics.MappingStats.OrderBy(o => o.FBTableName).ThenBy(t => t.SQLMappedTable).Where(w => !string.Equals(w.FBTableName, "none", StringComparison.CurrentCultureIgnoreCase));
+            dgFailures.ItemsSource = MappingStatistics.FailedMappingCollection
+                .OrderBy(o => o.SqlTablename)
+                .ThenBy(c => c.FailedReason)
+                .ThenBy(t => t.ObjectType)
+                .Where(w => !string.Equals(w.SqlTablename, "none", StringComparison.CurrentCultureIgnoreCase))
+                .Select(s => new {FbTable = s.FBTableName, FbKey = s.FBPrimaryKey, MappingTable = s.SqlTablename, Reason = s.FailedReason, RecordType = s.ObjectType.ToString().Split('.').Last() });
+
+            lblCompCnt.Content = MappingStatistics.MappingStats.Sum(s => s.CompletedMappingsCount);
+            lblFailCnt.Content = MappingStatistics.FailedMappingCollection.Count;
+
             btnExecute.IsEnabled = true;
             btnNewMigration.IsEnabled = true;
         }
@@ -152,7 +157,7 @@ namespace MigrationApp
                 });
             }
 
-            //DispatchLabel("Mapping tables...");
+            DispatchLabel("Mapping tables...");
 
             mm = new MappingExecutionManager();
             mm.BeginExecution();
@@ -161,6 +166,7 @@ namespace MigrationApp
             {
                 
             }
+
 
             DispatchLabel("Mapping Complete.");
         }

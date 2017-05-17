@@ -82,7 +82,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            MappingStatistics.LogFailedMapping("InsurancePlans", typeof(InsurancePlan), JsonConvert.SerializeObject(insp), "Insurance Plan already exist in database.");
+                            MappingStatistics.LogFailedMapping("INSURANCEPLANS2", row["KEYID"].ToString(), "InsurancePlans", typeof(InsurancePlan), JsonConvert.SerializeObject(insp), "Insurance Plan already exist in database.");
                             FailedCount++;
                         }
                     }

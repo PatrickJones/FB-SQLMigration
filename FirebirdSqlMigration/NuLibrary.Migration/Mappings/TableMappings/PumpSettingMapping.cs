@@ -86,7 +86,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    MappingStatistics.LogFailedMapping("PumpSettings", typeof(PumpSetting), JsonConvert.SerializeObject(ps), "Pump Setting has no value.");
+                                    MappingStatistics.LogFailedMapping("INSULETPUMPSETTINGS", patId, "PumpSettings", typeof(PumpSetting), JsonConvert.SerializeObject(ps), "Pump Setting has no value.");
                                     FailedCount++;
                                 }
                             }

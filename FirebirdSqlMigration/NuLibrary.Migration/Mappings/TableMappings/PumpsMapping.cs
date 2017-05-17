@@ -92,7 +92,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            MappingStatistics.LogFailedMapping("Pumps", typeof(Pump), JsonConvert.SerializeObject(pum), "Unable to add Pump to database.");
+                            MappingStatistics.LogFailedMapping("PATIENTPUMP", patId, "Pumps", typeof(Pump), JsonConvert.SerializeObject(pum), "Unable to add Pump to database.");
                             FailedCount++;
                         }
                     }

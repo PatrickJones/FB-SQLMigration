@@ -48,7 +48,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        MappingStatistics.LogFailedMapping("Institutions", typeof(Institution), JsonConvert.SerializeObject(inst), "Instition already exist in database.");
+                        MappingStatistics.LogFailedMapping("None", "None", "Institutions", typeof(Institution), JsonConvert.SerializeObject(inst), "Instition already exist in database.");
                         FailedCount++;
                     }
                 }

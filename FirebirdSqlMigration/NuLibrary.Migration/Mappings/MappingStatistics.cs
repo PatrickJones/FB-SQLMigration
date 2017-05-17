@@ -15,13 +15,17 @@ namespace NuLibrary.Migration.Mappings
         public static ICollection<MappingStats> MappingStats = new List<MappingStats>();
         public static ConcurrentBag<FailedMappings> FailedMappingCollection = new ConcurrentBag<FailedMappings>();
 
-        public static void LogFailedMapping(string tableName, Type classType, string serializedJson, string failedReason)
+        public static void LogFailedMapping(string fbTableName, string fbPrimaryId, string sqlTableName, Type classType, string serializedJson, string failedReason)
         {
             var fm = new FailedMappings();
-            fm.Tablename = tableName;
+            fm.FBTableName = fbTableName;
+            fm.FBPrimaryKey = fbPrimaryId;
+            fm.SqlTablename = sqlTableName;
             fm.ObjectType = classType;
             fm.JsonSerializedObject = serializedJson;
             fm.FailedReason = failedReason;
+
+            FailedMappingCollection.Add(fm);
         }
 
         public static void LogMappingStat(string fbTablename, int fbRecordCount, string sqlTablename, int completedMappings, int failedMappings)

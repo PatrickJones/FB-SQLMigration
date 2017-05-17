@@ -79,7 +79,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             }
                             else
                             {
-                                MappingStatistics.LogFailedMapping("BasalProgramTimeSlots", typeof(BasalProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
+                                MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BasalProgramTimeSlots", typeof(BasalProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
                                 FailedCount++;
                             }
                         }
@@ -103,7 +103,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    MappingStatistics.LogFailedMapping("BolusProgramTimeSlots", typeof(BolusProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
+                                    MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BolusProgramTimeSlots", typeof(BolusProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
                                     FailedCount++;
                                 }
                             }

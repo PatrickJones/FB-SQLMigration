@@ -43,7 +43,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            MappingStatistics.LogFailedMapping("Subscriptions", typeof(Subscription), JsonConvert.SerializeObject(sub), "Subscription already exist in database.");
+                            MappingStatistics.LogFailedMapping("None", "None", "Subscriptions", typeof(Subscription), JsonConvert.SerializeObject(sub), "Subscription already exist in database.");
                             FailedCount++;
                         }
                     }

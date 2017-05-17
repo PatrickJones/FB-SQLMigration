@@ -102,7 +102,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            MappingStatistics.LogFailedMapping("CareSettings", typeof(CareSetting), JsonConvert.SerializeObject(careset), "Unable to add Care Setting to database.");
+                            MappingStatistics.LogFailedMapping("DMDATA", patId, "CareSettings", typeof(CareSetting), JsonConvert.SerializeObject(careset), "Unable to add Care Setting to database.");
                             FailedCount++;
                         }
                     }

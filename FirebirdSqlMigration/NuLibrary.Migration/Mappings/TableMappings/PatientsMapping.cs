@@ -112,7 +112,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        MappingStatistics.LogFailedMapping("Patients", typeof(Patient), JsonConvert.SerializeObject(user), "Patient already exist in database.");
+                        MappingStatistics.LogFailedMapping("PATIENTS", patId, "Patients", typeof(Patient), JsonConvert.SerializeObject(user), "Patient already exist in database.");
                         FailedCount++;
                     }
                 }

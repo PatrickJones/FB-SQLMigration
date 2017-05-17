@@ -83,7 +83,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("DEVICESETTINGS", typeof(DeviceSetting), JsonConvert.SerializeObject(row), "Failed to map User Setting reading.");
+                   var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                   MappingStatistics.LogFailedMapping("METERREADING", primeKey, "DEVICESETTINGS", typeof(DeviceSetting), JsonConvert.SerializeObject(row), "Failed to map User Setting reading, unable to parse key id.");
                 }
             });
 
@@ -92,7 +93,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private void NoReadingTypeMatch(DataRow row)
         {
-            MappingStatistics.LogFailedMapping("METERREADING", typeof(DataRow), JsonConvert.SerializeObject(row), "Failed to parse METERREADING row.");
+            var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+            MappingStatistics.LogFailedMapping("METERREADING", primeKey, "", typeof(DataRow), JsonConvert.SerializeObject(row), "Failed to parse METERREADING row.");
         }
 
         private void ExtractNutrition(ICollection<DataRow> rows)
@@ -143,7 +145,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("NUTRITIONREADINGS", typeof(NutritionReading), JsonConvert.SerializeObject(row), "Failed to map nutrition reading.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "NUTRITIONREADINGS", typeof(NutritionReading), JsonConvert.SerializeObject(row), "Failed to map nutrition reading, unable to parse key id.");
                 }
             });
 
@@ -217,7 +220,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("READINGEVENT", typeof(ReadingEvent), JsonConvert.SerializeObject(row), "Failed to map reading event.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "READINGEVENT", typeof(ReadingEvent), JsonConvert.SerializeObject(row), "Failed to map reading event, unable to parse key id.");
                 }
             });
 
@@ -271,7 +275,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BOLUS reading.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BOLUS reading, unable to parse key id.");
                 }
             });
         }
@@ -304,7 +309,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BASAL reading.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BASAL reading, unable to parse key id.");
                 }
             });
         }
@@ -344,7 +350,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("TOTALDAILYINSULINDELIVERY", typeof(TotalDailyInsulinDelivery), JsonConvert.SerializeObject(row), "Failed to map TotalDailyInsulinDelivery reading.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "TOTALDAILYINSULINDELIVERY", typeof(TotalDailyInsulinDelivery), JsonConvert.SerializeObject(row), "Failed to map TotalDailyInsulinDelivery reading, unable to parse key id.");
                 }
             });
         }
@@ -375,7 +382,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map BASAL reading.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map BASAL reading, unable to parse key id.");
                 }
             });
         }
@@ -463,7 +471,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map BOLUS reading.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map BOLUS reading, unable to parse key id.");
                 }
             });
         }
@@ -554,7 +563,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
                 else
                 {
-                    MappingStatistics.LogFailedMapping("BLOODGLUCOSEREADING", typeof(BloodGlucoseReading), JsonConvert.SerializeObject(row), "Failed to map BG reading.");
+                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BLOODGLUCOSEREADING", typeof(BloodGlucoseReading), JsonConvert.SerializeObject(row), "Failed to map BG reading, unable to parse key id.");
                 }
             });
 

@@ -72,7 +72,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
-                        MappingStatistics.LogFailedMapping("PatientPhoneNumbers", typeof(PatientPhoneNumber), JsonConvert.SerializeObject(patNum), "Patient phone number already exist in database.");
+                        var fr = (userId == Guid.Empty) ? "Phone number has no corresponding patient." : "Patient phone number already exist in database.";
+
+                        MappingStatistics.LogFailedMapping("PHONENUMBERS", row["KEYID"].ToString(), "PatientPhoneNumbers", typeof(PatientPhoneNumber), JsonConvert.SerializeObject(patNum), fr);
                         FailedCount++;
                     }
                 }

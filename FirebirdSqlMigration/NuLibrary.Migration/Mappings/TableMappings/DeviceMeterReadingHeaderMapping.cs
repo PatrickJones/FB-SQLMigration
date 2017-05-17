@@ -184,7 +184,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                         else
                         {
-                            MappingStatistics.LogFailedMapping("PatientDevices", typeof(PatientDevice), JsonConvert.SerializeObject(dev), "Unable to add Patient Device to database.");
+                            var fr = (dev.UserId == Guid.Empty) ? "Device has no corresponding user." : (String.IsNullOrEmpty(dev.SerialNumber)) ? "Device has no serial number recorded." : "Device already assigned to user.";
+
+                            MappingStatistics.LogFailedMapping("METERREADERHEADER", row["DOWNLOADKEYID"].ToString(), "PatientDevices", typeof(PatientDevice), JsonConvert.SerializeObject(dev), fr);
                             FailedCount++;
                         }
                     }

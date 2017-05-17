@@ -80,7 +80,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    MappingStatistics.LogFailedMapping("PumpPrograms", typeof(PumpProgram), JsonConvert.SerializeObject(p), "Unable to add PumpProgram to database because creation date was null.");
+                                    MappingStatistics.LogFailedMapping("PATIENTPUMPPROGRAM", row["KEYID"].ToString(), "PumpPrograms", typeof(PumpProgram), JsonConvert.SerializeObject(p), "Unable to add PumpProgram to database because creation date was null.");
                                     FailedCount++;
                                 }
                             }

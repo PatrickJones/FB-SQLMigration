@@ -1,4 +1,6 @@
-﻿using NuLibrary.Migration.FBDatabase.FBTables;
+﻿using Newtonsoft.Json;
+using NuLibrary.Migration.AppEnums;
+using NuLibrary.Migration.FBDatabase.FBTables;
 using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Mappings;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
@@ -31,6 +33,8 @@ namespace MigrationApp
     {
         AspnetDbHelpers aHelpers = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelpers = new NumedicsGlobalHelpers();
+        ICollection<TableRowCount> sqlRowCount = new List<TableRowCount>();
+        String initRowCount = String.Empty;
 
         BackgroundWorker bWorker = new BackgroundWorker();
         BackgroundWorker bTrans = new BackgroundWorker();
@@ -49,6 +53,10 @@ namespace MigrationApp
             btnExecute.IsEnabled = false;
             lblStatusBar.Content = "Ready";
 
+            spCompletedMappngs.Visibility = Visibility.Hidden;
+            spFailedMappings.Visibility = Visibility.Hidden;
+            spMigrationResults.Visibility = Visibility.Hidden;
+
             bWorker.DoWork += BWorker_DoWork;
             bWorker.RunWorkerCompleted += BWorker_RunWorkerCompleted;
             bTrans.DoWork += BTrans_DoWork;
@@ -61,6 +69,9 @@ namespace MigrationApp
             SetSqlDataGrid();
 
             listBox.ItemsSource = null;
+            dgFailures.ItemsSource = null;
+            lblCompCnt.Content = String.Empty;
+            lblFailCnt.Content = String.Empty;
 
             cbxSiteIds.IsEnabled = true;
             btnLoad.IsEnabled = true;
@@ -70,18 +81,29 @@ namespace MigrationApp
 
         private void SetSqlDataGrid()
         {
-            dgSqlTables.ItemsSource = nHelpers.GetTableRowCount().Select(s => new { TableName = s.TableName, Rows = s.RowCnt });
+            sqlRowCount = nHelpers.GetTableRowCount();
+            initRowCount = JsonConvert.SerializeObject(sqlRowCount);
+            //dgSqlTables.ItemsSource = sqlRowCount.Select(s => new { TableName = s.TableName, Rows = s.RowCnt });
         }
 
         private void SetCombo()
         {
+            foreach (var r in MigrationVariables.GetRangeDates())
+            {
+                cbxHistory.Items.Add(r);
+            }
+            
+
             foreach (var item in aHelpers.GetAllFirebirdConnections().OrderBy(o => o.SiteId))
             {
                 cbxSiteIds.Items.Add(item.SiteId);
             }
 
             cbxSiteIds.SelectedIndex = 0;
+            cbxHistory.SelectedIndex = 3;
             lblSqlConnStr.Content = TransactionManager.DatabaseContext.Database.Connection.ConnectionString;
+
+            UpdateMigrationVars();
         }
 
         delegate void UpdateLabelDelegate(string text);
@@ -100,7 +122,9 @@ namespace MigrationApp
         {
             DispatchLabel("Creating statistics.");
 
-            dgMigResults.ItemsSource = MappingStatistics.SqlTableStatistics.OrderBy(o => o.Tablename);
+            var rList = new List<dynamic>();
+            var initRC = JsonConvert.DeserializeObject<List<TableRowCount>>(initRowCount);
+            NumedicsGlobalHelpers ngh = new NumedicsGlobalHelpers();
 
             SqlPurge sp = new SqlPurge();
             sp.Purge();
@@ -111,6 +135,28 @@ namespace MigrationApp
             mig.LogMigration();
             TransactionManager.ExecuteTransaction();
 
+            foreach (var table in ngh.GetTableRowCount())
+            {
+                var preRowCnt = initRC.Where(f => f.TableName == table.TableName).Select(s => s.RowCnt).FirstOrDefault();
+                var ms = MappingStatistics.SqlTableStatistics.FirstOrDefault(w => w.Tablename == table.TableName);
+                var diff = (ms == null) ? 0 : ms.Difference;
+                var n = new
+                {
+                    TableName = table.TableName,
+                    PreMigrationRows = preRowCnt,
+                    PostMigratioRows = table.RowCnt,
+                    RowsAdded = table.RowCnt - preRowCnt,
+                    MappedRowsCommitted = (ms == null) ? 0 : ms.PreSaveCount,
+                    MappedRowsSaved = (ms == null) ? 0 : ms.PostSaveCount,
+                    MappedRowsDifference = diff,
+                    Result = (diff == 0) ? "SUCCESS" : "FAIL"
+                };
+
+                rList.Add(n);
+            }
+
+            dgMigResults.ItemsSource = rList.OrderBy(o => o.TableName); //MappingStatistics.SqlTableStatistics.OrderBy(o => o.Tablename);
+            spMigrationResults.Visibility = Visibility.Visible;
             DispatchLabel("Transaction Complete.");
         }
 
@@ -134,6 +180,9 @@ namespace MigrationApp
 
             btnExecute.IsEnabled = true;
             btnNewMigration.IsEnabled = true;
+
+            spCompletedMappngs.Visibility = Visibility.Visible;
+            spFailedMappings.Visibility = Visibility.Visible;
         }
 
         private void BTrans_DoWork(object sender, DoWorkEventArgs e)
@@ -227,27 +276,66 @@ namespace MigrationApp
 
         private void cbxSiteIds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int id;
-            bool parseSiteId = Int32.TryParse(cbxSiteIds.SelectedItem.ToString(), out id);
-
-            if (parseSiteId)
+            try
             {
-                selectedSiteId = id;
-                UpdateLabel($"Current SiteId: {id}");
-                lblFbConnStr.Content = aHelpers.GetAllFirebirdConnections().Where(s => s.SiteId == selectedSiteId).Select(s => s.DatabaseLocation).FirstOrDefault();
-                return;
-            }
+                int id;
+                bool parseSiteId = Int32.TryParse(cbxSiteIds.SelectedItem.ToString(), out id);
 
-            UpdateLabel($"Unable to parse Site Id: {cbxSiteIds.SelectedItem.ToString()} into type Int32.");
+                if (parseSiteId)
+                {
+                    selectedSiteId = id;
+                    UpdateLabel($"Current SiteId: {id}");
+                    lblFbConnStr.Content = aHelpers.GetAllFirebirdConnections().Where(s => s.SiteId == selectedSiteId).Select(s => s.DatabaseLocation).FirstOrDefault();
+
+                    MigrationVariables.CurrentSiteId = id;
+                    UpdateMigrationVars();
+                    return;
+                }
+
+                UpdateLabel($"Unable to parse Site Id: {cbxSiteIds.SelectedItem.ToString()} into type Int32.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
+
+        private void UpdateMigrationVars()
+        {
+            lblInstitution.Content = MigrationVariables.Institution;
+            lblInitMigDate.Content = MigrationVariables.InitialMigration;
+            lblLastMigDate.Content = MigrationVariables.LastMigration;
         }
 
         private void btnNewMigration_Click(object sender, RoutedEventArgs e)
         {
+            spCompletedMappngs.Visibility = Visibility.Hidden;
+            spFailedMappings.Visibility = Visibility.Hidden;
+            spMigrationResults.Visibility = Visibility.Hidden;
+
             MappingStatistics.ClearAll();
             MemoryMappings.ClearAll();
             TableAgentCollection.TableAgents.Clear();
 
             Reset();
+        }
+
+        private void cbxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var si = cbxHistory.SelectedItem.ToString();
+
+            switch (si)
+            {
+                default:
+                    break;
+            }
+
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }

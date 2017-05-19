@@ -18,49 +18,93 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" Margin="1374,35,0,0" VerticalAlignment="Top" Width="103" Click="btnLoad_Click" Height="22" FontWeight="Bold"/>
-        <Button x:Name="btnExecute" Content="Execute" HorizontalAlignment="Left" Margin="1485,35,0,0" VerticalAlignment="Top" Width="103" Click="btnExecute_Click" Height="22" FontWeight="Bold"/>
-        <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Margin="7,801,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.579,0.423" Width="1343" Height="26" Background="#FFFFBB44"/>
-        <ComboBox x:Name="cbxSiteIds" HorizontalAlignment="Left" Margin="11,35,0,0" VerticalAlignment="Top" Width="103" SelectionChanged="cbxSiteIds_SelectionChanged" Height="22"/>
-        <Label x:Name="lblSiteSelect" Content="Select Site Id" HorizontalAlignment="Left" Margin="11,9,0,0" VerticalAlignment="Top" Height="26" Width="78" FontWeight="Bold"/>
-        <DataGrid x:Name="listBox" HorizontalAlignment="Left" Height="367" Margin="235,98,0,0" VerticalAlignment="Top" Width="445">
-            <!--<StackPanel Orientation="Horizontal"></StackPanel>-->
-        </DataGrid>
-        <Label Content="SQL Connection String:" HorizontalAlignment="Left" Margin="125,36,0,0" VerticalAlignment="Top" Width="139" Height="26" FontWeight="Bold"/>
-        <Label x:Name="lblSqlConnStr" Content="" HorizontalAlignment="Left" Margin="285,36,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.184,-0.308" Width="1084" Height="26"/>
-        <Label Content="Firebird Connection String:" HorizontalAlignment="Left" Margin="125,9,0,0" VerticalAlignment="Top" Width="155" Height="26" FontWeight="Bold"/>
-        <Label x:Name="lblFbConnStr" Content="" HorizontalAlignment="Left" Margin="285,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.184,-0.308" Width="945" Height="26"/>
-        <DataGrid x:Name="dgFailures" HorizontalAlignment="Left" Height="367" Margin="710,98,0,0" VerticalAlignment="Top" Width="878">
-            <DataGrid.Columns>
-                <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
-                <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
-                <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
-                <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical"  Grid.Row="0" Margin="10,5,10,0">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnLoad_Click" Height="22" FontWeight="Bold" Margin="0,0,3,0"/>
+                    <Button x:Name="btnExecute" Content="Execute" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnExecute_Click" Height="22" FontWeight="Bold"/>
+                </StackPanel>
 
-        <DataGrid x:Name="dgSqlTables" HorizontalAlignment="Left" Height="367" Margin="10,98,0,0" VerticalAlignment="Top" Width="195">
-            <DataGrid.Columns>
-                <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
-                <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
-                <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
-                <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid x:Name="dgMigResults" HorizontalAlignment="Left" Height="286" Margin="11,510,0,0" VerticalAlignment="Top" Width="904">
-            <DataGrid.Columns>
-                <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
-                <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
-                <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
-                <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button x:Name="btnNewMigration" Content="New Migration" HorizontalAlignment="Left" Margin="1371,801,0,0" VerticalAlignment="Top" Width="217" RenderTransformOrigin="1.2,4.8" Height="26" Click="btnNewMigration_Click" FontWeight="Bold"/>
-        <Label x:Name="lblSqlCurrent" Content="Current SQL Snapshot" HorizontalAlignment="Left" Margin="11,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.132,0.577" Width="209" FontWeight="Bold"/>
-        <Label x:Name="lblCompMap" Content="Completed Mappings" HorizontalAlignment="Left" Margin="235,72,0,0" VerticalAlignment="Top" Width="335" FontWeight="Bold"/>
-        <Label x:Name="lblFailMap" Content="Failed Mappings" HorizontalAlignment="Left" Margin="710,72,0,0" VerticalAlignment="Top" Width="317" FontWeight="Bold"/>
-        <Label x:Name="lblMigResults" Content="Migration Results" HorizontalAlignment="Left" Margin="11,484,0,0" VerticalAlignment="Top" Width="253" FontWeight="Bold"/>
-        <Label x:Name="lblCompCnt" Content="" HorizontalAlignment="Left" Margin="625,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.316,0.692" Width="55"/>
-        <Label x:Name="lblFailCnt" Content="" HorizontalAlignment="Left" Margin="1530,72,0,0" VerticalAlignment="Top" Width="58"/>
+                <StackPanel Orientation="Vertical">
+                    <Label Content="SQL Connection String:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="139" Height="26" FontWeight="Bold"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+
+                    <Label x:Name="lblSqlConnStr" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto"  Height="26"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblSiteSelect" Content="Select Site Id:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="auto" FontWeight="Bold"/>
+                <ComboBox x:Name="cbxSiteIds" HorizontalAlignment="Left" VerticalAlignment="Top" Width="103" SelectionChanged="cbxSiteIds_SelectionChanged" Height="22"/>
+                <Label Content="Institution:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26" FontWeight="Bold"/>
+                <Label x:Name="lblInstitution" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26"/>
+                <Label Content="Data Range:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26" FontWeight="Bold"/>
+                <ComboBox x:Name="cbxHistory" SelectionChanged="cbxHistory_SelectionChanged" MinWidth="100" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Content="Firebird Connection String:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" Height="26" FontWeight="Bold"/>
+                <Label x:Name="lblFbConnStr" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26"/>
+                <Label Content="Initial Migration:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26" FontWeight="Bold"/>
+                <Label x:Name="lblInitMigDate" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26"/>
+                <Label Content="Last Migration:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26" FontWeight="Bold"/>
+                <Label x:Name="lblLastMigDate" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Height="26"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10,4,10,0">
+            <!--<StackPanel Orientation="Vertical">
+                <Label x:Name="lblSqlCurrent" Content="Current SQL Snapshot" HorizontalAlignment="Left" VerticalAlignment="Top" Width="209" FontWeight="Bold"/>
+                <DataGrid x:Name="dgSqlTables" HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="auto">
+                    <DataGrid.Columns>
+                        --><!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>--><!--
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>-->
+            <StackPanel Orientation="Vertical" Name="spCompletedMappngs" Margin="0,0,20,0">
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="lblCompMap" Content="Completed Mappings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="135" FontWeight="Bold"/>
+                    <Label x:Name="lblCompCnt" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="55" Foreground="#FF11BD00"/>
+                </StackPanel>
+                <DataGrid x:Name="listBox" HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="auto">
+                    <!--<StackPanel Orientation="Horizontal"></StackPanel>-->
+                </DataGrid>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Name="spFailedMappings">
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="lblFailMap" Content="Failed Mappings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="105" FontWeight="Bold"/>
+                    <Label x:Name="lblFailCnt" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="58" Foreground="Red"/>
+                </StackPanel>
+                <DataGrid x:Name="dgFailures" HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="auto">
+                    <DataGrid.Columns>
+                        <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="10,4,11,-3" Name="spMigrationResults">
+            <Label x:Name="lblMigResults" Content="Migration Results" HorizontalAlignment="Left" Width="253" FontWeight="Bold"/>
+            <DataGrid x:Name="dgMigResults" HorizontalAlignment="Left" Height="345" Width="auto">
+                <DataGrid.Columns>
+                    <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3">
+            <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Background="#FFFFBB44" Width="1350" Margin="10,3"/>
+            <Button x:Name="btnNewMigration" Content="Reset" HorizontalAlignment="Right" VerticalAlignment="Center"  Width="100" Height="24" Click="btnNewMigration_Click" FontWeight="Bold" Margin="0,2,5,2"/>
+            <Button x:Name="btnExit" Content="Close" HorizontalAlignment="Right" VerticalAlignment="Center"  Width="100" Height="24" FontWeight="Bold" Margin="0,2" Click="btnExit_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

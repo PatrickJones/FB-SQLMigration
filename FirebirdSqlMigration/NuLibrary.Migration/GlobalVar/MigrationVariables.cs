@@ -24,8 +24,40 @@ namespace NuLibrary.Migration.GlobalVar
             {
                 currSiteId = value;
                 ReloadTableNames();
+                UpdateVariables();
             }
         }
+
+        private static void UpdateVariables()
+        {
+            MigrationHistoryHelpers mig = new MigrationHistoryHelpers();
+            var dh = mig.GetDatabaseHistory(currSiteId);
+
+            AspnetDbHelpers ah = new AspnetDbHelpers();
+            var corp = ah.GetAllCorporationInfo().FirstOrDefault(f => f.SiteId == currSiteId);
+
+            Institution = corp?.Site_Name;
+            InitialMigration = dh?.PreviousMigrationDate.ToShortDateString();
+            LastMigration = dh?.LastMigrationDate.ToShortDateString();
+        }
+        public static string Institution { get; set; }
+        public static string InitialMigration { get; set; }
+        public static string LastMigration { get; set; }
+
+
+        static int dataHistory = 90;
+        public static int DataHistoryRange
+        {
+            get
+            {
+                return dataHistory;
+            }
+            set
+            {
+                dataHistory = value;
+            }
+        }
+
 
         public static ICollection<int> SiteIds = new List<int>();
         public static ICollection<string> FirebirdTableNames = new List<string>();
@@ -53,6 +85,11 @@ namespace NuLibrary.Migration.GlobalVar
             {
                 FirebirdTableNames.Clear();
             }
+        }
+
+        public static ICollection<string> GetRangeDates()
+        {
+            return new List<string> { "All", "1 Month", "2 Months", "3 Months", "6 Months", "1 Year", "2 Years", "3 Years" };
         }
     }
 }

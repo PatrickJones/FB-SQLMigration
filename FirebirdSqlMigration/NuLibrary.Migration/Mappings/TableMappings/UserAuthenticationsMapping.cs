@@ -17,6 +17,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     {
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public ICollection<User> CompletedMappings = new List<User>();
 

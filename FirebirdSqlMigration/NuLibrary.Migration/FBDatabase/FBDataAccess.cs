@@ -47,27 +47,35 @@ namespace NuLibrary.Migration.FBDatabase
         /// <returns></returns>
         public override IDbConnection GetConnnection()
         {
-            FirebirdConnection connEntity;
-            string connStr = String.Empty;
-            using (var ctx = new AspnetDbEntities())
+            try
             {
-                connEntity = ctx.FirebirdConnections.Where(s => s.SiteId == SiteId).FirstOrDefault();
-            }
+                FirebirdConnection connEntity;
+                string connStr = String.Empty;
+                using (var ctx = new AspnetDbEntities())
+                {
+                    connEntity = ctx.FirebirdConnections.Where(s => s.SiteId == SiteId).FirstOrDefault();
+                }
 
-            if (connEntity != null)
+                if (connEntity != null)
+                {
+                    var split = connEntity.DatabaseLocation.Split(':');
+                    var dbFile = String.Format("{0}:{1}", split[1], split[2]);
+                    connStr = String.Format("User={0};Password={1};Database={2};DataSource={3};Port={4};Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;", connEntity.User, connEntity.Password, dbFile, connEntity.DatasourceServer, connEntity.Port);
+                }
+
+                var dbConn = GetDbProvider();
+                DbConnection conn = dbConn.CreateConnection();
+                conn.ConnectionString = connStr;
+
+                System.Diagnostics.Debug.WriteLine($"Current Conncetionsting: {connStr}");
+
+                return conn;
+            }
+            catch (Exception)
             {
-                var split = connEntity.DatabaseLocation.Split(':');
-                var dbFile = String.Format("{0}:{1}", split[1], split[2]);
-                connStr = String.Format("User={0};Password={1};Database={2};DataSource={3};Port={4};Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;", connEntity.User, connEntity.Password, dbFile, connEntity.DatasourceServer, connEntity.Port);
+                throw new FormatException("Unable to parse connection string.");
             }
-
-            var dbConn = GetDbProvider();
-            DbConnection conn = dbConn.CreateConnection();
-            conn.ConnectionString = connStr;
-
-            System.Diagnostics.Debug.WriteLine($"Current Conncetionsting: {connStr}");
-
-            return conn;
+            
         }
 
         /// <summary>

@@ -67,6 +67,8 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             AddDatabaseMigration(dh);
         }
 
+        public bool HasPreviousMigration => db.DatabaseHistories.Any(a => a.SiteId == MigrationVariables.CurrentSiteId);
+
         public ICollection<DatabaseHistory> GetMigrationHistory()
         {
             return db.DatabaseHistories.Include("TableHistories").Include("PatientHistories").ToList();
@@ -141,6 +143,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             }
 
             return result;
+        }
+
+        public DatabaseHistory GetDatabaseHistory(int siteId)
+        {
+            return db.DatabaseHistories.FirstOrDefault(f => f.SiteId == siteId);
         }
 
         protected override void Dispose(bool disposing)

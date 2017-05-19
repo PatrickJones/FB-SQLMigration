@@ -12,16 +12,14 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientHistory
+    public partial class UserHistory
     {
-        public int PatientHistoryId { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public System.DateTime BirthDate { get; set; }
-        public string FirebirdPatientId { get; set; }
+        public int HistoryId { get; set; }
+        public string Username { get; set; }
         public System.Guid SqlUserId { get; set; }
-        public System.DateTime MigrationDate { get; set; }
+        public System.Guid LegacyUserId { get; set; }
         public int MigrationId { get; set; }
+        public System.DateTime MigrationDate { get; set; }
     
         public virtual DatabaseHistory DatabaseHistory { get; set; }
     }

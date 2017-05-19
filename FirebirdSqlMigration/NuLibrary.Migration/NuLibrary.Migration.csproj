@@ -463,6 +463,9 @@
     <Compile Include="SQLDatabase\EF\UserAuthentication.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\UserHistory.cs">
+      <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\UserPhoto.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>

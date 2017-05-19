@@ -26,7 +26,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         }
     
         public virtual DbSet<DatabaseHistory> DatabaseHistories { get; set; }
-        public virtual DbSet<TableHistory> TableHistories { get; set; }
         public virtual DbSet<PatientHistory> PatientHistories { get; set; }
+        public virtual DbSet<TableHistory> TableHistories { get; set; }
+        public virtual DbSet<UserHistory> UserHistories { get; set; }
     }
 }

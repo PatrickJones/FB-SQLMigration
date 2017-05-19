@@ -17,21 +17,23 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DatabaseHistory()
         {
-            this.TableHistories = new HashSet<TableHistory>();
             this.PatientHistories = new HashSet<PatientHistory>();
+            this.TableHistories = new HashSet<TableHistory>();
+            this.UserHistories = new HashSet<UserHistory>();
         }
     
         public int MigrationId { get; set; }
         public string InstitutionName { get; set; }
         public int SiteId { get; set; }
         public System.DateTime LastMigrationDate { get; set; }
-        public System.DateTime PreviousMigrationDate { get; set; }
         public string FbConnectionStringUsed { get; set; }
         public string MigrationLog { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientHistory> PatientHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TableHistory> TableHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientHistory> PatientHistories { get; set; }
+        public virtual ICollection<UserHistory> UserHistories { get; set; }
     }
 }

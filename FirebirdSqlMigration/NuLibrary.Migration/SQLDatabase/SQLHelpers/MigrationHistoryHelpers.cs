@@ -64,6 +64,22 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 }
             });
 
+            Array.ForEach(TransactionManager.DatabaseContext.UserAuthentications.ToArray(), p =>
+            {
+                var pat = MemoryMappings.GetAllPatientInfo().FirstOrDefault(f => f.Item3 == p.UserId);
+                if (pat != null)
+                {
+                    
+                }
+
+                //dh.PatientHistories.Add(new UserHistory
+                //{
+                //    SqlUserId = pat.Item3,
+                //    LastMigrationDate = date,
+                //    PreviousMigrationDate = date
+                //});
+            });
+
             AddDatabaseMigration(dh);
         }
 

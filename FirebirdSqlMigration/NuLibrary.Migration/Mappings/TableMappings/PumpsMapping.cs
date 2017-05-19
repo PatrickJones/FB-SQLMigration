@@ -32,6 +32,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         MappingUtilities mu = new MappingUtilities();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public ICollection<Pump> CompletedMappings = new List<Pump>();
 
@@ -51,51 +52,55 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    if (userId != Guid.Empty)
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        List<PumpSetting> settings = null;
-                        List<PumpProgram> programs = null;
-
-                        if (MemoryMappings.GetAllPumpSettings().ContainsKey(userId))
+                        if (userId != Guid.Empty)
                         {
-                            var set = MemoryMappings.GetAllPumpSettings().Where(k => k.Key == userId).Single();
-                            settings = set.Value;
-                        }
+                            List<PumpSetting> settings = null;
+                            List<PumpProgram> programs = null;
 
-                        if (MemoryMappings.GetAllPumpPrograms().ContainsKey(userId))
-                        {
-                            var prog = MemoryMappings.GetAllPumpPrograms().Where(p => p.Key == userId).Single();
-                            var tl = prog.Value;
-                            programs = new List<PumpProgram>();
-                            Array.ForEach(tl.ToArray(), a => { programs.Add(a.Item2); });
-                        }
+                            if (MemoryMappings.GetAllPumpSettings().ContainsKey(userId))
+                            {
+                                var set = MemoryMappings.GetAllPumpSettings().Where(k => k.Key == userId).Single();
+                                settings = set.Value;
+                            }
 
-                        var pum = new Pump
-                        {
-                            UserId = userId,
-                            PumpType = "Meter",
-                            PumpName = (row["PUMPBRAND"] is DBNull) ? String.Empty : row["PUMPBRAND"].ToString(),
-                            PumpStartDate = mu.ParseFirebirdDateTime(row["PUMPSTARTDATE"].ToString()),
-                            PumpInfusionSet = (row["PUMPINFUSIONSET"] is DBNull) ? String.Empty : row["PUMPINFUSIONSET"].ToString(),
-                            Cannula = mu.ParseDouble(row["CANNULA"].ToString()),
-                            ReplacementDate = mu.ParseFirebirdDateTime(row["DATEREPLACED"].ToString()),
-                            Notes = (row["NOTES"] is DBNull) ? String.Empty : row["NOTES"].ToString(),
-                            PumpSettings = settings,
-                            PumpPrograms = programs
-                        };
+                            if (MemoryMappings.GetAllPumpPrograms().ContainsKey(userId))
+                            {
+                                var prog = MemoryMappings.GetAllPumpPrograms().Where(p => p.Key == userId).Single();
+                                var tl = prog.Value;
+                                programs = new List<PumpProgram>();
+                                Array.ForEach(tl.ToArray(), a => { programs.Add(a.Item2); });
+                            }
 
-                        MemoryMappings.AddPump(pum);
+                            var pum = new Pump
+                            {
+                                UserId = userId,
+                                PumpType = "Meter",
+                                PumpName = (row["PUMPBRAND"] is DBNull) ? String.Empty : row["PUMPBRAND"].ToString(),
+                                PumpStartDate = mu.ParseFirebirdDateTime(row["PUMPSTARTDATE"].ToString()),
+                                PumpInfusionSet = (row["PUMPINFUSIONSET"] is DBNull) ? String.Empty : row["PUMPINFUSIONSET"].ToString(),
+                                Cannula = mu.ParseDouble(row["CANNULA"].ToString()),
+                                ReplacementDate = mu.ParseFirebirdDateTime(row["DATEREPLACED"].ToString()),
+                                Notes = (row["NOTES"] is DBNull) ? String.Empty : row["NOTES"].ToString(),
+                                PumpSettings = settings,
+                                PumpPrograms = programs
+                            };
 
-                        if (CanAddToContext(pum.UserId, pum.PumpName))
-                        {
-                            CompletedMappings.Add(pum);
-                        }
-                        else
-                        {
-                            MappingStatistics.LogFailedMapping("PATIENTPUMP", patId, "Pumps", typeof(Pump), JsonConvert.SerializeObject(pum), "Unable to add Pump to database.");
-                            FailedCount++;
+                            MemoryMappings.AddPump(pum);
+
+                            if (CanAddToContext(pum.UserId, pum.PumpName))
+                            {
+                                CompletedMappings.Add(pum);
+                            }
+                            else
+                            {
+                                MappingStatistics.LogFailedMapping("PATIENTPUMP", patId, "Pumps", typeof(Pump), JsonConvert.SerializeObject(pum), "Unable to add Pump to database.");
+                                FailedCount++;
+                            }
                         }
                     }
+
                 }
 
                 MappingStatistics.LogMappingStat("PATIENTPUMP", RecordCount, "Pumps", CompletedMappings.Count, FailedCount);

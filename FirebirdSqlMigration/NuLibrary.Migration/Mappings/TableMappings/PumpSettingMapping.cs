@@ -35,6 +35,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         MappingUtilities mu = new MappingUtilities();
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public ICollection<PumpSetting> CompletedMappings = new List<PumpSetting>();
 
@@ -54,48 +55,52 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    if (userId != Guid.Empty)
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        var tempList = new List<PumpSetting>();
-
-                        // iterate through table columns and only get columns that are NOT time slots
-                        // as these will be settings
-                        for (int i = 0; i < row.Table.Columns.Count; i++)
+                        if (userId != Guid.Empty)
                         {
-                            var column = row.Table.Columns[i].ColumnName.Trim();
-                            // don't want columns that start with these characters - these are timeslot values
-                            var exclude = new List<bool> {
-                                column.ToLower().StartsWith("ic"),
-                                column.ToLower().StartsWith("cf"),
-                                column.ToLower().StartsWith("target"),
-                                column.ToLower().StartsWith("patientid")
-                            };
-                            
-                            if (exclude.All(a => !a))
+                            var tempList = new List<PumpSetting>();
+
+                            // iterate through table columns and only get columns that are NOT time slots
+                            // as these will be settings
+                            for (int i = 0; i < row.Table.Columns.Count; i++)
                             {
-                                PumpSetting ps = new PumpSetting();
-                                ps.SettingName = column;
-                                ps.SettingValue = (row[column] is DBNull) ? String.Empty : row[column].ToString();
-                                ps.Date = new DateTime(1800, 1, 1);
-
-                                tempList.Add(ps);
-
-                                if (CanAddToContext(ps.SettingValue))
+                                var column = row.Table.Columns[i].ColumnName.Trim();
+                                // don't want columns that start with these characters - these are timeslot values
+                                var exclude = new List<bool> {
+                                    column.ToLower().StartsWith("ic"),
+                                    column.ToLower().StartsWith("cf"),
+                                    column.ToLower().StartsWith("target"),
+                                    column.ToLower().StartsWith("patientid")
+                                };
+                            
+                                if (exclude.All(a => !a))
                                 {
-                                    CompletedMappings.Add(ps);
-                                }
-                                else
-                                {
-                                    MappingStatistics.LogFailedMapping("INSULETPUMPSETTINGS", patId, "PumpSettings", typeof(PumpSetting), JsonConvert.SerializeObject(ps), "Pump Setting has no value.");
-                                    FailedCount++;
+                                    PumpSetting ps = new PumpSetting();
+                                    ps.SettingName = column;
+                                    ps.SettingValue = (row[column] is DBNull) ? String.Empty : row[column].ToString();
+                                    ps.Date = new DateTime(1800, 1, 1);
+
+                                    tempList.Add(ps);
+
+                                    if (CanAddToContext(ps.SettingValue))
+                                    {
+                                        CompletedMappings.Add(ps);
+                                    }
+                                    else
+                                    {
+                                        MappingStatistics.LogFailedMapping("INSULETPUMPSETTINGS", patId, "PumpSettings", typeof(PumpSetting), JsonConvert.SerializeObject(ps), "Pump Setting has no value.");
+                                        FailedCount++;
+                                    }
                                 }
                             }
-                        }
 
-                        // add to Memory Mappings so that Pump object and retieve
-                        // a single user should only have a single collections of PumpSettings in the FB database
-                        MemoryMappings.AddPumpSetting(userId, tempList);
+                            // add to Memory Mappings so that Pump object and retieve
+                            // a single user should only have a single collections of PumpSettings in the FB database
+                            MemoryMappings.AddPumpSetting(userId, tempList);
+                        }
                     }
+
                 }
 
                 MappingStatistics.LogMappingStat("INSULETPUMPSETTINGS", RecordCount, "PumpSettings", CompletedMappings.Count, FailedCount);

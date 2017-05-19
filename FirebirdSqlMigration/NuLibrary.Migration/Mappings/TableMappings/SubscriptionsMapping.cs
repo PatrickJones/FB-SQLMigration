@@ -18,6 +18,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
         MappingUtilities mu = new MappingUtilities();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public ICollection<Subscription> CompletedMappings = new List<Subscription>();
 
@@ -33,18 +34,23 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 foreach (var g in dataSet)
                 {
-                    var sh = aHelper.GetSubscriptionInfo(g);
-
-                    foreach (var sub in sh.GetMappedSubscriptions())
+                    var pats = aHelper.GetAllPatientUsers();
+                    var patId = pats.Where(w => w.UserId == g).Select(s => s.CliniProID).FirstOrDefault();
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        if (CanAddToContext(sub.UserId, sub.SubscriptionType, sub.ExpirationDate, sub.InstitutionId))
+                        var sh = aHelper.GetSubscriptionInfo(g);
+
+                        foreach (var sub in sh.GetMappedSubscriptions())
                         {
-                            CompletedMappings.Add(sub);
-                        }
-                        else
-                        {
-                            MappingStatistics.LogFailedMapping("None", "None", "Subscriptions", typeof(Subscription), JsonConvert.SerializeObject(sub), "Subscription already exist in database.");
-                            FailedCount++;
+                            if (CanAddToContext(sub.UserId, sub.SubscriptionType, sub.ExpirationDate, sub.InstitutionId))
+                            {
+                                CompletedMappings.Add(sub);
+                            }
+                            else
+                            {
+                                MappingStatistics.LogFailedMapping("None", "None", "Subscriptions", typeof(Subscription), JsonConvert.SerializeObject(sub), "Subscription already exist in database.");
+                                FailedCount++;
+                            }
                         }
                     }
                 }

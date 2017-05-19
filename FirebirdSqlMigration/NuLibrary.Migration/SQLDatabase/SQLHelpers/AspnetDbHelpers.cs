@@ -54,6 +54,11 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return db.aspnet_Users.Where(w => w.UserId == userId).FirstOrDefault();
         }
 
+        public aspnet_Users GetAspUserInfo(string username)
+        {
+            return db.aspnet_Users.Where(w => w.UserName == username).FirstOrDefault();
+        }
+
         public ICollection<FirebirdConnection> GetAllFirebirdConnections()
         {
             return db.FirebirdConnections.ToList();

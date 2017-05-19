@@ -33,6 +33,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         MappingUtilities mu = new MappingUtilities();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public ICollection<PatientDevice> CompletedMappings = new List<PatientDevice>();
         public ICollection<PumpSetting> CompletedPumpSettingMappings = new List<PumpSetting>();
@@ -56,140 +57,147 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTKEYID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    if (userId != Guid.Empty)
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        var dmData = MemoryMappings.GetAllDiabetesManagementData().Where(w => w.UserId == userId).FirstOrDefault();
-                        var meterName = (row["METERNAME"] is DBNull) ? String.Empty : row["METERNAME"].ToString();
-
-                        var dev = new PatientDevice
+                        if (userId != Guid.Empty)
                         {
-                            UserId = userId,
-                            MeterIndex = (row["NUMEDICSMETERINDEX"] is DBNull) ? 0 : (Int32)row["NUMEDICSMETERINDEX"],
-                            Manufacturer = (row["MANUFACTURER"] is DBNull) ? String.Empty : row["MANUFACTURER"].ToString(),
-                            DeviceModel = (row["METERMODEL"] is DBNull) ? String.Empty : row["METERMODEL"].ToString(),
-                            DeviceName = meterName,
-                            SerialNumber = (row["SERIALNUMBER"] is DBNull) ? string.Empty : row["SERIALNUMBER"].ToString(),
-                            SoftwareVersion = (row["SOFTWAREVERSION"] is DBNull) ? String.Empty : row["SOFTWAREVERSION"].ToString(),
-                            HardwareVersion = (row["HARDWAREVERSION"] is DBNull) ? String.Empty : row["HARDWAREVERSION"].ToString()
-                        };
+                            var dmData = MemoryMappings.GetAllDiabetesManagementData().Where(w => w.UserId == userId).FirstOrDefault();
+                            var meterName = (row["METERNAME"] is DBNull) ? String.Empty : row["METERNAME"].ToString();
 
-                        if (dmData != null)
-                        {
-                            dev.DiabetesManagementData = dmData;
-                        }
-
-                        var mrh = new ReadingHeader
-                        {
-                            ReadingKeyId = Guid.NewGuid(),
-                            UserId = userId,
-                            LegacyDownloadKeyId = (row["DOWNLOADKEYID"] is DBNull) ? String.Empty : row["DOWNLOADKEYID"].ToString(),
-                            ServerDateTime = (row["SERVERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["SERVERDATETIME"].ToString()),
-                            MeterDateTime = (row["METERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["METERDATETIME"].ToString()),
-                            Readings = (row["READINGS"] is DBNull) ? 0 : (Int32)row["READINGS"],
-                            SiteSource = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString(),
-                            ReviewedOn = (row["REVIEWEDON"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["REVIEWEDON"].ToString()),
-                        };
-
-                        if (meterName.ToLower().Contains("omnipod"))
-                        {
-                            var ePump = MemoryMappings.GetAllPump().Where(w => w.UserId == userId).FirstOrDefault();
-
-                            if (ePump != null)
+                            var dev = new PatientDevice
                             {
-                                mrh.Pump = new Pump();
-                                mrh.Pump.PumpKeyId = mrh.ReadingKeyId;
+                                UserId = userId,
+                                MeterIndex = (row["NUMEDICSMETERINDEX"] is DBNull) ? 0 : (Int32)row["NUMEDICSMETERINDEX"],
+                                Manufacturer = (row["MANUFACTURER"] is DBNull) ? String.Empty : row["MANUFACTURER"].ToString(),
+                                DeviceModel = (row["METERMODEL"] is DBNull) ? String.Empty : row["METERMODEL"].ToString(),
+                                DeviceName = meterName,
+                                SerialNumber = (row["SERIALNUMBER"] is DBNull) ? string.Empty : row["SERIALNUMBER"].ToString(),
+                                SoftwareVersion = (row["SOFTWAREVERSION"] is DBNull) ? String.Empty : row["SOFTWAREVERSION"].ToString(),
+                                HardwareVersion = (row["HARDWAREVERSION"] is DBNull) ? String.Empty : row["HARDWAREVERSION"].ToString()
+                            };
 
-                                if (ePump.PumpPrograms != null)
+                            if (dmData != null)
+                            {
+                                dev.DiabetesManagementData = dmData;
+                            }
+
+                            var mrh = new ReadingHeader
+                            {
+                                ReadingKeyId = Guid.NewGuid(),
+                                UserId = userId,
+                                LegacyDownloadKeyId = (row["DOWNLOADKEYID"] is DBNull) ? String.Empty : row["DOWNLOADKEYID"].ToString(),
+                                ServerDateTime = (row["SERVERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["SERVERDATETIME"].ToString()),
+                                MeterDateTime = (row["METERDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["METERDATETIME"].ToString()),
+                                Readings = (row["READINGS"] is DBNull) ? 0 : (Int32)row["READINGS"],
+                                SiteSource = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString(),
+                                ReviewedOn = (row["REVIEWEDON"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["REVIEWEDON"].ToString()),
+                            };
+
+                            if (meterName.ToLower().Contains("omnipod"))
+                            {
+                                var ePump = MemoryMappings.GetAllPump().Where(w => w.UserId == userId).FirstOrDefault();
+
+                                if (ePump != null)
                                 {
-                                    mrh.Pump.PumpPrograms = new List<PumpProgram>();
-                                    Array.ForEach(ePump.PumpPrograms.ToArray(), p =>
+                                    mrh.Pump = new Pump();
+                                    mrh.Pump.PumpKeyId = mrh.ReadingKeyId;
+
+                                    if (ePump.PumpPrograms != null)
                                     {
-                                        var prog = new PumpProgram
+                                        mrh.Pump.PumpPrograms = new List<PumpProgram>();
+                                        Array.ForEach(ePump.PumpPrograms.ToArray(), p =>
                                         {
-                                            CreationDate = p.CreationDate,
-                                            NumOfSegments = p.NumOfSegments,
-                                            ProgramKey = p.ProgramKey,
-                                            ProgramName = p.ProgramName,
-                                            Source = p.Source,
-                                            Valid = p.Valid,
-                                            PumpKeyId = mrh.Pump.PumpKeyId
-                                        };
+                                            var prog = new PumpProgram
+                                            {
+                                                CreationDate = p.CreationDate,
+                                                NumOfSegments = p.NumOfSegments,
+                                                ProgramKey = p.ProgramKey,
+                                                ProgramName = p.ProgramName,
+                                                Source = p.Source,
+                                                Valid = p.Valid,
+                                                PumpKeyId = mrh.Pump.PumpKeyId
+                                            };
 
-                                        CompletedPumpProgramMappings.Add(prog);
+                                            CompletedPumpProgramMappings.Add(prog);
 
-                                        if (p.BasalProgramTimeSlots != null && p.BasalProgramTimeSlots.Count != 0)
+                                            if (p.BasalProgramTimeSlots != null && p.BasalProgramTimeSlots.Count != 0)
+                                            {
+                                                Array.ForEach(p.BasalProgramTimeSlots.ToArray(), a =>
+                                                {
+                                                    prog.BasalProgramTimeSlots.Add(a);
+                                                });
+                                            }
+
+                                            if (p.BolusProgramTimeSlots != null && p.BolusProgramTimeSlots.Count != 0)
+                                            {
+                                                Array.ForEach(p.BolusProgramTimeSlots.ToArray(), r =>
+                                                {
+                                                    prog.BolusProgramTimeSlots.Add(r);
+                                                });
+                                            }
+                                        });
+                                    }
+
+                                    if (ePump.PumpSettings != null)
+                                    {
+                                        mrh.Pump.PumpSettings = new List<PumpSetting>();
+                                        Array.ForEach(ePump.PumpSettings.ToArray(), s =>
                                         {
-                                            Array.ForEach(p.BasalProgramTimeSlots.ToArray(), a => {
-                                                prog.BasalProgramTimeSlots.Add(a);
-                                            });
-                                        }
+                                            var ps = new PumpSetting
+                                            {
+                                                Date = s.Date,
+                                                Description = s.Description,
+                                                SettingName = s.SettingName,
+                                                SettingValue = s.SettingValue,
+                                                PumpKeyId = mrh.Pump.PumpKeyId
+                                            };
 
-                                        if (p.BolusProgramTimeSlots != null && p.BolusProgramTimeSlots.Count != 0)
-                                        {
-                                            Array.ForEach(p.BolusProgramTimeSlots.ToArray(), r => {
-                                                prog.BolusProgramTimeSlots.Add(r);
-                                            });
-                                        }
-                                    });
+                                            CompletedPumpSettingMappings.Add(ps);
+                                        });
+                                    }
+
+                                    mrh.Pump.ActiveProgramId = ePump.ActiveProgramId;
+                                    mrh.Pump.Cannula = ePump.Cannula;
+                                    mrh.Pump.Notes = ePump.Notes;
+                                    mrh.Pump.PumpInfusionSet = ePump.PumpInfusionSet;
+                                    mrh.Pump.PumpName = ePump.PumpName;
+                                    mrh.Pump.PumpStartDate = ePump.PumpStartDate;
+                                    mrh.Pump.PumpType = ePump.PumpType;
+                                    mrh.Pump.ReplacementDate = ePump.ReplacementDate;
+                                    mrh.Pump.UserId = ePump.UserId;
                                 }
+                            }
 
-                                if (ePump.PumpSettings != null)
+                            if (CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
+                            {
+                                var device = CompletedMappings.Where(w => w.SerialNumber == dev.SerialNumber).FirstOrDefault();
+                                device.ReadingHeaders.Add(mrh);
+                            }
+                            else
+                            {
+                                dev.ReadingHeaders.Add(mrh);
+                            }
+
+                            MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId.Trim(), mrh.ReadingKeyId);
+
+                            if (CanAddToContext(dev.UserId, dev.SerialNumber))
+                            {
+                                if (!CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
                                 {
-                                    mrh.Pump.PumpSettings = new List<PumpSetting>();
-                                    Array.ForEach(ePump.PumpSettings.ToArray(), s =>
-                                    {
-                                        var ps = new PumpSetting
-                                        {
-                                            Date = s.Date,
-                                            Description = s.Description,
-                                            SettingName = s.SettingName,
-                                            SettingValue = s.SettingValue,
-                                            PumpKeyId = mrh.Pump.PumpKeyId
-                                        };
-
-                                        CompletedPumpSettingMappings.Add(ps);
-                                    });
+                                    CompletedMappings.Add(dev);
                                 }
+                            }
+                            else
+                            {
+                                var fr = (dev.UserId == Guid.Empty) ? "Device has no corresponding user." : (String.IsNullOrEmpty(dev.SerialNumber)) ? "Device has no serial number recorded." : "Device already assigned to user.";
 
-                                mrh.Pump.ActiveProgramId = ePump.ActiveProgramId;
-                                mrh.Pump.Cannula = ePump.Cannula;
-                                mrh.Pump.Notes = ePump.Notes;
-                                mrh.Pump.PumpInfusionSet = ePump.PumpInfusionSet;
-                                mrh.Pump.PumpName = ePump.PumpName;
-                                mrh.Pump.PumpStartDate = ePump.PumpStartDate;
-                                mrh.Pump.PumpType = ePump.PumpType;
-                                mrh.Pump.ReplacementDate = ePump.ReplacementDate;
-                                mrh.Pump.UserId = ePump.UserId;
+                                MappingStatistics.LogFailedMapping("METERREADERHEADER", row["DOWNLOADKEYID"].ToString(), "PatientDevices", typeof(PatientDevice), JsonConvert.SerializeObject(dev), fr);
+                                FailedCount++;
                             }
                         }
 
-                        if (CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
-                        {
-                            var device = CompletedMappings.Where(w => w.SerialNumber == dev.SerialNumber).FirstOrDefault();
-                            device.ReadingHeaders.Add(mrh);
-                        }
-                        else
-                        {
-                            dev.ReadingHeaders.Add(mrh);
-                        }
-
-                        MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId.Trim(), mrh.ReadingKeyId);
-
-                        if (CanAddToContext(dev.UserId, dev.SerialNumber))
-                        {
-                            if (!CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
-                            {
-                                CompletedMappings.Add(dev);
-                            }
-                        }
-                        else
-                        {
-                            var fr = (dev.UserId == Guid.Empty) ? "Device has no corresponding user." : (String.IsNullOrEmpty(dev.SerialNumber)) ? "Device has no serial number recorded." : "Device already assigned to user.";
-
-                            MappingStatistics.LogFailedMapping("METERREADERHEADER", row["DOWNLOADKEYID"].ToString(), "PatientDevices", typeof(PatientDevice), JsonConvert.SerializeObject(dev), fr);
-                            FailedCount++;
-                        }
                     }
+
                 }
 
                 MappingStatistics.LogMappingStat("METERREADINGHEADER", RecordCount, "PatientDevices", CompletedMappings.Count, FailedCount);

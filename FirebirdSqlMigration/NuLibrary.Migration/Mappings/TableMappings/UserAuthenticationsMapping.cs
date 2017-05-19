@@ -60,52 +60,61 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     member = aHelper.GetMembershipInfo(adUser.UserId);
                     aspUser = aHelper.GetAspUserInfo(adUser.UserId);
-                    var userId = nHelper.ValidGuid(adUser.UserId);
 
-                    uAuth = new UserAuthentication
+                    if (mHelper.HasUserMigrated(aspUser.UserName, member.UserId))
                     {
-                        ApplicationId = appId,
-                        UserId = userId,
-                        Username = aspUser.UserName,
-                        Password = member.Password,
-                        PasswordQuestion = member.PasswordQuestion,
-                        PasswordAnswer = member.PasswordAnswer,
-                        PasswordAnswerFailureCount = member.FailedPasswordAnswerAttemptCount,
-                        PasswordFailureCount = member.FailedPasswordAttemptCount,
-                        LastActivityDate = aspUser.LastActivityDate,
-                        LastLockOutDate = member.LastLockoutDate,
-                        IsApproved = member.IsApproved,
-                        IsLockedOut = member.IsLockedOut,
-                        IsTempPassword = member.IsTemp,
-                        IsloggedIn = false,
-                        LastUpdatedByUser = userId
-                    };
-
-                    var user = new User
-                    {
-                        UserId = userId,
-                        UserType = (isAdmin) ? (int)UserType.Clinician : (int)UserType.Patient,
-                        CreationDate = member.CreateDate
-                    };
-
-                    if (isAdminSiteUser)
-                    {
-                        user.UserType = (int)UserType.Admin;
-                    }
-
-                    user.UserAuthentications.Add(uAuth);
-
-                    // add user info to in-memery collection for use throughout application
-                    MemoryMappings.AddPatientInfo(adUser.CPSiteId.Value, adUser.CliniProID, user.UserId);
-
-                    if (CanAddToContext(user.UserId))
-                    {
-                        CompletedMappings.Add(user);
+                        MappingStatistics.LogFailedMapping("None", "None", "Users", typeof(User), String.Empty, "User previously migrated.");
+                        FailedCount++;
                     }
                     else
                     {
-                        MappingStatistics.LogFailedMapping("None", "None", "Users", typeof(User), JsonConvert.SerializeObject(user), "User already exist in database.");
-                        FailedCount++;
+                        var userId = nHelper.ValidGuid(adUser.UserId);
+
+                        uAuth = new UserAuthentication
+                        {
+                            ApplicationId = appId,
+                            UserId = userId,
+                            Username = aspUser.UserName,
+                            Password = member.Password,
+                            PasswordQuestion = member.PasswordQuestion,
+                            PasswordAnswer = member.PasswordAnswer,
+                            PasswordAnswerFailureCount = member.FailedPasswordAnswerAttemptCount,
+                            PasswordFailureCount = member.FailedPasswordAttemptCount,
+                            LastActivityDate = aspUser.LastActivityDate,
+                            LastLockOutDate = member.LastLockoutDate,
+                            IsApproved = member.IsApproved,
+                            IsLockedOut = member.IsLockedOut,
+                            IsTempPassword = member.IsTemp,
+                            IsloggedIn = false,
+                            LastUpdatedByUser = userId
+                        };
+
+                        var user = new User
+                        {
+                            UserId = userId,
+                            UserType = (isAdmin) ? (int)UserType.Clinician : (int)UserType.Patient,
+                            CreationDate = member.CreateDate
+                        };
+
+                        if (isAdminSiteUser)
+                        {
+                            user.UserType = (int)UserType.Admin;
+                        }
+
+                        user.UserAuthentications.Add(uAuth);
+
+                        // add user info to in-memery collection for use throughout application
+                        MemoryMappings.AddPatientInfo(adUser.CPSiteId.Value, adUser.CliniProID, user.UserId);
+
+                        if (CanAddToContext(user.UserId))
+                        {
+                            CompletedMappings.Add(user);
+                        }
+                        else
+                        {
+                            MappingStatistics.LogFailedMapping("None", "None", "Users", typeof(User), JsonConvert.SerializeObject(user), "User already exist in database.");
+                            FailedCount++;
+                        }
                     }
                 }
 

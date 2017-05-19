@@ -34,6 +34,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         MappingUtilities mu = new MappingUtilities();
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public ICollection<DailyTimeSlot> CompletedMappings = new List<DailyTimeSlot>();
         private ICollection<Tuple<Guid, DailyTimeSlot>> tempMappings = new List<Tuple<Guid, DailyTimeSlot>>();
@@ -54,20 +55,23 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    if (userId != Guid.Empty)
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        for (int i = 1; i < 9; i++)
+                        if (userId != Guid.Empty)
                         {
-                            DailyTimeSlot d = new DailyTimeSlot();
-                            d.LastUpdatedByUser = userId;
-                            d.TimeSlotDescription = (row[$"SLOT{i}DESC"] is DBNull) ? String.Empty : row[$"SLOT{i}DESC"].ToString();
-                            if (i < 8)
+                            for (int i = 1; i < 9; i++)
                             {
-                                d.TImeSlotBoundary = (row[$"SLOT{i}END"] is DBNull) ? new TimeSpan(12, 0, 0) : mu.ParseFirebirdTimespan(row[$"SLOT{i}END"].ToString());
-                            }
+                                DailyTimeSlot d = new DailyTimeSlot();
+                                d.LastUpdatedByUser = userId;
+                                d.TimeSlotDescription = (row[$"SLOT{i}DESC"] is DBNull) ? String.Empty : row[$"SLOT{i}DESC"].ToString();
+                                if (i < 8)
+                                {
+                                    d.TImeSlotBoundary = (row[$"SLOT{i}END"] is DBNull) ? new TimeSpan(12, 0, 0) : mu.ParseFirebirdTimespan(row[$"SLOT{i}END"].ToString());
+                                }
 
-                            tempMappings.Add(new Tuple<Guid, DailyTimeSlot>(userId, d));
-                            CompletedMappings.Add(d);
+                                tempMappings.Add(new Tuple<Guid, DailyTimeSlot>(userId, d));
+                                CompletedMappings.Add(d);
+                            }
                         }
                     }
                 }

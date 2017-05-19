@@ -18,6 +18,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
     {
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers(0;)
 
         public ICollection<Clinician> CompletedMappings = new List<Clinician>();
 
@@ -33,25 +34,33 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 foreach (var adUser in dataSet)
                 {
-
-                    var clin = new Clinician
+                    var userInfo = aHelper.GetAspUserInfo(adUser.UserId);
+                    if (mHelper.HasUserMigrated((userInfo == null) ? String.Empty : userInfo.UserName, adUser.UserId))
                     {
-                        UserId = nHelper.ValidGuid(adUser.UserId),
-                        Firstname = "No Name",
-                        Lastname = "No Name",
-                        StateLicenseNumber = "No License Number"
-                    };
-
-                    clin.LastUpdatedByUser = clin.UserId;
-
-                    if (CanAddToContext(clin.UserId))
-                    {
-                        CompletedMappings.Add(clin);
+                        MappingStatistics.LogFailedMapping("None", "None", "Clinicians", typeof(Clinician), String.Empty, "Clinician previously migrated.");
+                        FailedCount++;
                     }
                     else
                     {
-                        MappingStatistics.LogFailedMapping("None", "None", "Clinicians", typeof(Clinician), JsonConvert.SerializeObject(clin), "Clinician already exist in database.");
-                        FailedCount++;
+                        var clin = new Clinician
+                        {
+                            UserId = nHelper.ValidGuid(adUser.UserId),
+                            Firstname = "No Name",
+                            Lastname = "No Name",
+                            StateLicenseNumber = "No License Number"
+                        };
+
+                        clin.LastUpdatedByUser = clin.UserId;
+
+                        if (CanAddToContext(clin.UserId))
+                        {
+                            CompletedMappings.Add(clin);
+                        }
+                        else
+                        {
+                            MappingStatistics.LogFailedMapping("None", "None", "Clinicians", typeof(Clinician), JsonConvert.SerializeObject(clin), "Clinician already exist in database.");
+                            FailedCount++;
+                        }
                     }
                 }
 

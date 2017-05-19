@@ -35,6 +35,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         MappingUtilities mu = new MappingUtilities();
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public ICollection<CareSetting> CompletedMappings = new List<CareSetting>();
 
@@ -54,58 +55,62 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    if (userId != Guid.Empty)
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        var dm = new DiabetesManagementData
+                        if (userId != Guid.Empty)
                         {
-                            UserId = userId,
-                            LowBGLevel = (row["LOWBGLEVEL"] is DBNull) ? 19 : (Int16)row["LOWBGLEVEL"],
-                            HighBGLevel = (row["HIGHBGLEVEL"] is DBNull) ? 201 : (Int16)row["HIGHBGLEVEL"],
-                            PremealTarget = (row["PREMEALTARGET"] is DBNull) ? 50 : (Int32)row["PREMEALTARGET"],
-                            PostmealTarget = (row["POSTMEALTARGET"] is DBNull) ? 50 : (Int32)row["POSTMEALTARGET"],
-                            ModifiedDate = (row["LASTMODIFIEDDATE"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["LASTMODIFIEDDATE"].ToString()),
-                            ModifiedUserId = (row["LASTMODIFIEDBYUSER"] is DBNull) ? Guid.Empty : mu.ParseGUID(row["LASTMODIFIEDBYUSER"].ToString())
-                        };
+                            var dm = new DiabetesManagementData
+                            {
+                                UserId = userId,
+                                LowBGLevel = (row["LOWBGLEVEL"] is DBNull) ? 19 : (Int16)row["LOWBGLEVEL"],
+                                HighBGLevel = (row["HIGHBGLEVEL"] is DBNull) ? 201 : (Int16)row["HIGHBGLEVEL"],
+                                PremealTarget = (row["PREMEALTARGET"] is DBNull) ? 50 : (Int32)row["PREMEALTARGET"],
+                                PostmealTarget = (row["POSTMEALTARGET"] is DBNull) ? 50 : (Int32)row["POSTMEALTARGET"],
+                                ModifiedDate = (row["LASTMODIFIEDDATE"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["LASTMODIFIEDDATE"].ToString()),
+                                ModifiedUserId = (row["LASTMODIFIEDBYUSER"] is DBNull) ? Guid.Empty : mu.ParseGUID(row["LASTMODIFIEDBYUSER"].ToString())
+                            };
 
-                        // add to temp collection for addition with "PatientDevicesMapping"
-                        MemoryMappings.AddDiabetesManagementData(dm);
+                            // add to temp collection for addition with "PatientDevicesMapping"
+                            MemoryMappings.AddDiabetesManagementData(dm);
 
-                        var ibId = mu.FindInsulinBrandId(row["INSULINBRAND"].ToString());
-                        var imId = mu.FindInsulinMethodId(row["INSULINMETHOD"].ToString());
-                        var typeId = mu.FindDMTypeId(row["DMTYPE"].ToString());
+                            var ibId = mu.FindInsulinBrandId(row["INSULINBRAND"].ToString());
+                            var imId = mu.FindInsulinMethodId(row["INSULINMETHOD"].ToString());
+                            var typeId = mu.FindDMTypeId(row["DMTYPE"].ToString());
 
-                        CareSetting careset = new CareSetting();
-                        careset.UserId = userId;
-                        careset.HyperglycemicLevel = (row["HYPERGLYCEMICLEVEL"] is DBNull) ? 0 : (Int16)row["HYPERGLYCEMICLEVEL"];
-                        careset.HypoglycemicLevel = (row["HYPOGLYCEMICLEVEL"] is DBNull) ? 0 : (Int16)row["HYPOGLYCEMICLEVEL"];
-                        careset.InsulinMethod = imId;
-                        careset.InsulinBrand = ibId;
-                        careset.DiabetesManagementType = typeId;
-                        careset.DateModified = (row["LASTMODIFIEDDATE"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["LASTMODIFIEDDATE"].ToString());
-                        careset.LastUpdatedByUser = (row["LASTMODIFIEDBYUSER"] is DBNull) ? Guid.Empty : mu.ParseGUID(row["LASTMODIFIEDBYUSER"].ToString());
+                            CareSetting careset = new CareSetting();
+                            careset.UserId = userId;
+                            careset.HyperglycemicLevel = (row["HYPERGLYCEMICLEVEL"] is DBNull) ? 0 : (Int16)row["HYPERGLYCEMICLEVEL"];
+                            careset.HypoglycemicLevel = (row["HYPOGLYCEMICLEVEL"] is DBNull) ? 0 : (Int16)row["HYPOGLYCEMICLEVEL"];
+                            careset.InsulinMethod = imId;
+                            careset.InsulinBrand = ibId;
+                            careset.DiabetesManagementType = typeId;
+                            careset.DateModified = (row["LASTMODIFIEDDATE"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["LASTMODIFIEDDATE"].ToString());
+                            careset.LastUpdatedByUser = (row["LASTMODIFIEDBYUSER"] is DBNull) ? Guid.Empty : mu.ParseGUID(row["LASTMODIFIEDBYUSER"].ToString());
 
-                        var ct = (row["DMCONTROLTYPE"] is DBNull) ? mu.ParseDMControlTypes(0) : mu.ParseDMControlTypes((Int32)row["DMCONTROLTYPE"]);
-                        foreach (var item in ct)
-                        {
-                            DiabetesControlType dct = new DiabetesControlType();
-                            dct.ControlName = item.Key;
-                            dct.DMDataId = dm.DMDataId;
-                            dct.IsEnabled = (item.Value) ? true : false;
-                            dct.LastUpdatedByUser = userId;
+                            var ct = (row["DMCONTROLTYPE"] is DBNull) ? mu.ParseDMControlTypes(0) : mu.ParseDMControlTypes((Int32)row["DMCONTROLTYPE"]);
+                            foreach (var item in ct)
+                            {
+                                DiabetesControlType dct = new DiabetesControlType();
+                                dct.ControlName = item.Key;
+                                dct.DMDataId = dm.DMDataId;
+                                dct.IsEnabled = (item.Value) ? true : false;
+                                dct.LastUpdatedByUser = userId;
 
-                            careset.DiabetesControlTypes.Add(dct);
-                        }
+                                careset.DiabetesControlTypes.Add(dct);
+                            }
 
-                        if (CanAddToContext(careset.UserId, careset.HyperglycemicLevel, careset.HypoglycemicLevel))
-                        {
-                            CompletedMappings.Add(careset);
-                        }
-                        else
-                        {
-                            MappingStatistics.LogFailedMapping("DMDATA", patId, "CareSettings", typeof(CareSetting), JsonConvert.SerializeObject(careset), "Unable to add Care Setting to database.");
-                            FailedCount++;
+                            if (CanAddToContext(careset.UserId, careset.HyperglycemicLevel, careset.HypoglycemicLevel))
+                            {
+                                CompletedMappings.Add(careset);
+                            }
+                            else
+                            {
+                                MappingStatistics.LogFailedMapping("DMDATA", patId, "CareSettings", typeof(CareSetting), JsonConvert.SerializeObject(careset), "Unable to add Care Setting to database.");
+                                FailedCount++;
+                            }
                         }
                     }
+
                 }
 
                 MappingStatistics.LogMappingStat("DMDATA", RecordCount, "CareSettings", CompletedMappings.Count, FailedCount);

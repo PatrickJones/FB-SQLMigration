@@ -34,6 +34,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         }
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
         MappingUtilities map = new MappingUtilities();
         NumedicsGlobalHelpers nHelper = new NumedicsGlobalHelpers();
 
@@ -55,27 +56,30 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PARENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    var patNum = new PatientPhoneNumber
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        UserId = userId,
-                        Number = (row["NUMBER"] is DBNull) ? String.Empty : row["NUMBER"].ToString(),
-                        Extension = (row["EXTENSION"] is DBNull) ? String.Empty : row["EXTENSION"].ToString(),
-                        Type = (row["ATYPE"] is DBNull) ? 0 : map.ParseFirebirdPhoneTypes(row["ATYPE"].ToString()),
-                        IsPrimary = (row["ISPRIMARY"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISPRIMARY"].ToString()),
-                        RecieveText = (row["RECEIVETEXT"] is DBNull) ? false : map.ParseFirebirdBoolean(row["RECEIVETEXT"].ToString()),
-                        LastUpdatedByUser = userId
-                    };
+                        var patNum = new PatientPhoneNumber
+                        {
+                            UserId = userId,
+                            Number = (row["NUMBER"] is DBNull) ? String.Empty : row["NUMBER"].ToString(),
+                            Extension = (row["EXTENSION"] is DBNull) ? String.Empty : row["EXTENSION"].ToString(),
+                            Type = (row["ATYPE"] is DBNull) ? 0 : map.ParseFirebirdPhoneTypes(row["ATYPE"].ToString()),
+                            IsPrimary = (row["ISPRIMARY"] is DBNull) ? false : map.ParseFirebirdBoolean(row["ISPRIMARY"].ToString()),
+                            RecieveText = (row["RECEIVETEXT"] is DBNull) ? false : map.ParseFirebirdBoolean(row["RECEIVETEXT"].ToString()),
+                            LastUpdatedByUser = userId
+                        };
 
-                    if (userId != Guid.Empty && CanAddToContext(patNum.Number))
-                    {
-                        CompletedMappings.Add(patNum);
-                    }
-                    else
-                    {
-                        var fr = (userId == Guid.Empty) ? "Phone number has no corresponding patient." : "Patient phone number already exist in database.";
+                        if (userId != Guid.Empty && CanAddToContext(patNum.Number))
+                        {
+                            CompletedMappings.Add(patNum);
+                        }
+                        else
+                        {
+                            var fr = (userId == Guid.Empty) ? "Phone number has no corresponding patient." : "Patient phone number already exist in database.";
 
-                        MappingStatistics.LogFailedMapping("PHONENUMBERS", row["KEYID"].ToString(), "PatientPhoneNumbers", typeof(PatientPhoneNumber), JsonConvert.SerializeObject(patNum), fr);
-                        FailedCount++;
+                            MappingStatistics.LogFailedMapping("PHONENUMBERS", row["KEYID"].ToString(), "PatientPhoneNumbers", typeof(PatientPhoneNumber), JsonConvert.SerializeObject(patNum), fr);
+                            FailedCount++;
+                        }
                     }
                 }
 

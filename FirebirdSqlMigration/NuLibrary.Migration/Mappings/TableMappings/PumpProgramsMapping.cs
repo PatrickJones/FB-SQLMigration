@@ -33,6 +33,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         }
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
         MappingUtilities mu = new MappingUtilities();
 
         public int RecordCount = 0;
@@ -51,41 +52,45 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    if (userId != Guid.Empty)
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        var CreationDate = (row["CREATEDATE"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
-                        var Source = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString();
-                        var Valid = mu.ParseFirebirdBoolean(row["ACTIVEPROGRAM"].ToString());
-
-                        for (int i = 1; i < 8; i++)
+                        if (userId != Guid.Empty)
                         {
-                            var pKey = mu.ParseInt(row[$"PROG{i}KEYID"].ToString());
+                            var CreationDate = (row["CREATEDATE"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
+                            var Source = (row["SOURCE"] is DBNull) ? String.Empty : row["SOURCE"].ToString();
+                            var Valid = mu.ParseFirebirdBoolean(row["ACTIVEPROGRAM"].ToString());
 
-                            if (pKey != 0)
+                            for (int i = 1; i < 8; i++)
                             {
-                                PumpProgram p = new PumpProgram();
+                                var pKey = mu.ParseInt(row[$"PROG{i}KEYID"].ToString());
 
-                                p.CreationDate = CreationDate;
-                                p.Source = Source;
-                                p.Valid = Valid;
-                                p.ProgramKey = pKey;
-                                p.NumOfSegments = 7;
-                                p.ProgramName = $"Prog {pKey}";
-                                p.BasalProgramTimeSlots = GetBasalPrgTimeSlots(userId, CreationDate);
-                                p.BolusProgramTimeSlots = GetBolusPrgTimeSlots(userId, CreationDate);
+                                if (pKey != 0)
+                                {
+                                    PumpProgram p = new PumpProgram();
 
-                                if (CreationDate != DateTime.MinValue)
-                                {
-                                    MemoryMappings.AddPumpProgram(userId, pKey, p);
-                                }
-                                else
-                                {
-                                    MappingStatistics.LogFailedMapping("PATIENTPUMPPROGRAM", row["KEYID"].ToString(), "PumpPrograms", typeof(PumpProgram), JsonConvert.SerializeObject(p), "Unable to add PumpProgram to database because creation date was null.");
-                                    FailedCount++;
+                                    p.CreationDate = CreationDate;
+                                    p.Source = Source;
+                                    p.Valid = Valid;
+                                    p.ProgramKey = pKey;
+                                    p.NumOfSegments = 7;
+                                    p.ProgramName = $"Prog {pKey}";
+                                    p.BasalProgramTimeSlots = GetBasalPrgTimeSlots(userId, CreationDate);
+                                    p.BolusProgramTimeSlots = GetBolusPrgTimeSlots(userId, CreationDate);
+
+                                    if (CreationDate != DateTime.MinValue)
+                                    {
+                                        MemoryMappings.AddPumpProgram(userId, pKey, p);
+                                    }
+                                    else
+                                    {
+                                        MappingStatistics.LogFailedMapping("PATIENTPUMPPROGRAM", row["KEYID"].ToString(), "PumpPrograms", typeof(PumpProgram), JsonConvert.SerializeObject(p), "Unable to add PumpProgram to database because creation date was null.");
+                                        FailedCount++;
+                                    }
                                 }
                             }
                         }
                     }
+
                 }
 
                 MappingStatistics.LogMappingStat("PATIENTPUMPPROGRAM", RecordCount, "PumpPrograms", MemoryMappings.GetAllPumpPrograms().Count, FailedCount);

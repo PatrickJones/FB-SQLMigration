@@ -26,6 +26,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         }
 
         AspnetDbHelpers aHelper = new AspnetDbHelpers();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
         MappingUtilities mu = new MappingUtilities();
         MeterReadingHandler handler;
 
@@ -46,6 +47,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
                 RecordCount = TableAgent.RowCount;
+
+                DataRow[] rowArray = new DataRow[dataSet.Count];
+                dataSet.CopyTo(rowArray, 0);
+
+                Parallel.ForEach(rowArray, row => {
+                    var patId = row["PATIENTKEYID"].ToString();
+                    if (mHelper.HasPatientMigrated(patId))
+                    {
+                        dataSet.Remove(row);
+                    }
+                });
 
                 handler = new MeterReadingHandler(dataSet);
 

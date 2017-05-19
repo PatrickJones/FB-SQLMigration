@@ -37,7 +37,7 @@ namespace NuLibrary.Migration.GlobalVar
             var corp = ah.GetAllCorporationInfo().FirstOrDefault(f => f.SiteId == currSiteId);
 
             Institution = corp?.Site_Name;
-            InitialMigration = dh?.PreviousMigrationDate.ToShortDateString();
+            InitialMigration = dh?.LastMigrationDate.ToShortDateString();
             LastMigration = dh?.LastMigrationDate.ToShortDateString();
         }
         public static string Institution { get; set; }

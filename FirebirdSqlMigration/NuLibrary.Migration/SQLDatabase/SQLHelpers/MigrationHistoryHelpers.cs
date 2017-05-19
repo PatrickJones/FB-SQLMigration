@@ -22,7 +22,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                 FbConnectionStringUsed = MigrationVariables.FbConnectionString,
                 InstitutionName = ahelper.GetAllCorporationInfo().Where(c => c.SiteId == MigrationVariables.CurrentSiteId).Select(s => s.SiteName).FirstOrDefault(),
                 LastMigrationDate = date,
-                PreviousMigrationDate = date,
                 MigrationLog = MappingStatistics.ExportToLog(),
                 SiteId = MigrationVariables.CurrentSiteId
             };
@@ -40,7 +39,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                     {
                         TableName = t,
                         LastMigrationDate = date,
-                        PreviousMigrationDate = date,
                         FirebirdRecordCount = MappingStatistics.MappingStats.Where(w => string.Equals(w.FBTableName, t, StringComparison.CurrentCultureIgnoreCase)).Select(s => s.FBRecordCount).FirstOrDefault(),
                         MigratedRecordCount = MappingStatistics.MappingStats.Where(w => string.Equals(w.FBTableName, t, StringComparison.CurrentCultureIgnoreCase)).Select(s => s.CompletedMappingsCount).FirstOrDefault()
                     });
@@ -58,32 +56,39 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                         Firstname = p.Firstname,
                         Lastname = p.Lastname,
                         SqlUserId = pat.Item3,
-                        LastMigrationDate = date,
-                        PreviousMigrationDate = date
+                        MigrationDate = date,
                     });
                 }
             });
 
             Array.ForEach(TransactionManager.DatabaseContext.UserAuthentications.ToArray(), p =>
             {
-                var pat = MemoryMappings.GetAllPatientInfo().FirstOrDefault(f => f.Item3 == p.UserId);
-                if (pat != null)
-                {
-                    
-                }
+                var userInfo = ahelper.GetAspUserInfo(p.Username);
+                Guid legId = (userInfo == null) ? Guid.Empty : userInfo.UserId;
 
-                //dh.PatientHistories.Add(new UserHistory
-                //{
-                //    SqlUserId = pat.Item3,
-                //    LastMigrationDate = date,
-                //    PreviousMigrationDate = date
-                //});
+                dh.UserHistories.Add(new UserHistory
+                {
+                    SqlUserId = p.UserId,
+                    MigrationDate = date,
+                    Username = p.Username,
+                    LegacyUserId = legId
+                });
             });
 
             AddDatabaseMigration(dh);
         }
 
         public bool HasPreviousMigration => db.DatabaseHistories.Any(a => a.SiteId == MigrationVariables.CurrentSiteId);
+
+        public bool HasUserMigrated(string username, Guid legacyUserid)
+        {
+            return db.UserHistories.Any(a => a.Username == username && a.LegacyUserId == legacyUserid);
+        }
+
+        public bool HasPatientMigrated(string fbPatientId)
+        {
+            return db.PatientHistories.Any(a => a.FirebirdPatientId == fbPatientId);
+        }
 
         public ICollection<DatabaseHistory> GetMigrationHistory()
         {
@@ -101,7 +106,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             {
                 dh.FbConnectionStringUsed = dHistory.FbConnectionStringUsed;
                 dh.InstitutionName = dHistory.InstitutionName;
-                dh.PreviousMigrationDate = dh.LastMigrationDate;
                 dh.LastMigrationDate = DateTime.Now;
                 dh.MigrationLog = dHistory.MigrationLog;
 
@@ -129,7 +133,6 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
                     {
                         tb.FirebirdRecordCount = tHistory.FirebirdRecordCount;
                         tb.MigratedRecordCount = tHistory.MigratedRecordCount;
-                        tb.PreviousMigrationDate = tb.LastMigrationDate;
                         tb.LastMigrationDate = DateTime.Now;
                     }
 

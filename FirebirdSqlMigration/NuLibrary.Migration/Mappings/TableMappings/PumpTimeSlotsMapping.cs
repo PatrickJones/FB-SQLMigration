@@ -4,6 +4,7 @@ using NuLibrary.Migration.GlobalVar;
 using NuLibrary.Migration.Interfaces;
 using NuLibrary.Migration.Mappings.InMemoryMappings;
 using NuLibrary.Migration.SQLDatabase.EF;
+using NuLibrary.Migration.SQLDatabase.SQLHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,6 +33,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         }
 
         MappingUtilities mu = new MappingUtilities();
+        MigrationHistoryHelpers mHelper = new MigrationHistoryHelpers();
 
         public int RecordCount = 0;
         public int FailedCount = 0;
@@ -49,79 +51,84 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
 
-                    // temp collecions
-                    var tempBasal = new List<BasalProgramTimeSlot>();
-                    var tempBolus = new List<BolusProgramTimeSlot>();
-
-                    var keyId = mu.ParseInt(row["KEYID"].ToString());
-                    var programKey = mu.ParseInt(row["PROGRAMNUMBER"].ToString());
-                    var programName = (row["PROGRAMNAME"] is DBNull) ? "Name" : row["PROGRAMNAME"].ToString();
-                    var createDate = (row["CREATEDATE"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
-
-                    for (int i = 1; i < 25; i++)
+                    if (!mHelper.HasPatientMigrated(patId))
                     {
-                        DateTime bastart = (row[$"BASAL{i}STARTTIME"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row[$"BASAL{i}STARTTIME"].ToString());
-                        DateTime bastop = (row[$"BASAL{i}STOPTIME"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row[$"BASAL{i}STOPTIME"].ToString());
+                        // temp collecions
+                        var tempBasal = new List<BasalProgramTimeSlot>();
+                        var tempBolus = new List<BolusProgramTimeSlot>();
 
-                        if (bastart != DateTime.MinValue && bastop != DateTime.MinValue)
+                        var keyId = mu.ParseInt(row["KEYID"].ToString());
+                        var programKey = mu.ParseInt(row["PROGRAMNUMBER"].ToString());
+                        var programName = (row["PROGRAMNAME"] is DBNull) ? "Name" : row["PROGRAMNAME"].ToString();
+                        var createDate = (row["CREATEDATE"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row["CREATEDATE"].ToString());
+
+                        for (int i = 1; i < 25; i++)
                         {
-                            BasalProgramTimeSlot bats = new BasalProgramTimeSlot
-                            {
-                                BasalValue = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
-                                StartTime = bastart.TimeOfDay,
-                                StopTime = bastop.TimeOfDay,
-                                DateSet = createDate
-                            };
+                            DateTime bastart = (row[$"BASAL{i}STARTTIME"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row[$"BASAL{i}STARTTIME"].ToString());
+                            DateTime bastop = (row[$"BASAL{i}STOPTIME"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row[$"BASAL{i}STOPTIME"].ToString());
 
-                            if (createDate != DateTime.MinValue)
+                            if (bastart != DateTime.MinValue && bastop != DateTime.MinValue)
                             {
-                                tempBasal.Add(bats);
-                            }
-                            else
-                            {
-                                MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BasalProgramTimeSlots", typeof(BasalProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
-                                FailedCount++;
-                            }
-                        }
-
-                        if (i < 13)
-                        {
-                            DateTime botime = (row[$"BOLUS{i}TIME"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row[$"BOLUS{i}TIME"].ToString());
-
-                            if (botime != DateTime.MinValue)
-                            {
-                                BolusProgramTimeSlot bots = new BolusProgramTimeSlot
+                                BasalProgramTimeSlot bats = new BasalProgramTimeSlot
                                 {
-                                    BolusValue = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
-                                    StartTime = botime.TimeOfDay,
+                                    BasalValue = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
+                                    StartTime = bastart.TimeOfDay,
+                                    StopTime = bastop.TimeOfDay,
                                     DateSet = createDate
                                 };
 
                                 if (createDate != DateTime.MinValue)
                                 {
-                                    tempBolus.Add(bots);
+                                    tempBasal.Add(bats);
                                 }
                                 else
                                 {
-                                    MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BolusProgramTimeSlots", typeof(BolusProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
+                                    MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BasalProgramTimeSlots", typeof(BasalProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
                                     FailedCount++;
                                 }
                             }
+
+                            if (i < 13)
+                            {
+                                DateTime botime = (row[$"BOLUS{i}TIME"] is DBNull) ? DateTime.MinValue : mu.ParseFirebirdDateTime(row[$"BOLUS{i}TIME"].ToString());
+
+                                if (botime != DateTime.MinValue)
+                                {
+                                    BolusProgramTimeSlot bots = new BolusProgramTimeSlot
+                                    {
+                                        BolusValue = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
+                                        StartTime = botime.TimeOfDay,
+                                        DateSet = createDate
+                                    };
+
+                                    if (createDate != DateTime.MinValue)
+                                    {
+                                        tempBolus.Add(bots);
+                                    }
+                                    else
+                                    {
+                                        MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BolusProgramTimeSlots", typeof(BolusProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
+                                        FailedCount++;
+                                    }
+                                }
+                            }
                         }
+
+                        if (createDate == DateTime.MinValue)
+                        {
+                            FailedCount++;
+                        }
+
+                        Array.ForEach(tempBasal.ToArray(), a =>
+                        {
+                            MemoryMappings.AddBasalPrgTimeSlot(userId, createDate, a);
+                        });
+
+                        Array.ForEach(tempBolus.ToArray(), a =>
+                        {
+                            MemoryMappings.AddBolusPrgTimeSlot(userId, createDate, a);
+                        });
                     }
-
-                    if (createDate == DateTime.MinValue)
-                    {
-                        FailedCount++;
-                    }
-
-                    Array.ForEach(tempBasal.ToArray(), a => {
-                        MemoryMappings.AddBasalPrgTimeSlot(userId, createDate, a);
-                    });
-
-                    Array.ForEach(tempBolus.ToArray(), a => {
-                        MemoryMappings.AddBolusPrgTimeSlot(userId, createDate, a);
-                    });
                 }
 
                 MappingStatistics.LogMappingStat("PUMPTIMESLOTS", RecordCount, "BasalProgramTimeSlots", MemoryMappings.GetAllBasalPrgTimeSlots().Count, FailedCount);

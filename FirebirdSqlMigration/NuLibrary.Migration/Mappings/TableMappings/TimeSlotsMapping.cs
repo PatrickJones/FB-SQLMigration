@@ -112,7 +112,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.DailyTimeSlots.AddRange(CompletedMappings);
                 TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.DailyTimeSlots.Count();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<DailyTimeSlot>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

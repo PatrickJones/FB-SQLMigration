@@ -150,7 +150,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
                 TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.Patients.Count();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Patient>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

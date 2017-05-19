@@ -87,7 +87,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.Subscriptions.AddRange(r);
                 TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.Subscriptions.Count();
+
+                stats.PostSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Subscription>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

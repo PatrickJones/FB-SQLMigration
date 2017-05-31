@@ -67,19 +67,15 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" Width="1.5" PointX="16.875" PointY="7.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMReminder" Width="1.5" PointX="14.625" PointY="10.5" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMSession" Width="1.5" PointX="14.625" PointY="13.375" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PhysiologicalReading" Width="1.5" PointX="12" PointY="67" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingError" Width="1.5" PointX="12" PointY="70.75" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEvent" Width="1.5" PointX="12" PointY="39.375" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingHeader" Width="1.5" PointX="9.75" PointY="53.75" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.TensReading" Width="1.5" PointX="12" PointY="35.25" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.TotalDailyInsulinDelivery" Width="1.5" PointX="12" PointY="74" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Pump" Width="1.5" PointX="12.375" PointY="6.625" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CGMReminders_Pumps1" />
@@ -146,6 +142,10 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PasswordHistories_UserAuthentications" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.EndUserLicenseAgreement" Width="1.5" PointX="3" PointY="9.75" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PhysiologicalReading" Width="1.5" PointX="12" PointY="34.875" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.TensReading" Width="1.5" PointX="12" PointY="67" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

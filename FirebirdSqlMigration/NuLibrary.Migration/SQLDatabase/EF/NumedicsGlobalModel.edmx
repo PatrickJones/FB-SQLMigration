@@ -968,10 +968,12 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Property Name="ReadingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="Weight" Type="int" Nullable="false" />
+          <Property Name="Height" Type="int" Nullable="false" />
           <Property Name="Hunger" Type="int" Nullable="false" />
           <Property Name="Nausea" Type="int" Nullable="false" />
           <Property Name="CaloriesBurned" Type="int" Nullable="false" />
           <Property Name="CaloriesConsumed" Type="int" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
@@ -1105,9 +1107,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Property Name="TherapyType" Type="int" Nullable="false" />
           <Property Name="DurationScheduled" Type="int" Nullable="false" />
           <Property Name="DurationCompleted" Type="int" Nullable="false" />
-          <Property Name="Aplitude" Type="int" Nullable="false" />
-          <Property Name="PulseWidth" Type="int" Nullable="false" />
-          <Property Name="Frequency" Type="int" Nullable="false" />
+          <Property Name="Intensity" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
@@ -3203,11 +3203,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="BolusProgramTimeSlots" EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" />
           <EntitySet Name="CGMReminders" EntityType="NuMedicsGlobalModel.CGMReminder" />
           <EntitySet Name="CGMSessions" EntityType="NuMedicsGlobalModel.CGMSession" />
-          <EntitySet Name="PhysiologicalReadings" EntityType="NuMedicsGlobalModel.PhysiologicalReading" />
           <EntitySet Name="ReadingErrors" EntityType="NuMedicsGlobalModel.ReadingError" />
           <EntitySet Name="ReadingEvents" EntityType="NuMedicsGlobalModel.ReadingEvent" />
           <EntitySet Name="ReadingHeaders" EntityType="NuMedicsGlobalModel.ReadingHeader" />
-          <EntitySet Name="TensReadings" EntityType="NuMedicsGlobalModel.TensReading" />
           <EntitySet Name="TotalDailyInsulinDeliveries" EntityType="NuMedicsGlobalModel.TotalDailyInsulinDelivery" />
           <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
@@ -3221,10 +3219,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="PatientDevice" EntitySet="PatientDevices" />
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
           </AssociationSet>
-          <AssociationSet Name="FK_PhysiologicalReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1">
-            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
-            <End Role="PhysiologicalReading" EntitySet="PhysiologicalReadings" />
-          </AssociationSet>
           <AssociationSet Name="FK_ReadingErrors_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="ReadingError" EntitySet="ReadingErrors" />
@@ -3232,10 +3226,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_ReadingEvents_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="ReadingEvent" EntitySet="ReadingEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TensReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1">
-            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
-            <End Role="TensReading" EntitySet="TensReadings" />
           </AssociationSet>
           <AssociationSet Name="FK_TotalDailyInsulinDeliveries_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1">
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
@@ -3377,6 +3367,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_EndUserLicenseAgreements_Applications" Association="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications">
             <End Role="Application" EntitySet="Applications" />
             <End Role="EndUserLicenseAgreement" EntitySet="EndUserLicenseAgreements" />
+          </AssociationSet>
+          <EntitySet Name="PhysiologicalReadings" EntityType="NuMedicsGlobalModel.PhysiologicalReading" />
+          <EntitySet Name="TensReadings" EntityType="NuMedicsGlobalModel.TensReading" />
+          <AssociationSet Name="FK_PhysiologicalReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="PhysiologicalReading" EntitySet="PhysiologicalReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TensReadings_ReadingHeaders1" Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1">
+            <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
+            <End Role="TensReading" EntitySet="TensReadings" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="InsulinType">
@@ -3565,21 +3565,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_CGMSessions_Pumps" FromRole="CGMSession" ToRole="Pump" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <EntityType Name="PhysiologicalReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Weight" Type="Int32" Nullable="false" />
-          <Property Name="Hunger" Type="Int32" Nullable="false" />
-          <Property Name="Nausea" Type="Int32" Nullable="false" />
-          <Property Name="CaloriesBurned" Type="Int32" Nullable="false" />
-          <Property Name="CaloriesConsumed" Type="Int32" Nullable="false" />
-          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="PhysiologicalReading" ToRole="ReadingHeader" />
-        </EntityType>
         <EntityType Name="ReadingError">
           <Key>
             <PropertyRef Name="ErrorId" />
@@ -3624,33 +3609,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="BasalDeliveries" Relationship="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" FromRole="ReadingHeader" ToRole="BasalDelivery" />
           <NavigationProperty Name="PatientDevice" Relationship="NuMedicsGlobalModel.FK_MeterReadingHeader_PatientDevices" FromRole="ReadingHeader" ToRole="PatientDevice" />
-          <NavigationProperty Name="PhysiologicalReadings" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="PhysiologicalReading" />
           <NavigationProperty Name="ReadingErrors" Relationship="NuMedicsGlobalModel.FK_ReadingErrors_ReadingHeaders1" FromRole="ReadingHeader" ToRole="ReadingError" />
           <NavigationProperty Name="ReadingEvents" Relationship="NuMedicsGlobalModel.FK_ReadingEvents_ReadingHeaders1" FromRole="ReadingHeader" ToRole="ReadingEvent" />
-          <NavigationProperty Name="TensReadings" Relationship="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TensReading" />
           <NavigationProperty Name="TotalDailyInsulinDeliveries" Relationship="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TotalDailyInsulinDelivery" />
           <NavigationProperty Name="DeviceSettings" Relationship="NuMedicsGlobalModel.FK_DeviceSettings_ReadingHeaders" FromRole="ReadingHeader" ToRole="DeviceSetting" />
           <NavigationProperty Name="BolusDeliveries" Relationship="NuMedicsGlobalModel.FK_BolusDelivery_ReadingHeaders1" FromRole="ReadingHeader" ToRole="BolusDelivery" />
           <NavigationProperty Name="Pump" Relationship="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" FromRole="ReadingHeader" ToRole="Pump" />
           <NavigationProperty Name="BloodGlucoseReadings" Relationship="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" FromRole="ReadingHeader" ToRole="BloodGlucoseReading" />
           <NavigationProperty Name="NutritionReadings" Relationship="NuMedicsGlobalModel.FK_NutritionReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="NutritionReading" />
-        </EntityType>
-        <EntityType Name="TensReading">
-          <Key>
-            <PropertyRef Name="ReadingId" />
-          </Key>
-          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReadingDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StartTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TherapyType" Type="Int32" Nullable="false" />
-          <Property Name="DurationScheduled" Type="Int32" Nullable="false" />
-          <Property Name="DurationCompleted" Type="Int32" Nullable="false" />
-          <Property Name="Aplitude" Type="Int32" Nullable="false" />
-          <Property Name="PulseWidth" Type="Int32" Nullable="false" />
-          <Property Name="Frequency" Type="Int32" Nullable="false" />
-          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" FromRole="TensReading" ToRole="ReadingHeader" />
+          <NavigationProperty Name="PhysiologicalReadings" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="PhysiologicalReading" />
+          <NavigationProperty Name="TensReadings" Relationship="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" FromRole="ReadingHeader" ToRole="TensReading" />
         </EntityType>
         <EntityType Name="TotalDailyInsulinDelivery">
           <Key>
@@ -3706,18 +3674,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PhysiologicalReadings_ReadingHeaders1">
-          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
-          <End Type="NuMedicsGlobalModel.PhysiologicalReading" Role="PhysiologicalReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeader">
-              <PropertyRef Name="ReadingKeyId" />
-            </Principal>
-            <Dependent Role="PhysiologicalReading">
-              <PropertyRef Name="ReadingKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ReadingErrors_ReadingHeaders1">
           <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
           <End Type="NuMedicsGlobalModel.ReadingError" Role="ReadingError" Multiplicity="*" />
@@ -3738,18 +3694,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               <PropertyRef Name="ReadingKeyId" />
             </Principal>
             <Dependent Role="ReadingEvent">
-              <PropertyRef Name="ReadingKeyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TensReadings_ReadingHeaders1">
-          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
-          <End Type="NuMedicsGlobalModel.TensReading" Role="TensReading" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReadingHeader">
-              <PropertyRef Name="ReadingKeyId" />
-            </Principal>
-            <Dependent Role="TensReading">
               <PropertyRef Name="ReadingKeyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -4692,6 +4636,62 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PhysiologicalReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Weight" Type="Int32" Nullable="false" />
+          <Property Name="Height" Type="Int32" Nullable="false" />
+          <Property Name="Hunger" Type="Int32" Nullable="false" />
+          <Property Name="Nausea" Type="Int32" Nullable="false" />
+          <Property Name="CaloriesBurned" Type="Int32" Nullable="false" />
+          <Property Name="CaloriesConsumed" Type="Int32" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="PhysiologicalReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <EntityType Name="TensReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="ReadingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReadingDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TherapyType" Type="Int32" Nullable="false" />
+          <Property Name="DurationScheduled" Type="Int32" Nullable="false" />
+          <Property Name="DurationCompleted" Type="Int32" Nullable="false" />
+          <Property Name="Intensity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReadingKeyId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ReadingHeader" Relationship="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" FromRole="TensReading" ToRole="ReadingHeader" />
+        </EntityType>
+        <Association Name="FK_PhysiologicalReadings_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.PhysiologicalReading" Role="PhysiologicalReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="PhysiologicalReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TensReadings_ReadingHeaders1">
+          <End Type="NuMedicsGlobalModel.ReadingHeader" Role="ReadingHeader" Multiplicity="1" />
+          <End Type="NuMedicsGlobalModel.TensReading" Role="TensReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReadingHeader">
+              <PropertyRef Name="ReadingKeyId" />
+            </Principal>
+            <Dependent Role="TensReading">
+              <PropertyRef Name="ReadingKeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5199,21 +5199,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PhysiologicalReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PhysiologicalReading">
-              <MappingFragment StoreEntitySet="PhysiologicalReadings">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
-                <ScalarProperty Name="CaloriesConsumed" ColumnName="CaloriesConsumed" />
-                <ScalarProperty Name="CaloriesBurned" ColumnName="CaloriesBurned" />
-                <ScalarProperty Name="Nausea" ColumnName="Nausea" />
-                <ScalarProperty Name="Hunger" ColumnName="Hunger" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ReadingErrors">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingError">
               <MappingFragment StoreEntitySet="ReadingErrors">
@@ -5255,23 +5240,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="MeterDateTime" ColumnName="MeterDateTime" />
                 <ScalarProperty Name="ServerDateTime" ColumnName="ServerDateTime" />
                 <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TensReadings">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TensReading">
-              <MappingFragment StoreEntitySet="TensReadings">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
-                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
-                <ScalarProperty Name="PulseWidth" ColumnName="PulseWidth" />
-                <ScalarProperty Name="Aplitude" ColumnName="Aplitude" />
-                <ScalarProperty Name="DurationCompleted" ColumnName="DurationCompleted" />
-                <ScalarProperty Name="DurationScheduled" ColumnName="DurationScheduled" />
-                <ScalarProperty Name="TherapyType" ColumnName="TherapyType" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="ReadingDate" ColumnName="ReadingDate" />
-                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5896,6 +5864,38 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="AgreementDate" ColumnName="AgreementDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="AgreementId" ColumnName="AgreementId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhysiologicalReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PhysiologicalReading">
+              <MappingFragment StoreEntitySet="PhysiologicalReadings">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="CaloriesConsumed" ColumnName="CaloriesConsumed" />
+                <ScalarProperty Name="CaloriesBurned" ColumnName="CaloriesBurned" />
+                <ScalarProperty Name="Nausea" ColumnName="Nausea" />
+                <ScalarProperty Name="Hunger" ColumnName="Hunger" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TensReadings">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TensReading">
+              <MappingFragment StoreEntitySet="TensReadings">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReadingKeyId" ColumnName="ReadingKeyId" />
+                <ScalarProperty Name="Intensity" ColumnName="Intensity" />
+                <ScalarProperty Name="DurationCompleted" ColumnName="DurationCompleted" />
+                <ScalarProperty Name="DurationScheduled" ColumnName="DurationScheduled" />
+                <ScalarProperty Name="TherapyType" ColumnName="TherapyType" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="ReadingDate" ColumnName="ReadingDate" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

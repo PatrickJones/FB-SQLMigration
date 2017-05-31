@@ -64,11 +64,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
         public virtual DbSet<CGMReminder> CGMReminders { get; set; }
         public virtual DbSet<CGMSession> CGMSessions { get; set; }
-        public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
         public virtual DbSet<ReadingError> ReadingErrors { get; set; }
         public virtual DbSet<ReadingEvent> ReadingEvents { get; set; }
         public virtual DbSet<ReadingHeader> ReadingHeaders { get; set; }
-        public virtual DbSet<TensReading> TensReadings { get; set; }
         public virtual DbSet<TotalDailyInsulinDelivery> TotalDailyInsulinDeliveries { get; set; }
         public virtual DbSet<Pump> Pumps { get; set; }
         public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
@@ -111,5 +109,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
         public virtual DbSet<SharedArea> SharedAreas { get; set; }
         public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
+        public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
+        public virtual DbSet<TensReading> TensReadings { get; set; }
     }
 }

@@ -71,8 +71,48 @@
                     <Label x:Name="lblCompMap" Content="Completed Mappings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="135" FontWeight="Bold"/>
                     <Label x:Name="lblCompCnt" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="55" Foreground="#FF11BD00"/>
                 </StackPanel>
-                <DataGrid x:Name="listBox" HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="auto">
-                    <!--<StackPanel Orientation="Horizontal"></StackPanel>-->
+                <DataGrid x:Name="listBox" HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="auto" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Firebird Table Name" Width="auto"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Firebird Rows" Width="auto">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Sql Table Name" Width="auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Completed" Width="auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Failed" Width="auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
             <StackPanel Orientation="Vertical" Name="spFailedMappings">
@@ -80,12 +120,41 @@
                     <Label x:Name="lblFailMap" Content="Failed Mappings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="105" FontWeight="Bold"/>
                     <Label x:Name="lblFailCnt" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="58" Foreground="Red"/>
                 </StackPanel>
-                <DataGrid x:Name="dgFailures" HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="auto">
+                <DataGrid x:Name="dgFailures" HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="auto" AutoGenerateColumns="False">
                     <DataGrid.Columns>
-                        <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
+                        <DataGridTextColumn Header="Firebird Table Name" Width="auto"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Firebird Row Key" Width="auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Sql Table Name" Width="auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Reason" Width="auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Sql Record Type" Width="auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.Margin" Value="2"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
@@ -94,10 +163,14 @@
             <Label x:Name="lblMigResults" Content="Migration Results" HorizontalAlignment="Left" Width="253" FontWeight="Bold"/>
             <DataGrid x:Name="dgMigResults" HorizontalAlignment="Left" Height="345" Width="auto">
                 <DataGrid.Columns>
-                    <!--<DataGridTextColumn Header="Table Name" Width="200"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Presave Count" Width="100"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Postsave Count" Width="100"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Added Records" Width="100"></DataGridTextColumn>-->
+                    <DataGridTextColumn Header="Sql Table Name" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Pre Migration Rows" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Post Migration Rows" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Rows Added" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Mapped Rows Committed" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Mapped Rows Saved" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Mapped Row Difference" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Migration Result" Width="auto"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

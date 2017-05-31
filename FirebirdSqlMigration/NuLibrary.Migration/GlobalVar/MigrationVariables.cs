@@ -31,14 +31,14 @@ namespace NuLibrary.Migration.GlobalVar
         private static void UpdateVariables()
         {
             MigrationHistoryHelpers mig = new MigrationHistoryHelpers();
-            var dh = mig.GetDatabaseHistory(currSiteId);
+            var dh = mig.GetDatabaseHistories(currSiteId);
 
             AspnetDbHelpers ah = new AspnetDbHelpers();
             var corp = ah.GetAllCorporationInfo().FirstOrDefault(f => f.SiteId == currSiteId);
 
             Institution = corp?.Site_Name;
-            InitialMigration = dh?.LastMigrationDate.ToShortDateString();
-            LastMigration = dh?.LastMigrationDate.ToShortDateString();
+            InitialMigration = (dh.Count == 0) ? "No Migration" : dh.OrderBy(o => o.LastMigrationDate).Select(s => s.LastMigrationDate.ToString()).First();
+            LastMigration = (dh.Count == 0) ? "No Migration" : dh.OrderBy(o => o.LastMigrationDate).Select(s => s.LastMigrationDate.ToString()).Last();
         }
         public static string Institution { get; set; }
         public static string InitialMigration { get; set; }

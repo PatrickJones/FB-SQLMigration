@@ -20,7 +20,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             DateTime date = DateTime.Now;
             var dh = new DatabaseHistory {
                 FbConnectionStringUsed = MigrationVariables.FbConnectionString,
-                InstitutionName = ahelper.GetAllCorporationInfo().Where(c => c.SiteId == MigrationVariables.CurrentSiteId).Select(s => s.SiteName).FirstOrDefault(),
+                InstitutionName = ahelper.GetAllCorporationInfo().Where(c => c.SiteId == MigrationVariables.CurrentSiteId).Select(s => s.Site_Name).FirstOrDefault(),
                 LastMigrationDate = date,
                 MigrationLog = MappingStatistics.ExportToLog(),
                 SiteId = MigrationVariables.CurrentSiteId
@@ -97,22 +97,22 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         public int AddDatabaseMigration(DatabaseHistory dHistory)
         {
-            var dh = db.DatabaseHistories.FirstOrDefault(f => f.SiteId == dHistory.SiteId);
-            if (dh == null)
-            {
-                db.DatabaseHistories.Add(dHistory);
-            }
-            else
-            {
-                dh.FbConnectionStringUsed = dHistory.FbConnectionStringUsed;
-                dh.InstitutionName = dHistory.InstitutionName;
-                dh.LastMigrationDate = DateTime.Now;
-                dh.MigrationLog = dHistory.MigrationLog;
+            //var dh = db.DatabaseHistories.FirstOrDefault(f => f.SiteId == dHistory.SiteId);
+            //if (dh == null)
+            //{
+            //    db.DatabaseHistories.Add(dHistory);
+            //}
+            //else
+            //{
+            //    dh.FbConnectionStringUsed = dHistory.FbConnectionStringUsed;
+            //    dh.InstitutionName = dHistory.InstitutionName;
+            //    dh.LastMigrationDate = DateTime.Now;
+            //    dh.MigrationLog = dHistory.MigrationLog;
 
-                Array.ForEach(dHistory.PatientHistories.ToArray(), p => AddPatientMigration(p, dh.SiteId));
-                Array.ForEach(dHistory.TableHistories.ToArray(), t => AddTableMigration(t, dh.SiteId));
-            }
-            
+            //    Array.ForEach(dHistory.PatientHistories.ToArray(), p => AddPatientMigration(p, dh.SiteId));
+            //    Array.ForEach(dHistory.TableHistories.ToArray(), t => AddTableMigration(t, dh.SiteId));
+            //}
+            db.DatabaseHistories.Add(dHistory);
             return db.SaveChanges();
         }
 
@@ -164,9 +164,9 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return result;
         }
 
-        public DatabaseHistory GetDatabaseHistory(int siteId)
+        public ICollection<DatabaseHistory> GetDatabaseHistories(int siteId)
         {
-            return db.DatabaseHistories.FirstOrDefault(f => f.SiteId == siteId);
+            return db.DatabaseHistories.Where(f => f.SiteId == siteId).ToList();
         }
 
         protected override void Dispose(bool disposing)

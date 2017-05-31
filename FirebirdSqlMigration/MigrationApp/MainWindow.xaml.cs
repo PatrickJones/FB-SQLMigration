@@ -156,6 +156,16 @@ namespace MigrationApp
             }
 
             dgMigResults.ItemsSource = rList.OrderBy(o => o.TableName); //MappingStatistics.SqlTableStatistics.OrderBy(o => o.Tablename);
+
+            ((DataGridTextColumn)dgMigResults.Columns[0]).Binding = new Binding("TableName");
+            ((DataGridTextColumn)dgMigResults.Columns[1]).Binding = new Binding("PreMigrationRows");
+            ((DataGridTextColumn)dgMigResults.Columns[2]).Binding = new Binding("PostMigratioRows");
+            ((DataGridTextColumn)dgMigResults.Columns[3]).Binding = new Binding("RowsAdded");
+            ((DataGridTextColumn)dgMigResults.Columns[4]).Binding = new Binding("MappedRowsCommitted");
+            ((DataGridTextColumn)dgMigResults.Columns[5]).Binding = new Binding("MappedRowsSaved");
+            ((DataGridTextColumn)dgMigResults.Columns[6]).Binding = new Binding("MappingTable");
+            ((DataGridTextColumn)dgMigResults.Columns[7]).Binding = new Binding("Result");
+
             spMigrationResults.Visibility = Visibility.Visible;
             DispatchLabel("Transaction Complete.");
         }
@@ -165,8 +175,14 @@ namespace MigrationApp
             listBox.ItemsSource = MappingStatistics.MappingStats
                 .OrderBy(o => o.FBTableName)
                 .ThenBy(t => t.SQLMappedTable)
-                .Where(w => !string.Equals(w.FBTableName, "none", StringComparison.CurrentCultureIgnoreCase))
-                .Select(s => new { FbTable = s.FBTableName, FbRows = s.FBRecordCount, SqlTable = s.SQLMappedTable, Completed = s.CompletedMappingsCount, Failed = s.FailedMappingsCount });
+                .Where(w => !string.Equals(w.FBTableName, "none", StringComparison.CurrentCultureIgnoreCase)).ToList();
+                //.Select(s => new { FbTable = s.FBTableName, FbRows = s.FBRecordCount, SqlTable = s.SQLMappedTable, Completed = s.CompletedMappingsCount, Failed = s.FailedMappingsCount });
+
+            ((DataGridTextColumn)listBox.Columns[0]).Binding = new Binding("FBTableName");
+            ((DataGridTextColumn)listBox.Columns[1]).Binding = new Binding("FBRecordCount");
+            ((DataGridTextColumn)listBox.Columns[2]).Binding = new Binding("SQLMappedTable");
+            ((DataGridTextColumn)listBox.Columns[3]).Binding = new Binding("CompletedMappingsCount");
+            ((DataGridTextColumn)listBox.Columns[4]).Binding = new Binding("FailedMappingsCount");
 
             dgFailures.ItemsSource = MappingStatistics.FailedMappingCollection
                 .OrderBy(o => o.SqlTablename)
@@ -174,6 +190,13 @@ namespace MigrationApp
                 .ThenBy(t => t.ObjectType)
                 .Where(w => !string.Equals(w.SqlTablename, "none", StringComparison.CurrentCultureIgnoreCase))
                 .Select(s => new {FbTable = s.FBTableName, FbKey = s.FBPrimaryKey, MappingTable = s.SqlTablename, Reason = s.FailedReason, RecordType = s.ObjectType.ToString().Split('.').Last() });
+
+            ((DataGridTextColumn)dgFailures.Columns[0]).Binding = new Binding("FbTable");
+            ((DataGridTextColumn)dgFailures.Columns[1]).Binding = new Binding("FbKey");
+            ((DataGridTextColumn)dgFailures.Columns[2]).Binding = new Binding("MappingTable");
+            ((DataGridTextColumn)dgFailures.Columns[3]).Binding = new Binding("Reason");
+            ((DataGridTextColumn)dgFailures.Columns[4]).Binding = new Binding("RecordType");
+
 
             lblCompCnt.Content = MappingStatistics.MappingStats.Sum(s => s.CompletedMappingsCount);
             lblFailCnt.Content = MappingStatistics.FailedMappingCollection.Count;
@@ -264,6 +287,7 @@ namespace MigrationApp
 
         private void btnExecute_Click(object sender, RoutedEventArgs e)
         {
+            btnNewMigration.Visibility = Visibility.Hidden;
             lblStatusBar.Content = "Executing transaction...";
 
             mm.UpdateContext();

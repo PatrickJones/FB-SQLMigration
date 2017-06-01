@@ -226,7 +226,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.PatientDevices.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PatientDevice>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }
@@ -256,7 +257,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     ctx.PumpSettings.AddRange(CompletedPumpSettingMappings);
                     stats.PreSaveCount = ctx.ChangeTracker.Entries<PumpSetting>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                    stats.PostSaveCount = ctx.SaveChanges();
+                    var saved = ctx.SaveChanges();
+                    stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                     MappingStatistics.SqlTableStatistics.Add(stats);
                 }
@@ -287,7 +289,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     ctx.PumpPrograms.AddRange(CompletedPumpProgramMappings);
                     stats.PreSaveCount = ctx.ChangeTracker.Entries<PumpProgram>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                    stats.PostSaveCount = ctx.SaveChanges();
+                    var saved = ctx.SaveChanges();
+                    stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                     MappingStatistics.SqlTableStatistics.Add(stats);
                 }

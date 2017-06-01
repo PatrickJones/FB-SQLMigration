@@ -91,7 +91,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<BloodGlucoseReading>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveTotalDailyInsulinDeliveries();
@@ -123,7 +124,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.TotalDailyInsulinDeliveries.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries <TotalDailyInsulinDelivery>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveBasalDeliveries();
@@ -155,7 +157,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.BasalDeliveries.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<BasalDelivery>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveDeviceSettings();
@@ -188,7 +191,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.DeviceSettings.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<DeviceSetting>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveReadingEvents();
@@ -222,7 +226,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.ReadingEvents.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<ReadingEvent>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveNutritionReadings();
@@ -256,7 +261,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.NutritionReadings.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<NutritionReading>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
                 SaveBolusDeliveries();
@@ -289,7 +295,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.BolusDeliveries.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<BolusDelivery>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

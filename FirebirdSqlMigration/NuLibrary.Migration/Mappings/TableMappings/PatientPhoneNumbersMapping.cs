@@ -109,7 +109,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PatientPhoneNumber>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
+                var saved = TransactionManager.DatabaseContext.SaveChanges();
+                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

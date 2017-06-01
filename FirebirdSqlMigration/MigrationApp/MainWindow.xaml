@@ -161,7 +161,7 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="2" Margin="10,4,11,-3" Name="spMigrationResults">
             <Label x:Name="lblMigResults" Content="Migration Results" HorizontalAlignment="Left" Width="253" FontWeight="Bold"/>
-            <DataGrid x:Name="dgMigResults" HorizontalAlignment="Left" Height="345" Width="auto">
+            <DataGrid x:Name="dgMigResults" HorizontalAlignment="Left" Height="345" Width="auto" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Sql Table Name" Width="auto"></DataGridTextColumn>
                     <DataGridTextColumn Header="Pre Migration Rows" Width="auto"></DataGridTextColumn>

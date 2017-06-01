@@ -98,8 +98,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     PreSaveCount = CompletedMappings.Count()
                 };
 
-                int saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = saved;
+                stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Clinician>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

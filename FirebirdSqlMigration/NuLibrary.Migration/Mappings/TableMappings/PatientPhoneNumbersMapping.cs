@@ -108,8 +108,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         select cm;
 
                 TransactionManager.DatabaseContext.PatientPhoneNumbers.AddRange(q);
-                TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PatientPhoneNumber>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PatientPhoneNumber>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                stats.PostSaveCount = TransactionManager.DatabaseContext.SaveChanges();
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
             }

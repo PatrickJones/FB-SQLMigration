@@ -163,7 +163,7 @@ namespace MigrationApp
             ((DataGridTextColumn)dgMigResults.Columns[3]).Binding = new Binding("RowsAdded");
             ((DataGridTextColumn)dgMigResults.Columns[4]).Binding = new Binding("MappedRowsCommitted");
             ((DataGridTextColumn)dgMigResults.Columns[5]).Binding = new Binding("MappedRowsSaved");
-            ((DataGridTextColumn)dgMigResults.Columns[6]).Binding = new Binding("MappingTable");
+            ((DataGridTextColumn)dgMigResults.Columns[6]).Binding = new Binding("MappedRowsDifference");
             ((DataGridTextColumn)dgMigResults.Columns[7]).Binding = new Binding("Result");
 
             spMigrationResults.Visibility = Visibility.Visible;

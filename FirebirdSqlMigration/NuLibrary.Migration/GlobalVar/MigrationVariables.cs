@@ -43,6 +43,7 @@ namespace NuLibrary.Migration.GlobalVar
         public static string Institution { get; set; }
         public static string InitialMigration { get; set; }
         public static string LastMigration { get; set; }
+        public static string LogFileLocation => @"C:\Users\Public\Documents\FbMigrationLog.json";
 
 
         static int dataHistory = 90;

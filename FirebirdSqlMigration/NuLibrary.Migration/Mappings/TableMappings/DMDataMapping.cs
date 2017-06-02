@@ -125,11 +125,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "CareSettings",
-                    PreSaveCount = CompletedMappings.Count()
-                };
+                var stats = new SqlTableStats("CareSettings");
+                var dcStats = new SqlTableStats("DiabetesControlTypes");
 
                 // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
@@ -139,10 +136,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.CareSettings.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<CareSetting>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                dcStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<DiabetesControlType>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
+
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
+                dcStats.PostSaveCount = (saved > dcStats.PreSaveCount) ? dcStats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
+                MappingStatistics.SqlTableStatistics.Add(dcStats);
             }
             catch (DbEntityValidationException e)
             {

@@ -149,7 +149,7 @@ namespace MigrationApp
                     MappedRowsCommitted = (ms == null) ? 0 : ms.PreSaveCount,
                     MappedRowsSaved = (ms == null) ? 0 : ms.PostSaveCount,
                     MappedRowsDifference = diff,
-                    Result = (diff == 0) ? "SUCCESS" : "FAIL"
+                    Result = ((table.RowCnt - preRowCnt) == 0) ? "NO CHANGE" : (diff == 0) ? "SUCCESS" : "FAIL"
                 };
 
                 rList.Add(n);

@@ -113,37 +113,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
         public void SaveChanges()
         {
-            try
-            {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "Pumps",
-                    PreSaveCount = CompletedMappings.Count()
-                };
-
-                // Ensure pateint id exist (has been commited) before updating database
-                var q = from cm in CompletedMappings
-                        from ps in mu.GetPatients()
-                        where cm.UserId == ps.UserId
-                        select cm;
-
-                TransactionManager.DatabaseContext.Pumps.AddRange(q);
-                stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Pump>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                var saved = TransactionManager.DatabaseContext.SaveChanges();
-                stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
-
-                MappingStatistics.SqlTableStatistics.Add(stats);
-
-                TransactionManager.DatabaseContext.SaveChanges();
-            }
-            catch (DbEntityValidationException e)
-            {
-                throw new Exception("Error validating Pump entity", e);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error saving Pump entity", e);
-            }
+            throw new NotImplementedException("Implemeted in DeviceMeterReadingHeaderMapping class.");
         }
 
         private bool CanAddToContext(Guid userId, string pumpName)

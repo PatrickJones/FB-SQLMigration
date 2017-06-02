@@ -212,11 +212,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "PatientDevices",
-                    PreSaveCount = CompletedMappings.Count()
-                };
+                var stats = new SqlTableStats("PatientDevices");
+                var rhStats = new SqlTableStats("ReadingHeaders");
+                var dmStats = new SqlTableStats("DiabetesManagementData");
+                var pmpstats = new SqlTableStats("Pumps");
 
                 // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
@@ -226,10 +225,20 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.PatientDevices.AddRange(q);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PatientDevice>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                rhStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<ReadingHeader>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                dmStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<DiabetesManagementData>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                pmpstats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Pump>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
+                rhStats.PostSaveCount = (saved > rhStats.PreSaveCount) ? rhStats.PreSaveCount : saved;
+                dmStats.PostSaveCount = (saved > dmStats.PreSaveCount) ? dmStats.PreSaveCount : saved;
+                pmpstats.PostSaveCount = (saved > pmpstats.PreSaveCount) ? pmpstats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
+                MappingStatistics.SqlTableStatistics.Add(rhStats);
+                MappingStatistics.SqlTableStatistics.Add(dmStats);
+                MappingStatistics.SqlTableStatistics.Add(pmpstats);
             }
             catch (DbEntityValidationException e)
             {
@@ -249,14 +258,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 using (var ctx = new NuMedicsGlobalEntities())
                 {
-                    var stats = new SqlTableStats
-                    {
-                        Tablename = "PumpSettings",
-                        PreSaveCount = CompletedPumpSettingMappings.Count()
-                    };
+                    var stats = new SqlTableStats("PumpSettings");
 
                     ctx.PumpSettings.AddRange(CompletedPumpSettingMappings);
                     stats.PreSaveCount = ctx.ChangeTracker.Entries<PumpSetting>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+
                     var saved = ctx.SaveChanges();
                     stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
@@ -281,18 +287,23 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 using (var ctx = new NuMedicsGlobalEntities())
                 {
-                    var stats = new SqlTableStats
-                    {
-                        Tablename = "PumpPrograms",
-                        PreSaveCount = CompletedPumpProgramMappings.Count
-                    };
+                    var stats = new SqlTableStats("PumpPrograms");
+                    var basalPrgStats = new SqlTableStats("BasalProgramTimeSlots");
+                    var bolusPrgStats = new SqlTableStats("BolusProgamTimeSlots");
 
                     ctx.PumpPrograms.AddRange(CompletedPumpProgramMappings);
                     stats.PreSaveCount = ctx.ChangeTracker.Entries<PumpProgram>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                    basalPrgStats.PreSaveCount = ctx.ChangeTracker.Entries<BasalProgramTimeSlot>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                    bolusPrgStats.PreSaveCount = ctx.ChangeTracker.Entries<BolusProgramTimeSlot>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+
                     var saved = ctx.SaveChanges();
                     stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
+                    basalPrgStats.PostSaveCount = (saved > basalPrgStats.PreSaveCount) ? basalPrgStats.PreSaveCount : saved;
+                    bolusPrgStats.PostSaveCount = (saved > bolusPrgStats.PreSaveCount) ? bolusPrgStats.PreSaveCount : saved;
 
                     MappingStatistics.SqlTableStatistics.Add(stats);
+                    MappingStatistics.SqlTableStatistics.Add(basalPrgStats);
+                    MappingStatistics.SqlTableStatistics.Add(bolusPrgStats);
                 }
             }
             catch (DbEntityValidationException e)

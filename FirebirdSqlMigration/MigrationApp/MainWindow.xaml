@@ -173,6 +173,10 @@
                     <DataGridTextColumn Header="Migration Result" Width="auto"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblLog" Content="Log File Location:" HorizontalAlignment="Left" Width="253" FontWeight="Bold"/>
+                <Label x:Name="lblLogLoc" Content="" HorizontalAlignment="Left" Width="auto"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="3">
             <Label x:Name="lblStatusBar" Content="Label" HorizontalAlignment="Left" Background="#FFFFBB44" Width="1350" Margin="10,3"/>

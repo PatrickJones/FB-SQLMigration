@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NuLibrary.Migration.GlobalVar;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -51,7 +52,12 @@ namespace NuLibrary.Migration.Mappings
             sb.AppendLine("Mapping Statistics");
             sb.AppendLine(ms);
 
-            File.WriteAllText(@"C:\Users\pjones\Documents\FbMigrationLog.json", sb.ToString());
+            if (File.Exists(MigrationVariables.LogFileLocation))
+            {
+                File.Delete(MigrationVariables.LogFileLocation);
+            }
+
+            File.WriteAllText(MigrationVariables.LogFileLocation, sb.ToString());
 
             return sb.ToString();
         }

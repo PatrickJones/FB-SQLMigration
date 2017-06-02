@@ -13,6 +13,11 @@ namespace NuLibrary.Migration.Mappings
         {
         }
 
+        public SqlTableStats(string tableName)
+        {
+            Tablename = tableName;
+        }
+
         public string Tablename { get; set; }
         public int PreSaveCount { get; set; }
         public int PostSaveCount { get; set; }

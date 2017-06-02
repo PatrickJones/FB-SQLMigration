@@ -138,11 +138,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "Patients",
-                    PreSaveCount = CompletedMappings.Count()
-                };
+                var stats = new SqlTableStats("Patients");
+                var instStats = new SqlTableStats("Patients_Institutions");
+                var addStats = new SqlTableStats("PatientAddresses");
 
                 ////Set instition id for each patient
                 var institution = TransactionManager.DatabaseContext.Institutions.FirstOrDefault(f => f.LegacySiteId == MigrationVariables.CurrentSiteId);
@@ -150,10 +148,16 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                 TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Patient>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                instStats.PreSaveCount = stats.PreSaveCount;
+                addStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PatientAddress>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
+                instStats.PostSaveCount = (saved > instStats.PreSaveCount) ? instStats.PreSaveCount : saved;
+                addStats.PostSaveCount = (saved > addStats.PreSaveCount) ? addStats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
+                MappingStatistics.SqlTableStatistics.Add(instStats);
+                MappingStatistics.SqlTableStatistics.Add(addStats);
             }
             catch (DbEntityValidationException e)
             {

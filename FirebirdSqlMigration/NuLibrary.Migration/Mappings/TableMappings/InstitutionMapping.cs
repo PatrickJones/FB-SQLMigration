@@ -68,7 +68,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var stats = new SqlTableStats
                 {
                     Tablename = "Institutions",
-                    PreSaveCount = CompletedMappings.Count()
                 };
 
                 TransactionManager.DatabaseContext.Institutions.AddRange(CompletedMappings);

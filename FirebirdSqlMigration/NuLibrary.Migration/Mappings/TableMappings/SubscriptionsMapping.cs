@@ -67,12 +67,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "Subscriptions",
-                    PreSaveCount = CompletedMappings.Count()
-                };
-
+                var stats = new SqlTableStats("Subscriptions");
+                var payStats = new SqlTableStats("Payments");
+                var chkStats = new SqlTableStats("Checks");
+                var palStats = new SqlTableStats("PayPal");
 
                 // Ensure pateint id exist (has been commited) before updating database
                 var q = from cm in CompletedMappings
@@ -88,10 +86,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 TransactionManager.DatabaseContext.Subscriptions.AddRange(r);
 
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Subscription>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                payStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Payment>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                chkStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Check>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                palStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PayPal>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
+                payStats.PostSaveCount = (saved > payStats.PreSaveCount) ? payStats.PreSaveCount : saved;
+                chkStats.PostSaveCount = (saved > chkStats.PreSaveCount) ? chkStats.PreSaveCount : saved;
+                palStats.PostSaveCount = (saved > palStats.PreSaveCount) ? palStats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
+                MappingStatistics.SqlTableStatistics.Add(payStats);
+                MappingStatistics.SqlTableStatistics.Add(chkStats);
+                MappingStatistics.SqlTableStatistics.Add(palStats);
             }
             catch (DbEntityValidationException e)
             {

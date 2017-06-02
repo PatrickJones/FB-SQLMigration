@@ -130,18 +130,18 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "User",
-                    PreSaveCount = CompletedMappings.Count()
-                };
+                var stats = new SqlTableStats("Users");
+                var uaStats = new SqlTableStats("UserAuthentications");
 
                 TransactionManager.DatabaseContext.Users.AddRange(CompletedMappings);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<User>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                uaStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<UserAuthentication>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
+                uaStats.PostSaveCount = (saved > uaStats.PreSaveCount) ? uaStats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
+                MappingStatistics.SqlTableStatistics.Add(uaStats);
             }
             catch (DbEntityValidationException e)
             {

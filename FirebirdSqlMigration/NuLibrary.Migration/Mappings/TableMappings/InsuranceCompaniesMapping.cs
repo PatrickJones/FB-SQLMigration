@@ -108,18 +108,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             try
             {
-                var stats = new SqlTableStats
-                {
-                    Tablename = "InsuranceProviders",
-                    PreSaveCount = CompletedMappings.Count()
-                };
+                var stats = new SqlTableStats("InsuranceProviders");
+                var conStats = new SqlTableStats("InsuranceContacts");
+                var addStats = new SqlTableStats("InsuranceAddresses");
 
                 TransactionManager.DatabaseContext.InsuranceProviders.AddRange(CompletedMappings);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<InsuranceProvider>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                conStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<InsuranceContact>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                addStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<InsuranceAddress>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
+                conStats.PostSaveCount = (saved > conStats.PreSaveCount) ? conStats.PreSaveCount : saved;
+                addStats.PostSaveCount = (saved > addStats.PreSaveCount) ? addStats.PreSaveCount : saved;
 
                 MappingStatistics.SqlTableStatistics.Add(stats);
+                MappingStatistics.SqlTableStatistics.Add(conStats);
+                MappingStatistics.SqlTableStatistics.Add(addStats);
             }
             catch (DbEntityValidationException e)
             {

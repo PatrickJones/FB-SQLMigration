@@ -56,6 +56,7 @@ namespace MigrationApp
             spCompletedMappngs.Visibility = Visibility.Hidden;
             spFailedMappings.Visibility = Visibility.Hidden;
             spMigrationResults.Visibility = Visibility.Hidden;
+            stkLoading.Visibility = Visibility.Hidden;
 
             bWorker.DoWork += BWorker_DoWork;
             bWorker.RunWorkerCompleted += BWorker_RunWorkerCompleted;
@@ -88,6 +89,16 @@ namespace MigrationApp
 
         private void SetCombo()
         {
+            cbxSiteIds.Background = Brushes.Brown;
+            cbxSiteIds.Foreground = Brushes.White;
+            cbxSiteIds.BorderBrush = Brushes.Brown;
+            cbxSiteIds.Resources.Add(SystemColors.WindowBrushKey, Brushes.DarkGoldenrod);
+
+            cbxHistory.Background = Brushes.Brown;
+            cbxHistory.Foreground = Brushes.White;
+            cbxHistory.BorderBrush = Brushes.Brown;
+            cbxHistory.Resources.Add(SystemColors.WindowBrushKey, Brushes.DarkGoldenrod);
+
             foreach (var r in MigrationVariables.GetRangeDates())
             {
                 cbxHistory.Items.Add(r);
@@ -166,6 +177,19 @@ namespace MigrationApp
             ((DataGridTextColumn)dgMigResults.Columns[6]).Binding = new Binding("MappedRowsDifference");
             ((DataGridTextColumn)dgMigResults.Columns[7]).Binding = new Binding("Result");
 
+            var successCnt = rList.Count(w => w.Result == "SUCCESS");
+            var failCnt = rList.Count(w => w.Result == "FAIL");
+            var ncCnt = rList.Count(w => w.Result == "NO CHANGE");
+
+            stkLoading.Visibility = Visibility.Hidden;
+
+            lblTblsUpCnt.Content = rList.Count.ToString();
+            lblFailUpCnt.Content = failCnt.ToString();
+            lblNoChgUpCnt.Content = ncCnt.ToString();
+            lblSuccUpCnt.Content = successCnt.ToString();
+
+            lblLogLoc.Content = MigrationVariables.LogFileLocation;
+
             spMigrationResults.Visibility = Visibility.Visible;
             DispatchLabel("Transaction Complete.");
         }
@@ -203,13 +227,14 @@ namespace MigrationApp
 
             btnExecute.IsEnabled = true;
             btnNewMigration.IsEnabled = true;
-
+            stkLoading.Visibility = Visibility.Hidden;
             spCompletedMappngs.Visibility = Visibility.Visible;
             spFailedMappings.Visibility = Visibility.Visible;
         }
 
         private void BTrans_DoWork(object sender, DoWorkEventArgs e)
         {
+            mm.UpdateContext();
             DispatchLabel("Beginning transaction...");
             
         }
@@ -245,6 +270,7 @@ namespace MigrationApp
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
+            stkLoading.Visibility = Visibility.Visible;
             lblStatusBar.Content = "Loading Firebird table schemas...";
 
             MigrationVariables.CurrentSiteId = selectedSiteId;
@@ -287,10 +313,11 @@ namespace MigrationApp
 
         private void btnExecute_Click(object sender, RoutedEventArgs e)
         {
+            stkLoading.Visibility = Visibility.Visible;
             btnNewMigration.Visibility = Visibility.Hidden;
             lblStatusBar.Content = "Executing transaction...";
 
-            mm.UpdateContext();
+            //mm.UpdateContext();
 
             bTrans.RunWorkerAsync();
 

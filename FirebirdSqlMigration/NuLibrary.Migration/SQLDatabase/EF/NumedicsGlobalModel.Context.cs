@@ -49,7 +49,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
-        public virtual DbSet<ReadingEventType> ReadingEventTypes { get; set; }
         public virtual DbSet<SubscriptionType> SubscriptionTypes { get; set; }
         public virtual DbSet<TherapyType> TherapyTypes { get; set; }
         public virtual DbSet<UserAuthentication> UserAuthentications { get; set; }
@@ -111,5 +110,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
         public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
         public virtual DbSet<TensReading> TensReadings { get; set; }
+        public virtual DbSet<ReadingEventType> ReadingEventTypes { get; set; }
     }
 }

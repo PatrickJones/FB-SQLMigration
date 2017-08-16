@@ -394,7 +394,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="HistoryId" />
           </Key>
-          <Property Name="HistoryId" Type="int" Nullable="false" />
+          <Property Name="HistoryId" Type="bigint" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LoginDate" Type="datetime" Nullable="false" />
           <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
@@ -403,7 +403,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="AppSettingId" />
           </Key>
-          <Property Name="AppSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppSettingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
@@ -414,7 +414,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="AppUserSettingId" />
           </Key>
-          <Property Name="AppUserSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppUserSettingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
@@ -426,7 +426,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="BasalDeliveryId" />
           </Key>
-          <Property Name="BasalDeliveryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BasalDeliveryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AmountDelivered" Type="int" Nullable="false" />
           <Property Name="DeliveryRate" Type="float" Nullable="false" />
           <Property Name="IsTemp" Type="bit" Nullable="false" />
@@ -439,10 +439,10 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="DataId" />
           </Key>
-          <Property Name="DataId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DataId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="BasalDeliveryId" Type="int" Nullable="false" />
+          <Property Name="BasalDeliveryId" Type="bigint" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
@@ -450,18 +450,18 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="BasalSlotId" />
           </Key>
-          <Property Name="BasalSlotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BasalSlotId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BasalValue" Type="float" Nullable="false" />
           <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
           <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
-          <Property Name="PumpProgramId" Type="int" Nullable="false" />
+          <Property Name="PumpProgramId" Type="bigint" Nullable="false" />
           <Property Name="DateSet" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="BGTargets">
           <Key>
             <PropertyRef Name="TargetId" />
           </Key>
-          <Property Name="TargetId" Type="int" Nullable="false" />
+          <Property Name="TargetId" Type="bigint" Nullable="false" />
           <Property Name="TargetBG" Type="int" Nullable="false" />
           <Property Name="TargetBGCorrect" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
@@ -470,7 +470,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="ReadingId" />
           </Key>
-          <Property Name="ReadingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReadingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ReadingDateTime" Type="datetime" Nullable="false" />
           <Property Name="Units" Type="nvarchar" MaxLength="50" />
           <Property Name="Value" Type="nvarchar" MaxLength="50" />
@@ -482,7 +482,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="CarbId" />
           </Key>
-          <Property Name="CarbId" Type="int" Nullable="false" />
+          <Property Name="CarbId" Type="bigint" Nullable="false" />
           <Property Name="CarbValue" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
@@ -490,7 +490,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="BolusDeliveryId" />
           </Key>
-          <Property Name="BolusDeliveryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BolusDeliveryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StartDateTime" Type="datetime" Nullable="false" />
           <Property Name="AmountDelivered" Type="float" Nullable="false" />
           <Property Name="AmountSuggested" Type="float" Nullable="false" />
@@ -508,7 +508,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Property Name="DataId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="BolusDeliveryId" Type="int" Nullable="false" />
+          <Property Name="BolusDeliveryId" Type="bigint" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
@@ -516,18 +516,18 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="BolusSlotId" />
           </Key>
-          <Property Name="BolusSlotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BolusSlotId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BolusValue" Type="float" Nullable="false" />
           <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
           <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
-          <Property Name="PumpProgramId" Type="int" Nullable="false" />
+          <Property Name="PumpProgramId" Type="bigint" Nullable="false" />
           <Property Name="DateSet" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CareSettings">
           <Key>
             <PropertyRef Name="CareSettingsId" />
           </Key>
-          <Property Name="CareSettingsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CareSettingsId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="HyperglycemicLevel" Type="int" Nullable="false" />
           <Property Name="HypoglycemicLevel" Type="int" Nullable="false" />
@@ -541,7 +541,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="ReminderId" />
           </Key>
-          <Property Name="ReminderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReminderId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
           <Property Name="Time" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -562,7 +562,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="CheckId" />
           </Key>
-          <Property Name="CheckId" Type="int" Nullable="false" />
+          <Property Name="CheckId" Type="bigint" Nullable="false" />
           <Property Name="CheckStatus" Type="int" Nullable="false" />
           <Property Name="CheckNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CheckCode" Type="bigint" Nullable="false" />
@@ -591,7 +591,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="FactorId" />
           </Key>
-          <Property Name="FactorId" Type="int" Nullable="false" />
+          <Property Name="FactorId" Type="bigint" Nullable="false" />
           <Property Name="CorrectionFactorValue" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
@@ -599,10 +599,10 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="TimeSlotId" />
           </Key>
-          <Property Name="TimeSlotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TimeSlotId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TimeSlotDescription" Type="nvarchar" MaxLength="50" />
           <Property Name="TImeSlotBoundary" Type="time" Precision="2" Nullable="false" />
-          <Property Name="CareSettingsId" Type="int" Nullable="false" />
+          <Property Name="CareSettingsId" Type="bigint" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="DatabaseInfo">
@@ -643,7 +643,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="DataSetId" />
           </Key>
-          <Property Name="DataSetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DataSetId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DataSet" Type="text" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -663,18 +663,18 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="TypeId" />
           </Key>
-          <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ControlName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="IsEnabled" Type="bit" Nullable="false" />
           <Property Name="DMDataId" Type="int" Nullable="false" />
-          <Property Name="CareSettingsId" Type="int" Nullable="false" />
+          <Property Name="CareSettingsId" Type="bigint" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="DiabetesManagementData">
           <Key>
             <PropertyRef Name="DMDataId" />
           </Key>
-          <Property Name="DMDataId" Type="int" Nullable="false" />
+          <Property Name="DMDataId" Type="bigint" Nullable="false" />
           <Property Name="LowBGLevel" Type="int" Nullable="false" />
           <Property Name="HighBGLevel" Type="int" Nullable="false" />
           <Property Name="PremealTarget" Type="int" Nullable="false" />
@@ -732,7 +732,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="RatioId" />
           </Key>
-          <Property Name="RatioId" Type="int" Nullable="false" />
+          <Property Name="RatioId" Type="bigint" Nullable="false" />
           <Property Name="ICRatio" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
@@ -740,7 +740,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="CorrectionId" />
           </Key>
-          <Property Name="CorrectionId" Type="int" Nullable="false" />
+          <Property Name="CorrectionId" Type="bigint" Nullable="false" />
           <Property Name="InsulinCorrectionValue" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="InsulinCorrectionAbove" Type="int" Nullable="false" />
@@ -822,7 +822,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="ReadingId" />
           </Key>
-          <Property Name="ReadingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReadingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Carbohydrates" Type="float" Nullable="false" />
           <Property Name="Calories" Type="float" Nullable="false" />
           <Property Name="Protien" Type="float" Nullable="false" />
@@ -835,7 +835,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="HistoryId" />
           </Key>
-          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HistoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LastDateUsed" Type="datetime" Nullable="false" />
@@ -861,7 +861,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="DeviceId" />
           </Key>
-          <Property Name="DeviceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeviceId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="MeterIndex" Type="int" Nullable="false" />
           <Property Name="Manufacturer" Type="nvarchar" MaxLength="150" />
@@ -939,7 +939,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="PaymentId" />
           </Key>
-          <Property Name="PaymentId" Type="int" Nullable="false" />
+          <Property Name="PaymentId" Type="bigint" Nullable="false" />
           <Property Name="PaymentMethod" Type="int" Nullable="false" />
           <Property Name="PaymentApproved" Type="bit" Nullable="false" />
           <Property Name="ApprovalDate" Type="datetime" Nullable="false" />
@@ -948,7 +948,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="PayPalId" />
           </Key>
-          <Property Name="PayPalId" Type="int" Nullable="false" />
+          <Property Name="PayPalId" Type="bigint" Nullable="false" />
           <Property Name="txn_id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="parent_txn_id" Type="nvarchar" MaxLength="50" />
           <Property Name="payment_date" Type="datetime" Nullable="false" />
@@ -965,7 +965,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="ReadingId" />
           </Key>
-          <Property Name="ReadingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReadingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="Weight" Type="int" Nullable="false" />
           <Property Name="Height" Type="int" Nullable="false" />
@@ -981,7 +981,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="PumpProgramId" />
           </Key>
-          <Property Name="PumpProgramId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PumpProgramId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
           <Property Name="Source" Type="nvarchar" MaxLength="50" />
           <Property Name="ProgramName" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -1009,7 +1009,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="SettingId" />
           </Key>
-          <Property Name="SettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SettingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SettingName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="SettingValue" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="150" />
@@ -1020,7 +1020,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="ErrorId" />
           </Key>
-          <Property Name="ErrorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ErrorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="ErrorName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ErrorText" Type="nvarchar" MaxLength="250" />
@@ -1032,7 +1032,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="Eventid" />
           </Key>
-          <Property Name="Eventid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Eventid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventType" Type="int" Nullable="false" />
           <Property Name="EventValue" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="EventTime" Type="datetime" Nullable="false" />
@@ -1053,7 +1053,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="ReadingKeyId" />
           </Key>
-          <Property Name="DeviceId" Type="int" Nullable="false" />
+          <Property Name="DeviceId" Type="bigint" Nullable="false" />
           <Property Name="ServerDateTime" Type="datetime" Nullable="false" />
           <Property Name="MeterDateTime" Type="datetime" Nullable="false" />
           <Property Name="Readings" Type="int" Nullable="false" />
@@ -1076,7 +1076,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="SubscriptionId" />
           </Key>
-          <Property Name="SubscriptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubscriptionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserType" Type="int" Nullable="false" />
@@ -1101,7 +1101,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="ReadingId" />
           </Key>
-          <Property Name="ReadingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReadingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ReadingDate" Type="datetime" Nullable="false" />
           <Property Name="StartTime" Type="nvarchar" MaxLength="50" />
           <Property Name="TherapyType" Type="int" Nullable="false" />
@@ -1122,7 +1122,7 @@ warning 6002: The table/view 'NuMedicsGlobal.cdc.dbo_UserAuthentications_CT' doe
           <Key>
             <PropertyRef Name="DeliveryId" />
           </Key>
-          <Property Name="DeliveryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeliveryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TotalDelivered" Type="float" Nullable="false" />
           <Property Name="BasalDelivered" Type="float" Nullable="false" />
           <Property Name="Suspended" Type="bit" />
@@ -2795,13 +2795,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <NavigationProperty Name="PayPal" Relationship="NuMedicsGlobalModel.FK_PayPal_Payments" FromRole="Payment" ToRole="PayPal" />
           <Property Name="ApprovalDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <EntityType Name="ReadingEventType">
-          <Key>
-            <PropertyRef Name="EventId" />
-          </Key>
-          <Property Name="EventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
         <EntityType Name="SubscriptionType">
           <Key>
             <PropertyRef Name="SubscriptionTypeId" />
@@ -3096,7 +3089,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="Patients" EntityType="Self.Patient" />
           <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethod" />
           <EntitySet Name="Payments" EntityType="Self.Payment" />
-          <EntitySet Name="ReadingEventTypes" EntityType="Self.ReadingEventType" />
           <EntitySet Name="SubscriptionTypes" EntityType="Self.SubscriptionType" />
           <EntitySet Name="TherapyTypes" EntityType="Self.TherapyType" />
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentication" />
@@ -3378,6 +3370,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="ReadingHeader" EntitySet="ReadingHeaders" />
             <End Role="TensReading" EntitySet="TensReadings" />
           </AssociationSet>
+          <EntitySet Name="ReadingEventTypes" EntityType="NuMedicsGlobalModel.ReadingEventType" />
           </EntityContainer>
         <EntityType Name="InsulinType">
           <Key>
@@ -4692,6 +4685,13 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ReadingEventType">
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4995,14 +4995,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
                 <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
                 <ScalarProperty Name="PaymentApproved" ColumnName="PaymentApproved" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReadingEventTypes">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingEventType">
-              <MappingFragment StoreEntitySet="ReadingEventTypes">
-                <ScalarProperty Name="EventId" ColumnName="EventId" />
-                <ScalarProperty Name="EventName" ColumnName="EventName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5896,6 +5888,14 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="ReadingDate" ColumnName="ReadingDate" />
                 <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReadingEventTypes">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ReadingEventType">
+              <MappingFragment StoreEntitySet="ReadingEventTypes">
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

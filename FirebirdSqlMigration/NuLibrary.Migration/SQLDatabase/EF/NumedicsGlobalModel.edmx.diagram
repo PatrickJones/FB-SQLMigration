@@ -29,7 +29,6 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Patient" Width="1.5" PointX="5.25" PointY="51.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PaymentMethod" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Payment" Width="1.5" PointX="9.75" PointY="90.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEventType" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.SubscriptionType" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.TherapyType" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.UserAuthentication" Width="1.5" PointX="5.25" PointY="32.375" IsExpanded="true" />
@@ -146,6 +145,7 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.TensReading" Width="1.5" PointX="12" PointY="67" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEventType" Width="1.5" PointX="21.375" PointY="12.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -17,12 +17,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int ReadingId { get; set; }
         public System.DateTime Time { get; set; }
         public int Weight { get; set; }
-        public int Height { get; set; }
         public int Hunger { get; set; }
         public int Nausea { get; set; }
         public int CaloriesBurned { get; set; }
         public int CaloriesConsumed { get; set; }
-        public string Notes { get; set; }
         public System.Guid ReadingKeyId { get; set; }
         public System.Guid UserId { get; set; }
     

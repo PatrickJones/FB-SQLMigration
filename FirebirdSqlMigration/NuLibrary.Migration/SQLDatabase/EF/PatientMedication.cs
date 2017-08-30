@@ -12,18 +12,16 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class dbo_AppSettings_CT
+    public partial class PatientMedication
     {
-        public byte[] C___start_lsn { get; set; }
-        public byte[] C___end_lsn { get; set; }
-        public byte[] C___seqval { get; set; }
-        public int C___operation { get; set; }
-        public byte[] C___update_mask { get; set; }
-        public Nullable<int> AppSettingId { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
-        public string Description { get; set; }
-        public Nullable<System.Guid> ApplicationId { get; set; }
-        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
+        public long MedicationId { get; set; }
+        public System.DateTime LastUpdated { get; set; }
+        public int HourlyDosageInterval { get; set; }
+        public int DosageTakenDaily { get; set; }
+        public System.Guid UserId { get; set; }
+        public int PatientMedicationId { get; set; }
+    
+        public virtual Patient Patient { get; set; }
     }
 }

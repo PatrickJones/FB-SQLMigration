@@ -20,7 +20,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Description { get; set; }
         public System.Guid ReadingKeyId { get; set; }
         public System.Guid UserId { get; set; }
-        public System.DateTime DateSet { get; set; }
+        public System.DateTime ReadingDate { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

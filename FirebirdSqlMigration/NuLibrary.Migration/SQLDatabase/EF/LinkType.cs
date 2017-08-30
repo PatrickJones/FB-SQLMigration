@@ -12,17 +12,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class dbo_InsuranceProviders_CT
+    public partial class LinkType
     {
-        public byte[] C___start_lsn { get; set; }
-        public byte[] C___end_lsn { get; set; }
-        public byte[] C___seqval { get; set; }
-        public int C___operation { get; set; }
-        public byte[] C___update_mask { get; set; }
-        public Nullable<int> CompanyId { get; set; }
+        public int TypeId { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-        public Nullable<System.DateTime> InActiveDate { get; set; }
-        public Nullable<System.Guid> LastUpdatedByUser { get; set; }
     }
 }

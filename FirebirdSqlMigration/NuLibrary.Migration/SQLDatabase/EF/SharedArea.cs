@@ -14,9 +14,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
     public partial class SharedArea
     {
-        public int ShareId { get; set; }
-        public int SharedCategoryId { get; set; }
+        public int DataShareCategoryId { get; set; }
         public int RequestId { get; set; }
+        public int ShareId { get; set; }
     
         public virtual DataShareRequestLog DataShareRequestLog { get; set; }
     }

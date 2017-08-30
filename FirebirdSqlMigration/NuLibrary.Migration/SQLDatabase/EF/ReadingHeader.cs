@@ -18,15 +18,17 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public ReadingHeader()
         {
             this.BasalDeliveries = new HashSet<BasalDelivery>();
-            this.ReadingErrors = new HashSet<ReadingError>();
-            this.ReadingEvents = new HashSet<ReadingEvent>();
-            this.TotalDailyInsulinDeliveries = new HashSet<TotalDailyInsulinDelivery>();
-            this.DeviceSettings = new HashSet<DeviceSetting>();
-            this.BolusDeliveries = new HashSet<BolusDelivery>();
             this.BloodGlucoseReadings = new HashSet<BloodGlucoseReading>();
+            this.BolusDeliveries = new HashSet<BolusDelivery>();
+            this.CGMReminders = new HashSet<CGMReminder>();
+            this.CGMSessions = new HashSet<CGMSession>();
+            this.DeviceSettings = new HashSet<DeviceSetting>();
             this.NutritionReadings = new HashSet<NutritionReading>();
             this.PhysiologicalReadings = new HashSet<PhysiologicalReading>();
+            this.ReadingErrors = new HashSet<ReadingError>();
+            this.ReadingEvents = new HashSet<ReadingEvent>();
             this.TensReadings = new HashSet<TensReading>();
+            this.TotalDailyInsulinDeliveries = new HashSet<TotalDailyInsulinDelivery>();
         }
     
         public int DeviceId { get; set; }
@@ -42,25 +44,29 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasalDelivery> BasalDeliveries { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BolusDelivery> BolusDeliveries { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CGMReminder> CGMReminders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CGMSession> CGMSessions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DeviceSetting> DeviceSettings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NutritionReading> NutritionReadings { get; set; }
         public virtual PatientDevice PatientDevice { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PhysiologicalReading> PhysiologicalReadings { get; set; }
+        public virtual Pump Pump { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReadingError> ReadingErrors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReadingEvent> ReadingEvents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TotalDailyInsulinDelivery> TotalDailyInsulinDeliveries { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DeviceSetting> DeviceSettings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BolusDelivery> BolusDeliveries { get; set; }
-        public virtual Pump Pump { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NutritionReading> NutritionReadings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PhysiologicalReading> PhysiologicalReadings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TensReading> TensReadings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TotalDailyInsulinDelivery> TotalDailyInsulinDeliveries { get; set; }
     }
 }

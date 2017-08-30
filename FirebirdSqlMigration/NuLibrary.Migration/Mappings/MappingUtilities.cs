@@ -44,11 +44,6 @@ namespace NuLibrary.Migration.Mappings
             return db.InsulinMethods.Where(x => x.Method.ToLower() == insmethod.ToLower()).Select(s => s.InsulinMethodId).FirstOrDefault();
         }
 
-        public int FindDMTypeId(String name)
-        {
-            return db.DiabetesManagementTypes.Where(x => x.Name.ToLower() == name.ToLower()).Select(s => s.TypeId).FirstOrDefault();
-        }
-
         public string GetInsurancePlanType(string plan)
         {
             switch (plan)

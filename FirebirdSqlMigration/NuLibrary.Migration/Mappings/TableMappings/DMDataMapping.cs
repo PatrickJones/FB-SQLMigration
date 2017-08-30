@@ -75,7 +75,6 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                             var ibId = mu.FindInsulinBrandId(row["INSULINBRAND"].ToString());
                             var imId = mu.FindInsulinMethodId(row["INSULINMETHOD"].ToString());
-                            var typeId = mu.FindDMTypeId(row["DMTYPE"].ToString());
 
                             CareSetting careset = new CareSetting();
                             careset.UserId = userId;
@@ -83,7 +82,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             careset.HypoglycemicLevel = (row["HYPOGLYCEMICLEVEL"] is DBNull) ? 0 : (Int16)row["HYPOGLYCEMICLEVEL"];
                             careset.InsulinMethod = imId;
                             careset.InsulinBrand = ibId;
-                            careset.DiabetesManagementType = typeId;
+                            careset.DiabetesManagementType = (row["DMTYPE"] is DBNull) ? String.Empty : row["DMTYPE"].ToString();
                             careset.DateModified = (row["LASTMODIFIEDDATE"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["LASTMODIFIEDDATE"].ToString());
                             careset.LastUpdatedByUser = (row["LASTMODIFIEDBYUSER"] is DBNull) ? Guid.Empty : mu.ParseGUID(row["LASTMODIFIEDBYUSER"].ToString());
 

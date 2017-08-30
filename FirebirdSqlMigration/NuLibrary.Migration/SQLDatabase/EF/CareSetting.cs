@@ -26,7 +26,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int HyperglycemicLevel { get; set; }
         public int HypoglycemicLevel { get; set; }
         public int InsulinMethod { get; set; }
-        public int DiabetesManagementType { get; set; }
+        public string DiabetesManagementType { get; set; }
         public int InsulinBrand { get; set; }
         public System.DateTime DateModified { get; set; }
         public System.Guid LastUpdatedByUser { get; set; }

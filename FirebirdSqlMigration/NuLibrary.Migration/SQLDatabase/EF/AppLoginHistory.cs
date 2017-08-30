@@ -14,10 +14,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
     public partial class AppLoginHistory
     {
-        public int HistoryId { get; set; }
         public System.Guid UserId { get; set; }
         public System.DateTime LoginDate { get; set; }
         public System.Guid ApplicationId { get; set; }
+        public int HistoryId { get; set; }
     
         public virtual Application Application { get; set; }
     }

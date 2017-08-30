@@ -17,9 +17,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.DateTime SessionDateTime { get; set; }
         public int TimeInSeconds { get; set; }
         public bool IsActive { get; set; }
-        public System.Guid CGMId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
         public System.DateTime Date { get; set; }
+        public long CGMSessionId { get; set; }
     
-        public virtual Pump Pump { get; set; }
+        public virtual ReadingHeader ReadingHeader { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.Guid UserId { get; set; }
         public bool Active { get; set; }
         public System.Guid ReadingKeyId { get; set; }
+        public bool IsCGMData { get; set; }
     
         public virtual ReadingHeader ReadingHeader { get; set; }
     }

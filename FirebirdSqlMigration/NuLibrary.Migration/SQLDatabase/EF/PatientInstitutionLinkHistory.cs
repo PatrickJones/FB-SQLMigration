@@ -12,12 +12,12 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class DataLinkLog
+    public partial class PatientInstitutionLinkHistory
     {
-        public int LinkId { get; set; }
-        public System.Guid InstitutionId { get; set; }
-        public System.Guid PatientId { get; set; }
         public System.DateTime Date { get; set; }
-        public bool LinkingAction { get; set; }
+        public int LinkStatus { get; set; }
+        public System.Guid PatientId { get; set; }
+        public System.Guid InstitutionId { get; set; }
+        public int LinkId { get; set; }
     }
 }

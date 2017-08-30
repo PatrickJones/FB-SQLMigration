@@ -20,7 +20,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int TherapyType { get; set; }
         public int DurationScheduled { get; set; }
         public int DurationCompleted { get; set; }
-        public string Intensity { get; set; }
+        public int Aplitude { get; set; }
+        public int PulseWidth { get; set; }
+        public int Frequency { get; set; }
         public System.Guid ReadingKeyId { get; set; }
         public System.Guid UserId { get; set; }
     

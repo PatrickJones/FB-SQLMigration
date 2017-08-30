@@ -26,90 +26,74 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         }
     
         public virtual DbSet<Application> Applications { get; set; }
-        public virtual DbSet<CareSetting> CareSettings { get; set; }
+        public virtual DbSet<AppLoginHistory> AppLoginHistories { get; set; }
+        public virtual DbSet<AppSetting> AppSettings { get; set; }
+        public virtual DbSet<AppUserSetting> AppUserSettings { get; set; }
+        public virtual DbSet<BasalDelivery> BasalDeliveries { get; set; }
+        public virtual DbSet<BasalDeliveryData> BasalDeliveryDatas { get; set; }
+        public virtual DbSet<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }
+        public virtual DbSet<BGTarget> BGTargets { get; set; }
+        public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
+        public virtual DbSet<BolusCarb> BolusCarbs { get; set; }
+        public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
+        public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
+        public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
+        public virtual DbSet<CGMReminder> CGMReminders { get; set; }
+        public virtual DbSet<CGMSession> CGMSessions { get; set; }
         public virtual DbSet<Check> Checks { get; set; }
         public virtual DbSet<CheckStatu> CheckStatus { get; set; }
         public virtual DbSet<Clinician> Clinicians { get; set; }
+        public virtual DbSet<CorrectionFactor> CorrectionFactors { get; set; }
         public virtual DbSet<DailyTimeSlot> DailyTimeSlots { get; set; }
         public virtual DbSet<DatabaseInfo> DatabaseInfoes { get; set; }
+        public virtual DbSet<DataShareCategory> DataShareCategories { get; set; }
+        public virtual DbSet<DataShareRequestLog> DataShareRequestLogs { get; set; }
         public virtual DbSet<DeviceData> DeviceDatas { get; set; }
+        public virtual DbSet<DeviceSetting> DeviceSettings { get; set; }
         public virtual DbSet<DiabetesControlType> DiabetesControlTypes { get; set; }
         public virtual DbSet<DiabetesManagementData> DiabetesManagementDatas { get; set; }
-        public virtual DbSet<DiabetesManagementType> DiabetesManagementTypes { get; set; }
+        public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
+        public virtual DbSet<Institution> Institutions { get; set; }
         public virtual DbSet<InsulinBrand> InsulinBrands { get; set; }
+        public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
+        public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
         public virtual DbSet<InsulinMethod> InsulinMethods { get; set; }
+        public virtual DbSet<InsulinType> InsulinTypes { get; set; }
         public virtual DbSet<InsuranceAddress> InsuranceAddresses { get; set; }
         public virtual DbSet<InsuranceContact> InsuranceContacts { get; set; }
         public virtual DbSet<InsurancePlan> InsurancePlans { get; set; }
         public virtual DbSet<InsuranceProvider> InsuranceProviders { get; set; }
+        public virtual DbSet<LinkType> LinkTypes { get; set; }
+        public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
+        public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
         public virtual DbSet<PatientAddress> PatientAddresses { get; set; }
         public virtual DbSet<PatientDevice> PatientDevices { get; set; }
-        public virtual DbSet<PatientLinkLog> PatientLinkLogs { get; set; }
+        public virtual DbSet<PatientInstitutionLinkHistory> PatientInstitutionLinkHistories { get; set; }
+        public virtual DbSet<PatientMedication> PatientMedications { get; set; }
         public virtual DbSet<PatientPhoneNumber> PatientPhoneNumbers { get; set; }
+        public virtual DbSet<PatientPhoto> PatientPhotos { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<PayPal> PayPals { get; set; }
+        public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
+        public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
+        public virtual DbSet<Pump> Pumps { get; set; }
+        public virtual DbSet<PumpSetting> PumpSettings { get; set; }
+        public virtual DbSet<ReadingError> ReadingErrors { get; set; }
+        public virtual DbSet<ReadingEvent> ReadingEvents { get; set; }
+        public virtual DbSet<ReadingEventType> ReadingEventTypes { get; set; }
+        public virtual DbSet<ReadingHeader> ReadingHeaders { get; set; }
+        public virtual DbSet<SharedArea> SharedAreas { get; set; }
+        public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<SubscriptionType> SubscriptionTypes { get; set; }
+        public virtual DbSet<TensReading> TensReadings { get; set; }
         public virtual DbSet<TherapyType> TherapyTypes { get; set; }
+        public virtual DbSet<TotalDailyInsulinDelivery> TotalDailyInsulinDeliveries { get; set; }
         public virtual DbSet<UserAuthentication> UserAuthentications { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<InsulinType> InsulinTypes { get; set; }
-        public virtual DbSet<Institution> Institutions { get; set; }
-        public virtual DbSet<Subscription> Subscriptions { get; set; }
-        public virtual DbSet<BasalDelivery> BasalDeliveries { get; set; }
-        public virtual DbSet<BasalDeliveryData> BasalDeliveryDatas { get; set; }
-        public virtual DbSet<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }
-        public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
-        public virtual DbSet<CGMReminder> CGMReminders { get; set; }
-        public virtual DbSet<CGMSession> CGMSessions { get; set; }
-        public virtual DbSet<ReadingError> ReadingErrors { get; set; }
-        public virtual DbSet<ReadingEvent> ReadingEvents { get; set; }
-        public virtual DbSet<ReadingHeader> ReadingHeaders { get; set; }
-        public virtual DbSet<TotalDailyInsulinDelivery> TotalDailyInsulinDeliveries { get; set; }
-        public virtual DbSet<Pump> Pumps { get; set; }
-        public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
-        public virtual DbSet<DeviceSetting> DeviceSettings { get; set; }
-        public virtual DbSet<BolusCarb> BolusCarbs { get; set; }
-        public virtual DbSet<BGTarget> BGTargets { get; set; }
-        public virtual DbSet<CorrectionFactor> CorrectionFactors { get; set; }
-        public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
-        public virtual DbSet<InsulinCorrection> InsulinCorrections { get; set; }
-        public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
-        public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
-        public virtual DbSet<PumpSetting> PumpSettings { get; set; }
-        public virtual DbSet<AppSetting> AppSettings { get; set; }
-        public virtual DbSet<AppUserSetting> AppUserSettings { get; set; }
         public virtual DbSet<TableRowCount> TableRowCounts { get; set; }
-        public virtual DbSet<PayPal> PayPals { get; set; }
-        public virtual DbSet<dbo_Applications_CT> dbo_Applications_CT { get; set; }
-        public virtual DbSet<dbo_AppSettings_CT> dbo_AppSettings_CT { get; set; }
-        public virtual DbSet<dbo_AppUserSettings_CT> dbo_AppUserSettings_CT { get; set; }
-        public virtual DbSet<dbo_CareSettings_CT> dbo_CareSettings_CT { get; set; }
-        public virtual DbSet<dbo_Clinicians_CT> dbo_Clinicians_CT { get; set; }
-        public virtual DbSet<dbo_DailyTimeSlots_CT> dbo_DailyTimeSlots_CT { get; set; }
-        public virtual DbSet<dbo_DiabetesControlTypes_CT> dbo_DiabetesControlTypes_CT { get; set; }
-        public virtual DbSet<dbo_Institutions_CT> dbo_Institutions_CT { get; set; }
-        public virtual DbSet<dbo_InsuranceAddresses_CT> dbo_InsuranceAddresses_CT { get; set; }
-        public virtual DbSet<dbo_InsuranceContacts_CT> dbo_InsuranceContacts_CT { get; set; }
-        public virtual DbSet<dbo_InsurancePlans_CT> dbo_InsurancePlans_CT { get; set; }
-        public virtual DbSet<dbo_InsuranceProviders_CT> dbo_InsuranceProviders_CT { get; set; }
-        public virtual DbSet<dbo_PatientAddresses_CT> dbo_PatientAddresses_CT { get; set; }
-        public virtual DbSet<dbo_PatientPhoneNumbers_CT> dbo_PatientPhoneNumbers_CT { get; set; }
-        public virtual DbSet<dbo_Patients_CT> dbo_Patients_CT { get; set; }
-        public virtual DbSet<dbo_UserAuthentications_CT> dbo_UserAuthentications_CT { get; set; }
-        public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
-        public virtual DbSet<DataLinkLog> DataLinkLogs { get; set; }
-        public virtual DbSet<DataShareCategory> DataShareCategories { get; set; }
-        public virtual DbSet<DataShareRequestLog> DataShareRequestLogs { get; set; }
-        public virtual DbSet<UserPhoto> UserPhotos { get; set; }
-        public virtual DbSet<AppLoginHistory> AppLoginHistories { get; set; }
-        public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
-        public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
-        public virtual DbSet<SharedArea> SharedAreas { get; set; }
-        public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
-        public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
-        public virtual DbSet<TensReading> TensReadings { get; set; }
-        public virtual DbSet<ReadingEventType> ReadingEventTypes { get; set; }
+        public virtual DbSet<CareSetting> CareSettings { get; set; }
     }
 }

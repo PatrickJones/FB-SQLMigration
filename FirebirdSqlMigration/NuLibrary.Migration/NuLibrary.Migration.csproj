@@ -220,61 +220,10 @@
     <Compile Include="SQLDatabase\EF\DatabaseInfo.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SQLDatabase\EF\DataLinkLog.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="SQLDatabase\EF\DataShareCategory.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DataShareRequestLog.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_Applications_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_AppSettings_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_AppUserSettings_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_CareSettings_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_Clinicians_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_DailyTimeSlots_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_DiabetesControlTypes_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_Institutions_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_InsuranceAddresses_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_InsuranceContacts_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_InsurancePlans_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_InsuranceProviders_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_PatientAddresses_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_PatientPhoneNumbers_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_Patients_CT.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\dbo_UserAuthentications_CT.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DeviceData.cs">
@@ -287,9 +236,6 @@
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DiabetesManagementData.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\DiabetesManagementType.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\EndUserLicenseAgreement.cs">
@@ -326,6 +272,9 @@
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsuranceProvider.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\LinkType.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\MigrationHistoryModel.Context.cs">
@@ -376,10 +325,16 @@
     <Compile Include="SQLDatabase\EF\PatientHistory.cs">
       <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SQLDatabase\EF\PatientLinkLog.cs">
+    <Compile Include="SQLDatabase\EF\PatientInstitutionLinkHistory.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientMedication.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientPhoneNumber.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientPhoto.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Payment.cs">
@@ -466,9 +421,6 @@
     <Compile Include="SQLDatabase\EF\UserHistory.cs">
       <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SQLDatabase\EF\UserPhoto.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="SQLDatabase\EF\UserType.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -523,10 +475,6 @@
     <None Include="SQLDatabase\EF\AspnetDbModel.edmx.diagram">
       <DependentUpon>AspnetDbModel.edmx</DependentUpon>
     </None>
-    <EntityDeploy Include="SQLDatabase\EF\NumedicsGlobalModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>NumedicsGlobalModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <EntityDeploy Include="SQLDatabase\EF\MigrationHistoryModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MigrationHistoryModel.Designer.cs</LastGenOutput>
@@ -534,6 +482,10 @@
     <None Include="SQLDatabase\EF\MigrationHistoryModel.edmx.diagram">
       <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="SQLDatabase\EF\NumedicsGlobalModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>NumedicsGlobalModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="SQLDatabase\EF\NumedicsGlobalModel.edmx.diagram">
       <DependentUpon>NumedicsGlobalModel.edmx</DependentUpon>
     </None>

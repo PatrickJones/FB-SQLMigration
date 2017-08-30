@@ -17,7 +17,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Pump()
         {
-            this.CGMReminders = new HashSet<CGMReminder>();
             this.PumpPrograms = new HashSet<PumpProgram>();
             this.PumpSettings = new HashSet<PumpSetting>();
         }
@@ -33,9 +32,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.Guid UserId { get; set; }
         public System.Guid PumpKeyId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CGMReminder> CGMReminders { get; set; }
-        public virtual CGMSession CGMSession { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PumpProgram> PumpPrograms { get; set; }
         public virtual ReadingHeader ReadingHeader { get; set; }

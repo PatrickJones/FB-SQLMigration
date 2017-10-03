@@ -276,6 +276,37 @@ namespace MigrationApp
             MigrationVariables.CurrentSiteId = selectedSiteId;
             tableNames = MigrationVariables.FirebirdTableNames.ToList();
 
+            switch (cbxHistory.SelectedIndex)
+            {
+                case 0:
+                    MigrationVariables.DataHistoryRange = 1;
+                    break;
+                case 1:
+                    MigrationVariables.DataHistoryRange = 30;
+                    break;
+                case 2:
+                    MigrationVariables.DataHistoryRange = 60;
+                    break;
+                case 3:
+                    MigrationVariables.DataHistoryRange = 90;
+                    break;
+                case 4:
+                    MigrationVariables.DataHistoryRange = 180;
+                    break;
+                case 5:
+                    MigrationVariables.DataHistoryRange = 365;
+                    break;
+                case 6:
+                    MigrationVariables.DataHistoryRange = 365 * 2;
+                    break;
+                case 7:
+                    MigrationVariables.DataHistoryRange = 365 * 3;
+                    break;
+                default:
+                    MigrationVariables.DataHistoryRange = 90;
+                    break;
+            }
+
             //*TESTING
             tableNames = GetFilteredTableNames();
             MigrationVariables.FirebirdTableNames.Clear();

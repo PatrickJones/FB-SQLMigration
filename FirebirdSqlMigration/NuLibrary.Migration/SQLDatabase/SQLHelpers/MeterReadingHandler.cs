@@ -64,29 +64,43 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private void ExtractSettings(ICollection<DataRow> rows)
         {
-           Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var ds = new DeviceSetting
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+
+                    if (!keyId.Equals(Guid.Empty))
                     {
-                        ReadingKeyId = keyId,
-                        Name = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString(),
-                        Value = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString(),
-                        UserId = userId,
-                        ReadingDate = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString())
-               };
+                        var ds = new DeviceSetting
+                        {
+                            ReadingKeyId = keyId,
+                            Name = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString(),
+                            Value = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString(),
+                            UserId = userId,
+                            ReadingDate = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString())
+                        };
 
-                    DeviceSettings.Add(ds);
+                        DeviceSettings.Add(ds);
+                    }
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "DEVICESETTINGS", typeof(DeviceSetting), String.Empty, "Failed to map User Setting reading, unable to parse key id.");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                   var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                   MappingStatistics.LogFailedMapping("METERREADING", primeKey, "DEVICESETTINGS", typeof(DeviceSetting), JsonConvert.SerializeObject(row), "Failed to map User Setting reading, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
 
             OnUserSettingsExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }
@@ -99,131 +113,159 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private void ExtractNutrition(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
-                string eventSubType = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString();
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+                    string eventSubType = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString();
 
-                    var nt = new NutritionReading
+                    if (!keyId.Equals(Guid.Empty))
                     {
-                        ReadingDateTime = date,
-                        ReadingKeyId = keyId,
-                        UserId = userId
-                    };
+                        var date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
 
-                    bool canAdd = true;
-                    var cpValue = (row["CLINIPROVALUE"] is DBNull) ? 0 : mu.ParseDouble(row["CLINIPROVALUE"].ToString());
+                        var nt = new NutritionReading
+                        {
+                            ReadingDateTime = date,
+                            ReadingKeyId = keyId,
+                            UserId = userId
+                        };
 
-                    switch (eventSubType)
-                    {
-                        case "NUT_CARBS":
-                            nt.Carbohydrates = cpValue;
-                            break;
-                        case "NUT_FAT":
-                            nt.Fat = cpValue;
-                            break;
-                        case "NUT_CAL":
-                            nt.Calories = cpValue;
-                            break;
-                        case "NUT_PROT":
-                            nt.Protien = cpValue;
-                            break;
-                        default:
-                            canAdd = false;
-                            NoReadingTypeMatch(row);
-                            break;
+                        bool canAdd = true;
+                        var cpValue = (row["CLINIPROVALUE"] is DBNull) ? 0 : mu.ParseDouble(row["CLINIPROVALUE"].ToString());
+
+                        switch (eventSubType)
+                        {
+                            case "NUT_CARBS":
+                                nt.Carbohydrates = cpValue;
+                                break;
+                            case "NUT_FAT":
+                                nt.Fat = cpValue;
+                                break;
+                            case "NUT_CAL":
+                                nt.Calories = cpValue;
+                                break;
+                            case "NUT_PROT":
+                                nt.Protien = cpValue;
+                                break;
+                            default:
+                                canAdd = false;
+                                NoReadingTypeMatch(row);
+                                break;
+                        }
+
+                        if (canAdd)
+                        {
+                            NutritionReadings.Add(nt);
+                        }
                     }
-
-                    if (canAdd)
+                    else
                     {
-                        NutritionReadings.Add(nt);
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "NUTRITIONREADINGS", typeof(NutritionReading), String.Empty, "Failed to map nutrition reading, unable to parse key id.");
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "NUTRITIONREADINGS", typeof(NutritionReading), JsonConvert.SerializeObject(row), "Failed to map nutrition reading, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
 
             OnNutritionExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }
 
         private void ExtractPumpEvents(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
-                string eventSubType1 = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString();
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var pe = new ReadingEvent
-                    {
-                        EventTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
-                        ReadingKeyId = keyId,
-                        EventValue = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString(),
-                        UserId = userId,
-                        StartTime = new DateTime(1800, 1, 1),
-                        StopTime = new DateTime(1800, 1, 1),
-                        ResumeTime = new DateTime(1800, 1, 1)
-                    };
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+                    string eventSubType1 = (row["EVENTSUBTYPE_1"] is DBNull) ? String.Empty : row["EVENTSUBTYPE_1"].ToString();
 
-                    switch (eventSubType1.ToLower())
+                    if (!keyId.Equals(Guid.Empty))
                     {
-                        case "activate":
-                            pe.EventType = (int)ReadingEventType.Activate;
-                            break;
-                        case "date_change":
-                            pe.EventType = (int)ReadingEventType.DateChange;
-                            break;
-                        case "deactivate":
-                            pe.EventType = (int)ReadingEventType.Deactivate;
-                            break;
-                        case "remote_hazard":
-                            pe.EventType = (int)ReadingEventType.RemoteHazard;
-                            break;
-                        case "hist_alarm":
-                            pe.EventType = (int)ReadingEventType.AlarmHistory;
-                            break;
-                        case "download":
-                            pe.EventType = (int)ReadingEventType.Download;
-                            break;
-                        case "occlusion":
-                            pe.EventType = (int)ReadingEventType.Occlusion;
-                            break;
-                        case "pump_advise":
-                            pe.EventType = (int)ReadingEventType.PumpAdvise;
-                            break;
-                        case "pump_hazard":
-                            pe.EventType = (int)ReadingEventType.PumpHazard;
-                            break;
-                        case "time_adjust":
-                            pe.EventType = (int)ReadingEventType.TimeChange;
-                            break;
-                        case "suspended":
-                            pe.EventType = (int)ReadingEventType.Suspend;
-                            break;
-                        case "resume":
-                            pe.EventType = (int)ReadingEventType.Resume;
-                            break;
-                        default:
-                            pe.EventType = 0;
-                            break;
+                        var pe = new ReadingEvent
+                        {
+                            EventTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
+                            ReadingKeyId = keyId,
+                            EventValue = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString(),
+                            UserId = userId,
+                            StartTime = new DateTime(1800, 1, 1),
+                            StopTime = new DateTime(1800, 1, 1),
+                            ResumeTime = new DateTime(1800, 1, 1)
+                        };
+
+                        switch (eventSubType1.ToLower())
+                        {
+                            case "activate":
+                                pe.EventType = (int)ReadingEventType.Activate;
+                                break;
+                            case "date_change":
+                                pe.EventType = (int)ReadingEventType.DateChange;
+                                break;
+                            case "deactivate":
+                                pe.EventType = (int)ReadingEventType.Deactivate;
+                                break;
+                            case "remote_hazard":
+                                pe.EventType = (int)ReadingEventType.RemoteHazard;
+                                break;
+                            case "hist_alarm":
+                                pe.EventType = (int)ReadingEventType.AlarmHistory;
+                                break;
+                            case "download":
+                                pe.EventType = (int)ReadingEventType.Download;
+                                break;
+                            case "occlusion":
+                                pe.EventType = (int)ReadingEventType.Occlusion;
+                                break;
+                            case "pump_advise":
+                                pe.EventType = (int)ReadingEventType.PumpAdvise;
+                                break;
+                            case "pump_hazard":
+                                pe.EventType = (int)ReadingEventType.PumpHazard;
+                                break;
+                            case "time_adjust":
+                                pe.EventType = (int)ReadingEventType.TimeChange;
+                                break;
+                            case "suspended":
+                                pe.EventType = (int)ReadingEventType.Suspend;
+                                break;
+                            case "resume":
+                                pe.EventType = (int)ReadingEventType.Resume;
+                                break;
+                            default:
+                                pe.EventType = 0;
+                                break;
+                        }
+
+                        ReadingEvents.Add(pe);
                     }
-
-                    ReadingEvents.Add(pe);
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "READINGEVENT", typeof(ReadingEvent), String.Empty, "Failed to map reading event, unable to parse key id.");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "READINGEVENT", typeof(ReadingEvent), JsonConvert.SerializeObject(row), "Failed to map reading event, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
 
             OnPumpEventsExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }
@@ -249,232 +291,303 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private void ExtractTermBolus(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var bd = new BolusDelivery();
-                    var dd = new BolusDeliveryData();
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
 
-                    dd.Name = "TERM_BOLUS";
-                    dd.Value = (row["READINGNOTE"] is DBNull) ? String.Empty : row["READINGNOTE"].ToString();
-                    dd.Date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+                    if (!keyId.Equals(Guid.Empty))
+                    {
+                        var bd = new BolusDelivery();
+                        var dd = new BolusDeliveryData();
 
-                    bd.ReadingKeyId = keyId;
-                    bd.UserId = userId;
-                    bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
-                    bd.AmountDelivered = 0;
-                    bd.AmountSuggested = 0;
-                    bd.Duration = 0;
-                    bd.Type = "BolusDeliveryData";
-                    bd.BolusDeliveryDatas.Add(dd);
+                        dd.Name = "TERM_BOLUS";
+                        dd.Value = (row["READINGNOTE"] is DBNull) ? String.Empty : row["READINGNOTE"].ToString();
+                        dd.Date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
 
-                    BolusDeliveries.Add(bd);
+                        bd.ReadingKeyId = keyId;
+                        bd.UserId = userId;
+                        bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+                        bd.AmountDelivered = 0;
+                        bd.AmountSuggested = 0;
+                        bd.Duration = 0;
+                        bd.Type = "BolusDeliveryData";
+                        bd.BolusDeliveryDatas.Add(dd);
+
+                        BolusDeliveries.Add(bd);
+                    }
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BOLUSDELIVERY", typeof(BolusDelivery), String.Empty, "Failed to map TERM_BOLUS reading, unable to parse key id.");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BOLUS reading, unable to parse key id.");
+                    throw;
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
         }
 
         private void ExtractTermBasal(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var bd = new BasalDelivery();
-                    var dd = new BasalDeliveryData();
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
 
-                    dd.Name = "TERM_BASAL";
-                    dd.Value = (row["READINGNOTE"] is DBNull) ? String.Empty : row["READINGNOTE"].ToString();
-                    dd.Date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+                    if (!keyId.Equals(Guid.Empty))
+                    {
+                        var bd = new BasalDelivery();
+                        var dd = new BasalDeliveryData();
 
-                    bd.ReadingKeyId = keyId;
-                    bd.UserId = userId;
-                    bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
-                    bd.AmountDelivered = 0;
-                    bd.DeliveryRate = 0;
-                    bd.Duration = String.Empty;
-                    bd.IsTemp = false;
-                    bd.BasalDeliveryDatas.Add(dd);
+                        dd.Name = "TERM_BASAL";
+                        dd.Value = (row["READINGNOTE"] is DBNull) ? String.Empty : row["READINGNOTE"].ToString();
+                        dd.Date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
 
-                    BasalDeliveries.Add(bd);
+                        bd.ReadingKeyId = keyId;
+                        bd.UserId = userId;
+                        bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+                        bd.AmountDelivered = 0;
+                        bd.DeliveryRate = 0;
+                        bd.Duration = String.Empty;
+                        bd.IsTemp = false;
+                        bd.BasalDeliveryDatas.Add(dd);
+
+                        BasalDeliveries.Add(bd);
+                    }
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BASALDELIVERY", typeof(BasalDelivery), String.Empty, "Failed to map TERM_BASAL reading, unable to parse key id.");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map TERM_BASAL reading, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
         }
 
         private void ExtractTdd(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var bolus = row["READINGNOTE"].ToString().Split().ElementAt(0).Split('=').LastOrDefault();
-                    var bolusConf = row["READINGNOTE"].ToString().Split().ElementAt(1).Split('=').LastOrDefault();
-                    var basal = row["READINGNOTE"].ToString().Split().ElementAt(3).Split('=').LastOrDefault();
-                    var basalConf = row["READINGNOTE"].ToString().Split().ElementAt(4).Split('=').LastOrDefault();
-                    var total = row["READINGNOTE"].ToString().Split().ElementAt(6).Split('=').LastOrDefault();
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
 
-                    bool ptGood = Double.TryParse(total, out double pt);
-                    bool puGood = Double.TryParse(bolus, out double pu);
-                    bool paGood = Double.TryParse(basal, out double pa);
-
-                    var td = new TotalDailyInsulinDelivery
+                    if (!keyId.Equals(Guid.Empty))
                     {
-                        TotalDelivered = (ptGood) ? pt : 0,
-                        BasalDelivered = (paGood) ? pa : 0,
-                        Suspended = false,
-                        TempActivated = false,
-                        Valid = (string.Equals(bolusConf, "t", StringComparison.CurrentCultureIgnoreCase) && string.Equals(basalConf, "t", StringComparison.CurrentCultureIgnoreCase)) ? true : false,
-                        BolusDelivered = (puGood) ? pu : 0,
-                        Date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
-                        ReadingKeyId = keyId,
-                        UserId = userId
-                    };
+                        var bolus = row["READINGNOTE"].ToString().Split().ElementAt(0).Split('=').LastOrDefault();
+                        var bolusConf = row["READINGNOTE"].ToString().Split().ElementAt(1).Split('=').LastOrDefault();
+                        var basal = row["READINGNOTE"].ToString().Split().ElementAt(3).Split('=').LastOrDefault();
+                        var basalConf = row["READINGNOTE"].ToString().Split().ElementAt(4).Split('=').LastOrDefault();
+                        var total = row["READINGNOTE"].ToString().Split().ElementAt(6).Split('=').LastOrDefault();
 
-                    TotalDailyInsulinDeliveries.Add(td);
+                        bool ptGood = Double.TryParse(total, out double pt);
+                        bool puGood = Double.TryParse(bolus, out double pu);
+                        bool paGood = Double.TryParse(basal, out double pa);
+
+                        var td = new TotalDailyInsulinDelivery
+                        {
+                            TotalDelivered = (ptGood) ? pt : 0,
+                            BasalDelivered = (paGood) ? pa : 0,
+                            Suspended = false,
+                            TempActivated = false,
+                            Valid = (string.Equals(bolusConf, "t", StringComparison.CurrentCultureIgnoreCase) && string.Equals(basalConf, "t", StringComparison.CurrentCultureIgnoreCase)) ? true : false,
+                            BolusDelivered = (puGood) ? pu : 0,
+                            Date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
+                            ReadingKeyId = keyId,
+                            UserId = userId
+                        };
+
+                        TotalDailyInsulinDeliveries.Add(td);
+                    }
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "TOTALDAILYINSULINDELIVERY", typeof(TotalDailyInsulinDelivery), String.Empty, "Failed to map TotalDailyInsulinDelivery reading, unable to parse key id.");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "TOTALDAILYINSULINDELIVERY", typeof(TotalDailyInsulinDelivery), JsonConvert.SerializeObject(row), "Failed to map TotalDailyInsulinDelivery reading, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
         }
 
         private void ExtractBasal(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var value = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString();
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
 
-                    bool ptGood = Double.TryParse(value, out double rate);
+                    if (!keyId.Equals(Guid.Empty))
+                    {
+                        var value = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString();
 
-                    var bd = new BasalDelivery();
+                        bool ptGood = Double.TryParse(value, out double rate);
 
-                    bd.ReadingKeyId = keyId;
-                    bd.UserId = userId;
-                    bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
-                    bd.AmountDelivered = 0; // 0 means you must group times and multiple by rate programmaically
-                    bd.DeliveryRate = rate;
-                    bd.Duration = String.Empty;
-                    bd.IsTemp = false;
+                        var bd = new BasalDelivery();
 
-                    BasalDeliveries.Add(bd);
+                        bd.ReadingKeyId = keyId;
+                        bd.UserId = userId;
+                        bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+                        bd.AmountDelivered = 0; // 0 means you must group times and multiple by rate programmaically
+                        bd.DeliveryRate = rate;
+                        bd.Duration = String.Empty;
+                        bd.IsTemp = false;
+
+                        BasalDeliveries.Add(bd);
+                    }
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BASALDELIVERY", typeof(BasalDelivery), String.Empty, "Failed to map BASAL reading, unable to parse key id.");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BASALDELIVERY", typeof(BasalDelivery), JsonConvert.SerializeObject(row), "Failed to map BASAL reading, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
         }
 
         private void ExtractBolus(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
-                DateTime date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    Dictionary<string, string> bolusData = GetBolusData(row["METERSENT"].ToString());
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+                    DateTime date = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
 
-
-                    var carb = new BolusCarb
+                    if (!keyId.Equals(Guid.Empty))
                     {
-                        Date = date,
-                        CarbValue = mu.ParseInt(bolusData["Carbs"])
-                    };
-
-                    var bgTar = new BGTarget
-                    {
-                        Date = date,
-                        TargetBG = mu.ParseInt(bolusData["Target BG"])
-                    };
-
-                    var ic = new InsulinCarbRatio
-                    {
-                        Date = date,
-                        ICRatio = mu.ParseInt(bolusData["IC Ratio"])
-                    };
-
-                    var cf = new CorrectionFactor
-                    {
-                        Date = date,
-                        CorrectionFactorValue = mu.ParseInt(bolusData["Correct"])
-                    };
-
-                    var iCorr = new InsulinCorrection
-                    {
-                        Date = date,
-                        InsulinCorrectionValue = mu.ParseInt(bolusData["Correction"]),
-                        InsulinCorrectionAbove = mu.ParseInt(bolusData["Correction Above"])
-                    };
-
-                    var bd = new BolusDelivery();
-
-                    double dCarbs = mu.ParseDouble(bolusData["Carbs"]);
-                    double dIC = mu.ParseDouble(bolusData["IC Ratio"]);
-
-                    bd.ReadingKeyId = keyId;
-                    bd.UserId = userId;
-                    bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
-                    bd.AmountDelivered = mu.ParseDouble(bolusData["Total"]);
-                    bd.AmountSuggested = (dCarbs == 0.0) ? 0.0 : (dCarbs / dIC);
-                    bd.Duration = mu.ParseInt(bolusData["Extended Duration"]);
-                    bd.Type = "BolusDeliveryData";
+                        Dictionary<string, string> bolusData = GetBolusData(row["METERSENT"].ToString());
 
 
-                    bolusData.Remove("Carbs");
-                    bolusData.Remove("Target BG");
-                    bolusData.Remove("IC Ratio");
-                    bolusData.Remove("Correct");
-                    bolusData.Remove("Correction");
-                    bolusData.Remove("Correct Above");
-                    for (int i = 0; i < bolusData.Count; i++)
-                    {
-                        bd.BolusDeliveryDatas.Add(new BolusDeliveryData
+                        var carb = new BolusCarb
                         {
                             Date = date,
-                            Name = bolusData.ElementAt(i).Key,
-                            Value = (String.IsNullOrEmpty(bolusData.ElementAt(i).Value)) ? String.Empty : bolusData.ElementAt(i).Value.Trim()
-                        });
+                            CarbValue = mu.ParseInt(bolusData["Carbs"])
+                        };
+
+                        var bgTar = new BGTarget
+                        {
+                            Date = date,
+                            TargetBG = mu.ParseInt(bolusData["Target BG"])
+                        };
+
+                        var ic = new InsulinCarbRatio
+                        {
+                            Date = date,
+                            ICRatio = mu.ParseInt(bolusData["IC Ratio"])
+                        };
+
+                        var cf = new CorrectionFactor
+                        {
+                            Date = date,
+                            CorrectionFactorValue = mu.ParseInt(bolusData["Correct"])
+                        };
+
+                        var iCorr = new InsulinCorrection
+                        {
+                            Date = date,
+                            InsulinCorrectionValue = mu.ParseInt(bolusData["Correction"]),
+                            InsulinCorrectionAbove = mu.ParseInt(bolusData["Correction Above"])
+                        };
+
+                        var bd = new BolusDelivery();
+
+                        double dCarbs = mu.ParseDouble(bolusData["Carbs"]);
+                        double dIC = mu.ParseDouble(bolusData["IC Ratio"]);
+
+                        bd.ReadingKeyId = keyId;
+                        bd.UserId = userId;
+                        bd.StartDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString());
+                        bd.AmountDelivered = mu.ParseDouble(bolusData["Total"]);
+                        bd.AmountSuggested = (dCarbs == 0.0) ? 0.0 : (dCarbs / dIC);
+                        bd.Duration = mu.ParseInt(bolusData["Extended Duration"]);
+                        bd.Type = "BolusDeliveryData";
+
+
+                        bolusData.Remove("Carbs");
+                        bolusData.Remove("Target BG");
+                        bolusData.Remove("IC Ratio");
+                        bolusData.Remove("Correct");
+                        bolusData.Remove("Correction");
+                        bolusData.Remove("Correct Above");
+                        for (int i = 0; i < bolusData.Count; i++)
+                        {
+                            bd.BolusDeliveryDatas.Add(new BolusDeliveryData
+                            {
+                                Date = date,
+                                Name = bolusData.ElementAt(i).Key,
+                                Value = (String.IsNullOrEmpty(bolusData.ElementAt(i).Value)) ? String.Empty : bolusData.ElementAt(i).Value.Trim()
+                            });
+                        }
+
+                        bd.BGTarget = bgTar;
+                        bd.BolusCarb = carb;
+                        bd.InsulinCarbRatio = ic;
+                        bd.InsulinCorrection = iCorr;
+                        bd.CorrectionFactor = cf;
+
+                        BolusDeliveries.Add(bd);
+                    }
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BOLUSDELIVERY", typeof(BolusDelivery), String.Empty, "Failed to map BOLUS reading, unable to parse key id.");
                     }
 
-                    bd.BGTarget = bgTar;
-                    bd.BolusCarb = carb;
-                    bd.InsulinCarbRatio = ic;
-                    bd.InsulinCorrection = iCorr;
-                    bd.CorrectionFactor = cf;
-
-                    BolusDeliveries.Add(bd);
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BOLUSDELIVERY", typeof(BolusDelivery), JsonConvert.SerializeObject(row), "Failed to map BOLUS reading, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
         }
 
         private Dictionary<string, string> GetBolusData(string row)
@@ -543,30 +656,45 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
         private void ExtractBg(ICollection<DataRow> rows)
         {
-            Parallel.ForEach(rows, row => {
-                Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
-                Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+            var exceptions = new ConcurrentQueue<Exception>();
 
-                if (!keyId.Equals(Guid.Empty))
+            Parallel.ForEach(rows, (row) => {
+                try
                 {
-                    var bg = new BloodGlucoseReading
+                    Guid keyId = MemoryMappings.GetReadingHeaderKeyId(row["DOWNLOADKEYID"].ToString());
+                    Guid userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, row["PATIENTKEYID"].ToString());
+
+                    if (!keyId.Equals(Guid.Empty))
                     {
-                        Active = true,
-                        ReadingDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
-                        ReadingKeyId = keyId,
-                        Units = (row["METERUNITS"] is DBNull) ? String.Empty : row["METERUNITS"].ToString(),
-                        Value = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString(),
-                        UserId = userId
-                    };
+                        var bg = new BloodGlucoseReading
+                        {
+                            Active = true,
+                            ReadingDateTime = (row["READINGDATETIME"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["READINGDATETIME"].ToString()),
+                            ReadingKeyId = keyId,
+                            Units = (row["METERUNITS"] is DBNull) ? String.Empty : row["METERUNITS"].ToString(),
+                            Value = (row["CLINIPROVALUE"] is DBNull) ? String.Empty : row["CLINIPROVALUE"].ToString(),
+                            UserId = userId,
+                            IsCGMData = false
+                        };
 
-                    BloodGlucoseReadings.Add(bg);
+                        BloodGlucoseReadings.Add(bg);
+                    }
+                    else
+                    {
+                        var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
+                        MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BLOODGLUCOSEREADING", typeof(BloodGlucoseReading), String.Empty, "Failed to map BG reading, unable to parse key id.");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    var primeKey = $"{row["DOWNLOADKEYID"].ToString()}-{row["SEQ"].ToString()}";
-                    MappingStatistics.LogFailedMapping("METERREADING", primeKey, "BLOODGLUCOSEREADING", typeof(BloodGlucoseReading), JsonConvert.SerializeObject(row), "Failed to map BG reading, unable to parse key id.");
+                    exceptions.Enqueue(e);
                 }
             });
+
+            if (exceptions.Count > 0)
+            {
+                throw new AggregateException(exceptions);
+            }
 
             OnBGExtractionEvent(new MeterReadingHandlerEventArgs(true));
         }

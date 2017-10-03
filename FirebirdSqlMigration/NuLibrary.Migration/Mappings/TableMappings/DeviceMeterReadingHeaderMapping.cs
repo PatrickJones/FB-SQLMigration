@@ -168,8 +168,12 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                             }
 
+                            bool alreadyMapped = false;
+
                             if (CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
                             {
+                                alreadyMapped = true;
+
                                 var device = CompletedMappings.Where(w => w.SerialNumber == dev.SerialNumber).FirstOrDefault();
                                 device.ReadingHeaders.Add(mrh);
                             }
@@ -178,17 +182,22 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 dev.ReadingHeaders.Add(mrh);
                             }
 
-                            MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId.Trim(), mrh.ReadingKeyId);
-
-                            if (CanAddToContext(dev.UserId, dev.SerialNumber))
+                            if (CanAddToContext(dev.UserId, dev.SerialNumber) && !alreadyMapped)
                             {
                                 if (!CompletedMappings.Any(a => a.SerialNumber == dev.SerialNumber))
                                 {
                                     CompletedMappings.Add(dev);
                                 }
+
+                                MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId.Trim(), mrh.ReadingKeyId);
                             }
                             else
                             {
+                                if (alreadyMapped && !String.IsNullOrEmpty(dev.SerialNumber))
+                                {
+                                    MemoryMappings.AddReadingHeaderkeyId(mrh.LegacyDownloadKeyId.Trim(), mrh.ReadingKeyId);
+                                }
+
                                 var fr = (dev.UserId == Guid.Empty) ? "Device has no corresponding user." : (String.IsNullOrEmpty(dev.SerialNumber)) ? "Device has no serial number recorded." : "Device already assigned to user.";
 
                                 MappingStatistics.LogFailedMapping("METERREADERHEADER", row["DOWNLOADKEYID"].ToString(), "PatientDevices", typeof(PatientDevice), JsonConvert.SerializeObject(dev), fr);

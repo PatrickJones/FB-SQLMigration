@@ -194,6 +194,11 @@ namespace NuLibrary.Migration.Mappings
                 {
                     var instance = (MeterReadingMapping)mapInstances[11].Value;
                     instance.CreateDeviceMeterReadingMapping();
+
+                    while (!instance.AllExtractionsComplete)
+                    {
+
+	                }
                 })
             };
 

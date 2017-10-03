@@ -41,12 +41,26 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public int RecordCount = 0;
         public int FailedCount = 0;
 
+        public bool BgExtractionComplete = false;
+        public bool NutritionExtractionComplete = false;
+        public bool PumpDeliveryExtractionComplete = false;
+        public bool PumpEventsExtractionComplete = false;
+        public bool UserSettingsExtractionComplete = false;
+
+        public bool AllExtractionsComplete
+        {
+            get
+            {
+                return (BgExtractionComplete && NutritionExtractionComplete && PumpDeliveryExtractionComplete && PumpEventsExtractionComplete && UserSettingsExtractionComplete) ? true : false;
+            }
+        }
+
         public void CreateDeviceMeterReadingMapping()
         {
             try
             {
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
-                RecordCount = TableAgent.RowCount;
+                 RecordCount = TableAgent.RowCount;
 
                 DataRow[] rowArray = new DataRow[dataSet.Count];
                 dataSet.CopyTo(rowArray, 0);
@@ -87,10 +101,12 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var q = from cm in CompletedBGMappings
                         from ps in mu.GetPatients()
                         where cm.UserId == ps.UserId
-                        select cm;
+                        select cm; 
 
                 TransactionManager.DatabaseContext.BloodGlucoseReadings.AddRange(q);
-                stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<BloodGlucoseReading>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+                stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<BloodGlucoseReading>()
+                    .Where(w => w.State == System.Data.Entity.EntityState.Added)
+                    .Count();
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
 
@@ -275,7 +291,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error saving Nutrition Reading mapped entity", e);
             }
-        }
+        } 
 
         private void SaveBolusDeliveries()
         {
@@ -328,10 +344,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedDeviceSettingsMappings.AddRange(handler.DeviceSettings);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "DeviceSettings", CompletedDeviceSettingsMappings.Count, FailedCount);
+                var fc = MappingStatistics.FailedMappingCollection.Where(w => w.ObjectType == typeof(DeviceSetting)).Count();
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "DeviceSettings", CompletedDeviceSettingsMappings.Count, fc);
+
+                UserSettingsExtractionComplete = true;
             }
             else
             {
+                UserSettingsExtractionComplete = true;
                 throw new Exception($"Extraction incomplete for {e.ExtractionName}");
             }
         }
@@ -341,10 +361,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedReadingEventMappings.AddRange(handler.ReadingEvents);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "ReadingEvents", CompletedReadingEventMappings.Count, FailedCount);
+                var fc = MappingStatistics.FailedMappingCollection.Where(w => w.ObjectType == typeof(ReadingEvent)).Count();
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "ReadingEvents", CompletedReadingEventMappings.Count, fc);
+
+                PumpEventsExtractionComplete = true;
             }
             else
             {
+                PumpEventsExtractionComplete = true;
                 throw new Exception($"Extraction incomplete for {e.ExtractionName}");
             }
         }
@@ -357,12 +381,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 CompletedBasalMappings.AddRange(handler.BasalDeliveries);
                 CompletedTDDMappings.AddRange(handler.TotalDailyInsulinDeliveries);
 
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BolusDelivery", CompletedBolusMappings.Count, FailedCount);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BasalDelivery", CompletedBasalMappings.Count, FailedCount);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "TotalDailyInsulinDeliveries", CompletedTDDMappings.Count, FailedCount);
+                var fcBol = MappingStatistics.FailedMappingCollection.Where(w => w.ObjectType == typeof(BolusDelivery)).Count();
+                var fcBas = MappingStatistics.FailedMappingCollection.Where(w => w.ObjectType == typeof(BasalDelivery)).Count();
+                var fcTdd = MappingStatistics.FailedMappingCollection.Where(w => w.ObjectType == typeof(TotalDailyInsulinDelivery)).Count();
+
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BolusDelivery", CompletedBolusMappings.Count, fcBol);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BasalDelivery", CompletedBasalMappings.Count, fcBas);
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "TotalDailyInsulinDeliveries", CompletedTDDMappings.Count, fcTdd);
+
+                PumpDeliveryExtractionComplete = true;
             }
             else
             {
+                PumpDeliveryExtractionComplete = true;
                 throw new Exception($"Extraction incomplete for {e.ExtractionName}");
             }
         }
@@ -372,10 +403,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedNutritionMappings.AddRange(handler.NutritionReadings);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "NutritionReadings", CompletedNutritionMappings.Count, FailedCount);
+                var fc = MappingStatistics.FailedMappingCollection.Where(w => w.ObjectType == typeof(NutritionReading)).Count();
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "NutritionReadings", CompletedNutritionMappings.Count, fc);
+
+                NutritionExtractionComplete = true;
             }
             else
             {
+                NutritionExtractionComplete = true;
                 throw new Exception($"Extraction incomplete for {e.ExtractionName}");
             }
         }
@@ -385,10 +420,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             if (handler != null && e.ExtractionSuccessful)
             {
                 CompletedBGMappings.AddRange(handler.BloodGlucoseReadings);
-                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BloodGlucoseReadings", CompletedBGMappings.Count, FailedCount);
+                var fc = MappingStatistics.FailedMappingCollection.Where(w => w.ObjectType == typeof(BloodGlucoseReading)).Count();
+                MappingStatistics.LogMappingStat("METERREADING", RecordCount, "BloodGlucoseReadings", CompletedBGMappings.Count, fc);
+
+                BgExtractionComplete = true;
             }
             else
             {
+                BgExtractionComplete = true;
                 throw new Exception($"Extraction incomplete for {e.ExtractionName}");
             }
         }

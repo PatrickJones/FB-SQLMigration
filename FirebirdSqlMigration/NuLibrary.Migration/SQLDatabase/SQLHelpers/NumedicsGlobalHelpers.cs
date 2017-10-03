@@ -64,6 +64,16 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
             return (cPSiteId.HasValue) ? db.Institutions.Where(w => w.LegacySiteId == cPSiteId.Value).Select(s => s.InstitutionId).FirstOrDefault() : Guid.Empty;
         }
 
+        public int GetInstitutionAddressId(int? cPSiteId)
+        {
+            return (cPSiteId.HasValue) ? db.Institutions
+                .Include(i => i.InstitutionAddresses)
+                .Where(w => w.LegacySiteId == cPSiteId.Value)
+                .FirstOrDefault()
+                .InstitutionAddresses.FirstOrDefault()
+                .AddressId : 0;
+        }
+
         public int GetInsuranceCompanyId(string companyKeyId)
         {
             var kv = MemoryMappings.GetAllCompanies().Where(n => n.Key == companyKeyId).FirstOrDefault();

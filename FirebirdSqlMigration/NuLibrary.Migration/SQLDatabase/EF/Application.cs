@@ -34,6 +34,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string SupportNumber { get; set; }
         public string SupportEmail { get; set; }
         public string SupportAvailability { get; set; }
+        public string ApplicationOwner { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AppLoginHistory> AppLoginHistories { get; set; }

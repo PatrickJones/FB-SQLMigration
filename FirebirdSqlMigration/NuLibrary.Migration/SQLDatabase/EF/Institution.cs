@@ -18,6 +18,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public Institution()
         {
             this.Clinicians = new HashSet<Clinician>();
+            this.InstitutionAddresses = new HashSet<InstitutionAddress>();
             this.Subscriptions = new HashSet<Subscription>();
             this.Patients = new HashSet<Patient>();
         }
@@ -39,6 +40,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Clinician> Clinicians { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InstitutionAddress> InstitutionAddresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Subscription> Subscriptions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -12,14 +12,12 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientPhoto
+    public partial class EmailUsernameView
     {
-        public int PhotoId { get; set; }
-        public string Name { get; set; }
-        public byte[] Photo { get; set; }
         public System.Guid UserId { get; set; }
-        public bool IsClinical { get; set; }
-    
-        public virtual Patient Patient { get; set; }
+        public int UserType { get; set; }
+        public System.DateTime CreationDate { get; set; }
+        public string ClinicianEmail { get; set; }
+        public string PatientEmail { get; set; }
     }
 }

@@ -47,7 +47,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             UserId = nHelper.ValidGuid(adUser.UserId),
                             Firstname = "No Name",
                             Lastname = "No Name",
-                            StateLicenseNumber = "No License Number"
+                            StateLicenseNumber = "No License Number",
+                            Email = "",
+                            InstitutionId = nHelper.GetInstitutionId(MigrationVariables.CurrentSiteId),
+                            InstitutionAddressId = 0//nHelper.GetInstitutionAddressId(MigrationVariables.CurrentSiteId),
                         };
 
                         clin.LastUpdatedByUser = clin.UserId;

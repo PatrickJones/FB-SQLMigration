@@ -17,6 +17,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Patient()
         {
+            this.CareSettings = new HashSet<CareSetting>();
             this.PatientAddresses = new HashSet<PatientAddress>();
             this.PatientDevices = new HashSet<PatientDevice>();
             this.PatientMedications = new HashSet<PatientMedication>();
@@ -25,7 +26,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
             this.Subscriptions = new HashSet<Subscription>();
             this.Institutions = new HashSet<Institution>();
             this.InsurancePlans = new HashSet<InsurancePlan>();
-            this.CareSettings = new HashSet<CareSetting>();
         }
     
         public System.Guid UserId { get; set; }
@@ -41,6 +41,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.Guid InstitutionId { get; set; }
         public System.Guid LastUpdatedByUser { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CareSetting> CareSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientAddress> PatientAddresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -58,7 +60,5 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual ICollection<Institution> Institutions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InsurancePlan> InsurancePlans { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CareSetting> CareSettings { get; set; }
     }
 }

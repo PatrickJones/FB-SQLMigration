@@ -12,6 +12,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class NuMedicsGlobalEntities : DbContext
     {
@@ -38,6 +40,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
         public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
         public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
+        public virtual DbSet<CareSetting> CareSettings { get; set; }
         public virtual DbSet<CGMReminder> CGMReminders { get; set; }
         public virtual DbSet<CGMSession> CGMSessions { get; set; }
         public virtual DbSet<Check> Checks { get; set; }
@@ -53,6 +56,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<DiabetesControlType> DiabetesControlTypes { get; set; }
         public virtual DbSet<DiabetesManagementData> DiabetesManagementDatas { get; set; }
         public virtual DbSet<EndUserLicenseAgreement> EndUserLicenseAgreements { get; set; }
+        public virtual DbSet<InstitutionAddress> InstitutionAddresses { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
         public virtual DbSet<InsulinBrand> InsulinBrands { get; set; }
         public virtual DbSet<InsulinCarbRatio> InsulinCarbRatios { get; set; }
@@ -64,6 +68,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<InsurancePlan> InsurancePlans { get; set; }
         public virtual DbSet<InsuranceProvider> InsuranceProviders { get; set; }
         public virtual DbSet<LinkType> LinkTypes { get; set; }
+        public virtual DbSet<NuMedicsUserPrintSetting> NuMedicsUserPrintSettings { get; set; }
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
         public virtual DbSet<PatientAddress> PatientAddresses { get; set; }
@@ -93,7 +98,27 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<UserAuthentication> UserAuthentications { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<EmailUsernameView> EmailUsernameViews { get; set; }
+        public virtual DbSet<PatientListView> PatientListViews { get; set; }
         public virtual DbSet<TableRowCount> TableRowCounts { get; set; }
-        public virtual DbSet<CareSetting> CareSettings { get; set; }
+    
+        [DbFunction("NuMedicsGlobalEntities", "InstitutionPatientsFN")]
+        public virtual IQueryable<InstitutionPatientsFN_Result> InstitutionPatientsFN(Nullable<System.Guid> institutionId)
+        {
+            var institutionIdParameter = institutionId.HasValue ?
+                new ObjectParameter("InstitutionId", institutionId) :
+                new ObjectParameter("InstitutionId", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<InstitutionPatientsFN_Result>("[NuMedicsGlobalEntities].[InstitutionPatientsFN](@InstitutionId)", institutionIdParameter);
+        }
+    
+        public virtual ObjectResult<PatientListSP_Result> PatientListSP(Nullable<System.Guid> institutionId)
+        {
+            var institutionIdParameter = institutionId.HasValue ?
+                new ObjectParameter("InstitutionId", institutionId) :
+                new ObjectParameter("InstitutionId", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PatientListSP_Result>("PatientListSP", institutionIdParameter);
+        }
     }
 }

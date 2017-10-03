@@ -238,6 +238,9 @@
     <Compile Include="SQLDatabase\EF\DiabetesManagementData.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\EmailUsernameView.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\EndUserLicenseAgreement.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -245,6 +248,12 @@
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Institution.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\InstitutionAddress.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\InstitutionPatientsFN_Result.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsulinBrand.cs">
@@ -307,6 +316,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NumedicsGlobalModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\NuMedicsUserPrintSetting.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\NutritionReading.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
@@ -326,6 +338,12 @@
       <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientInstitutionLinkHistory.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientListSP_Result.cs">
+      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PatientListView.cs">
       <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientMedication.cs">

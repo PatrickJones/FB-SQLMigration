@@ -12,18 +12,20 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Clinician
+    public partial class InstitutionAddress
     {
-        public System.Guid UserId { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public string StateLicenseNumber { get; set; }
+        public int AddressId { get; set; }
+        public string Street1 { get; set; }
+        public string Street2 { get; set; }
+        public string Street3 { get; set; }
+        public string City { get; set; }
+        public string County { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public string Country { get; set; }
         public System.Guid InstitutionId { get; set; }
         public System.Guid LastUpdatedByUser { get; set; }
-        public string Email { get; set; }
-        public int InstitutionAddressId { get; set; }
     
         public virtual Institution Institution { get; set; }
-        public virtual User User { get; set; }
     }
 }

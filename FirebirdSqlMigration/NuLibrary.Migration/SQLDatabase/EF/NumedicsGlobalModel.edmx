@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NuMedicsGlobalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NuMedicsGlobalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Applications">
           <Key>
             <PropertyRef Name="ApplicationId" />
@@ -53,6 +53,18 @@
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.dbo.AssignedUserTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AssignedUserTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserType" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="UserType" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="BasalDeliveries">
           <Key>
             <PropertyRef Name="BasalDeliveryId" />
@@ -76,17 +88,6 @@
           <Property Name="BasalDeliveryId" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="Date" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="BasalProgramTimeSlots">
-          <Key>
-            <PropertyRef Name="BasalSlotId" />
-          </Key>
-          <Property Name="BasalSlotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BasalValue" Type="float" Nullable="false" />
-          <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
-          <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
-          <Property Name="PumpProgramId" Type="int" Nullable="false" />
-          <Property Name="DateSet" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="BGTargets">
           <Key>
@@ -143,17 +144,6 @@
           <Property Name="BolusDeliveryId" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="Date" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="BolusProgramTimeSlots">
-          <Key>
-            <PropertyRef Name="BolusSlotId" />
-          </Key>
-          <Property Name="BolusSlotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BolusValue" Type="float" Nullable="false" />
-          <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
-          <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
-          <Property Name="PumpProgramId" Type="int" Nullable="false" />
-          <Property Name="DateSet" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CareSettings">
           <Key>
@@ -339,11 +329,6 @@
           </Key>
           <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="Street" Type="nvarchar" MaxLength="250" />
-          <Property Name="City" Type="nvarchar" MaxLength="250" />
-          <Property Name="State" Type="nvarchar" MaxLength="250" />
-          <Property Name="Zip" Type="nvarchar" MaxLength="50" />
-          <Property Name="Country" Type="nvarchar" MaxLength="250" />
           <Property Name="ContactFirstname" Type="nvarchar" MaxLength="150" />
           <Property Name="ContactLastname" Type="nvarchar" MaxLength="150" />
           <Property Name="ContactEmail" Type="nvarchar" MaxLength="150" />
@@ -351,6 +336,7 @@
           <Property Name="LegacySiteId" Type="int" Nullable="false" />
           <Property Name="Licenses" Type="int" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="HasCliniProNet" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="InsulinBrands">
           <Key>
@@ -457,6 +443,15 @@
           </Key>
           <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MedicalRecordIdentifiers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientUserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MRID" Type="nvarchar" MaxLength="150" />
+          <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="NuMedicsUserPrintSettings">
           <Key>
@@ -572,7 +567,6 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="MRID" Type="nvarchar" MaxLength="150" />
           <Property Name="Firstname" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="Lastname" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="Middlename" Type="nvarchar" MaxLength="80" />
@@ -647,6 +641,17 @@
           <Property Name="ReadingKeyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProgramTimeSlots">
+          <Key>
+            <PropertyRef Name="SlotId" />
+          </Key>
+          <Property Name="SlotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="float" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
+          <Property Name="StopTime" Type="time" Precision="2" Nullable="false" />
+          <Property Name="PumpProgramId" Type="int" Nullable="false" />
+          <Property Name="DateSet" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="PumpPrograms">
           <Key>
             <PropertyRef Name="PumpProgramId" />
@@ -659,6 +664,15 @@
           <Property Name="Valid" Type="bit" Nullable="false" />
           <Property Name="NumOfSegments" Type="int" Nullable="false" />
           <Property Name="PumpKeyId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+          <Property Name="ProgramTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PumpProgramTypes">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
         <EntityType Name="Pumps">
           <Key>
@@ -832,7 +846,6 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="UserType" Type="int" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="UserTypes">
@@ -881,6 +894,50 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.PatientListView' does not have 
           <Property Name="MRID" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'NuMedicsGlobal.dbo.SubscriptionsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SubscriptionsView">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="SubscriptionType" />
+            <PropertyRef Name="SubscriptionDate" />
+            <PropertyRef Name="ExpirationDate" />
+            <PropertyRef Name="IsTrial" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="UserType" />
+            <PropertyRef Name="InstitutionId" />
+            <PropertyRef Name="PaymentMethod" />
+            <PropertyRef Name="PaymentId" />
+            <PropertyRef Name="CheckId" />
+            <PropertyRef Name="CheckStatus" />
+            <PropertyRef Name="CheckNumber" />
+            <PropertyRef Name="CheckCode" />
+            <PropertyRef Name="CheckDateRecieved" />
+            <PropertyRef Name="CheckAmount" />
+          </Key>
+          <Property Name="SubscriptionId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SubscriptionType" Type="int" Nullable="false" />
+          <Property Name="SubscriptionDate" Type="datetime" Nullable="false" />
+          <Property Name="ExpirationDate" Type="datetime" Nullable="false" />
+          <Property Name="IsTrial" Type="bit" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserType" Type="int" Nullable="false" />
+          <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentMethod" Type="int" Nullable="false" />
+          <Property Name="PaymentId" Type="int" Nullable="false" />
+          <Property Name="CheckId" Type="int" Nullable="false" />
+          <Property Name="CheckStatus" Type="int" Nullable="false" />
+          <Property Name="CheckNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CheckCode" Type="bigint" Nullable="false" />
+          <Property Name="CheckDateRecieved" Type="datetime" Nullable="false" />
+          <Property Name="CheckAmount" Type="money" Nullable="false" />
+          <Property Name="PayPalId" Type="int" />
+          <Property Name="PayPalPaymentDate" Type="datetime" />
+          <Property Name="PayPalPaymentStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="PayPalPayment" Type="money" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TableRowCount">
           <Key>
@@ -922,6 +979,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Principal>
             <Dependent Role="AppUserSettings">
               <PropertyRef Name="AppicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssignedUserTypes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="AssignedUserTypes" Type="Self.AssignedUserTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AssignedUserTypes">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1008,20 +1077,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Principal>
             <Dependent Role="BolusDeliveryData">
               <PropertyRef Name="BolusDeliveryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BolusProgramTimeSlots_PumpPrograms">
-          <End Role="PumpPrograms" Type="Self.PumpPrograms" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BolusProgramTimeSlots" Type="Self.BolusProgramTimeSlots" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PumpPrograms">
-              <PropertyRef Name="PumpProgramId" />
-            </Principal>
-            <Dependent Role="BolusProgramTimeSlots">
-              <PropertyRef Name="PumpProgramId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1261,6 +1316,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MedicalRecordIdentifiers_Institutions">
+          <End Role="Institutions" Type="Self.Institutions" Multiplicity="1" />
+          <End Role="MedicalRecordIdentifiers" Type="Self.MedicalRecordIdentifiers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institutions">
+              <PropertyRef Name="InstitutionId" />
+            </Principal>
+            <Dependent Role="MedicalRecordIdentifiers">
+              <PropertyRef Name="InstitutionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MeterReadingHeader_PatientDevices">
           <End Role="PatientDevices" Type="Self.PatientDevices" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1483,12 +1550,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <End Role="PumpPrograms" Type="Self.PumpPrograms" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BasalProgramTimeSlots" Type="Self.BasalProgramTimeSlots" Multiplicity="*" />
+          <End Role="ProgramTimeSlots" Type="Self.ProgramTimeSlots" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PumpPrograms">
               <PropertyRef Name="PumpProgramId" />
             </Principal>
-            <Dependent Role="BasalProgramTimeSlots">
+            <Dependent Role="ProgramTimeSlots">
               <PropertyRef Name="PumpProgramId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1625,26 +1692,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="InstitutionPatientsFN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="InstitutionId" Type="uniqueidentifier" Mode="In" />
-          <ReturnType>
-            <CollectionType>
-              <RowType>
-                <Property Name="InstitutionId" Type="uniqueidentifier" Nullable="false" />
-                <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
-                <Property Name="Username" Type="nvarchar" MaxLength="250" Nullable="false" />
-                <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
-                <Property Name="Firstname" Type="nvarchar" MaxLength="80" Nullable="false" />
-                <Property Name="Lastname" Type="nvarchar" MaxLength="80" Nullable="false" />
-                <Property Name="Middlename" Type="nvarchar" MaxLength="80" />
-                <Property Name="Email" Type="nvarchar" MaxLength="150" Nullable="false" />
-                <Property Name="DateofBirth" Type="datetime" Nullable="false" />
-                <Property Name="MRID" Type="nvarchar" MaxLength="150" />
-              </RowType>
-            </CollectionType>
-          </ReturnType>
-        </Function>
-        <Function Name="PatientListSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="CreateTestClinician" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
           <Parameter Name="InstitutionId" Type="uniqueidentifier" Mode="In" />
         </Function>
         <EntityContainer Name="NuMedicsGlobalModelStoreContainer">
@@ -1654,13 +1704,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="AppUserSettings" EntityType="Self.AppUserSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalDeliveries" EntityType="Self.BasalDeliveries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalDeliveryData" EntityType="Self.BasalDeliveryData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BasalProgramTimeSlots" EntityType="Self.BasalProgramTimeSlots" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BGTargets" EntityType="Self.BGTargets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BloodGlucoseReadings" EntityType="Self.BloodGlucoseReadings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BolusCarbs" EntityType="Self.BolusCarbs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BolusDeliveries" EntityType="Self.BolusDeliveries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BolusDeliveryData" EntityType="Self.BolusDeliveryData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BolusProgramTimeSlots" EntityType="Self.BolusProgramTimeSlots" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CareSettings" EntityType="Self.CareSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CGMReminders" EntityType="Self.CGMReminders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CGMSessions" EntityType="Self.CGMSessions" Schema="dbo" store:Type="Tables" />
@@ -1689,6 +1737,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="InsurancePlans" EntityType="Self.InsurancePlans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceProviders" EntityType="Self.InsuranceProviders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkTypes" EntityType="Self.LinkTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MedicalRecordIdentifiers" EntityType="Self.MedicalRecordIdentifiers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NuMedicsUserPrintSettings" EntityType="Self.NuMedicsUserPrintSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReadings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistories" Schema="dbo" store:Type="Tables" />
@@ -1705,7 +1754,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PayPal" EntityType="Self.PayPal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhysiologicalReadings" EntityType="Self.PhysiologicalReadings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramTimeSlots" EntityType="Self.ProgramTimeSlots" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PumpPrograms" EntityType="Self.PumpPrograms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PumpProgramTypes" EntityType="Self.PumpProgramTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pumps" EntityType="Self.Pumps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PumpSettings" EntityType="Self.PumpSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReadingErrors" EntityType="Self.ReadingErrors" Schema="dbo" store:Type="Tables" />
@@ -1721,6 +1772,13 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserTypes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AssignedUserTypes].[Id] AS [Id], 
+    [AssignedUserTypes].[UserType] AS [UserType], 
+    [AssignedUserTypes].[UserId] AS [UserId]
+    FROM [dbo].[AssignedUserTypes] AS [AssignedUserTypes]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="EmailUsernameView" EntityType="Self.EmailUsernameView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [EmailUsernameView].[UserId] AS [UserId], 
@@ -1744,6 +1802,31 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
     [PatientListView].[MRID] AS [MRID]
     FROM [dbo].[PatientListView] AS [PatientListView]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="SubscriptionsView" EntityType="Self.SubscriptionsView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SubscriptionsView].[SubscriptionId] AS [SubscriptionId], 
+    [SubscriptionsView].[UserId] AS [UserId], 
+    [SubscriptionsView].[SubscriptionType] AS [SubscriptionType], 
+    [SubscriptionsView].[SubscriptionDate] AS [SubscriptionDate], 
+    [SubscriptionsView].[ExpirationDate] AS [ExpirationDate], 
+    [SubscriptionsView].[IsTrial] AS [IsTrial], 
+    [SubscriptionsView].[ApplicationId] AS [ApplicationId], 
+    [SubscriptionsView].[UserType] AS [UserType], 
+    [SubscriptionsView].[InstitutionId] AS [InstitutionId], 
+    [SubscriptionsView].[PaymentMethod] AS [PaymentMethod], 
+    [SubscriptionsView].[PaymentId] AS [PaymentId], 
+    [SubscriptionsView].[CheckId] AS [CheckId], 
+    [SubscriptionsView].[CheckStatus] AS [CheckStatus], 
+    [SubscriptionsView].[CheckNumber] AS [CheckNumber], 
+    [SubscriptionsView].[CheckCode] AS [CheckCode], 
+    [SubscriptionsView].[CheckDateRecieved] AS [CheckDateRecieved], 
+    [SubscriptionsView].[CheckAmount] AS [CheckAmount], 
+    [SubscriptionsView].[PayPalId] AS [PayPalId], 
+    [SubscriptionsView].[PayPalPaymentDate] AS [PayPalPaymentDate], 
+    [SubscriptionsView].[PayPalPaymentStatus] AS [PayPalPaymentStatus], 
+    [SubscriptionsView].[PayPalPayment] AS [PayPalPayment]
+    FROM [dbo].[SubscriptionsView] AS [SubscriptionsView]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="TableRowCount" EntityType="Self.TableRowCount" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TableRowCount].[TableName] AS [TableName], 
@@ -1761,6 +1844,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_AppUserSettings_Applications" Association="Self.FK_AppUserSettings_Applications">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="AppUserSettings" EntitySet="AppUserSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssignedUserTypes_Users" Association="Self.FK_AssignedUserTypes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AssignedUserTypes" EntitySet="AssignedUserTypes" />
           </AssociationSet>
           <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders1" Association="Self.FK_BasalDeliveries_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
@@ -1789,10 +1876,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_BolusDeliveryData_BolusDelivery" Association="Self.FK_BolusDeliveryData_BolusDelivery">
             <End Role="BolusDeliveries" EntitySet="BolusDeliveries" />
             <End Role="BolusDeliveryData" EntitySet="BolusDeliveryData" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BolusProgramTimeSlots_PumpPrograms" Association="Self.FK_BolusProgramTimeSlots_PumpPrograms">
-            <End Role="PumpPrograms" EntitySet="PumpPrograms" />
-            <End Role="BolusProgramTimeSlots" EntitySet="BolusProgramTimeSlots" />
           </AssociationSet>
           <AssociationSet Name="FK_CareSettings_Patients1" Association="Self.FK_CareSettings_Patients1">
             <End Role="Patients" EntitySet="Patients" />
@@ -1870,6 +1953,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="InsuranceProviders" EntitySet="InsuranceProviders" />
             <End Role="InsurancePlans" EntitySet="InsurancePlans" />
           </AssociationSet>
+          <AssociationSet Name="FK_MedicalRecordIdentifiers_Institutions" Association="Self.FK_MedicalRecordIdentifiers_Institutions">
+            <End Role="Institutions" EntitySet="Institutions" />
+            <End Role="MedicalRecordIdentifiers" EntitySet="MedicalRecordIdentifiers" />
+          </AssociationSet>
           <AssociationSet Name="FK_MeterReadingHeader_PatientDevices" Association="Self.FK_MeterReadingHeader_PatientDevices">
             <End Role="PatientDevices" EntitySet="PatientDevices" />
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
@@ -1940,7 +2027,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           </AssociationSet>
           <AssociationSet Name="FK_PumpProgramTimeSlots_PumpPrograms" Association="Self.FK_PumpProgramTimeSlots_PumpPrograms">
             <End Role="PumpPrograms" EntitySet="PumpPrograms" />
-            <End Role="BasalProgramTimeSlots" EntitySet="BasalProgramTimeSlots" />
+            <End Role="ProgramTimeSlots" EntitySet="ProgramTimeSlots" />
           </AssociationSet>
           <AssociationSet Name="FK_Pumps_ReadingHeaders" Association="Self.FK_Pumps_ReadingHeaders">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
@@ -1987,23 +2074,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NuMedicsGlobalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <ComplexType Name="InstitutionPatientsFN_Result">
-          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="Username" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Firstname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Lastname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Middlename" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateofBirth" Type="DateTime" Nullable="false" />
-          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-        </ComplexType>
         <EntityType Name="Application">
           <Key>
             <PropertyRef Name="ApplicationId" />
@@ -2087,18 +2161,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="BasalDelivery" Relationship="Self.FK_BasalDeliveryData_BasalDeliveries" FromRole="BasalDeliveryData" ToRole="BasalDeliveries" />
         </EntityType>
-        <EntityType Name="BasalProgramTimeSlot">
-          <Key>
-            <PropertyRef Name="BasalSlotId" />
-          </Key>
-          <Property Name="BasalSlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BasalValue" Type="Double" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
-          <Property Name="DateSet" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="PumpProgram" Relationship="Self.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="BasalProgramTimeSlots" ToRole="PumpPrograms" />
-        </EntityType>
         <EntityType Name="BGTarget">
           <Key>
             <PropertyRef Name="TargetId" />
@@ -2165,18 +2227,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="BolusDelivery" Relationship="Self.FK_BolusDeliveryData_BolusDelivery" FromRole="BolusDeliveryData" ToRole="BolusDeliveries" />
-        </EntityType>
-        <EntityType Name="BolusProgramTimeSlot">
-          <Key>
-            <PropertyRef Name="BolusSlotId" />
-          </Key>
-          <Property Name="BolusSlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BolusValue" Type="Double" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
-          <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
-          <Property Name="DateSet" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="PumpProgram" Relationship="Self.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="BolusProgramTimeSlots" ToRole="PumpPrograms" />
         </EntityType>
         <EntityType Name="CareSetting">
           <Key>
@@ -2379,11 +2429,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           </Key>
           <Property Name="InstitutionId" Type="Guid" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Street" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ContactFirstname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ContactLastname" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ContactEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -2391,8 +2436,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="LegacySiteId" Type="Int32" Nullable="false" />
           <Property Name="Licenses" Type="Int32" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
+          <Property Name="HasCliniProNet" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Clinicians" Relationship="Self.FK_Clinicians_Institution" FromRole="Institutions" ToRole="Clinicians" />
           <NavigationProperty Name="InstitutionAddresses" Relationship="Self.FK_InsstitutionAddresses_Institutionss" FromRole="Institutions" ToRole="InstitutionAddresses" />
+          <NavigationProperty Name="MedicalRecordIdentifiers" Relationship="Self.FK_MedicalRecordIdentifiers_Institutions" FromRole="Institutions" ToRole="MedicalRecordIdentifiers" />
           <NavigationProperty Name="Subscriptions" Relationship="Self.FK_Subscriptions_Institutions" FromRole="Institutions" ToRole="Subscriptions" />
           <NavigationProperty Name="Patients" Relationship="Self.Patients_Institutions" FromRole="Institutions" ToRole="Patients" />
         </EntityType>
@@ -2510,6 +2557,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           </Key>
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MedicalRecordIdentifier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientUserId" Type="Guid" Nullable="false" />
+          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Institution" Relationship="Self.FK_MedicalRecordIdentifiers_Institutions" FromRole="MedicalRecordIdentifiers" ToRole="Institutions" />
         </EntityType>
         <EntityType Name="NuMedicsUserPrintSetting">
           <Key>
@@ -2635,7 +2692,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Firstname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Lastname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Middlename" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
@@ -2709,6 +2765,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="ReadingHeader" Relationship="Self.FK_PhysiologicalReadings_ReadingHeaders1" FromRole="PhysiologicalReadings" ToRole="ReadingHeaders" />
         </EntityType>
+        <EntityType Name="ProgramTimeSlot">
+          <Key>
+            <PropertyRef Name="SlotId" />
+          </Key>
+          <Property Name="SlotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="Double" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="StopTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="PumpProgramId" Type="Int32" Nullable="false" />
+          <Property Name="DateSet" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PumpProgram" Relationship="Self.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="ProgramTimeSlots" ToRole="PumpPrograms" />
+        </EntityType>
         <EntityType Name="PumpProgram">
           <Key>
             <PropertyRef Name="PumpProgramId" />
@@ -2721,9 +2789,17 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="Valid" Type="Boolean" Nullable="false" />
           <Property Name="NumOfSegments" Type="Int32" Nullable="false" />
           <Property Name="PumpKeyId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="BasalProgramTimeSlots" Relationship="Self.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="PumpPrograms" ToRole="BasalProgramTimeSlots" />
-          <NavigationProperty Name="BolusProgramTimeSlots" Relationship="Self.FK_BolusProgramTimeSlots_PumpPrograms" FromRole="PumpPrograms" ToRole="BolusProgramTimeSlots" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="ProgramTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ProgramTimeSlots" Relationship="Self.FK_PumpProgramTimeSlots_PumpPrograms" FromRole="PumpPrograms" ToRole="ProgramTimeSlots" />
           <NavigationProperty Name="Pump" Relationship="Self.FK_PumpPrograms_Pumps1" FromRole="PumpPrograms" ToRole="Pumps" />
+        </EntityType>
+        <EntityType Name="PumpProgramType">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="Pump">
           <Key>
@@ -2926,11 +3002,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Clinician" Relationship="Self.FK_Clinicians_Users" FromRole="Users" ToRole="Clinicians" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Patients_Users" FromRole="Users" ToRole="Patients" />
           <NavigationProperty Name="UserAuthentications" Relationship="Self.FK_UserAuthentications_Users" FromRole="Users" ToRole="UserAuthentications" />
+          <NavigationProperty Name="AssignedUserTypes" Relationship="Self.FK_AssignedUserTypes_Users" FromRole="Users" ToRole="AssignedUserTypes" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -2939,46 +3015,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityType Name="EmailUsernameView">
+        <EntityType Name="AssignedUserType">
           <Key>
-            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Id" />
             <PropertyRef Name="UserType" />
-            <PropertyRef Name="CreationDate" />
-          </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
-          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ClinicianEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="PatientEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="PatientListView">
-          <Key>
-            <PropertyRef Name="InstitutionId" />
             <PropertyRef Name="UserId" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="InstitutionName" />
-            <PropertyRef Name="Firstname" />
-            <PropertyRef Name="Lastname" />
-            <PropertyRef Name="Email" />
-            <PropertyRef Name="DateofBirth" />
           </Key>
-          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="Username" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="InstitutionName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Firstname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Lastname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Middlename" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateofBirth" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TableRowCount">
-          <Key>
-            <PropertyRef Name="TableName" />
-          </Key>
-          <Property Name="TableName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RowCnt" Type="Int64" />
+          <NavigationProperty Name="User" Relationship="Self.FK_AssignedUserTypes_Users" FromRole="AssignedUserTypes" ToRole="Users" />
         </EntityType>
         <Association Name="FK_AppLoginHistories_Applications">
           <End Role="Applications" Type="Self.Application" Multiplicity="1" />
@@ -3061,20 +3107,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Principal>
             <Dependent Role="BasalDeliveryData">
               <PropertyRef Name="BasalDeliveryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PumpProgramTimeSlots_PumpPrograms">
-          <End Role="PumpPrograms" Type="Self.PumpProgram" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BasalProgramTimeSlots" Type="Self.BasalProgramTimeSlot" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PumpPrograms">
-              <PropertyRef Name="PumpProgramId" />
-            </Principal>
-            <Dependent Role="BasalProgramTimeSlots">
-              <PropertyRef Name="PumpProgramId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3173,20 +3205,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Principal>
             <Dependent Role="InsulinCorrections">
               <PropertyRef Name="CorrectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BolusProgramTimeSlots_PumpPrograms">
-          <End Role="PumpPrograms" Type="Self.PumpProgram" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BolusProgramTimeSlots" Type="Self.BolusProgramTimeSlot" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PumpPrograms">
-              <PropertyRef Name="PumpProgramId" />
-            </Principal>
-            <Dependent Role="BolusProgramTimeSlots">
-              <PropertyRef Name="PumpProgramId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3344,6 +3362,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               <PropertyRef Name="InstitutionId" />
             </Principal>
             <Dependent Role="InstitutionAddresses">
+              <PropertyRef Name="InstitutionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MedicalRecordIdentifiers_Institutions">
+          <End Role="Institutions" Type="Self.Institution" Multiplicity="1" />
+          <End Role="MedicalRecordIdentifiers" Type="Self.MedicalRecordIdentifier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institutions">
+              <PropertyRef Name="InstitutionId" />
+            </Principal>
+            <Dependent Role="MedicalRecordIdentifiers">
               <PropertyRef Name="InstitutionId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3568,6 +3598,20 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PumpProgramTimeSlots_PumpPrograms">
+          <End Role="PumpPrograms" Type="Self.PumpProgram" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProgramTimeSlots" Type="Self.ProgramTimeSlot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PumpPrograms">
+              <PropertyRef Name="PumpProgramId" />
+            </Principal>
+            <Dependent Role="ProgramTimeSlots">
+              <PropertyRef Name="PumpProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PumpPrograms_Pumps1">
           <End Role="Pumps" Type="Self.Pump" Multiplicity="1" />
           <End Role="PumpPrograms" Type="Self.PumpProgram" Multiplicity="*" />
@@ -3664,6 +3708,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AssignedUserTypes_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="AssignedUserTypes" Type="Self.AssignedUserType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AssignedUserTypes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Patients_Institutions">
           <End Role="Institutions" Type="Self.Institution" Multiplicity="*" />
           <End Role="Patients" Type="Self.Patient" Multiplicity="*" />
@@ -3679,13 +3735,11 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="AppUserSettings" EntityType="Self.AppUserSetting" />
           <EntitySet Name="BasalDeliveries" EntityType="Self.BasalDelivery" />
           <EntitySet Name="BasalDeliveryDatas" EntityType="Self.BasalDeliveryData" />
-          <EntitySet Name="BasalProgramTimeSlots" EntityType="Self.BasalProgramTimeSlot" />
           <EntitySet Name="BGTargets" EntityType="Self.BGTarget" />
           <EntitySet Name="BloodGlucoseReadings" EntityType="Self.BloodGlucoseReading" />
           <EntitySet Name="BolusCarbs" EntityType="Self.BolusCarb" />
           <EntitySet Name="BolusDeliveries" EntityType="Self.BolusDelivery" />
           <EntitySet Name="BolusDeliveryDatas" EntityType="Self.BolusDeliveryData" />
-          <EntitySet Name="BolusProgramTimeSlots" EntityType="Self.BolusProgramTimeSlot" />
           <EntitySet Name="CareSettings" EntityType="Self.CareSetting" />
           <EntitySet Name="CGMReminders" EntityType="Self.CGMReminder" />
           <EntitySet Name="CGMSessions" EntityType="Self.CGMSession" />
@@ -3714,6 +3768,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="InsurancePlans" EntityType="Self.InsurancePlan" />
           <EntitySet Name="InsuranceProviders" EntityType="Self.InsuranceProvider" />
           <EntitySet Name="LinkTypes" EntityType="Self.LinkType" />
+          <EntitySet Name="MedicalRecordIdentifiers" EntityType="Self.MedicalRecordIdentifier" />
           <EntitySet Name="NuMedicsUserPrintSettings" EntityType="Self.NuMedicsUserPrintSetting" />
           <EntitySet Name="NutritionReadings" EntityType="Self.NutritionReading" />
           <EntitySet Name="PasswordHistories" EntityType="Self.PasswordHistory" />
@@ -3728,7 +3783,9 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="Payments" EntityType="Self.Payment" />
           <EntitySet Name="PayPals" EntityType="Self.PayPal" />
           <EntitySet Name="PhysiologicalReadings" EntityType="Self.PhysiologicalReading" />
+          <EntitySet Name="ProgramTimeSlots" EntityType="Self.ProgramTimeSlot" />
           <EntitySet Name="PumpPrograms" EntityType="Self.PumpProgram" />
+          <EntitySet Name="PumpProgramTypes" EntityType="Self.PumpProgramType" />
           <EntitySet Name="Pumps" EntityType="Self.Pump" />
           <EntitySet Name="PumpSettings" EntityType="Self.PumpSetting" />
           <EntitySet Name="ReadingErrors" EntityType="Self.ReadingError" />
@@ -3744,9 +3801,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentication" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
-          <EntitySet Name="EmailUsernameViews" EntityType="Self.EmailUsernameView" />
-          <EntitySet Name="PatientListViews" EntityType="Self.PatientListView" />
-          <EntitySet Name="TableRowCounts" EntityType="Self.TableRowCount" />
+          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserType" />
           <AssociationSet Name="FK_AppLoginHistories_Applications" Association="Self.FK_AppLoginHistories_Applications">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="AppLoginHistories" EntitySet="AppLoginHistories" />
@@ -3774,10 +3829,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_BasalDeliveryData_BasalDeliveries" Association="Self.FK_BasalDeliveryData_BasalDeliveries">
             <End Role="BasalDeliveries" EntitySet="BasalDeliveries" />
             <End Role="BasalDeliveryData" EntitySet="BasalDeliveryDatas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PumpProgramTimeSlots_PumpPrograms" Association="Self.FK_PumpProgramTimeSlots_PumpPrograms">
-            <End Role="PumpPrograms" EntitySet="PumpPrograms" />
-            <End Role="BasalProgramTimeSlots" EntitySet="BasalProgramTimeSlots" />
           </AssociationSet>
           <AssociationSet Name="FK_BGTargets_BolusDelivery" Association="Self.FK_BGTargets_BolusDelivery">
             <End Role="BolusDeliveries" EntitySet="BolusDeliveries" />
@@ -3810,10 +3861,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_InsulinCorrections_BolusDelivery" Association="Self.FK_InsulinCorrections_BolusDelivery">
             <End Role="BolusDeliveries" EntitySet="BolusDeliveries" />
             <End Role="InsulinCorrections" EntitySet="InsulinCorrections" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BolusProgramTimeSlots_PumpPrograms" Association="Self.FK_BolusProgramTimeSlots_PumpPrograms">
-            <End Role="PumpPrograms" EntitySet="PumpPrograms" />
-            <End Role="BolusProgramTimeSlots" EntitySet="BolusProgramTimeSlots" />
           </AssociationSet>
           <AssociationSet Name="FK_CareSettings_Patients1" Association="Self.FK_CareSettings_Patients1">
             <End Role="Patients" EntitySet="Patients" />
@@ -3866,6 +3913,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_InsstitutionAddresses_Institutionss" Association="Self.FK_InsstitutionAddresses_Institutionss">
             <End Role="Institutions" EntitySet="Institutions" />
             <End Role="InstitutionAddresses" EntitySet="InstitutionAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MedicalRecordIdentifiers_Institutions" Association="Self.FK_MedicalRecordIdentifiers_Institutions">
+            <End Role="Institutions" EntitySet="Institutions" />
+            <End Role="MedicalRecordIdentifiers" EntitySet="MedicalRecordIdentifiers" />
           </AssociationSet>
           <AssociationSet Name="FK_Subscriptions_Institutions" Association="Self.FK_Subscriptions_Institutions">
             <End Role="Institutions" EntitySet="Institutions" />
@@ -3935,6 +3986,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
             <End Role="PhysiologicalReadings" EntitySet="PhysiologicalReadings" />
           </AssociationSet>
+          <AssociationSet Name="FK_PumpProgramTimeSlots_PumpPrograms" Association="Self.FK_PumpProgramTimeSlots_PumpPrograms">
+            <End Role="PumpPrograms" EntitySet="PumpPrograms" />
+            <End Role="ProgramTimeSlots" EntitySet="ProgramTimeSlots" />
+          </AssociationSet>
           <AssociationSet Name="FK_PumpPrograms_Pumps1" Association="Self.FK_PumpPrograms_Pumps1">
             <End Role="Pumps" EntitySet="Pumps" />
             <End Role="PumpPrograms" EntitySet="PumpPrograms" />
@@ -3967,6 +4022,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
           </AssociationSet>
+          <AssociationSet Name="FK_AssignedUserTypes_Users" Association="Self.FK_AssignedUserTypes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AssignedUserTypes" EntitySet="AssignedUserTypes" />
+          </AssociationSet>
           <AssociationSet Name="Patients_Institutions" Association="Self.Patients_Institutions">
             <End Role="Institutions" EntitySet="Institutions" />
             <End Role="Patients" EntitySet="Patients" />
@@ -3975,25 +4034,99 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="InsurancePlans" EntitySet="InsurancePlans" />
             <End Role="Patients" EntitySet="Patients" />
           </AssociationSet>
-          <FunctionImport Name="InstitutionPatientsFN" IsComposable="true" ReturnType="Collection(NuMedicsGlobalModel.InstitutionPatientsFN_Result)">
-            <Parameter Name="InstitutionId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="PatientListSP" ReturnType="Collection(NuMedicsGlobalModel.PatientListSP_Result)">
+          <EntitySet Name="EmailUsernameViews" EntityType="NuMedicsGlobalModel.EmailUsernameView" />
+          <EntitySet Name="PatientListViews" EntityType="NuMedicsGlobalModel.PatientListView" />
+          <EntitySet Name="SubscriptionsViews" EntityType="NuMedicsGlobalModel.SubscriptionsView" />
+          <EntitySet Name="TableRowCounts" EntityType="NuMedicsGlobalModel.TableRowCount" />
+          <FunctionImport Name="CreateTestClinician">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="InstitutionId" Mode="In" Type="Guid" />
           </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="PatientListSP_Result">
-          <Property Type="Guid" Name="InstitutionId" Nullable="false" />
-          <Property Type="Guid" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="Username" Nullable="false" MaxLength="250" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="250" />
-          <Property Type="String" Name="Firstname" Nullable="false" MaxLength="80" />
-          <Property Type="String" Name="Lastname" Nullable="false" MaxLength="80" />
-          <Property Type="String" Name="Middlename" Nullable="true" MaxLength="80" />
-          <Property Type="String" Name="Email" Nullable="false" MaxLength="150" />
-          <Property Type="DateTime" Name="DateofBirth" Nullable="false" Precision="23" />
-          <Property Type="String" Name="MRID" Nullable="true" MaxLength="150" />
-        </ComplexType>
+        <EntityType Name="EmailUsernameView">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserType" />
+            <PropertyRef Name="CreationDate" />
+          </Key>
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ClinicianEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PatientEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PatientListView">
+          <Key>
+            <PropertyRef Name="InstitutionId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="InstitutionName" />
+            <PropertyRef Name="Firstname" />
+            <PropertyRef Name="Lastname" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="DateofBirth" />
+          </Key>
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="InstitutionName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Firstname" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Middlename" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DateofBirth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SubscriptionsView">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="SubscriptionType" />
+            <PropertyRef Name="SubscriptionDate" />
+            <PropertyRef Name="ExpirationDate" />
+            <PropertyRef Name="IsTrial" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="UserType" />
+            <PropertyRef Name="InstitutionId" />
+            <PropertyRef Name="PaymentMethod" />
+            <PropertyRef Name="PaymentId" />
+            <PropertyRef Name="CheckId" />
+            <PropertyRef Name="CheckStatus" />
+            <PropertyRef Name="CheckNumber" />
+            <PropertyRef Name="CheckCode" />
+            <PropertyRef Name="CheckDateRecieved" />
+            <PropertyRef Name="CheckAmount" />
+          </Key>
+          <Property Name="SubscriptionId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="SubscriptionType" Type="Int32" Nullable="false" />
+          <Property Name="SubscriptionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsTrial" Type="Boolean" Nullable="false" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <Property Name="PaymentMethod" Type="Int32" Nullable="false" />
+          <Property Name="PaymentId" Type="Int32" Nullable="false" />
+          <Property Name="CheckId" Type="Int32" Nullable="false" />
+          <Property Name="CheckStatus" Type="Int32" Nullable="false" />
+          <Property Name="CheckNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CheckCode" Type="Int64" Nullable="false" />
+          <Property Name="CheckDateRecieved" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CheckAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="PayPalId" Type="Int32" />
+          <Property Name="PayPalPaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="PayPalPaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PayPalPayment" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="TableRowCount">
+          <Key>
+            <PropertyRef Name="TableName" />
+          </Key>
+          <Property Name="TableName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RowCnt" Type="Int64" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4078,18 +4211,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BasalProgramTimeSlots">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BasalProgramTimeSlot">
-              <MappingFragment StoreEntitySet="BasalProgramTimeSlots">
-                <ScalarProperty Name="BasalSlotId" ColumnName="BasalSlotId" />
-                <ScalarProperty Name="BasalValue" ColumnName="BasalValue" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
-                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
-                <ScalarProperty Name="DateSet" ColumnName="DateSet" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BGTargets">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.BGTarget">
               <MappingFragment StoreEntitySet="BGTargets">
@@ -4148,18 +4269,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="BolusDeliveryId" ColumnName="BolusDeliveryId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BolusProgramTimeSlots">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.BolusProgramTimeSlot">
-              <MappingFragment StoreEntitySet="BolusProgramTimeSlots">
-                <ScalarProperty Name="BolusSlotId" ColumnName="BolusSlotId" />
-                <ScalarProperty Name="BolusValue" ColumnName="BolusValue" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
-                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
-                <ScalarProperty Name="DateSet" ColumnName="DateSet" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4363,11 +4472,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               <MappingFragment StoreEntitySet="Institutions">
                 <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Street" ColumnName="Street" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="ContactFirstname" ColumnName="ContactFirstname" />
                 <ScalarProperty Name="ContactLastname" ColumnName="ContactLastname" />
                 <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
@@ -4375,6 +4479,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="LegacySiteId" ColumnName="LegacySiteId" />
                 <ScalarProperty Name="Licenses" ColumnName="Licenses" />
                 <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+                <ScalarProperty Name="HasCliniProNet" ColumnName="HasCliniProNet" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4491,6 +4596,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               <MappingFragment StoreEntitySet="LinkTypes">
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MedicalRecordIdentifiers">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.MedicalRecordIdentifier">
+              <MappingFragment StoreEntitySet="MedicalRecordIdentifiers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientUserId" ColumnName="PatientUserId" />
+                <ScalarProperty Name="MRID" ColumnName="MRID" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4616,7 +4731,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.Patient">
               <MappingFragment StoreEntitySet="Patients">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="MRID" ColumnName="MRID" />
                 <ScalarProperty Name="Firstname" ColumnName="Firstname" />
                 <ScalarProperty Name="Lastname" ColumnName="Lastname" />
                 <ScalarProperty Name="Middlename" ColumnName="Middlename" />
@@ -4681,6 +4795,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProgramTimeSlots">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.ProgramTimeSlot">
+              <MappingFragment StoreEntitySet="ProgramTimeSlots">
+                <ScalarProperty Name="SlotId" ColumnName="SlotId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+                <ScalarProperty Name="PumpProgramId" ColumnName="PumpProgramId" />
+                <ScalarProperty Name="DateSet" ColumnName="DateSet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PumpPrograms">
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpProgram">
               <MappingFragment StoreEntitySet="PumpPrograms">
@@ -4692,6 +4818,16 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="Valid" ColumnName="Valid" />
                 <ScalarProperty Name="NumOfSegments" ColumnName="NumOfSegments" />
                 <ScalarProperty Name="PumpKeyId" ColumnName="PumpKeyId" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="ProgramTypeId" ColumnName="ProgramTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PumpProgramTypes">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PumpProgramType">
+              <MappingFragment StoreEntitySet="PumpProgramTypes">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4879,7 +5015,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <EntityTypeMapping TypeName="NuMedicsGlobalModel.User">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4892,38 +5027,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EmailUsernameViews">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.EmailUsernameView">
-              <MappingFragment StoreEntitySet="EmailUsernameView">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <EntitySetMapping Name="AssignedUserTypes">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.AssignedUserType">
+              <MappingFragment StoreEntitySet="AssignedUserTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-                <ScalarProperty Name="ClinicianEmail" ColumnName="ClinicianEmail" />
-                <ScalarProperty Name="PatientEmail" ColumnName="PatientEmail" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PatientListViews">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PatientListView">
-              <MappingFragment StoreEntitySet="PatientListView">
-                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="InstitutionName" ColumnName="InstitutionName" />
-                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="Middlename" ColumnName="Middlename" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
-                <ScalarProperty Name="MRID" ColumnName="MRID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TableRowCounts">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TableRowCount">
-              <MappingFragment StoreEntitySet="TableRowCount">
-                <ScalarProperty Name="TableName" ColumnName="TableName" />
-                <ScalarProperty Name="RowCnt" ColumnName="RowCnt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4943,38 +5052,69 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               <ScalarProperty Name="UserId" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionName="NuMedicsGlobalModel.Store.InstitutionPatientsFN" FunctionImportName="InstitutionPatientsFN">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="NuMedicsGlobalModel.InstitutionPatientsFN_Result">
-                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+          <EntitySetMapping Name="EmailUsernameViews">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.EmailUsernameView">
+              <MappingFragment StoreEntitySet="EmailUsernameView">
+                <ScalarProperty Name="PatientEmail" ColumnName="PatientEmail" />
+                <ScalarProperty Name="ClinicianEmail" ColumnName="ClinicianEmail" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="Middlename" ColumnName="Middlename" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientListViews">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PatientListView">
+              <MappingFragment StoreEntitySet="PatientListView">
                 <ScalarProperty Name="MRID" ColumnName="MRID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PatientListSP" FunctionName="NuMedicsGlobalModel.Store.PatientListSP">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="NuMedicsGlobalModel.PatientListSP_Result">
-                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Middlename" ColumnName="Middlename" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="InstitutionName" ColumnName="InstitutionName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="Middlename" ColumnName="Middlename" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
-                <ScalarProperty Name="MRID" ColumnName="MRID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriptionsViews">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.SubscriptionsView">
+              <MappingFragment StoreEntitySet="SubscriptionsView">
+                <ScalarProperty Name="PayPalPayment" ColumnName="PayPalPayment" />
+                <ScalarProperty Name="PayPalPaymentStatus" ColumnName="PayPalPaymentStatus" />
+                <ScalarProperty Name="PayPalPaymentDate" ColumnName="PayPalPaymentDate" />
+                <ScalarProperty Name="PayPalId" ColumnName="PayPalId" />
+                <ScalarProperty Name="CheckAmount" ColumnName="CheckAmount" />
+                <ScalarProperty Name="CheckDateRecieved" ColumnName="CheckDateRecieved" />
+                <ScalarProperty Name="CheckCode" ColumnName="CheckCode" />
+                <ScalarProperty Name="CheckNumber" ColumnName="CheckNumber" />
+                <ScalarProperty Name="CheckStatus" ColumnName="CheckStatus" />
+                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="IsTrial" ColumnName="IsTrial" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="SubscriptionDate" ColumnName="SubscriptionDate" />
+                <ScalarProperty Name="SubscriptionType" ColumnName="SubscriptionType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableRowCounts">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TableRowCount">
+              <MappingFragment StoreEntitySet="TableRowCount">
+                <ScalarProperty Name="RowCnt" ColumnName="RowCnt" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CreateTestClinician" FunctionName="NuMedicsGlobalModel.Store.CreateTestClinician" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

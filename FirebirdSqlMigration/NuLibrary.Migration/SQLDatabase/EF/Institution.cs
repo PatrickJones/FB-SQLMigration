@@ -19,17 +19,13 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         {
             this.Clinicians = new HashSet<Clinician>();
             this.InstitutionAddresses = new HashSet<InstitutionAddress>();
+            this.MedicalRecordIdentifiers = new HashSet<MedicalRecordIdentifier>();
             this.Subscriptions = new HashSet<Subscription>();
             this.Patients = new HashSet<Patient>();
         }
     
         public System.Guid InstitutionId { get; set; }
         public string Name { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Zip { get; set; }
-        public string Country { get; set; }
         public string ContactFirstname { get; set; }
         public string ContactLastname { get; set; }
         public string ContactEmail { get; set; }
@@ -37,11 +33,14 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int LegacySiteId { get; set; }
         public int Licenses { get; set; }
         public System.Guid LastUpdatedByUser { get; set; }
+        public bool HasCliniProNet { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Clinician> Clinicians { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InstitutionAddress> InstitutionAddresses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MedicalRecordIdentifier> MedicalRecordIdentifiers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Subscription> Subscriptions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -18,15 +18,17 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public User()
         {
             this.UserAuthentications = new HashSet<UserAuthentication>();
+            this.AssignedUserTypes = new HashSet<AssignedUserType>();
         }
     
         public System.Guid UserId { get; set; }
-        public int UserType { get; set; }
         public System.DateTime CreationDate { get; set; }
     
         public virtual Clinician Clinician { get; set; }
         public virtual Patient Patient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAuthentication> UserAuthentications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AssignedUserType> AssignedUserTypes { get; set; }
     }
 }

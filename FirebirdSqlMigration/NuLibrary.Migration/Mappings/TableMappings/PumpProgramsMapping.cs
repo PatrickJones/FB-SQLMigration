@@ -65,32 +65,45 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 var pKey = mu.ParseInt(row[$"PROG{i}KEYID"].ToString());
 
                                 if (pKey != 0)
-                                {
-                                    PumpProgram p = new PumpProgram();
-
-                                    p.CreationDate = CreationDate;
-                                    p.Source = Source;
-                                    p.Valid = Valid;
-                                    p.ProgramKey = pKey;
-                                    p.NumOfSegments = 7;
-                                    p.ProgramName = $"Prog {pKey}";
-                                    p.BasalProgramTimeSlots = GetBasalPrgTimeSlots(userId, CreationDate);
-                                    p.BolusProgramTimeSlots = GetBolusPrgTimeSlots(userId, CreationDate);
-
-                                    if (CreationDate != DateTime.MinValue)
+                                { 
+                                    for (int s = 0; s < 1; s++)
                                     {
-                                        MemoryMappings.AddPumpProgram(userId, pKey, p);
-                                    }
-                                    else
-                                    {
-                                        MappingStatistics.LogFailedMapping("PATIENTPUMPPROGRAM", row["KEYID"].ToString(), "PumpPrograms", typeof(PumpProgram), JsonConvert.SerializeObject(p), "Unable to add PumpProgram to database because creation date was null.");
-                                        FailedCount++;
+                                        PumpProgram p = new PumpProgram();
+
+                                        p.CreationDate = CreationDate;
+                                        p.Source = Source;
+                                        p.Valid = Valid;
+                                        p.ProgramKey = pKey;
+                                        p.NumOfSegments = 7;
+                                        p.ProgramName = $"Prog {pKey}";
+
+                                        if (s == 0)
+                                        {
+                                            p.ProgramTypeId = 1;
+                                            p.ProgramTimeSlots = GetBasalPrgTimeSlots(userId, CreationDate);
+                                        }
+
+                                        if (s == 1)
+                                        {
+                                            p.ProgramTypeId = 2;
+                                            p.ProgramTimeSlots = GetBolusPrgTimeSlots(userId, CreationDate);
+                                        }
+                                        
+
+                                        if (CreationDate != DateTime.MinValue)
+                                        {
+                                            MemoryMappings.AddPumpProgram(userId, pKey, p);
+                                        }
+                                        else
+                                        {
+                                            MappingStatistics.LogFailedMapping("PATIENTPUMPPROGRAM", row["KEYID"].ToString(), "PumpPrograms", typeof(PumpProgram), JsonConvert.SerializeObject(p), "Unable to add PumpProgram to database because creation date was null.");
+                                            FailedCount++;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
                 }
 
                 MappingStatistics.LogMappingStat("PATIENTPUMPPROGRAM", RecordCount, "PumpPrograms", MemoryMappings.GetAllPumpPrograms().Count, FailedCount);
@@ -101,10 +114,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             }
         }
 
-        private ICollection<BolusProgramTimeSlot> GetBolusPrgTimeSlots(Guid userId, DateTime creationDate)
+        private ICollection<ProgramTimeSlot> GetBolusPrgTimeSlots(Guid userId, DateTime creationDate)
         {
             var slots = MemoryMappings.GetAllBolusPrgTimeSlots();
-            ConcurrentBag<BolusProgramTimeSlot> results = new ConcurrentBag<BolusProgramTimeSlot>();
+            ConcurrentBag<ProgramTimeSlot> results = new ConcurrentBag<ProgramTimeSlot>();
 
             if (slots.ContainsKey(userId))
             {
@@ -120,10 +133,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             return results.ToList();
         }
 
-        private ICollection<BasalProgramTimeSlot> GetBasalPrgTimeSlots(Guid userId, DateTime creationDate)
+        private ICollection<ProgramTimeSlot> GetBasalPrgTimeSlots(Guid userId, DateTime creationDate)
         {
             var slots = MemoryMappings.GetAllBasalPrgTimeSlots();
-            ConcurrentBag<BasalProgramTimeSlot> results = new ConcurrentBag<BasalProgramTimeSlot>();
+            ConcurrentBag<ProgramTimeSlot> results = new ConcurrentBag<ProgramTimeSlot>();
 
             if (slots.ContainsKey(userId))
             {

@@ -38,8 +38,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         public ICollection<PatientDevice> CompletedMappings = new List<PatientDevice>();
         public ICollection<PumpSetting> CompletedPumpSettingMappings = new List<PumpSetting>();
         public ICollection<PumpProgram> CompletedPumpProgramMappings = new List<PumpProgram>();
-        public ICollection<BasalProgramTimeSlot> CompletedBasalProgramTimeSlots = new List<BasalProgramTimeSlot>();
-        public ICollection<BolusProgramTimeSlot> CompletedBolusProgramTimeSlots = new List<BolusProgramTimeSlot>();
+        public ICollection<ProgramTimeSlot> CompletedBasalProgramTimeSlots = new List<ProgramTimeSlot>();
+        public ICollection<ProgramTimeSlot> CompletedBolusProgramTimeSlots = new List<ProgramTimeSlot>();
 
         public int RecordCount = 0;
         public int FailedCount = 0;
@@ -99,72 +99,75 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                                 if (ePump != null)
                                 {
-                                    mrh.Pump = new Pump();
+                                    mrh.Pump = ePump;// new Pump();
                                     mrh.Pump.PumpKeyId = mrh.ReadingKeyId;
 
                                     if (ePump.PumpPrograms != null)
                                     {
-                                        mrh.Pump.PumpPrograms = new List<PumpProgram>();
+                                        //mrh.Pump.PumpPrograms = new List<PumpProgram>();
                                         Array.ForEach(ePump.PumpPrograms.ToArray(), p =>
                                         {
-                                            var prog = new PumpProgram
-                                            {
-                                                CreationDate = p.CreationDate,
-                                                NumOfSegments = p.NumOfSegments,
-                                                ProgramKey = p.ProgramKey,
-                                                ProgramName = p.ProgramName,
-                                                Source = p.Source,
-                                                Valid = p.Valid,
-                                                PumpKeyId = mrh.Pump.PumpKeyId
-                                            };
+                                            p.PumpKeyId = mrh.Pump.PumpKeyId;
+                                            //var prog = new PumpProgram
+                                            //{
+                                            //    CreationDate = p.CreationDate,
+                                            //    NumOfSegments = p.NumOfSegments,
+                                            //    ProgramKey = p.ProgramKey,
+                                            //    ProgramName = p.ProgramName,
+                                            //    Source = p.Source,
+                                            //    Valid = p.Valid,
+                                            //    PumpKeyId = mrh.Pump.PumpKeyId
+                                            //};
 
-                                            CompletedPumpProgramMappings.Add(prog);
+                                            CompletedPumpProgramMappings.Add(p);
 
-                                            if (p.BasalProgramTimeSlots != null && p.BasalProgramTimeSlots.Count != 0)
-                                            {
-                                                Array.ForEach(p.BasalProgramTimeSlots.ToArray(), a =>
-                                                {
-                                                    prog.BasalProgramTimeSlots.Add(a);
-                                                });
-                                            }
+                                            //if (p.BasalProgramTimeSlots != null && p.BasalProgramTimeSlots.Count != 0)
+                                            //{
+                                            //    Array.ForEach(p.BasalProgramTimeSlots.ToArray(), a =>
+                                            //    {
+                                            //        prog.BasalProgramTimeSlots.Add(a);
+                                            //    });
+                                            //}
 
-                                            if (p.BolusProgramTimeSlots != null && p.BolusProgramTimeSlots.Count != 0)
-                                            {
-                                                Array.ForEach(p.BolusProgramTimeSlots.ToArray(), r =>
-                                                {
-                                                    prog.BolusProgramTimeSlots.Add(r);
-                                                });
-                                            }
+                                            //if (p.BolusProgramTimeSlots != null && p.BolusProgramTimeSlots.Count != 0)
+                                            //{
+                                            //    Array.ForEach(p.BolusProgramTimeSlots.ToArray(), r =>
+                                            //    {
+                                            //        prog.BolusProgramTimeSlots.Add(r);
+                                            //    });
+                                            //}
                                         });
                                     }
 
                                     if (ePump.PumpSettings != null)
                                     {
-                                        mrh.Pump.PumpSettings = new List<PumpSetting>();
+                                        //mrh.Pump.PumpSettings = new List<PumpSetting>();
                                         Array.ForEach(ePump.PumpSettings.ToArray(), s =>
                                         {
-                                            var ps = new PumpSetting
-                                            {
-                                                Date = s.Date,
-                                                Description = s.Description,
-                                                SettingName = s.SettingName,
-                                                SettingValue = s.SettingValue,
-                                                PumpKeyId = mrh.Pump.PumpKeyId
-                                            };
+                                            s.PumpKeyId = mrh.Pump.PumpKeyId;
 
-                                            CompletedPumpSettingMappings.Add(ps);
+                                            //var ps = new PumpSetting
+                                            //{
+                                            //    Date = s.Date,
+                                            //    Description = s.Description,
+                                            //    SettingName = s.SettingName,
+                                            //    SettingValue = s.SettingValue,
+                                            //    PumpKeyId = mrh.Pump.PumpKeyId
+                                            //};
+
+                                            CompletedPumpSettingMappings.Add(s);
                                         });
                                     }
 
-                                    mrh.Pump.ActiveProgramId = ePump.ActiveProgramId;
-                                    mrh.Pump.Cannula = ePump.Cannula;
-                                    mrh.Pump.Notes = ePump.Notes;
-                                    mrh.Pump.PumpInfusionSet = ePump.PumpInfusionSet;
-                                    mrh.Pump.PumpName = ePump.PumpName;
-                                    mrh.Pump.PumpStartDate = ePump.PumpStartDate;
-                                    mrh.Pump.PumpType = ePump.PumpType;
-                                    mrh.Pump.ReplacementDate = ePump.ReplacementDate;
-                                    mrh.Pump.UserId = ePump.UserId;
+                                    ////mrh.Pump.ActiveProgramId = ePump.ActiveProgramId;
+                                    ////mrh.Pump.Cannula = ePump.Cannula;
+                                    ////mrh.Pump.Notes = ePump.Notes;
+                                    ////mrh.Pump.PumpInfusionSet = ePump.PumpInfusionSet;
+                                    ////mrh.Pump.PumpName = ePump.PumpName;
+                                    ////mrh.Pump.PumpStartDate = ePump.PumpStartDate;
+                                    ////mrh.Pump.PumpType = ePump.PumpType;
+                                    ////mrh.Pump.ReplacementDate = ePump.ReplacementDate;
+                                    ////mrh.Pump.UserId = ePump.UserId;
                                 }
                             }
 
@@ -302,8 +305,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                     ctx.PumpPrograms.AddRange(CompletedPumpProgramMappings);
                     stats.PreSaveCount = ctx.ChangeTracker.Entries<PumpProgram>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                    basalPrgStats.PreSaveCount = ctx.ChangeTracker.Entries<BasalProgramTimeSlot>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
-                    bolusPrgStats.PreSaveCount = ctx.ChangeTracker.Entries<BolusProgramTimeSlot>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+
+                    var pt = ctx.ChangeTracker.Entries<ProgramTimeSlot>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+
+                    basalPrgStats.PreSaveCount = pt;
+                    bolusPrgStats.PreSaveCount = pt;
 
                     var saved = ctx.SaveChanges();
                     stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;

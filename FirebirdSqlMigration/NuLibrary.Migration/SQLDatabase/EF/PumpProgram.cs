@@ -17,8 +17,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PumpProgram()
         {
-            this.BasalProgramTimeSlots = new HashSet<BasalProgramTimeSlot>();
-            this.BolusProgramTimeSlots = new HashSet<BolusProgramTimeSlot>();
+            this.ProgramTimeSlots = new HashSet<ProgramTimeSlot>();
         }
     
         public int PumpProgramId { get; set; }
@@ -29,11 +28,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public bool Valid { get; set; }
         public int NumOfSegments { get; set; }
         public System.Guid PumpKeyId { get; set; }
+        public bool IsEnabled { get; set; }
+        public int ProgramTypeId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
+        public virtual ICollection<ProgramTimeSlot> ProgramTimeSlots { get; set; }
         public virtual Pump Pump { get; set; }
     }
 }

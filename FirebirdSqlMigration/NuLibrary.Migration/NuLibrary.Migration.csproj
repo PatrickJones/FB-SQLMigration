@@ -125,16 +125,16 @@
     <Compile Include="Mappings\TransactionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLDatabase\EF\Application.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\AppLoginHistory.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\AppSetting.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\AppUserSetting.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\AspnetDbModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -157,50 +157,47 @@
     <Compile Include="SQLDatabase\EF\aspnet_Users.cs">
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLDatabase\EF\AssignedUserType.cs">
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLDatabase\EF\BasalDelivery.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BasalDeliveryData.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\BasalProgramTimeSlot.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BGTarget.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BloodGlucoseReading.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BolusCarb.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BolusDelivery.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\BolusDeliveryData.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\BolusProgramTimeSlot.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\CareSetting.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\CGMReminder.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\CGMSession.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Check.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\CheckStatu.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Clinician.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\clinipro_Users.cs">
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
@@ -209,82 +206,82 @@
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\CorrectionFactor.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DailyTimeSlot.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DatabaseHistory.cs">
       <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DatabaseInfo.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DataShareCategory.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DataShareRequestLog.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DeviceData.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DeviceSetting.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DiabetesControlType.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\DiabetesManagementData.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\EmailUsernameView.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\EndUserLicenseAgreement.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\FirebirdConnection.cs">
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Institution.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InstitutionAddress.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\InstitutionPatientsFN_Result.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsulinBrand.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsulinCarbRatio.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsulinCorrection.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsulinMethod.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsulinType.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsuranceAddress.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsuranceContact.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsurancePlan.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\InsuranceProvider.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\LinkType.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\MedicalRecordIdentifier.cs">
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\MigrationHistoryModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -301,101 +298,107 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="SQLDatabase\EF\NumedicsGlobalModel.Context.cs">
+    <Compile Include="SQLDatabase\EF\NuMedicsGlobalModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>NumedicsGlobalModel.Context.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="SQLDatabase\EF\NumedicsGlobalModel.cs">
+    <Compile Include="SQLDatabase\EF\NuMedicsGlobalModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SQLDatabase\EF\NumedicsGlobalModel.Designer.cs">
+    <Compile Include="SQLDatabase\EF\NuMedicsGlobalModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>NumedicsGlobalModel.edmx</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\NuMedicsUserPrintSetting.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\NutritionReading.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PasswordHistory.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Patient.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientAddress.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientDevice.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientHistory.cs">
       <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientInstitutionLinkHistory.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SQLDatabase\EF\PatientListSP_Result.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientListView.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientMedication.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientPhoneNumber.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PatientPhoto.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Payment.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PaymentMethod.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PayPal.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PhysiologicalReading.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\ProgramTimeSlot.cs">
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Pump.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PumpProgram.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\PumpProgramType.cs">
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\PumpSetting.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\ReadingError.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\ReadingEvent.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\ReadingEventType.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\ReadingHeader.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\SharedArea.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\Subscription.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SQLDatabase\EF\SubscriptionsView.cs">
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\SubscriptionType.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\subs_Adjustments.cs">
       <DependentUpon>AspnetDbModel.tt</DependentUpon>
@@ -419,28 +422,28 @@
       <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\TableRowCount.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\TensReading.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\TherapyType.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\TotalDailyInsulinDelivery.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\User.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\UserAuthentication.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\UserHistory.cs">
       <DependentUpon>MigrationHistoryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\EF\UserType.cs">
-      <DependentUpon>NumedicsGlobalModel.tt</DependentUpon>
+      <DependentUpon>NuMedicsGlobalModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLDatabase\SQLHelpers\AspnetDbHelpers.cs" />
     <Compile Include="SQLDatabase\SQLHelpers\DatabaseContextDisposal.cs" />
@@ -500,12 +503,12 @@
     <None Include="SQLDatabase\EF\MigrationHistoryModel.edmx.diagram">
       <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
     </None>
-    <EntityDeploy Include="SQLDatabase\EF\NumedicsGlobalModel.edmx">
+    <EntityDeploy Include="SQLDatabase\EF\NuMedicsGlobalModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>NumedicsGlobalModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>NuMedicsGlobalModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="SQLDatabase\EF\NumedicsGlobalModel.edmx.diagram">
-      <DependentUpon>NumedicsGlobalModel.edmx</DependentUpon>
+    <None Include="SQLDatabase\EF\NuMedicsGlobalModel.edmx.diagram">
+      <DependentUpon>NuMedicsGlobalModel.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -529,15 +532,15 @@
       <DependentUpon>MigrationHistoryModel.edmx</DependentUpon>
       <LastGenOutput>MigrationHistoryModel.cs</LastGenOutput>
     </Content>
-    <Content Include="SQLDatabase\EF\NumedicsGlobalModel.Context.tt">
+    <Content Include="SQLDatabase\EF\NuMedicsGlobalModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NumedicsGlobalModel.edmx</DependentUpon>
-      <LastGenOutput>NumedicsGlobalModel.Context.cs</LastGenOutput>
+      <DependentUpon>NuMedicsGlobalModel.edmx</DependentUpon>
+      <LastGenOutput>NuMedicsGlobalModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="SQLDatabase\EF\NumedicsGlobalModel.tt">
+    <Content Include="SQLDatabase\EF\NuMedicsGlobalModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NumedicsGlobalModel.edmx</DependentUpon>
-      <LastGenOutput>NumedicsGlobalModel.cs</LastGenOutput>
+      <DependentUpon>NuMedicsGlobalModel.edmx</DependentUpon>
+      <LastGenOutput>NuMedicsGlobalModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

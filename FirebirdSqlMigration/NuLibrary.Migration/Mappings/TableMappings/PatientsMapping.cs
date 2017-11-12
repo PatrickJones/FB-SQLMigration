@@ -70,10 +70,20 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     }
                     else
                     {
+                        var medRecId = (row["MEDICALRECORDIDENTIFIER"] is DBNull) ? String.Empty : row["MEDICALRECORDIDENTIFIER"].ToString();
+
+                        if (!String.IsNullOrEmpty(medRecId))
+                        {
+                            MemoryMappings.AddMRID(new MedicalRecordIdentifier {
+                                MRID = medRecId,
+                                InstitutionId = instId,
+                                PatientUserId = userId
+                            });
+                        }
+
                         var pat = new Patient
                         {
                             UserId = userId,
-                            MRID = (row["MEDICALRECORDIDENTIFIER"] is DBNull) ? String.Empty : row["MEDICALRECORDIDENTIFIER"].ToString(),
                             Firstname = (row["FIRSTNAME"] is DBNull) ? String.Empty : row["FIRSTNAME"].ToString(),
                             Lastname = (row["LASTNAME"] is DBNull) ? String.Empty : row["LASTNAME"].ToString(),
                             Middlename = (row["MIDDLENAME"] is DBNull) ? String.Empty : row["MIDDLENAME"].ToString(),
@@ -105,7 +115,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             aHelper.CreateCliniProUser(userId, patId);
 
                             user.UserId = userId;
-                            user.UserType = (int)UserType.Patient;
+                            user.AssignedUserTypes.Add(new AssignedUserType { UserId = userId, UserType = (int)UserType.Patient });
                             user.CreationDate = DateTime.Now;
 
                             pat.User = user;
@@ -142,6 +152,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var instStats = new SqlTableStats("Patients_Institutions");
                 var addStats = new SqlTableStats("PatientAddresses");
 
+                //save MRID collection
+                TransactionManager.DatabaseContext.MedicalRecordIdentifiers.AddRange(MemoryMappings.GetAllMRIDs());
+
                 ////Set instition id for each patient
                 var institution = TransactionManager.DatabaseContext.Institutions.FirstOrDefault(f => f.LegacySiteId == MigrationVariables.CurrentSiteId);
                 Parallel.ForEach(CompletedMappings, c => c.Institutions.Add(institution));
@@ -150,6 +163,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Patient>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
                 instStats.PreSaveCount = stats.PreSaveCount;
                 addStats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<PatientAddress>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();
+
                 var saved = TransactionManager.DatabaseContext.SaveChanges();
                 stats.PostSaveCount = (saved > stats.PreSaveCount) ? stats.PreSaveCount : saved;
                 instStats.PostSaveCount = (saved > instStats.PreSaveCount) ? instStats.PreSaveCount : saved;

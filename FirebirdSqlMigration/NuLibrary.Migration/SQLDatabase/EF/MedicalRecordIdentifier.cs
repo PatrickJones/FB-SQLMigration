@@ -10,18 +10,15 @@
 namespace NuLibrary.Migration.SQLDatabase.EF
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class InstitutionPatientsFN_Result
+    public partial class MedicalRecordIdentifier
     {
-        public System.Guid InstitutionId { get; set; }
-        public System.Guid UserId { get; set; }
-        public string Username { get; set; }
-        public string Name { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public string Middlename { get; set; }
-        public string Email { get; set; }
-        public System.DateTime DateofBirth { get; set; }
+        public int Id { get; set; }
+        public System.Guid PatientUserId { get; set; }
         public string MRID { get; set; }
+        public System.Guid InstitutionId { get; set; }
+    
+        public virtual Institution Institution { get; set; }
     }
 }

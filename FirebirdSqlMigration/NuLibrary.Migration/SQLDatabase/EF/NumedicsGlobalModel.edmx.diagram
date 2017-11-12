@@ -4,81 +4,80 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b660cc78bc104a479ee6c37afc4b5e7d" Name="Diagram1">
+      <Diagram DiagramId="983e3b98ecdf4baf9fd9eaf847b18f5b" Name="Diagram1">
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Application" Width="1.5" PointX="12.75" PointY="8" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppLoginHistory" Width="1.5" PointX="15" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppSetting" Width="1.5" PointX="15" PointY="7.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppUserSetting" Width="1.5" PointX="15" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDelivery" Width="1.5" PointX="12.75" PointY="68.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDeliveryData" Width="1.5" PointX="15" PointY="69.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalProgramTimeSlot" Width="1.5" PointX="17.25" PointY="109.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BGTarget" Width="1.5" PointX="15" PointY="76" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BloodGlucoseReading" Width="1.5" PointX="12.75" PointY="72.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusCarb" Width="1.5" PointX="15" PointY="78.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDelivery" Width="1.5" PointX="12.75" PointY="81.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDeliveryData" Width="1.5" PointX="15" PointY="81.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusProgramTimeSlot" Width="1.5" PointX="17.25" PointY="112.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.CareSetting" Width="1.5" PointX="8.25" PointY="14.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMReminder" Width="1.5" PointX="12.75" PointY="92.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMSession" Width="1.5" PointX="12.75" PointY="95.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.Check" Width="1.5" PointX="12.75" PointY="55.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDelivery" Width="1.5" PointX="12.75" PointY="69.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDeliveryData" Width="1.5" PointX="15" PointY="69.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BGTarget" Width="1.5" PointX="15" PointY="76.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BloodGlucoseReading" Width="1.5" PointX="12.75" PointY="72.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusCarb" Width="1.5" PointX="15" PointY="79.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDelivery" Width="1.5" PointX="12.75" PointY="82" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.BolusDeliveryData" Width="1.5" PointX="15" PointY="81.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.CareSetting" Width="1.5" PointX="8.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMReminder" Width="1.5" PointX="12.75" PointY="92.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.CGMSession" Width="1.5" PointX="12.75" PointY="95.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.Check" Width="1.5" PointX="12.75" PointY="55.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.CheckStatu" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.Clinician" Width="1.5" PointX="3" PointY="56" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.CorrectionFactor" Width="1.5" PointX="15" PointY="84.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.DailyTimeSlot" Width="1.5" PointX="10.5" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.Clinician" Width="1.5" PointX="3" PointY="55.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.CorrectionFactor" Width="1.5" PointX="15" PointY="84.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DailyTimeSlot" Width="1.5" PointX="10.5" PointY="15" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.DatabaseInfo" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.DataShareCategory" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.DataShareRequestLog" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.DeviceData" Width="1.5" PointX="10.5" PointY="62.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.DeviceSetting" Width="1.5" PointX="12.75" PointY="98.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.DiabetesControlType" Width="1.5" PointX="10.5" PointY="16.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.DiabetesManagementData" Width="1.5" PointX="10.5" PointY="65.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DeviceData" Width="1.5" PointX="10.5" PointY="63.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DeviceSetting" Width="1.5" PointX="12.75" PointY="98.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DiabetesControlType" Width="1.5" PointX="10.5" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.DiabetesManagementData" Width="1.5" PointX="10.5" PointY="65.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.EndUserLicenseAgreement" Width="1.5" PointX="15" PointY="13.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InstitutionAddress" Width="1.5" PointX="3" PointY="60.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.Institution" Width="1.5" PointX="0.75" PointY="56.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InstitutionAddress" Width="1.5" PointX="3" PointY="59.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.Institution" Width="1.5" PointX="0.75" PointY="56.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinBrand" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCarbRatio" Width="1.5" PointX="15" PointY="86.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCorrection" Width="1.5" PointX="15" PointY="89.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCarbRatio" Width="1.5" PointX="15" PointY="87.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCorrection" Width="1.5" PointX="15" PointY="89.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinMethod" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinType" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceAddress" Width="1.5" PointX="3.75" PointY="43.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceContact" Width="1.5" PointX="3.75" PointY="39.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsurancePlan" Width="1.5" PointX="3.75" PointY="47.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceProvider" Width="1.5" PointX="1.5" PointY="48.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceAddress" Width="1.5" PointX="3.75" PointY="41.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceContact" Width="1.5" PointX="3.75" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsurancePlan" Width="1.5" PointX="3.75" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceProvider" Width="1.5" PointX="1.5" PointY="49.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.LinkType" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.MedicalRecordIdentifier" Width="1.5" PointX="3" PointY="63.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.NuMedicsUserPrintSetting" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12.75" PointY="101.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PasswordHistory" Width="1.5" PointX="17.25" PointY="30.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientAddress" Width="1.5" PointX="8.25" PointY="19.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientDevice" Width="1.5" PointX="8.25" PointY="95.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.NutritionReading" Width="1.5" PointX="12.75" PointY="102.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PasswordHistory" Width="1.5" PointX="17.25" PointY="30.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientAddress" Width="1.5" PointX="8.25" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientDevice" Width="1.5" PointX="8.25" PointY="95.125" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientInstitutionLinkHistory" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientMedication" Width="1.5" PointX="8.25" PointY="92.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientPhoneNumber" Width="1.5" PointX="8.25" PointY="100.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientPhoto" Width="1.5" PointX="8.25" PointY="104.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.Patient" Width="1.5" PointX="6" PointY="55.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientMedication" Width="1.5" PointX="8.25" PointY="91.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientPhoneNumber" Width="1.5" PointX="8.25" PointY="100" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientPhoto" Width="1.5" PointX="8.25" PointY="103.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.Patient" Width="1.5" PointX="6" PointY="56.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.PaymentMethod" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.Payment" Width="1.5" PointX="10.5" PointY="57.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PayPal" Width="1.5" PointX="12.75" PointY="58.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PhysiologicalReading" Width="1.5" PointX="12.75" PointY="105.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpProgram" Width="1.5" PointX="15" PointY="110.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.Pump" Width="1.5" PointX="12.75" PointY="111.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpSetting" Width="1.5" PointX="15" PointY="115.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingError" Width="1.5" PointX="12.75" PointY="118.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEvent" Width="1.5" PointX="12.75" PointY="121.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEventType" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingHeader" Width="1.5" PointX="10.5" PointY="97.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.Payment" Width="1.5" PointX="10.5" PointY="57.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PayPal" Width="1.5" PointX="12.75" PointY="58.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PhysiologicalReading" Width="1.5" PointX="12.75" PointY="105.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.ProgramTimeSlot" Width="1.5" PointX="17.25" PointY="110" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpProgram" Width="1.5" PointX="15" PointY="109.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpProgramType" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.Pump" Width="1.5" PointX="12.75" PointY="111" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PumpSetting" Width="1.5" PointX="15" PointY="113.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingError" Width="1.5" PointX="12.75" PointY="116.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEvent" Width="1.5" PointX="12.75" PointY="120" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingEventType" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.ReadingHeader" Width="1.5" PointX="10.5" PointY="97.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.SharedArea" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.Subscription" Width="1.5" PointX="8.25" PointY="56.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.SubscriptionType" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.TensReading" Width="1.5" PointX="12.75" PointY="125.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.TherapyType" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.TotalDailyInsulinDelivery" Width="1.5" PointX="12.75" PointY="129.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.UserAuthentication" Width="1.5" PointX="15" PointY="28.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.User" Width="1.5" PointX="0.75" PointY="52.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.UserType" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.EmailUsernameView" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientListView" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.TableRowCount" Width="1.5" PointX="8.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.Subscription" Width="1.5" PointX="8.25" PointY="57.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.SubscriptionType" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.TensReading" Width="1.5" PointX="12.75" PointY="123.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.TherapyType" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.TotalDailyInsulinDelivery" Width="1.5" PointX="12.75" PointY="127.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.UserAuthentication" Width="1.5" PointX="15" PointY="29.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.User" Width="1.5" PointX="0.75" PointY="53.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.UserType" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.AssignedUserType" Width="1.5" PointX="3" PointY="45.875" IsExpanded="true" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppLoginHistories_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppSettings_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppUserSettings_Applications" ManuallyRouted="false" />
@@ -86,7 +85,6 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries" ManuallyRouted="false" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BloodGlucoseReadings_ReadingHeaders" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusCarbs_BolusDelivery" ManuallyRouted="false" />
@@ -95,7 +93,6 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CorrectionFactors_BolusDelivery" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCarbRatio_BolusDelivery" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsulinCorrections_BolusDelivery" ManuallyRouted="false" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_BolusProgramTimeSlots_PumpPrograms" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_CareSettings_Patients1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_DailyTimeSlots_CareSettings" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_DiabetesControlTypes_CareSettings" ManuallyRouted="false" />
@@ -109,6 +106,7 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_DeviceSettings_ReadingHeaders" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_DiabetesManagementData_PatientDevices" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsstitutionAddresses_Institutionss" ManuallyRouted="false" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_MedicalRecordIdentifiers_Institutions" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_Subscriptions_Institutions" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsuranceAddresses_InsuranceProviders" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_InsuranceContacts_InsuranceProviders" ManuallyRouted="false" />
@@ -126,6 +124,7 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_Payments_Subscriptions" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PayPal_Payments" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PhysiologicalReadings_ReadingHeaders1" ManuallyRouted="false" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpProgramTimeSlots_PumpPrograms" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpPrograms_Pumps1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_Pumps_ReadingHeaders" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_PumpSettings_Pumps1" ManuallyRouted="false" />
@@ -134,8 +133,13 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_AssignedUserTypes_Users" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_Institutions" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_InsurancePlans" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.EmailUsernameView" Width="1.5" PointX="7.75" PointY="9.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientListView" Width="1.5" PointX="9.75" PointY="9.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.SubscriptionsView" Width="1.5" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.TableRowCount" Width="1.5" PointX="11.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

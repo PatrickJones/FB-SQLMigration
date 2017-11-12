@@ -12,15 +12,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class BolusProgramTimeSlot
+    public partial class PumpProgramType
     {
-        public int BolusSlotId { get; set; }
-        public double BolusValue { get; set; }
-        public System.TimeSpan StartTime { get; set; }
-        public System.TimeSpan StopTime { get; set; }
-        public int PumpProgramId { get; set; }
-        public System.DateTime DateSet { get; set; }
-    
-        public virtual PumpProgram PumpProgram { get; set; }
+        public int TypeId { get; set; }
+        public string Name { get; set; }
     }
 }

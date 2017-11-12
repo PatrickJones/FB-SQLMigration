@@ -29,7 +29,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         }
     
         public System.Guid UserId { get; set; }
-        public string MRID { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Middlename { get; set; }

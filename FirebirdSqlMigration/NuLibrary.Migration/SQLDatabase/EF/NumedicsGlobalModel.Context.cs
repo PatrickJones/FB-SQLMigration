@@ -33,13 +33,11 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<AppUserSetting> AppUserSettings { get; set; }
         public virtual DbSet<BasalDelivery> BasalDeliveries { get; set; }
         public virtual DbSet<BasalDeliveryData> BasalDeliveryDatas { get; set; }
-        public virtual DbSet<BasalProgramTimeSlot> BasalProgramTimeSlots { get; set; }
         public virtual DbSet<BGTarget> BGTargets { get; set; }
         public virtual DbSet<BloodGlucoseReading> BloodGlucoseReadings { get; set; }
         public virtual DbSet<BolusCarb> BolusCarbs { get; set; }
         public virtual DbSet<BolusDelivery> BolusDeliveries { get; set; }
         public virtual DbSet<BolusDeliveryData> BolusDeliveryDatas { get; set; }
-        public virtual DbSet<BolusProgramTimeSlot> BolusProgramTimeSlots { get; set; }
         public virtual DbSet<CareSetting> CareSettings { get; set; }
         public virtual DbSet<CGMReminder> CGMReminders { get; set; }
         public virtual DbSet<CGMSession> CGMSessions { get; set; }
@@ -68,6 +66,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<InsurancePlan> InsurancePlans { get; set; }
         public virtual DbSet<InsuranceProvider> InsuranceProviders { get; set; }
         public virtual DbSet<LinkType> LinkTypes { get; set; }
+        public virtual DbSet<MedicalRecordIdentifier> MedicalRecordIdentifiers { get; set; }
         public virtual DbSet<NuMedicsUserPrintSetting> NuMedicsUserPrintSettings { get; set; }
         public virtual DbSet<NutritionReading> NutritionReadings { get; set; }
         public virtual DbSet<PasswordHistory> PasswordHistories { get; set; }
@@ -82,7 +81,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PayPal> PayPals { get; set; }
         public virtual DbSet<PhysiologicalReading> PhysiologicalReadings { get; set; }
+        public virtual DbSet<ProgramTimeSlot> ProgramTimeSlots { get; set; }
         public virtual DbSet<PumpProgram> PumpPrograms { get; set; }
+        public virtual DbSet<PumpProgramType> PumpProgramTypes { get; set; }
         public virtual DbSet<Pump> Pumps { get; set; }
         public virtual DbSet<PumpSetting> PumpSettings { get; set; }
         public virtual DbSet<ReadingError> ReadingErrors { get; set; }
@@ -98,27 +99,27 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<UserAuthentication> UserAuthentications { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<AssignedUserType> AssignedUserTypes { get; set; }
         public virtual DbSet<EmailUsernameView> EmailUsernameViews { get; set; }
         public virtual DbSet<PatientListView> PatientListViews { get; set; }
+        public virtual DbSet<SubscriptionsView> SubscriptionsViews { get; set; }
         public virtual DbSet<TableRowCount> TableRowCounts { get; set; }
     
-        [DbFunction("NuMedicsGlobalEntities", "InstitutionPatientsFN")]
-        public virtual IQueryable<InstitutionPatientsFN_Result> InstitutionPatientsFN(Nullable<System.Guid> institutionId)
+        public virtual int CreateTestClinician(string username, string email, Nullable<System.Guid> institutionId)
         {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
             var institutionIdParameter = institutionId.HasValue ?
                 new ObjectParameter("InstitutionId", institutionId) :
                 new ObjectParameter("InstitutionId", typeof(System.Guid));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<InstitutionPatientsFN_Result>("[NuMedicsGlobalEntities].[InstitutionPatientsFN](@InstitutionId)", institutionIdParameter);
-        }
-    
-        public virtual ObjectResult<PatientListSP_Result> PatientListSP(Nullable<System.Guid> institutionId)
-        {
-            var institutionIdParameter = institutionId.HasValue ?
-                new ObjectParameter("InstitutionId", institutionId) :
-                new ObjectParameter("InstitutionId", typeof(System.Guid));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PatientListSP_Result>("PatientListSP", institutionIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateTestClinician", usernameParameter, emailParameter, institutionIdParameter);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace NuLibrary.Migration.Mappings
         }
 
         /// <summary>
-        /// Creates firebird to sql mappings in paralell
+        /// Creates firebird to sql mappings in parallel
         /// </summary>
         private void CreateMappings()
         {

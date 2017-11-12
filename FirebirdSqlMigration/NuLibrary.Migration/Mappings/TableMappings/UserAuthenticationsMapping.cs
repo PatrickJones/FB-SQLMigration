@@ -92,13 +92,14 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         var user = new User
                         {
                             UserId = userId,
-                            UserType = (isAdmin) ? (int)UserType.Clinician : (int)UserType.Patient,
+                            AssignedUserTypes = new List<AssignedUserType> { new AssignedUserType { UserId = userId, UserType = (isAdmin) ? (int)UserType.Clinician : (int)UserType.Patient } },
+                            //UserType = (isAdmin) ? (int)UserType.Clinician : (int)UserType.Patient,
                             CreationDate = member.CreateDate
                         };
 
                         if (isAdminSiteUser)
                         {
-                            user.UserType = (int)UserType.Admin;
+                            user.AssignedUserTypes.Add(new AssignedUserType { UserId = userId, UserType = (int)UserType.Admin });
                         }
 
                         user.UserAuthentications.Add(uAuth);

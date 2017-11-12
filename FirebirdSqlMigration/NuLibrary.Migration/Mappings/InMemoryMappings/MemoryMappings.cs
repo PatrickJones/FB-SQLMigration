@@ -13,6 +13,8 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
 
         private static ICollection<Institution> InstitutionCollection = new List<Institution>();
 
+        private static ICollection<MedicalRecordIdentifier> MRIDCollection = new List<MedicalRecordIdentifier>();
+
         private static ICollection<Pump> PumpCollection = new List<Pump>();
 
         // key = firebird downloadkeyid
@@ -42,12 +44,12 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         // key = user id
         // value key = firebird creation date
         // value value = List of BasalProgramTimeSlots
-        private static Dictionary<Guid, Dictionary<DateTime, List<BasalProgramTimeSlot>>> BasalPrgTimeSlots = new Dictionary<Guid, Dictionary<DateTime, List<BasalProgramTimeSlot>>>();
+        private static Dictionary<Guid, Dictionary<DateTime, List<ProgramTimeSlot>>> BasalPrgTimeSlots = new Dictionary<Guid, Dictionary<DateTime, List<ProgramTimeSlot>>>();
 
         // key = user id
         // value key = firebird creation date
         // value value = List of BasalProgramTimeSlots
-        private static Dictionary<Guid, Dictionary<DateTime, List<BolusProgramTimeSlot>>> BolusPrgTimeSlots = new Dictionary<Guid, Dictionary<DateTime, List<BolusProgramTimeSlot>>>();
+        private static Dictionary<Guid, Dictionary<DateTime, List<ProgramTimeSlot>>> BolusPrgTimeSlots = new Dictionary<Guid, Dictionary<DateTime, List<ProgramTimeSlot>>>();
 
         // key = user id
         // value = List of pump settings for that user. should be single set for each firebird patient
@@ -66,7 +68,7 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
             return PumpSettings;
         }
 
-        public static void AddBolusPrgTimeSlot(Guid userId, DateTime creationDate, BolusProgramTimeSlot instance)
+        public static void AddBolusPrgTimeSlot(Guid userId, DateTime creationDate, ProgramTimeSlot instance)
         {
             if (BolusPrgTimeSlots.ContainsKey(userId))
             {
@@ -78,25 +80,25 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
                 }
                 else
                 {
-                    innerDict.Add(creationDate, new List<BolusProgramTimeSlot> { instance });
+                    innerDict.Add(creationDate, new List<ProgramTimeSlot> { instance });
                 }
 
             }
             else
             {
-                var d = new Dictionary<DateTime, List<BolusProgramTimeSlot>>();
-                d.Add(creationDate, new List<BolusProgramTimeSlot> { instance });
+                var d = new Dictionary<DateTime, List<ProgramTimeSlot>>();
+                d.Add(creationDate, new List<ProgramTimeSlot> { instance });
 
                 BolusPrgTimeSlots.Add(userId, d);
             }
         }
 
-        public static Dictionary<Guid, Dictionary<DateTime, List<BolusProgramTimeSlot>>> GetAllBolusPrgTimeSlots()
+        public static Dictionary<Guid, Dictionary<DateTime, List<ProgramTimeSlot>>> GetAllBolusPrgTimeSlots()
         {
             return BolusPrgTimeSlots;
         }
 
-        public static void AddBasalPrgTimeSlot(Guid userId, DateTime creationDate, BasalProgramTimeSlot instance)
+        public static void AddBasalPrgTimeSlot(Guid userId, DateTime creationDate, ProgramTimeSlot instance)
         {
             if (BasalPrgTimeSlots.ContainsKey(userId))
             {
@@ -108,20 +110,20 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
                 }
                 else
                 {
-                    innerDict.Add(creationDate, new List<BasalProgramTimeSlot> { instance });
+                    innerDict.Add(creationDate, new List<ProgramTimeSlot> { instance });
                 }
                 
             }
             else
             {
-                var d = new Dictionary<DateTime, List<BasalProgramTimeSlot>>();
-                d.Add(creationDate, new List<BasalProgramTimeSlot> { instance });
+                var d = new Dictionary<DateTime, List<ProgramTimeSlot>>();
+                d.Add(creationDate, new List<ProgramTimeSlot> { instance });
 
                 BasalPrgTimeSlots.Add(userId, d);
             }
         }
 
-        public static Dictionary<Guid, Dictionary<DateTime, List<BasalProgramTimeSlot>>> GetAllBasalPrgTimeSlots()
+        public static Dictionary<Guid, Dictionary<DateTime, List<ProgramTimeSlot>>> GetAllBasalPrgTimeSlots()
         {
             return BasalPrgTimeSlots;
         }
@@ -201,6 +203,19 @@ namespace NuLibrary.Migration.Mappings.InMemoryMappings
         public static ICollection<Institution> GetAllInstitutions()
         {
             return InstitutionCollection;
+        }
+
+        public static void AddMRID(MedicalRecordIdentifier mrid)
+        {
+            if (!MRIDCollection.Contains(mrid))
+            {
+                MRIDCollection.Add(mrid);
+            }
+        }
+
+        public static ICollection<MedicalRecordIdentifier> GetAllMRIDs()
+        {
+            return MRIDCollection;
         }
 
         public static void AddCompnay(string companyKeyId, string compnayName)

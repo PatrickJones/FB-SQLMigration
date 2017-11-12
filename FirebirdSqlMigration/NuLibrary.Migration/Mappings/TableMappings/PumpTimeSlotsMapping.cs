@@ -54,8 +54,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     if (!mHelper.HasPatientMigrated(patId))
                     {
                         // temp collecions
-                        var tempBasal = new List<BasalProgramTimeSlot>();
-                        var tempBolus = new List<BolusProgramTimeSlot>();
+                        var tempBasal = new List<ProgramTimeSlot>();
+                        var tempBolus = new List<ProgramTimeSlot>();
 
                         var keyId = mu.ParseInt(row["KEYID"].ToString());
                         var programKey = mu.ParseInt(row["PROGRAMNUMBER"].ToString());
@@ -69,9 +69,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                             if (bastart != DateTime.MinValue && bastop != DateTime.MinValue)
                             {
-                                BasalProgramTimeSlot bats = new BasalProgramTimeSlot
+                                ProgramTimeSlot bats = new ProgramTimeSlot
                                 {
-                                    BasalValue = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
+                                    Value = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
                                     StartTime = bastart.TimeOfDay,
                                     StopTime = bastop.TimeOfDay,
                                     DateSet = createDate
@@ -83,7 +83,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
-                                    MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BasalProgramTimeSlots", typeof(BasalProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
+                                    MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BasalProgramTimeSlots", typeof(ProgramTimeSlot), JsonConvert.SerializeObject(bats), "Unable to add BasalProgramTimeSlot to database because creation date was null.");
                                     FailedCount++;
                                 }
                             }
@@ -94,9 +94,9 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                                 if (botime != DateTime.MinValue)
                                 {
-                                    BolusProgramTimeSlot bots = new BolusProgramTimeSlot
+                                    ProgramTimeSlot bots = new ProgramTimeSlot
                                     {
-                                        BolusValue = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
+                                        Value = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
                                         StartTime = botime.TimeOfDay,
                                         DateSet = createDate
                                     };
@@ -107,7 +107,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                     }
                                     else
                                     {
-                                        MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BolusProgramTimeSlots", typeof(BolusProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
+                                        MappingStatistics.LogFailedMapping("PUMPTIMESLOTS", row["KEYID"].ToString(), "BolusProgramTimeSlots", typeof(ProgramTimeSlot), JsonConvert.SerializeObject(bots), "Unable to add BolusProgramTimeSlot to database because creation date was null.");
                                         FailedCount++;
                                     }
                                 }

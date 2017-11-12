@@ -12,10 +12,10 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class BasalProgramTimeSlot
+    public partial class ProgramTimeSlot
     {
-        public int BasalSlotId { get; set; }
-        public double BasalValue { get; set; }
+        public int SlotId { get; set; }
+        public double Value { get; set; }
         public System.TimeSpan StartTime { get; set; }
         public System.TimeSpan StopTime { get; set; }
         public int PumpProgramId { get; set; }

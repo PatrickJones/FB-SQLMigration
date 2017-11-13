@@ -17,18 +17,18 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.UserAuthentications = new HashSet<UserAuthentication>();
             this.AssignedUserTypes = new HashSet<AssignedUserType>();
+            this.UserAuthentications = new HashSet<UserAuthentication>();
         }
     
         public System.Guid UserId { get; set; }
         public System.DateTime CreationDate { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AssignedUserType> AssignedUserTypes { get; set; }
         public virtual Clinician Clinician { get; set; }
         public virtual Patient Patient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAuthentication> UserAuthentications { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AssignedUserType> AssignedUserTypes { get; set; }
     }
 }

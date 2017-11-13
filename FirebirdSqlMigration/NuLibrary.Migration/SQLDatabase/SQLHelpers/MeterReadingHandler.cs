@@ -128,6 +128,7 @@ namespace NuLibrary.Migration.SQLDatabase.SQLHelpers
 
                         var nt = new NutritionReading
                         {
+                            Date = date,
                             ReadingDateTime = date,
                             ReadingKeyId = keyId,
                             UserId = userId

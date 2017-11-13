@@ -93,6 +93,10 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                         FailedCount++;
                                     }
                                 }
+                                else
+                                {
+
+                                }
                             }
 
                             // add to Memory Mappings so that Pump object and retieve

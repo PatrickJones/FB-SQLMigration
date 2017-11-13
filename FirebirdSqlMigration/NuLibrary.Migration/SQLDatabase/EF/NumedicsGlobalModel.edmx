@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="NuMedicsGlobalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="NuMedicsGlobalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Applications">
           <Key>
             <PropertyRef Name="ApplicationId" />
@@ -53,15 +53,11 @@
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NuMedicsGlobal.dbo.AssignedUserTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AssignedUserTypes">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="UserType" />
-            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserType" Type="int" Nullable="false" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
@@ -1702,6 +1698,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppSettings" EntityType="Self.AppSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppUserSettings" EntityType="Self.AppUserSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalDeliveries" EntityType="Self.BasalDeliveries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasalDeliveryData" EntityType="Self.BasalDeliveryData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BGTargets" EntityType="Self.BGTargets" Schema="dbo" store:Type="Tables" />
@@ -1772,7 +1769,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserTypes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmailUsernameView" EntityType="Self.EmailUsernameView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [EmailUsernameView].[UserId] AS [UserId], 
@@ -2068,7 +2064,8 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NuMedicsGlobalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2127,6 +2124,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <Property Name="LastUpdatedByUser" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Application" Relationship="Self.FK_AppUserSettings_Applications" FromRole="AppUserSettings" ToRole="Applications" />
+        </EntityType>
+        <EntityType Name="AssignedUserType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_AssignedUserTypes_Users" FromRole="AssignedUserTypes" ToRole="Users" />
         </EntityType>
         <EntityType Name="BasalDelivery">
           <Key>
@@ -2997,10 +3003,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           </Key>
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AssignedUserTypes" Relationship="Self.FK_AssignedUserTypes_Users" FromRole="Users" ToRole="AssignedUserTypes" />
           <NavigationProperty Name="Clinician" Relationship="Self.FK_Clinicians_Users" FromRole="Users" ToRole="Clinicians" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Patients_Users" FromRole="Users" ToRole="Patients" />
           <NavigationProperty Name="UserAuthentications" Relationship="Self.FK_UserAuthentications_Users" FromRole="Users" ToRole="UserAuthentications" />
-          <NavigationProperty Name="AssignedUserTypes" Relationship="Self.FK_AssignedUserTypes_Users" FromRole="Users" ToRole="AssignedUserTypes" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -3009,16 +3015,88 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityType Name="AssignedUserType">
+        <EntityType Name="EmailUsernameView">
           <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="UserType" />
             <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserType" />
+            <PropertyRef Name="CreationDate" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_AssignedUserTypes_Users" FromRole="AssignedUserTypes" ToRole="Users" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ClinicianEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PatientEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PatientListView">
+          <Key>
+            <PropertyRef Name="InstitutionId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="InstitutionName" />
+            <PropertyRef Name="Firstname" />
+            <PropertyRef Name="Lastname" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="DateofBirth" />
+          </Key>
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InstitutionName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Firstname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lastname" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Middlename" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateofBirth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SubscriptionsView">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="SubscriptionType" />
+            <PropertyRef Name="SubscriptionDate" />
+            <PropertyRef Name="ExpirationDate" />
+            <PropertyRef Name="IsTrial" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="UserType" />
+            <PropertyRef Name="InstitutionId" />
+            <PropertyRef Name="PaymentMethod" />
+            <PropertyRef Name="PaymentId" />
+            <PropertyRef Name="CheckId" />
+            <PropertyRef Name="CheckStatus" />
+            <PropertyRef Name="CheckNumber" />
+            <PropertyRef Name="CheckCode" />
+            <PropertyRef Name="CheckDateRecieved" />
+            <PropertyRef Name="CheckAmount" />
+          </Key>
+          <Property Name="SubscriptionId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="SubscriptionType" Type="Int32" Nullable="false" />
+          <Property Name="SubscriptionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsTrial" Type="Boolean" Nullable="false" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
+          <Property Name="PaymentMethod" Type="Int32" Nullable="false" />
+          <Property Name="PaymentId" Type="Int32" Nullable="false" />
+          <Property Name="CheckId" Type="Int32" Nullable="false" />
+          <Property Name="CheckStatus" Type="Int32" Nullable="false" />
+          <Property Name="CheckNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CheckCode" Type="Int64" Nullable="false" />
+          <Property Name="CheckDateRecieved" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CheckAmount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PayPalId" Type="Int32" />
+          <Property Name="PayPalPaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="PayPalPaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PayPalPayment" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="TableRowCount">
+          <Key>
+            <PropertyRef Name="TableName" />
+          </Key>
+          <Property Name="TableName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RowCnt" Type="Int64" />
         </EntityType>
         <Association Name="FK_AppLoginHistories_Applications">
           <End Role="Applications" Type="Self.Application" Multiplicity="1" />
@@ -3077,6 +3155,18 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Principal>
             <Dependent Role="UserAuthentications">
               <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssignedUserTypes_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="AssignedUserTypes" Type="Self.AssignedUserType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AssignedUserTypes">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3702,18 +3792,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AssignedUserTypes_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="AssignedUserTypes" Type="Self.AssignedUserType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="AssignedUserTypes">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Patients_Institutions">
           <End Role="Institutions" Type="Self.Institution" Multiplicity="*" />
           <End Role="Patients" Type="Self.Patient" Multiplicity="*" />
@@ -3727,6 +3805,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="AppLoginHistories" EntityType="Self.AppLoginHistory" />
           <EntitySet Name="AppSettings" EntityType="Self.AppSetting" />
           <EntitySet Name="AppUserSettings" EntityType="Self.AppUserSetting" />
+          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserType" />
           <EntitySet Name="BasalDeliveries" EntityType="Self.BasalDelivery" />
           <EntitySet Name="BasalDeliveryDatas" EntityType="Self.BasalDeliveryData" />
           <EntitySet Name="BGTargets" EntityType="Self.BGTarget" />
@@ -3795,7 +3874,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentication" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
-          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserType" />
+          <EntitySet Name="EmailUsernameViews" EntityType="Self.EmailUsernameView" />
+          <EntitySet Name="PatientListViews" EntityType="Self.PatientListView" />
+          <EntitySet Name="SubscriptionsViews" EntityType="Self.SubscriptionsView" />
+          <EntitySet Name="TableRowCounts" EntityType="Self.TableRowCount" />
           <AssociationSet Name="FK_AppLoginHistories_Applications" Association="Self.FK_AppLoginHistories_Applications">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="AppLoginHistories" EntitySet="AppLoginHistories" />
@@ -3815,6 +3897,10 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <AssociationSet Name="FK_UserAuthentications_Applications" Association="Self.FK_UserAuthentications_Applications">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssignedUserTypes_Users" Association="Self.FK_AssignedUserTypes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AssignedUserTypes" EntitySet="AssignedUserTypes" />
           </AssociationSet>
           <AssociationSet Name="FK_BasalDeliveries_ReadingHeaders1" Association="Self.FK_BasalDeliveries_ReadingHeaders1">
             <End Role="ReadingHeaders" EntitySet="ReadingHeaders" />
@@ -4016,10 +4102,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAuthentications" EntitySet="UserAuthentications" />
           </AssociationSet>
-          <AssociationSet Name="FK_AssignedUserTypes_Users" Association="Self.FK_AssignedUserTypes_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="AssignedUserTypes" EntitySet="AssignedUserTypes" />
-          </AssociationSet>
           <AssociationSet Name="Patients_Institutions" Association="Self.Patients_Institutions">
             <End Role="Institutions" EntitySet="Institutions" />
             <End Role="Patients" EntitySet="Patients" />
@@ -4028,99 +4110,12 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
             <End Role="InsurancePlans" EntitySet="InsurancePlans" />
             <End Role="Patients" EntitySet="Patients" />
           </AssociationSet>
-          <EntitySet Name="EmailUsernameViews" EntityType="NuMedicsGlobalModel.EmailUsernameView" />
-          <EntitySet Name="PatientListViews" EntityType="NuMedicsGlobalModel.PatientListView" />
-          <EntitySet Name="SubscriptionsViews" EntityType="NuMedicsGlobalModel.SubscriptionsView" />
-          <EntitySet Name="TableRowCounts" EntityType="NuMedicsGlobalModel.TableRowCount" />
           <FunctionImport Name="CreateTestClinician">
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="InstitutionId" Mode="In" Type="Guid" />
           </FunctionImport>
         </EntityContainer>
-        <EntityType Name="EmailUsernameView">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="UserType" />
-            <PropertyRef Name="CreationDate" />
-          </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
-          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ClinicianEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="PatientEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="PatientListView">
-          <Key>
-            <PropertyRef Name="InstitutionId" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="InstitutionName" />
-            <PropertyRef Name="Firstname" />
-            <PropertyRef Name="Lastname" />
-            <PropertyRef Name="Email" />
-            <PropertyRef Name="DateofBirth" />
-          </Key>
-          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="InstitutionName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Firstname" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Middlename" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="DateofBirth" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MRID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="SubscriptionsView">
-          <Key>
-            <PropertyRef Name="SubscriptionId" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="SubscriptionType" />
-            <PropertyRef Name="SubscriptionDate" />
-            <PropertyRef Name="ExpirationDate" />
-            <PropertyRef Name="IsTrial" />
-            <PropertyRef Name="ApplicationId" />
-            <PropertyRef Name="UserType" />
-            <PropertyRef Name="InstitutionId" />
-            <PropertyRef Name="PaymentMethod" />
-            <PropertyRef Name="PaymentId" />
-            <PropertyRef Name="CheckId" />
-            <PropertyRef Name="CheckStatus" />
-            <PropertyRef Name="CheckNumber" />
-            <PropertyRef Name="CheckCode" />
-            <PropertyRef Name="CheckDateRecieved" />
-            <PropertyRef Name="CheckAmount" />
-          </Key>
-          <Property Name="SubscriptionId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="SubscriptionType" Type="Int32" Nullable="false" />
-          <Property Name="SubscriptionDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsTrial" Type="Boolean" Nullable="false" />
-          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
-          <Property Name="InstitutionId" Type="Guid" Nullable="false" />
-          <Property Name="PaymentMethod" Type="Int32" Nullable="false" />
-          <Property Name="PaymentId" Type="Int32" Nullable="false" />
-          <Property Name="CheckId" Type="Int32" Nullable="false" />
-          <Property Name="CheckStatus" Type="Int32" Nullable="false" />
-          <Property Name="CheckNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CheckCode" Type="Int64" Nullable="false" />
-          <Property Name="CheckDateRecieved" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CheckAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="PayPalId" Type="Int32" />
-          <Property Name="PayPalPaymentDate" Type="DateTime" Precision="3" />
-          <Property Name="PayPalPaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PayPalPayment" Type="Decimal" Precision="19" Scale="4" />
-        </EntityType>
-        <EntityType Name="TableRowCount">
-          <Key>
-            <PropertyRef Name="TableName" />
-          </Key>
-          <Property Name="TableName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="RowCnt" Type="Int64" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4176,6 +4171,15 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
                 <ScalarProperty Name="AppicationId" ColumnName="AppicationId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="LastUpdatedByUser" ColumnName="LastUpdatedByUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssignedUserTypes">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.AssignedUserType">
+              <MappingFragment StoreEntitySet="AssignedUserTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5021,12 +5025,65 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AssignedUserTypes">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.AssignedUserType">
-              <MappingFragment StoreEntitySet="AssignedUserTypes">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <EntitySetMapping Name="EmailUsernameViews">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.EmailUsernameView">
+              <MappingFragment StoreEntitySet="EmailUsernameView">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="ClinicianEmail" ColumnName="ClinicianEmail" />
+                <ScalarProperty Name="PatientEmail" ColumnName="PatientEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientListViews">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PatientListView">
+              <MappingFragment StoreEntitySet="PatientListView">
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="InstitutionName" ColumnName="InstitutionName" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Middlename" ColumnName="Middlename" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+                <ScalarProperty Name="MRID" ColumnName="MRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriptionsViews">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.SubscriptionsView">
+              <MappingFragment StoreEntitySet="SubscriptionsView">
+                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SubscriptionType" ColumnName="SubscriptionType" />
+                <ScalarProperty Name="SubscriptionDate" ColumnName="SubscriptionDate" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="IsTrial" ColumnName="IsTrial" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
+                <ScalarProperty Name="CheckStatus" ColumnName="CheckStatus" />
+                <ScalarProperty Name="CheckNumber" ColumnName="CheckNumber" />
+                <ScalarProperty Name="CheckCode" ColumnName="CheckCode" />
+                <ScalarProperty Name="CheckDateRecieved" ColumnName="CheckDateRecieved" />
+                <ScalarProperty Name="CheckAmount" ColumnName="CheckAmount" />
+                <ScalarProperty Name="PayPalId" ColumnName="PayPalId" />
+                <ScalarProperty Name="PayPalPaymentDate" ColumnName="PayPalPaymentDate" />
+                <ScalarProperty Name="PayPalPaymentStatus" ColumnName="PayPalPaymentStatus" />
+                <ScalarProperty Name="PayPalPayment" ColumnName="PayPalPayment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableRowCounts">
+            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TableRowCount">
+              <MappingFragment StoreEntitySet="TableRowCount">
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="RowCnt" ColumnName="RowCnt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5046,68 +5103,6 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
               <ScalarProperty Name="UserId" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="EmailUsernameViews">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.EmailUsernameView">
-              <MappingFragment StoreEntitySet="EmailUsernameView">
-                <ScalarProperty Name="PatientEmail" ColumnName="PatientEmail" />
-                <ScalarProperty Name="ClinicianEmail" ColumnName="ClinicianEmail" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PatientListViews">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.PatientListView">
-              <MappingFragment StoreEntitySet="PatientListView">
-                <ScalarProperty Name="MRID" ColumnName="MRID" />
-                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Middlename" ColumnName="Middlename" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
-                <ScalarProperty Name="InstitutionName" ColumnName="InstitutionName" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SubscriptionsViews">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.SubscriptionsView">
-              <MappingFragment StoreEntitySet="SubscriptionsView">
-                <ScalarProperty Name="PayPalPayment" ColumnName="PayPalPayment" />
-                <ScalarProperty Name="PayPalPaymentStatus" ColumnName="PayPalPaymentStatus" />
-                <ScalarProperty Name="PayPalPaymentDate" ColumnName="PayPalPaymentDate" />
-                <ScalarProperty Name="PayPalId" ColumnName="PayPalId" />
-                <ScalarProperty Name="CheckAmount" ColumnName="CheckAmount" />
-                <ScalarProperty Name="CheckDateRecieved" ColumnName="CheckDateRecieved" />
-                <ScalarProperty Name="CheckCode" ColumnName="CheckCode" />
-                <ScalarProperty Name="CheckNumber" ColumnName="CheckNumber" />
-                <ScalarProperty Name="CheckStatus" ColumnName="CheckStatus" />
-                <ScalarProperty Name="CheckId" ColumnName="CheckId" />
-                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
-                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
-                <ScalarProperty Name="InstitutionId" ColumnName="InstitutionId" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-                <ScalarProperty Name="IsTrial" ColumnName="IsTrial" />
-                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
-                <ScalarProperty Name="SubscriptionDate" ColumnName="SubscriptionDate" />
-                <ScalarProperty Name="SubscriptionType" ColumnName="SubscriptionType" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TableRowCounts">
-            <EntityTypeMapping TypeName="NuMedicsGlobalModel.TableRowCount">
-              <MappingFragment StoreEntitySet="TableRowCount">
-                <ScalarProperty Name="RowCnt" ColumnName="RowCnt" />
-                <ScalarProperty Name="TableName" ColumnName="TableName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="CreateTestClinician" FunctionName="NuMedicsGlobalModel.Store.CreateTestClinician" />
         </EntityContainerMapping>
       </Mapping>

@@ -168,15 +168,19 @@ namespace NuLibrary.Migration.Mappings
 
         public DateTime ParseFirebirdDateTime(string datetime)
         {
-            DateTime dt = new DateTime(1800, 1, 1);
-            var parse = DateTime.TryParse(datetime, out dt);
+            var parse = DateTime.TryParse(datetime, out DateTime dt);
+            var min = new DateTime(1800, 1, 1);
+            var max = new DateTime(2999, 1, 1);
 
-            if (dt < new DateTime(1800,1,1) || dt > DateTime.Now)
+            if (parse)
             {
-                dt = new DateTime(1800, 1, 1);
+                if (dt > min && dt < max)
+                {
+                    return dt;
+                }
             }
 
-            return dt;
+           return new DateTime(1800, 1, 1);
         }
 
         public TimeSpan ParseFirebirdTimespan(string timespan)

@@ -31,6 +31,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<AppLoginHistory> AppLoginHistories { get; set; }
         public virtual DbSet<AppSetting> AppSettings { get; set; }
         public virtual DbSet<AppUserSetting> AppUserSettings { get; set; }
+        public virtual DbSet<AssignedUserType> AssignedUserTypes { get; set; }
         public virtual DbSet<BasalDelivery> BasalDeliveries { get; set; }
         public virtual DbSet<BasalDeliveryData> BasalDeliveryDatas { get; set; }
         public virtual DbSet<BGTarget> BGTargets { get; set; }
@@ -99,7 +100,6 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public virtual DbSet<UserAuthentication> UserAuthentications { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<AssignedUserType> AssignedUserTypes { get; set; }
         public virtual DbSet<EmailUsernameView> EmailUsernameViews { get; set; }
         public virtual DbSet<PatientListView> PatientListViews { get; set; }
         public virtual DbSet<SubscriptionsView> SubscriptionsViews { get; set; }

@@ -4,11 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="983e3b98ecdf4baf9fd9eaf847b18f5b" Name="Diagram1">
+      <Diagram DiagramId="476cbc09d84941f0b83274b3a7c1948f" Name="Diagram1">
         <EntityTypeShape EntityType="NuMedicsGlobalModel.Application" Width="1.5" PointX="12.75" PointY="8" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppLoginHistory" Width="1.5" PointX="15" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppSetting" Width="1.5" PointX="15" PointY="7.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.AppUserSetting" Width="1.5" PointX="15" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.AssignedUserType" Width="1.5" PointX="3" PointY="66.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDelivery" Width="1.5" PointX="12.75" PointY="69.25" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BasalDeliveryData" Width="1.5" PointX="15" PointY="69.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.BGTarget" Width="1.5" PointX="15" PointY="76.375" IsExpanded="true" />
@@ -39,8 +40,8 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinCorrection" Width="1.5" PointX="15" PointY="89.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinMethod" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsulinType" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceAddress" Width="1.5" PointX="3.75" PointY="41.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceContact" Width="1.5" PointX="3.75" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceAddress" Width="1.5" PointX="3.75" PointY="44.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceContact" Width="1.5" PointX="3.75" PointY="40.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsurancePlan" Width="1.5" PointX="3.75" PointY="48.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.InsuranceProvider" Width="1.5" PointX="1.5" PointY="49.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.LinkType" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
@@ -77,12 +78,16 @@
         <EntityTypeShape EntityType="NuMedicsGlobalModel.UserAuthentication" Width="1.5" PointX="15" PointY="29.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.User" Width="1.5" PointX="0.75" PointY="53.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NuMedicsGlobalModel.UserType" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.AssignedUserType" Width="1.5" PointX="3" PointY="45.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.EmailUsernameView" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientListView" Width="1.5" PointX="8.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.SubscriptionsView" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NuMedicsGlobalModel.TableRowCount" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppLoginHistories_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppSettings_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_AppUserSettings_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_EndUserLicenseAgreements_Applications" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="NuMedicsGlobalModel.FK_AssignedUserTypes_Users" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveries_ReadingHeaders1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BasalDeliveryData_BasalDeliveries" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_BGTargets_BolusDelivery" ManuallyRouted="false" />
@@ -133,13 +138,8 @@
         <AssociationConnector Association="NuMedicsGlobalModel.FK_TensReadings_ReadingHeaders1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_TotalDailyInsulinDeliveries_ReadingHeaders1" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.FK_UserAuthentications_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="NuMedicsGlobalModel.FK_AssignedUserTypes_Users" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_Institutions" ManuallyRouted="false" />
         <AssociationConnector Association="NuMedicsGlobalModel.Patients_InsurancePlans" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.EmailUsernameView" Width="1.5" PointX="7.75" PointY="9.75" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.PatientListView" Width="1.5" PointX="9.75" PointY="9.75" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.SubscriptionsView" Width="1.5" PointX="0.75" PointY="12.75" />
-        <EntityTypeShape EntityType="NuMedicsGlobalModel.TableRowCount" Width="1.5" PointX="11.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

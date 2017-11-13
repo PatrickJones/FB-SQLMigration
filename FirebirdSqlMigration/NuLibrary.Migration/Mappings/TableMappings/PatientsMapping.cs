@@ -50,11 +50,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
                 RecordCount = TableAgent.RowCount;
+                //Guid instId = nHelper.GetInstitutionId(MigrationVariables.CurrentSiteId);
 
                 foreach (DataRow row in dataSet)
                 {
                     User user = new User();
-                    Guid instId = nHelper.GetInstitutionId(MigrationVariables.CurrentSiteId);
 
                     // get userid from old aspnetdb matching on patientid #####.#####
                     // if no userid then create new one for this patient
@@ -72,11 +72,11 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                     {
                         var medRecId = (row["MEDICALRECORDIDENTIFIER"] is DBNull) ? String.Empty : row["MEDICALRECORDIDENTIFIER"].ToString();
 
-                        if (!String.IsNullOrEmpty(medRecId))
+                        if (!String.IsNullOrEmpty(medRecId) && !medRecId.StartsWith("PR_"))
                         {
                             MemoryMappings.AddMRID(new MedicalRecordIdentifier {
                                 MRID = medRecId,
-                                InstitutionId = instId,
+                                //InstitutionId = instId,
                                 PatientUserId = userId
                             });
                         }
@@ -90,7 +90,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             Gender = (row["GENDER"] is DBNull) ? 1 : (row["GENDER"].ToString().ToLower().StartsWith("m", StringComparison.CurrentCulture)) ? 2 : 3, //From the GlobalStandards database, 'Gender' table
                             DateofBirth = (row["DOB"] is DBNull) ? new DateTime(1800, 1, 1) : mu.ParseFirebirdDateTime(row["DOB"].ToString()),
                             Email = (row["EMAIL"] is DBNull) ? String.Empty : row["EMAIL"].ToString(),
-                            InstitutionId = instId,
+                            //InstitutionId = instId,
                             LastUpdatedByUser = userId
                         };
 
@@ -152,12 +152,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                 var instStats = new SqlTableStats("Patients_Institutions");
                 var addStats = new SqlTableStats("PatientAddresses");
 
+                Guid instId = nHelper.GetInstitutionId(MigrationVariables.CurrentSiteId);
+
                 //save MRID collection
-                TransactionManager.DatabaseContext.MedicalRecordIdentifiers.AddRange(MemoryMappings.GetAllMRIDs());
+                var mrids = MemoryMappings.GetAllMRIDs();
+                Array.ForEach(mrids.ToArray(), m => { m.InstitutionId = instId; });
+
+                TransactionManager.DatabaseContext.MedicalRecordIdentifiers.AddRange(mrids);
 
                 ////Set instition id for each patient
                 var institution = TransactionManager.DatabaseContext.Institutions.FirstOrDefault(f => f.LegacySiteId == MigrationVariables.CurrentSiteId);
-                Parallel.ForEach(CompletedMappings, c => c.Institutions.Add(institution));
+                Parallel.ForEach(CompletedMappings, c => { c.Institutions.Add(institution); c.InstitutionId = instId; });
 
                 TransactionManager.DatabaseContext.Patients.AddRange(CompletedMappings);
                 stats.PreSaveCount = TransactionManager.DatabaseContext.ChangeTracker.Entries<Patient>().Where(w => w.State == System.Data.Entity.EntityState.Added).Count();

@@ -22,7 +22,7 @@ namespace NuLibrary.Migration.SQLDatabase
         /// </summary>
         private void PurgeUsers()
         {
-            var remove = db.Users.Include("UserAuthentications").Where(w => w.Clinician == null && w.Patient == null);
+            var remove = db.Users.Include("AssignedUserTypes").Include("UserAuthentications").Where(w => w.Clinician == null && w.Patient == null);
             Array.ForEach(remove.ToArray(), r => db.UserAuthentications.RemoveRange(r.UserAuthentications));
             db.Users.RemoveRange(remove);
 

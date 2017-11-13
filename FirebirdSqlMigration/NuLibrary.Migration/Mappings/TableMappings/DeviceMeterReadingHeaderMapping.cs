@@ -99,35 +99,36 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                                 if (ePump != null)
                                 {
-                                    mrh.Pump = ePump;// new Pump();
+                                    mrh.Pump = new Pump();
                                     mrh.Pump.PumpKeyId = mrh.ReadingKeyId;
 
                                     if (ePump.PumpPrograms != null)
                                     {
-                                        //mrh.Pump.PumpPrograms = new List<PumpProgram>();
+                                        mrh.Pump.PumpPrograms = new List<PumpProgram>();
                                         Array.ForEach(ePump.PumpPrograms.ToArray(), p =>
                                         {
-                                            p.PumpKeyId = mrh.Pump.PumpKeyId;
-                                            //var prog = new PumpProgram
-                                            //{
-                                            //    CreationDate = p.CreationDate,
-                                            //    NumOfSegments = p.NumOfSegments,
-                                            //    ProgramKey = p.ProgramKey,
-                                            //    ProgramName = p.ProgramName,
-                                            //    Source = p.Source,
-                                            //    Valid = p.Valid,
-                                            //    PumpKeyId = mrh.Pump.PumpKeyId
-                                            //};
+                                            var prog = new PumpProgram
+                                            {
+                                                CreationDate = p.CreationDate,
+                                                NumOfSegments = p.NumOfSegments,
+                                                ProgramKey = p.ProgramKey,
+                                                ProgramName = p.ProgramName,
+                                                Source = p.Source,
+                                                Valid = p.Valid,
+                                                PumpKeyId = mrh.Pump.PumpKeyId,
+                                                IsEnabled = p.IsEnabled,
+                                                ProgramTypeId = p.ProgramTypeId
+                                            };
 
-                                            CompletedPumpProgramMappings.Add(p);
+                                            if (p.ProgramTimeSlots != null && p.ProgramTimeSlots.Count != 0)
+                                            {
+                                                Array.ForEach(p.ProgramTimeSlots.ToArray(), a =>
+                                                {
+                                                    prog.ProgramTimeSlots.Add(a);
+                                                });
+                                            }
 
-                                            //if (p.BasalProgramTimeSlots != null && p.BasalProgramTimeSlots.Count != 0)
-                                            //{
-                                            //    Array.ForEach(p.BasalProgramTimeSlots.ToArray(), a =>
-                                            //    {
-                                            //        prog.BasalProgramTimeSlots.Add(a);
-                                            //    });
-                                            //}
+                                            CompletedPumpProgramMappings.Add(prog);
 
                                             //if (p.BolusProgramTimeSlots != null && p.BolusProgramTimeSlots.Count != 0)
                                             //{
@@ -141,33 +142,31 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                                     if (ePump.PumpSettings != null)
                                     {
-                                        //mrh.Pump.PumpSettings = new List<PumpSetting>();
+                                        mrh.Pump.PumpSettings = new List<PumpSetting>();
                                         Array.ForEach(ePump.PumpSettings.ToArray(), s =>
                                         {
-                                            s.PumpKeyId = mrh.Pump.PumpKeyId;
+                                            var ps = new PumpSetting
+                                            {
+                                                Date = s.Date,
+                                                Description = s.Description,
+                                                SettingName = s.SettingName,
+                                                SettingValue = s.SettingValue,
+                                                PumpKeyId = mrh.Pump.PumpKeyId
+                                            };
 
-                                            //var ps = new PumpSetting
-                                            //{
-                                            //    Date = s.Date,
-                                            //    Description = s.Description,
-                                            //    SettingName = s.SettingName,
-                                            //    SettingValue = s.SettingValue,
-                                            //    PumpKeyId = mrh.Pump.PumpKeyId
-                                            //};
-
-                                            CompletedPumpSettingMappings.Add(s);
+                                            CompletedPumpSettingMappings.Add(ps);
                                         });
                                     }
 
-                                    ////mrh.Pump.ActiveProgramId = ePump.ActiveProgramId;
-                                    ////mrh.Pump.Cannula = ePump.Cannula;
-                                    ////mrh.Pump.Notes = ePump.Notes;
-                                    ////mrh.Pump.PumpInfusionSet = ePump.PumpInfusionSet;
-                                    ////mrh.Pump.PumpName = ePump.PumpName;
-                                    ////mrh.Pump.PumpStartDate = ePump.PumpStartDate;
-                                    ////mrh.Pump.PumpType = ePump.PumpType;
-                                    ////mrh.Pump.ReplacementDate = ePump.ReplacementDate;
-                                    ////mrh.Pump.UserId = ePump.UserId;
+                                    mrh.Pump.ActiveProgramId = ePump.ActiveProgramId;
+                                    mrh.Pump.Cannula = ePump.Cannula;
+                                    mrh.Pump.Notes = ePump.Notes;
+                                    mrh.Pump.PumpInfusionSet = ePump.PumpInfusionSet;
+                                    mrh.Pump.PumpName = ePump.PumpName;
+                                    mrh.Pump.PumpStartDate = ePump.PumpStartDate;
+                                    mrh.Pump.PumpType = ePump.PumpType;
+                                    mrh.Pump.ReplacementDate = ePump.ReplacementDate;
+                                    mrh.Pump.UserId = ePump.UserId;
                                 }
                             }
 

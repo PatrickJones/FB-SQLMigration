@@ -1772,13 +1772,7 @@ warning 6002: The table/view 'NuMedicsGlobal.dbo.TableRowCount' does not have a 
           <EntitySet Name="UserAuthentications" EntityType="Self.UserAuthentications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserTypes" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [AssignedUserTypes].[Id] AS [Id], 
-    [AssignedUserTypes].[UserType] AS [UserType], 
-    [AssignedUserTypes].[UserId] AS [UserId]
-    FROM [dbo].[AssignedUserTypes] AS [AssignedUserTypes]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="AssignedUserTypes" EntityType="Self.AssignedUserTypes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmailUsernameView" EntityType="Self.EmailUsernameView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [EmailUsernameView].[UserId] AS [UserId], 

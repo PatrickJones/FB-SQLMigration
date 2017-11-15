@@ -48,12 +48,77 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 var dataSet = TableAgent.DataSet.Tables[FbTableName].Rows;
                 RecordCount = TableAgent.RowCount;
+                var dateSetter = DateTime.Now;
 
                 foreach (DataRow row in dataSet)
                 {
                     // get userid from old aspnetdb matching on patientid #####.#####
                     var patId = row["PATIENTID"].ToString();
                     var userId = MemoryMappings.GetUserIdFromPatientInfo(MigrationVariables.CurrentSiteId, patId);
+
+                    var icDict = new Dictionary<char, ProgramTimeSlot> {
+                        { '1', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '2', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '3', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '4', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '5', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '6', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '7', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '8', new ProgramTimeSlot { DateSet = dateSetter } }
+                    };
+
+                    var bgDict = new Dictionary<char, ProgramTimeSlot> {
+                        { '1', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '2', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '3', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '4', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '5', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '6', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '7', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '8', new ProgramTimeSlot { DateSet = dateSetter } }
+                    };
+
+                    var bcDict = new Dictionary<char, ProgramTimeSlot> {
+                        { '1', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '2', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '3', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '4', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '5', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '6', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '7', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '8', new ProgramTimeSlot { DateSet = dateSetter } }
+                    };
+
+                    var cfDict = new Dictionary<char, ProgramTimeSlot> {
+                        { '1', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '2', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '3', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '4', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '5', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '6', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '7', new ProgramTimeSlot { DateSet = dateSetter } },
+                        { '8', new ProgramTimeSlot { DateSet = dateSetter } }
+                    };
+
+                    PumpProgram icProgram = DefaultPumpProgram();
+                    PumpProgram bgProgram = DefaultPumpProgram();
+                    PumpProgram bcProgram = DefaultPumpProgram();
+                    PumpProgram cfProgram = DefaultPumpProgram();
+
+                    icProgram.ProgramName = "PROG_IC";
+                    bgProgram.ProgramName = "PROG_BG";
+                    bcProgram.ProgramName = "PROG_BGC";
+                    cfProgram.ProgramName = "PROG_CF";
+
+                    icProgram.ProgramTypeId = 4;
+                    bgProgram.ProgramTypeId = 5;
+                    bcProgram.ProgramTypeId = 7;
+                    cfProgram.ProgramTypeId = 3;
+
+                    icProgram.ProgramTimeSlots = new List<ProgramTimeSlot>();
+                    bgProgram.ProgramTimeSlots = new List<ProgramTimeSlot>();
+                    bcProgram.ProgramTimeSlots = new List<ProgramTimeSlot>();
+                    cfProgram.ProgramTimeSlots = new List<ProgramTimeSlot>();
 
                     if (!mHelper.HasPatientMigrated(patId))
                     {
@@ -66,12 +131,12 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             for (int i = 0; i < row.Table.Columns.Count; i++)
                             {
                                 var column = row.Table.Columns[i].ColumnName.Trim();
-                                // don't want columns that start with these characters - these are timeslot values
+                                // don't want columns that start with these characters - these are timeslot values which are handled in the 'else' statement
                                 var exclude = new List<bool> {
-                                    column.ToLower().StartsWith("ic"),
-                                    column.ToLower().StartsWith("cf"),
-                                    column.ToLower().StartsWith("target"),
-                                    column.ToLower().StartsWith("patientid")
+                                    column.StartsWith("ic",StringComparison.OrdinalIgnoreCase),
+                                    column.StartsWith("cf",StringComparison.OrdinalIgnoreCase),
+                                    column.StartsWith("target",StringComparison.OrdinalIgnoreCase),
+                                    column.StartsWith("patientid", StringComparison.OrdinalIgnoreCase)
                                 };
                             
                                 if (exclude.All(a => !a))
@@ -95,7 +160,74 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 }
                                 else
                                 {
+                                    if (!(row[column] is DBNull))
+                                    {
+                                        if (column.StartsWith("cf", StringComparison.OrdinalIgnoreCase) && cfDict.ContainsKey(column.Last()))
+                                        {
+                                            var cfd = cfDict[column.Last()];
+                                            if (column.StartsWith("cfstart", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                cfd.StartTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                            }
 
+                                            if (column.StartsWith("cfstop", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                cfd.StopTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                            }
+
+                                            if (column.StartsWith("cfvalue", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                cfd.Value = mu.ParseDouble(row[column].ToString());
+                                            }
+                                        }
+
+                                        if (column.StartsWith("ic", StringComparison.OrdinalIgnoreCase) && icDict.ContainsKey(column.Last()))
+                                        {
+                                            var icd = icDict[column.Last()];
+                                            if (column.StartsWith("icstart", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                icd.StartTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                            }
+
+                                            if (column.StartsWith("icstop", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                icd.StopTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                            }
+
+                                            if (column.StartsWith("icvalue", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                icd.Value = mu.ParseDouble(row[column].ToString());
+                                            }
+                                        }
+
+                                        if (column.StartsWith("target", StringComparison.OrdinalIgnoreCase) && bgDict.ContainsKey(column.Last()) && bcDict.ContainsKey(column.Last()))
+                                        {
+                                            var bgd = bgDict[column.Last()];
+                                            var bcd = bcDict[column.Last()];
+
+                                            if (column.StartsWith("targetbgstart", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                bgd.StartTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                                bcd.StartTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                            }
+
+                                            if (column.StartsWith("targetbgstop", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                bgd.StopTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                                bcd.StopTime = mu.ParseFirebirdTimespan(row[column].ToString());
+                                            }
+
+                                            if (column.StartsWith("targetbg", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                bgd.Value = mu.ParseDouble(row[column].ToString());
+                                            }
+
+                                            if (column.StartsWith("targetbgcorrect", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                bcd.Value = mu.ParseDouble(row[column].ToString());
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
@@ -105,6 +237,42 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                         }
                     }
 
+                    //Purge dictionaries
+                    PurgeDictionary(icDict);
+                    PurgeDictionary(bgDict);
+                    PurgeDictionary(bcDict);
+                    PurgeDictionary(cfDict);
+
+                    // add dictionary values (ProgramTimeSlots)
+                    var icCollection = AddTimeSlots(icProgram.ProgramTimeSlots.ToList(), icDict.Values);
+                    foreach (var item in icCollection)
+                    {
+                        icProgram.ProgramTimeSlots.Add(item);
+                    }
+
+                    var bgCollection = AddTimeSlots(bgProgram.ProgramTimeSlots.ToList(), bgDict.Values);
+                    foreach (var item in bgCollection)
+                    {
+                        bgProgram.ProgramTimeSlots.Add(item);
+                    }
+
+                    var bcCollection = AddTimeSlots(bcProgram.ProgramTimeSlots.ToList(), bcDict.Values);
+                    foreach (var item in bcCollection)
+                    {
+                        bcProgram.ProgramTimeSlots.Add(item);
+                    }
+
+                    var cfCollection = AddTimeSlots(cfProgram.ProgramTimeSlots.ToList(), cfDict.Values);
+                    foreach (var item in cfCollection)
+                    {
+                        cfProgram.ProgramTimeSlots.Add(item);
+                    }
+
+                    // add pump programs to memory mappings
+                    AddPumpProgram(userId, icProgram);
+                    AddPumpProgram(userId, bgProgram);
+                    AddPumpProgram(userId, bcProgram);
+                    AddPumpProgram(userId, cfProgram);
                 }
 
                 MappingStatistics.LogMappingStat("INSULETPUMPSETTINGS", RecordCount, "PumpSettings", CompletedMappings.Count, FailedCount);
@@ -113,6 +281,51 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating PumpSetting mapping.", e);
             }
+        }
+
+        private List<ProgramTimeSlot> AddTimeSlots(List<ProgramTimeSlot> programTimeSlots, Dictionary<char, ProgramTimeSlot>.ValueCollection values)
+        {
+            if (values.Count > 0)
+            {
+                for (int i = 0; i < values.Count; i++)
+                {
+                    var ele = values.ElementAt(i);
+
+                    if (ele.Value != 0)
+                    {
+                        ele.PumpProgramId = i + 1;
+                        programTimeSlots.Add(ele);
+                    }
+                }
+            }
+
+            return programTimeSlots;
+        }
+
+        private void AddPumpProgram(Guid userId, PumpProgram program)
+        {
+            if (program.ProgramTimeSlots != null || program.ProgramTimeSlots.Count > 0)
+            {
+                program.NumOfSegments = program.ProgramTimeSlots.Count;
+                MemoryMappings.AddPumpProgram(userId, 0, program);
+            }
+        }
+
+        private void PurgeDictionary(Dictionary<char, ProgramTimeSlot> programDict)
+        {
+            var removeSet = new List<char>();
+
+            foreach (var kv in programDict)
+            {
+                var prg = kv.Value;
+
+                if (prg.Value == 0)
+                {
+                    removeSet.Add(kv.Key);
+                }
+            }
+
+            Array.ForEach(removeSet.ToArray(), r => programDict.Remove(r));
         }
 
         public void SaveChanges()
@@ -146,6 +359,20 @@ namespace NuLibrary.Migration.Mappings.TableMappings
         {
             // don't add empty settings to database (context)
             return (String.IsNullOrEmpty(value)) ? false : true;
+        }
+
+        private PumpProgram DefaultPumpProgram()
+        {
+            var p = new PumpProgram();
+            p.CreationDate = DateTime.Now;
+            p.Source = String.Empty;
+            p.Valid = true;
+            p.ProgramKey = 0;
+            p.NumOfSegments = 8;
+            p.ProgramName = String.Empty;
+            p.IsEnabled = true;
+
+            return p;
         }
     }
 }

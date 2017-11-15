@@ -67,10 +67,17 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                             if (MemoryMappings.GetAllPumpPrograms().ContainsKey(userId))
                             {
+                                var allprog = MemoryMappings.GetAllPumpPrograms().Count; //TESTING
+
                                 var prog = MemoryMappings.GetAllPumpPrograms().Where(p => p.Key == userId).Single();
                                 var tl = prog.Value;
                                 programs = new List<PumpProgram>();
-                                Array.ForEach(tl.ToArray(), a => { programs.Add(a.Item2); });
+                                Array.ForEach(tl.ToArray(), a => {
+                                    if (a.Item2.ProgramTimeSlots.Count > 0)
+                                    {
+                                        programs.Add(a.Item2);
+                                    }
+                                });
                             }
 
                             var pum = new Pump

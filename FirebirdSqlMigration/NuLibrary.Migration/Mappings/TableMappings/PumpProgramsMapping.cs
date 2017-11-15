@@ -62,7 +62,7 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                             for (int i = 1; i < 8; i++)
                             {
-                                var pKey = mu.ParseInt(row[$"PROG{i}KEYID"].ToString());
+                                var pKey = (row[$"PROG{i}KEYID"] is DBNull) ? 0 : mu.ParseInt(row[$"PROG{i}KEYID"].ToString());
 
                                 if (pKey != 0)
                                 { 
@@ -72,7 +72,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
 
                                         p.CreationDate = CreationDate;
                                         p.Source = Source;
-                                        p.Valid = Valid;
+                                        p.Valid = true;
+                                        p.IsEnabled = Valid;
                                         p.ProgramKey = pKey;
                                         p.NumOfSegments = 7;
                                         p.ProgramName = $"Prog {pKey}";
@@ -88,9 +89,8 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                             p.ProgramTypeId = 2;
                                             p.ProgramTimeSlots = GetBolusPrgTimeSlots(userId, CreationDate);
                                         }
-                                        
 
-                                        if (CreationDate != DateTime.MinValue)
+                                        if (CreationDate != DateTime.MinValue && pKey != 0 && p.ProgramTimeSlots.Count > 0)
                                         {
                                             MemoryMappings.AddPumpProgram(userId, pKey, p);
                                         }

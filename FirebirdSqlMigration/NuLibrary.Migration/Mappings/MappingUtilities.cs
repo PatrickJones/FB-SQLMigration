@@ -196,7 +196,7 @@ namespace NuLibrary.Migration.Mappings
             }
             else
             {
-                return new TimeSpan(12, 0, 0);
+                return new TimeSpan(0, 0, 0);
             }
         }
 

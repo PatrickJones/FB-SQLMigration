@@ -31,7 +31,14 @@ namespace NuLibrary.Migration.SQLDatabase
 
         private int Save()
         {
-            return db.SaveChanges();
+            try
+            {
+                return db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         protected override void Dispose(bool disposing)

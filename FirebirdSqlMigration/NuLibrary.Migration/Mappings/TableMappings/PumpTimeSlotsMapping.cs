@@ -71,13 +71,13 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                             {
                                 ProgramTimeSlot bats = new ProgramTimeSlot
                                 {
-                                    Value = mu.ParseInt(row[$"BASAL{i}VAL"].ToString()),
+                                    Value = mu.ParseDouble(row[$"BASAL{i}VAL"].ToString()),
                                     StartTime = bastart.TimeOfDay,
                                     StopTime = bastop.TimeOfDay,
                                     DateSet = createDate
                                 };
 
-                                if (createDate != DateTime.MinValue)
+                                if (createDate != DateTime.MinValue && IsValid(bats))
                                 {
                                     tempBasal.Add(bats);
                                 }
@@ -96,12 +96,12 @@ namespace NuLibrary.Migration.Mappings.TableMappings
                                 {
                                     ProgramTimeSlot bots = new ProgramTimeSlot
                                     {
-                                        Value = mu.ParseInt(row[$"BOLUS{i}VAL"].ToString()),
+                                        Value = mu.ParseDouble(row[$"BOLUS{i}VAL"].ToString()),
                                         StartTime = botime.TimeOfDay,
                                         DateSet = createDate
                                     };
 
-                                    if (createDate != DateTime.MinValue)
+                                    if (createDate != DateTime.MinValue && IsValid(bots))
                                     {
                                         tempBolus.Add(bots);
                                     }
@@ -138,6 +138,19 @@ namespace NuLibrary.Migration.Mappings.TableMappings
             {
                 throw new Exception("Error creating Pump Program Time Slot mapping.", e);
             }
+        }
+
+        private bool IsValid(ProgramTimeSlot slots)
+        {
+            var ts = new TimeSpan(0, 0, 0);
+
+            if (slots.Value == 0.0 && slots.StartTime == ts && slots.StopTime == ts)
+            {
+                return false;
+            }
+
+            return true;
+            //return slots.StartTime != ts && slots.StopTime != ts && slots.Value != 0.0;
         }
 
         public void SaveChanges()

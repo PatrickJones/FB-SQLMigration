@@ -16,7 +16,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     {
         public int DataSetId { get; set; }
         public string DataSet { get; set; }
+        public System.DateTime LastUpdate { get; set; }
     
-        public virtual MeterReading MeterReading { get; set; }
+        public virtual PatientDevice PatientDevice { get; set; }
     }
 }

@@ -33,7 +33,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public System.DateTime EffectiveDate { get; set; }
         public string PlanName { get; set; }
         public int CompanyId { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual InsuranceProvider InsuranceProvider { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

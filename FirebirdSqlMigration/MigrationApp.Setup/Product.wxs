@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <?define MigrationApp_TargetDir=$(var.MigrationApp.TargetDir)?>
+  <Product Id="*" Name="MigrationApp.Setup" Language="1033" Version="1.0.0.0" Manufacturer="NuMedics" UpgradeCode="a1042686-6044-4805-8eb2-e2a27629eb8e">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="MigrationApp" />
+      </Directory>
+    </Directory>
+
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+      <Component Id="MigrationApp.application" Guid="682B8F76-A1C5-4DC4-890A-021B25A3EA4C">
+        <File Id="MigrationApp.application" Name="MigrationApp.application" Source="$(var.MigrationApp.ProjectDir)\publish\MigrationApp.application" />
+      </Component>
+      <Component Id="setup.exe" Guid="25e6c4fe-8b8c-41f5-9251-33748e101bf1">
+        <File Id="setup.exe" Name="setup.exe" Source="$(var.MigrationApp.ProjectDir)\publish\setup.exe" />
+      </Component>
+      <Component Id="EntityFramework.dll.deploy" Guid="DD0F1282-4FA9-404E-9C56-668A26CC15C1">
+        <File Id="EntityFramework.dll.deploy" Name="EntityFramework.dll.deploy" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\EntityFramework.dll.deploy" />
+      </Component>
+      <Component Id="EntityFramework.SqlServer.dll.deploy" Guid="BFBF0C6D-26CD-493A-A61F-E21A3E42F8E4">
+        <File Id="EntityFramework.SqlServer.dll.deploy" Name="EntityFramework.SqlServer.dll.deploy" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\EntityFramework.SqlServer.dll.deploy" />
+      </Component>
+      <Component Id="FirebirdSql.Data.FirebirdClient.dll.deploy" Guid="797EA9F2-2336-4F4E-91A4-FA879129C308">
+        <File Id="FirebirdSql.Data.FirebirdClient.dll.deploy" Name="FirebirdSql.Data.FirebirdClient.dll.deploy" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\FirebirdSql.Data.FirebirdClient.dll.deploy" />
+      </Component>
+      <!--<Component Id="MigrationApp.application" Guid="722F8A2F-283F-4C98-87D7-D587AEA4464D">
+        <File Id="MigrationApp.application" Name="MigrationApp.application" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\MigrationApp.application" />
+      </Component>-->
+      <Component Id="MigrationApp.exe.config.deploy" Guid="57A74D33-A5AC-4B44-93C8-987949007FF5">
+        <File Id="MigrationApp.exe.config.deploy" Name="MigrationApp.exe.config.deploy" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\MigrationApp.exe.config.deploy" />
+      </Component>
+      <Component Id="MigrationApp.exe.deploy" Guid="BC19752C-828A-494F-B1A0-65ED40AFF9C0">
+        <File Id="MigrationApp.exe.deploy" Name="MigrationApp.exe.deploy" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\MigrationApp.exe.deploy" />
+      </Component>
+      <Component Id="MigrationApp.exe.manifest" Guid="7C2494F2-324B-410A-B993-71583CA35C4C">
+        <File Id="MigrationApp.exe.manifest" Name="MigrationApp.exe.manifest" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\MigrationApp.exe.manifest" />
+      </Component>
+      <Component Id="Newtonsoft.Json.dll.deploy" Guid="52AD8EA0-E97C-4590-90AC-D0A39F567275">
+        <File Id="Newtonsoft.Json.dll.deploy" Name="Newtonsoft.Json.dll.deploy" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\Newtonsoft.Json.dll.deploy" />
+      </Component>
+      <Component Id="NuLibrary.Migration.dll.deploy" Guid="6CE04247-C2CA-4CF8-858E-DBC366389079">
+        <File Id="NuLibrary.Migration.dll.deploy" Name="NuLibrary.Migration.dll.deploy" Source="$(var.MigrationApp.ProjectDir)\publish\Application Files\MigrationApp_1_0_0_0\NuLibrary.Migration.dll.deploy" />
+      </Component>
+    </ComponentGroup>
+
+    <Feature Id="ProductFeature" Title="MigrationApp.Setup" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+    <UI>
+      <UIRef Id="WixUI_InstallDir"/>
+      <Publish Dialog="ExitDialog"
+      Control="Finish"
+      Event="DoAction"
+      Value="LaunchApplicationSetup">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Setup" />
+
+    <Property Id="WixShellExecTarget" Value="[#setup.exe]" />
+    <CustomAction Id="LaunchApplicationSetup" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+
+  </Product>
+
+</Wix>

@@ -24,8 +24,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
     
         public int CompanyId { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-        public Nullable<System.DateTime> InActiveDate { get; set; }
+        public bool IsActive { get; set; }
+        public System.DateTime InActiveDate { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InsuranceAddress> InsuranceAddresses { get; set; }

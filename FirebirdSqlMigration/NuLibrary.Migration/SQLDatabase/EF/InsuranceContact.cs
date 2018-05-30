@@ -20,6 +20,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Email { get; set; }
         public string Phone { get; set; }
         public int CompanyId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual InsuranceProvider InsuranceProvider { get; set; }
     }

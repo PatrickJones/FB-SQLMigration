@@ -24,6 +24,7 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Zip { get; set; }
         public string Country { get; set; }
         public int CompanyId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual InsuranceProvider InsuranceProvider { get; set; }
     }

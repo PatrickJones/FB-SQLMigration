@@ -17,5 +17,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int TimeSlotId { get; set; }
         public string TimeSlotDescription { get; set; }
         public System.TimeSpan TImeSlotBoundary { get; set; }
+        public int CareSettingsId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
+    
+        public virtual CareSetting CareSetting { get; set; }
     }
 }

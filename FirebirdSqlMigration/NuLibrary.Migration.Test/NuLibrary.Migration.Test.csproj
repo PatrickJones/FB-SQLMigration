@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1382BED4-738B-49EC-9AFF-C135F20FCD51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuLibrary.Migration.Test</RootNamespace>
+    <AssemblyName>NuLibrary.Migration.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <AssemblyVersion>1.0.65.0</AssemblyVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Localhost|AnyCPU'">
+    <OutputPath>bin\Localhost\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Crib|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Crib\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LocalDev|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\LocalDev\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.MoqHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.MoqHelper.1.0.0\lib\net45\EntityFramework.MoqHelper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFrameworkTesting.1.2.0\lib\net45\EntityFramework.Testing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Testing.Moq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFrameworkTesting.Moq.1.2.0\lib\net45\EntityFramework.Testing.Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=5.8.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.5.8.0\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="FizzWare.NBuilder, Version=4.0.0.115, Culture=neutral, PublicKeyToken=5651b03e12e42c12, processorArchitecture=MSIL">
+      <HintPath>..\packages\NBuilder.4.0.0\lib\net40\FizzWare.NBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.7.1.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.7.1\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="EF\AdminQuery.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnetDbUnitTestModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aspnetDbUnitTestModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnetDbUnitTestModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnetDbUnitTestModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Applications.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Membership.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Membership_GetPasswordWithFormat_Result.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Membership_GetPassword_Result.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Membership_GetUserByName_Result.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Membership_GetUserByUserId_Result.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Paths.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_PersonalizationAllUsers.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_PersonalizationPerUser.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Profile.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Profile_GetProperties_Result.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Roles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_SchemaVersions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Users.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_UsersInRoles_RemoveUsersFromRoles_Result.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_Users_WithFreeUser.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\aspnet_WebEvent_Events.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\clinipro_Users.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\clinipro_Users_WithFreeUser.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\Corporation.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CorporationsView.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FirebirdConnection.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\help_ImageData.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\help_Images.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\help_ModuleOrder.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\help_Modules.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_Contacts.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_LocationRegions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_People.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_PeopleLocations.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_PeopleRegions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_PeopleRoles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_Regions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\insulet_Reports.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\Location.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\Membership_Revert.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\OPP_Logins.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\Policy_Docs.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\Server_Settings.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\Site.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\site_IPTrackedEvents.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\stats_PageRequests.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\subs_Adjustments.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\subs_CheckPayments.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\subs_Gaps.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\subs_PayPalPayments.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\subs_Subscriptions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\subs_Trials.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\sysdiagram.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\UserProfile.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\users_EmailConfirmations.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\users_PasswordConfirmations.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\users_Sessions.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\users_Settings.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\users_SmarterMailAccounts.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\User_Accounts.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_Applications.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_MembershipUsers.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_Profiles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_Roles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_Users.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_UsersInRoles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_WebPartState_Paths.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_WebPartState_Shared.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_aspnet_WebPartState_User.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vw_subs_Payments.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\webpages_Membership.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\webpages_OAuthMembership.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\webpages_Roles.cs">
+      <DependentUpon>aspnetDbUnitTestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FBDatabaseTest\FBDataAccessTest.cs" />
+    <Compile Include="FBDatabaseTest\TableAgentCollectionTest.cs" />
+    <Compile Include="FBDatabaseTest\TableAgentTest.cs" />
+    <Compile Include="Mappings\InMemoryMappings\MemoryMappingsTests.cs" />
+    <Compile Include="MigrationVariablesTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlDatabaseTest\AspnetDbHelpersTest.cs" />
+    <Compile Include="SqlDatabaseTest\DbContextDisposal.cs" />
+    <Compile Include="SqlDatabaseTest\NumedicsGlobalHelpersTest.cs" />
+    <Compile Include="SqlValidationsTest\ApplicationValidationTest.cs" />
+    <Compile Include="SqlValidationsTest\CheckStatusValidationTest.cs" />
+    <Compile Include="SqlValidationsTest\InsulinTypeValidationTest.cs" />
+    <Compile Include="SqlValidationsTest\PaymentMethodValidationTest.cs" />
+    <Compile Include="SqlValidationsTest\ReadingEventTypeValidations.cs" />
+    <Compile Include="SqlValidationsTest\SubscriptionTypeValidationTest.cs" />
+    <Compile Include="SqlValidationsTest\TherapyTypeValidationsTest.cs" />
+    <Compile Include="SqlValidationsTest\UserTypeValidationTest.cs" />
+    <Compile Include="SqlValidationsTest\ValidateTableTest.cs" />
+    <Compile Include="TestUsers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
+    <EntityDeploy Include="EF\aspnetDbUnitTestModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>aspnetDbUnitTestModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App.Localhost.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="EF\aspnetDbUnitTestModel.edmx.diagram">
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NuLibrary.Migration\NuLibrary.Migration.csproj">
+      <Project>{4de7186f-881d-45ec-b206-8b5a4f2051b2}</Project>
+      <Name>NuLibrary.Migration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EF\aspnetDbUnitTestModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
+      <LastGenOutput>aspnetDbUnitTestModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EF\aspnetDbUnitTestModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>aspnetDbUnitTestModel.edmx</DependentUpon>
+      <LastGenOutput>aspnetDbUnitTestModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets" Condition="Exists('..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SlowCheetah.2.5.48\build\SlowCheetah.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

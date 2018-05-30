@@ -23,7 +23,8 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string State { get; set; }
         public string Zip { get; set; }
         public string Country { get; set; }
-        public string PatientId { get; set; }
+        public System.Guid UserId { get; set; }
+        public System.Guid LastUpdatedByUser { get; set; }
     
         public virtual Patient Patient { get; set; }
     }

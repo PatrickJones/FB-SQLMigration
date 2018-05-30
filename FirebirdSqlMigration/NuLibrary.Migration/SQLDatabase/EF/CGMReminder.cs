@@ -18,8 +18,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public string Type { get; set; }
         public bool Enabled { get; set; }
         public string Time { get; set; }
-        public int PumpId { get; set; }
+        public System.Guid ReadingKeyId { get; set; }
+        public System.DateTime Date { get; set; }
     
-        public virtual Pump Pump { get; set; }
+        public virtual ReadingHeader ReadingHeader { get; set; }
     }
 }

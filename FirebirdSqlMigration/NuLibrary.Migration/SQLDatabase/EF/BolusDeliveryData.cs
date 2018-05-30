@@ -17,8 +17,9 @@ namespace NuLibrary.Migration.SQLDatabase.EF
         public int DataId { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
-        public string ValueType { get; set; }
         public int BolusDeliveryId { get; set; }
+        public string Description { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual BolusDelivery BolusDelivery { get; set; }
     }

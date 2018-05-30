@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ff4753ba91de426eb0f83dfb31f5090d" Name="Diagram1">
+        <EntityTypeShape EntityType="aspnetdbModel.FirebirdConnection" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="aspnetdbModel.aspnet_Membership" Width="1.5" PointX="3.375" PointY="5.75" />
+        <EntityTypeShape EntityType="aspnetdbModel.aspnet_Users" Width="1.5" PointX="3.375" PointY="1.125" />
+        <EntityTypeShape EntityType="aspnetdbModel.clinipro_Users" Width="1.5" PointX="5.625" PointY="1" />
+        <AssociationConnector Association="aspnetdbModel.FK_clinipro_Users_aspnet_Users" />
+        <EntityTypeShape EntityType="aspnetdbModel.CorporationsView" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="aspnetdbModel.subs_Adjustments" Width="1.5" PointX="5.625" PointY="13.125" />
+        <EntityTypeShape EntityType="aspnetdbModel.subs_CheckPayments" Width="1.5" PointX="5.625" PointY="27.5" />
+        <EntityTypeShape EntityType="aspnetdbModel.subs_Gaps" Width="1.5" PointX="5.625" PointY="16.625" />
+        <EntityTypeShape EntityType="aspnetdbModel.subs_PayPalPayments" Width="1.5" PointX="5.625" PointY="19.75" />
+        <EntityTypeShape EntityType="aspnetdbModel.subs_Subscriptions" Width="1.5" PointX="5.625" PointY="25" />
+        <EntityTypeShape EntityType="aspnetdbModel.subs_Trials" Width="1.5" PointX="5.625" PointY="10" />
+        <AssociationConnector Association="aspnetdbModel.FK_subs_Adjustments_aspnet_Users" />
+        <AssociationConnector Association="aspnetdbModel.FK_subs_CheckPayments_aspnet_Users" />
+        <AssociationConnector Association="aspnetdbModel.FK_subs_Gaps_aspnet_Users" />
+        <AssociationConnector Association="aspnetdbModel.FK_subs_PayPalPayments_aspnet_Users" />
+        <AssociationConnector Association="aspnetdbModel.FK_subs_Subscriptions_aspnet_Users" />
+        <AssociationConnector Association="aspnetdbModel.FK_subs_Trials_aspnet_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
